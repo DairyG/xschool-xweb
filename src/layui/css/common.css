@@ -1,0 +1,54 @@
+@charset "utf-8";
+.childrenBody {background-color: #fff;position: absolute;right: 15px;left:15px;top:15px;bottom: 15px;}
+/* 字体颜色 */
+.fc-FB80 {color: #FFB800;}
+.text-red {color:red}
+/* 背景色 */
+.bgf2f2f2 {background: #f2f2f2 !important;}
+.bgfdfdfd {background: #fdfdfd !important;}
+/* 间距 */
+.padding-b-60 {padding-bottom: 60px;}
+.margin-b-20 {margin-bottom: 20px !important;}
+.margin-t-10 {margin-top:10px;}
+.margin-t-3 {margin-top:3px;}
+.margin-t-20 {margin-top:20px;}
+
+label input[type='file'] {display: none;}
+.layui-form2 .layui-form-item {clear: unset;}
+.layui-form2 .layui-form-label {width: 120px;}
+.layui-form2 .layui-input-block {margin-left: 150px;}
+.layui-search-form .layui-form-label {width: auto;}
+.layui-search-form .layui-input-block {margin-left: 0;float: left;}
+.layui-search-form .layui-form-select .layui-input {width: auto;}
+.layui-search-form .search_item {float: left;margin-left:20px;margin-bottom:10px;}
+.layui-search-form .search_item > span {display: inline-block;float: left;line-height: 38px;padding-right:20px;}
+.layui-search-form .search_item .layui-input{display: inline-block;float: left;width: 150px;}
+.file-upload {border:1px solid #ddd;height:80px;width:80px;text-align: center;display: inline-block;cursor:pointer;}
+.file-upload span {line-height: 80px;font-size: 40px !important;color:#666}
+.layui-form2 .rate {margin-bottom: 0;padding-top: 5px;}
+.layui-form2 .layui-rate {margin:0;padding: 0;}
+.layui-form2 .layui-rate li {margin-bottom: 0;}
+.linePop {display: none;position: relative;}
+.fixd_bottom {height: 60px;position: absolute;bottom: 0;width:100%;}
+.layui-table-tool {overflow: unset;}
+/* .ztree  */
+.ztree * {font-size:14px;}
+.ztree li {line-height: 200%;}
+.ztree li a {height:28px;}
+.menuContent {border:1px solid #ddd;}
+.ztree li span.button {height:24px;}
+.ztree li span.button.switch {height:24px;}
+.ztree li span.button.ico_open {vertical-align: middle;}
+.ztree li span.button.ico_close {vertical-align: middle;}
+.ztree li span.button.ico_docu {vertical-align: middle;}
+.ztree li a.curSelectedNode  {height:28px;}
+
+.table-btn-jia,.table-btn-jian {cursor: pointer;display: inline-block;font-weight: bold;padding: 0 5px;color:#888}
+.table-btn-jia {font-size: 28px;}
+.table-btn-jian {font-size: 32px;}
+
+.table_label {background: #f2f2f2; }
+
+/* 用户选择弹出框 */
+#popup_content {display: none;}
+#user_select_tree {position: absolute;left: 48px;top: 40px;background: #fff;z-index: 999;border: 1px solid #ddd;min-width:300px;display: none;}

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<ul class="layui-tab-title">
+							<li class="layui-this">需求列表</li>
+							<li>发布需求</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<table id="lst" lay-filter="lst"></table>
+								<script type="text/html" id="toolbar">
+									<button class="layui-btn  layui-btn-xs ">查看</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-normal">编辑</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-danger">删除</button>
+								</script>
+								<script type="text/html" id="bar">
+								</script>
+							</div>
+							<div class="layui-tab-item">
+								<form class="layui-form layui-form2">
+									<div class="layui-row">
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label">职位名称<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入职位名称" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label">需求部门</label>
+											<div class="layui-input-block">
+												<input type="text" id="citySel" class="layui-input" onclick="showMenu();" readonly>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label">预计到岗日期 <span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" readonly placeholder="请输入预计到岗日期" autocomplete="off" class="layui-input" id="date1">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label">需求人数<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入需求人数" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 margin-b-20">
+											<label class="layui-form-label">岗位职责<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<textarea placeholder="请输入岗位职责" class="layui-textarea"></textarea>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 margin-b-20">
+											<label class="layui-form-label">任职要求<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<textarea placeholder="请输入任职要求" class="layui-textarea"></textarea>
+											</div>
+										</div>
+									</div>
+									<div class="layui-row">
+										<div class="layui-form-item">
+											<div class="layui-input-block text-right">
+												<button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
+												<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+		</div>
+		<script type="text/javascript">
+			var data_col = [[
+				{type: 'numbers', title: '序号'},
+				{field: 'zw', title: '需求职位'},
+				{field: 'bm', title: '需求部门'},
+				{field: 'num', title: '需求人数'},
+				{field: 'yg', title: '预计到岗日期'},
+				{field: 'add_date', title: '申报日期'},
+				{field: 'jh', title: '所属计划'},
+				{title:'操作',toolbar:'#toolbar'}
+			]];
+			var datas = [
+				{'zw':'开发工程师','bm':'项目部','num':'2','yg':'2019-5-1','add_date':'2019-4-25','jh':'2019年春季招聘计划'},
+				{'zw':'市场推广员','bm':'市场部','num':'10','yg':'2019-6-10','add_date':'2019-5-10','jh':'2019年推广计划'},
+				{'zw':'开发工程师','bm':'项目部','num':'2','yg':'2019-5-1','add_date':'2019-4-25','jh':'2019年春季招聘'},
+			];
+			layui.use([ 'table','element','laydate'], function() {
+				var table = layui.table,
+					element = layui.element,
+					laydate = layui.laydate;
+					
+					table.render({
+						elem: '#lst',
+						data: datas,
+						cols: data_col,
+						toolbar:'#bar',
+						page:true,
+						height:'full-110',
+						even: true
+					});
+					laydate.render({
+						elem: '#date1' //指定元素
+					});
+			});
+			
+			var setting = {
+				check: {
+					enable: true,
+					chkStyle: "radio",
+					radioType: "all"
+				},
+				view: {
+					dblClickExpand: false
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				callback: {
+					beforeClick: beforeClick,
+					onCheck: onCheck
+				}
+			};
+			var zNodes =[
+					{
+						name: "四川某某公司",
+						open: true,
+						nocheck:true,
+						children: [{
+								name: "销售部",
+								children: [{
+									name: "销售1部",
+									children: [{
+										name: "销售1组"
+									}]
+								}]
+							},
+							{
+								name: "市场部",
+							},
+							{
+								name: "策划部",
+								children: [{
+									name: "策划1部"
+							
+								}]
+							}
+						]
+					}
+				  ];
+					
+			function beforeClick(treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				zTree.checkNode(treeNode, !treeNode.checked, null, true);
+				return false;
+			}
+			
+			function onCheck(e, treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+				nodes = zTree.getCheckedNodes(true),
+				v = "";
+				for (var i=0, l=nodes.length; i<l; i++) {
+					v += nodes[i].name + ",";
+				}
+				if (v.length > 0 ) v = v.substring(0, v.length-1);
+				var cityObj = $("#citySel");
+				cityObj.attr("value", v);
+			}
+			
+			function showMenu() {
+				var cityObj = $("#citySel");
+				var cityOffset = $("#citySel").offset();
+				$("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px",width:cityObj.outerWidth() + "px"}).slideDown("fast");
+			
+				$("body").bind("mousedown", onBodyDown);
+			}
+			function hideMenu() {
+				$("#menuContent").fadeOut("fast");
+				$("body").unbind("mousedown", onBodyDown);
+			}
+			function onBodyDown(event) {
+				if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+					hideMenu();
+				}
+			}
+			
+			$(document).ready(function(){
+				$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+				$.fn.zTree.init($("#tree"), setting2, zNodes);
+			});
+		</script>
+	</body>
+</html>

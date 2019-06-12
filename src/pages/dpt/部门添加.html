@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
+	</head>
+
+	<body class="bgf2f2f2">
+
+		<div class="childrenBody" style="background:none;">
+			<div class="layui-col-md12 layui-col-sm12">
+				<div class="layui-col-md3 layui-col-sm3" style="background: #fff;">
+					<div>
+						<ul id="ztree" class="ztree"></ul>
+					</div>
+				</div>
+				<div class="layui-col-md9 layui-col-sm9" style="background: #fff;padding:10px;overflow: hidden;border-left:15px solid #f2f2f2">
+					<div class="layui-tab layui-tab-brief">
+						<ul class="layui-tab-title">
+							<li class="layui-this">销售部</li>
+							<li>子公司管理</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<div class="layui-card-header">
+									<a href="javascript:;" class="margin-r-10 text-warning"><i class="layui-icon">&#xe642;</i> 修改</a>
+									<a href="javascript:;" class="margin-r-10 text-add"><i class="layui-icon">&#xe654;</i> 添加</a>
+									<a href="javascript:;" class="text-danger"><i class="layui-icon">&#xe640;</i> 删除</a>
+								</div>
+								<div class="layui-card-body">
+									<form class="layui-form">
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">部门名称 <span class="text-red">*</span></label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<input type="tel" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">部门编号 <span class="text-red">*</span></label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<input type="tel" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">部门正职 <span class="text-red">*</span></label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<input type="tel" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">部门正职电话</label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<input type="tel" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">部门副职</label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<input type="tel" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">部门副职电话</label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<input type="tel" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">部门秘书</label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<input type="tel" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">部门秘书电话</label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<input type="tel" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 layui-col-sm12">
+											<label class="layui-form-text layui-col-md2 layui-col-sm2 text-right padding-r-20">职责描述</label>
+											<div class="layui-col-md10 layui-col-sm10">
+												<textarea class="layui-textarea"></textarea>
+											</div>
+										</div>
+										<div class="floatRight">
+											<button class="layui-btn layui-btn-danger" lay-submit="">确定</button>
+											<button class="layui-btn layui-btn-E05">返回</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="layui-tab-item">
+								<table id="lst" lay-filter="lst"></table>
+								<script type="text/html" id="toolbar">
+									<button class="layui-btn  layui-btn-xs ">查看</button>
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var zTreeObj;
+			var setting = {
+				view: {
+				    dblClickExpand: false
+				},
+				callback: {
+				    onClick: function (e, treeId, treeNode) {
+				        var tree = $.fn.zTree.getZTreeObj(treeId);
+				        tree.expandNode(treeNode);
+				
+						tnode=treeNode;
+						console.log('tnode',tnode);
+				        currentid=treeNode.id;
+				    },
+				    onAsyncSuccess: function (event, treeId, treeNode, msg) {
+				        var nodes = zTree.getNodes();
+				        var node=nodes.length>0?nodes[0]:null;
+				        console.log(node);
+				        if(node!=null){
+				            zTree.expandNode(node, true, false, false);
+				        }
+				        
+				    }
+				}
+			}; // zTree 的参数配置，后面详解
+			var zNodes = [ // zTree 的数据属性，此处使用标准json格式
+				{
+					name: "四川某某公司",
+					open: true,
+					children: [{
+							name: "销售部",
+							children: [{
+								name: "销售1部",
+								children: [{
+									name: "销售1组"
+								}]
+							}]
+						},
+						{
+							name: "市场部"
+						},
+						{
+							name: "策划部",
+							children: [{
+								name: "策划1部"
+		
+							}]
+						}
+					]
+				}
+		
+			];
+			$(document).ready(function() {
+				zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
+			})
+			
+			var datas = [
+				{'name':'建筑公司','lx':'张三','mobile':'15323222222'},
+				{'name':'科技公司','lx':'李时','mobile':'15323222222'},
+				{'name':'医疗公司','lx':'王五','mobile':'15323222222'}
+			];
+			layui.use([ 'table', 'element'], function() {
+				var table = layui.table,
+					element = layui.element;
+					
+					table.render({
+						elem: '#lst',
+						data: datas,
+						cols: [[
+							{type: 'numbers', title: '序号'},
+							{field: 'name', title: '公司名称'},
+							{field: 'lx', title: '联系人'},
+							{field: 'mobile', title: '联系人电话'},
+							{title:'操作',toolbar:'#toolbar'}
+						]]
+					});
+					
+			});
+
+		</script>
+	</body>
+</html>

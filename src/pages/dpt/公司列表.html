@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<table id="lst" lay-filter="lst"></table>
+								<script type="text/html" id="toolbar">
+									<button class="layui-btn  layui-btn-xs ">查看</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-normal">编辑</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-danger">删除</button>
+								</script>
+								<script type="text/html" id="bar">
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var data_col = [[
+				{type: 'numbers', title: '序号'},
+				{field: 'name', title: '公司名称'},
+				{field: 'ename', title: '上级部门'},
+				{field: 'dm', title: '信用代码'},
+				{field: 'lx', title: '公司类型'},
+				{field: 'db', title: '法人代表'},
+				{field: 'zb', title: '注册资本'},
+				{field: 'cl', title: '成立日期'},
+				{title:'操作',toolbar:'#toolbar',width:180}
+			]];
+			var datas = [
+				{'name':'科技公司','ename':'','dm':'1283172812432525','lx':'股份制','db':'张三','zb':'100万','cl':'2018-10-1'},
+				{'name':'科技公司','ename':'','dm':'1283172812432525','lx':'股份制','db':'张三','zb':'100万','cl':'2018-10-1'}
+			];
+			layui.use([ 'table', 'element','laydate','layedit'], function() {
+				var table = layui.table,
+					element = layui.element
+					laydate = layui.laydate,
+					layedit = layui.layedit;
+					
+					table.render({
+						elem: '#lst',
+						data: datas,
+						cols: data_col,
+						toolbar:'#bar',
+						page:true,
+						even: true,
+						height:'full-110'
+					});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,85 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 1000,
+	"data": [
+		{
+			"id": 10000,
+			"name": "张宇",
+			"sex": "男",
+			"account": "zhangyu",
+			"department":"策划部",
+			"phone":"15202888888",
+			"state":"角色1<em>|</em>角色2",
+			"position":"文案",
+			"startTime":"2019-3-11",
+			"endTime":""			
+		}, {
+			"id": 10000,
+			"name": "周杰伦",
+			"sex": "男",
+			"account": "zhoujiehun",
+			"department":"策划部",
+			"phone":"15202888888",
+			"state":"角色",
+			"position":"文案",
+			"startTime":"2019-3-11",
+			"endTime":"2019-3-12"
+		}, {
+			"id": 10000,
+			"name": "林俊杰",
+			"sex": "男",
+			"account": "linjunjie",
+			"department":"策划部",
+			"phone":"15202888888",
+			"state":"角色1<em>|</em>角色2",
+			"position":"文案",
+			"startTime":"2019-3-11",
+			"endTime":""		
+		}, {
+			"id": 10000,
+			"name": "张良",
+			"sex": "男",
+			"account": "zhangliang",
+			"department":"策划部",
+			"phone":"15202888888",
+			"state":"角色1",
+			"position":"文案",
+			"startTime":"2019-3-11",
+			"endTime":"2019-3-12"
+		}, {
+			"id": 10000,
+			"name": "吴尊",
+			"sex": "男",
+			"account": "zhangyu",
+			"department":"策划部",
+			"phone":"15202888888",
+			"state":"角色1",
+			"position":"文案",
+			"startTime":"2019-3-11",
+			"endTime":""		
+		}, {
+			"id": 10000,
+			"name": "欧阳琴韵",
+			"sex": "男",
+			"account": "ouyangqinyun",
+			"department":"策划部",
+			"phone":"15202888888",
+			"state":"角色1",
+			"position":"文案",
+			"startTime":"2019-3-11",
+			"endTime":"2019-3-12"
+		}, {
+			"id": 10000,
+			"name": "张宇",
+			"sex": "男",
+			"account": "zhangyu",
+			"department":"策划部",
+			"phone":"15202888888",
+			"state":"角色1",
+			"position":"文案",
+			"startTime":"2019-3-11",
+			"endTime":"2019-3-12"		
+		}
+	]
+}

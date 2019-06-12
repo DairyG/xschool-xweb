@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<table id="lst" lay-filter="lst"></table>
+								<script type="text/html" id="toolbar">
+									<button class="layui-btn  layui-btn-xs ">查看</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-normal">编辑</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-danger">删除</button>
+								</script>
+								<script type="text/html" id="bar">
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var data_col = [[
+				{type: 'numbers', title: '序号'},
+				{field: 'name', title: '岗位名称'},
+				{field: 'lx', title: '职能类型'},
+				{field: 'jb', title: '岗位级别'},
+				{field: 'sj', title: '上级岗位'},
+				{title:'操作',toolbar:'#toolbar'}
+			]];
+			var datas = [
+				{'name':'经理','lx':'管理','sj':'','jb':'M1'},
+				{'name':'副经理','lx':'管理','sj':'经理','jb':'M2'},
+				{'name':'市场总监','lx':'管理','sj':'副经理','jb':'M3'}
+			];
+			layui.use([ 'table'], function() {
+				var table = layui.table;
+					
+					table.render({
+						elem: '#lst',
+						data: datas,
+						cols: data_col,
+						toolbar:'#bar',
+						page:true,
+						even: true,
+						height:'full-110'
+					});
+			});
+		</script>
+	</body>
+</html>

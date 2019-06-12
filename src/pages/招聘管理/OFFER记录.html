@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<ul class="layui-tab-title">
+							<li class="layui-this">OFFER简历列表</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<form class="layui-form layui-form2 layui-search-form">
+									<div class="layui-row">
+										<div class="layui-form-item layui-col-md3 margin-b-20">
+											<label class="layui-form-label">姓名<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md3 margin-b-20">
+											<label class="layui-form-label">手机<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 margin-b-20">
+											<label class="layui-form-label">状态<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<select>
+													<option></option>
+													<option>未面试</option>
+													<option>已面试</option>
+													<option>已通过</option>
+													<option>未通过</option>
+												</select>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md2 margin-b-20">
+											<button class="layui-btn layui-btn-normal">搜索</button>
+										</div>	
+									</div>
+								</form>
+								<table id="lst" lay-filter="lst"></table>
+								<script type="text/html" id="toolbar">
+									<button class="layui-btn  layui-btn-xs" lay-event="info">查看</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-normal">入职</button>
+								</script>
+								<script type="text/html" id="bar">
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+		</div>
+		<script type="text/javascript">
+			var data_col = [[
+				{type: 'numbers', title: '序号'},
+				{field: 'name', title: '姓名'},
+				{field: 'sex', title: '性别',width:60},
+				{field: 'age', title: '年龄',width:60},
+				{field: 'mobile', title: '联系电话'},
+				{field: 'zw', title: '应聘职位'},
+				{field: 'gz_y', title: '工作年限',width:100},
+				{field: 'gz', title: '期望薪水',width:100},
+				{field: 'dg', title: '到岗时间'},
+				{title:'操作',toolbar:'#toolbar',width:180,fixed:'right'}
+			]];
+			var datas = [
+				{name:'张三',sex:'男',age:'22',mobile:'15333333333',mail:'12414@qq.com',zw:'开发工程师',gz_y:'2',qw_city:'成都',jz_city:'成都',gz:'6000',dg:'随时',zt:'面试中'},
+				{name:'李四',sex:'男',age:'22',mobile:'15333333333',mail:'12414@qq.com',zw:'开发工程师',gz_y:'2',qw_city:'成都',jz_city:'成都',gz:'6000',dg:'3天内',zt:'已面试'},
+				{name:'王五',sex:'男',age:'22',mobile:'15333333333',mail:'12414@qq.com',zw:'开发工程师',gz_y:'2',qw_city:'成都',jz_city:'成都',gz:'6000',dg:'一周内',zt:'已面试'},
+			];
+			layui.use([ 'table','element','laydate'], function() {
+				var table = layui.table,
+					element = layui.element,
+					laydate = layui.laydate;
+					
+					table.render({
+						elem: '#lst',
+						data: datas,
+						cols: data_col,
+						toolbar:'#bar',
+						page:true,
+						height:'full-110',
+						even: true,
+					});
+					laydate.render({
+						elem: '#date1' //指定元素
+					});
+					laydate.render({
+						elem: '#date2' //指定元素
+					});
+					lay('.date3').each(function(){
+						laydate.render({
+						  elem: this,type: 'month',range: true
+						});
+					});
+					table.on('tool(lst)', function(obj){
+						var layEvent = obj.event;
+						if(layEvent == "info"){
+							window.location.href = "简历查看2.html";
+						}
+					});
+					
+			});
+			
+			var setting = {
+				check: {
+					enable: true,
+					chkStyle: "radio",
+					radioType: "all"
+				},
+				view: {
+					dblClickExpand: false
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				callback: {
+					beforeClick: beforeClick,
+					onCheck: onCheck
+				}
+			};
+			var zNodes =[
+					{
+						name: "四川某某公司",
+						open: true,
+						nocheck:true,
+						children: [{
+								name: "销售部",
+								children: [{
+									name: "销售1部",
+									children: [{
+										name: "销售1组"
+									}]
+								}]
+							},
+							{
+								name: "市场部",
+							},
+							{
+								name: "策划部",
+								children: [{
+									name: "策划1部"
+							
+								}]
+							}
+						]
+					}
+				  ];
+					
+			function beforeClick(treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				zTree.checkNode(treeNode, !treeNode.checked, null, true);
+				return false;
+			}
+			
+			function onCheck(e, treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+				nodes = zTree.getCheckedNodes(true),
+				v = "";
+				for (var i=0, l=nodes.length; i<l; i++) {
+					v += nodes[i].name + ",";
+				}
+				if (v.length > 0 ) v = v.substring(0, v.length-1);
+				var cityObj = $("#citySel");
+				cityObj.attr("value", v);
+			}
+			
+			function showMenu() {
+				var cityObj = $("#citySel");
+				var cityOffset = $("#citySel").offset();
+				$("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px",width:cityObj.outerWidth() + "px"}).slideDown("fast");
+			
+				$("body").bind("mousedown", onBodyDown);
+			}
+			function hideMenu() {
+				$("#menuContent").fadeOut("fast");
+				$("body").unbind("mousedown", onBodyDown);
+			}
+			function onBodyDown(event) {
+				if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+					hideMenu();
+				}
+			}
+			
+			$(document).ready(function(){
+				$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			});
+		</script>
+	</body>
+</html>

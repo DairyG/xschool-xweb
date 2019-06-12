@@ -1,0 +1,50 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 1000,
+	"data": [
+		{
+			"id": 10000,
+			"username": "会员列表",
+			"sex": "www.baidu.com",
+			"experience": 255222222,
+			"score": "查看<span class='text-red padding-5'>|</span>添加<span class='text-red padding-5'>|</span>编辑<span class='text-red padding-5'>|</span>删除"
+		}, {
+			"id": 10000,
+			"username": "会员列表",
+			"sex": "www.baidu.com",
+			"experience": 255222222,
+			"score": "查看<span class='text-red padding-5'>|</span>添加<span class='text-red padding-5'>|</span>编辑<span class='text-red padding-5'>|</span>删除"
+		}, {
+			"id": 10000,
+			"username": "会员列表",
+			"sex": "www.baidu.com",
+			"experience": 255222222,
+			"score": "查看<span class='text-red padding-5'>|</span>添加<span class='text-red padding-5'>|</span>编辑<span class='text-red padding-5'>|</span>删除"
+		}, {
+			"id": 10000,
+			"username": "会员列表",
+			"sex": "www.baidu.com",
+			"experience": 255222222,
+			"score": "查看<span class='text-red padding-5'>|</span>添加<span class='text-red padding-5'>|</span>编辑<span class='text-red padding-5'>|</span>删除"
+		}, {
+			"id": 10000,
+			"username": "会员列表",
+			"sex": "www.baidu.com",
+			"experience": 255222222,
+			"score": "查看<span class='text-red padding-5'>|</span>添加<span class='text-red padding-5'>|</span>编辑<span class='text-red padding-5'>|</span>删除"
+		}, {
+			"id": 10000,
+			"username": "会员列表",
+			"sex": "www.baidu.com",
+			"experience": 255222222,
+			"score": "查看<span class='text-red padding-5'>|</span>添加<span class='text-red padding-5'>|</span>编辑<span class='text-red padding-5'>|</span>删除"
+		}, {
+			"id": 10000,
+			"username": "会员列表",
+			"sex": "www.baidu.com",
+			"experience": 255222222,
+			"score": "查看<span class='text-red padding-5'>|</span>添加<span class='text-red padding-5'>|</span>编辑<span class='text-red padding-5'>|</span>删除"
+		}
+	]
+}

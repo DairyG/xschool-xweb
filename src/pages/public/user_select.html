@@ -1,0 +1,119 @@
+<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+<script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
+<div class="layui-card">
+	<form class="layui-form layui-search-form">
+		<div class="layui-row margin-t-10">
+			<div class="search_item">
+				<span>姓名</span><input type="text" name="title" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+			</div>
+			<div class="search_item" style="position: relative;">
+				<span>部门</span>
+				<input type="text" name="title" placeholder="请输入部门" autocomplete="off" class="layui-input" id="user_select_department" onclick="show_user_select_tree()" readonly />
+				<input type="text" id="department_id" />
+				<ul id="user_select_tree" class="ztree"></ul>
+			</div>
+			<div class="search_item">
+				<span>职位</span><input type="text" name="title" placeholder="请输入职位" autocomplete="off" class="layui-input">
+			</div>
+			<div class="search_item">
+				<button class="layui-btn layui-btn-normal">搜索</button>
+			</div>	
+		</div>
+	</form>
+	<table id="user_select_lst" lay-filter="user_select_lst"></table>
+	<script type="text/html" id="toolbar">
+		<button class="layui-btn  layui-btn-xs ">查看</button>
+		<button class="layui-btn  layui-btn-xs layui-btn-normal">编辑</button>
+		<button class="layui-btn  layui-btn-xs layui-btn-danger">删除</button>
+	</script>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var data_col = [[
+			{type:'checkbox'},
+			{field: 'name', title: '名称'},
+			{field: 'lx', title: '职位'},
+			{field: 'jb', title: '部门'},
+		]];
+		var datas = [
+			{'id':1,'name':'经理','lx':'管理','jb':'M1'},
+			{'id':2,'name':'副经理','lx':'管理','jb':'M2'},
+			{'id':3,'name':'市场总监','lx':'管理','jb':'M3'},
+			{'id':4,'name':'经理','lx':'管理','jb':'M1'},
+			{'id':5,'name':'副经理','lx':'管理','jb':'M2'},
+			{'id':6,'name':'市场总监','lx':'管理','jb':'M3'},
+			{'id':7,'name':'经理','lx':'管理','jb':'M1'},
+			{'id':8,'name':'副经理','lx':'管理','jb':'M2'},
+			{'id':9,'name':'市场总监','lx':'管理','jb':'M3'}
+		];
+		layui.use([ 'table'], function() {
+			var table = layui.table;
+				table.render({
+					elem: '#user_select_lst',
+					data: datas,
+					cols: data_col,
+					limit:5,
+					page:true,
+					height:'320'
+				});
+		});
+		var zTreeObj;
+		var setting = {
+			callback: {
+				onCheck: on_user_select_check
+			}
+		};
+		var zNodes = [ // zTree 的数据属性，此处使用标准json格式
+			{
+				name: "四川某某公司",
+				open: true,
+				children: [{
+						name: "销售部",
+						children: [{
+							name: "销售1部",
+							children: [{
+								name: "销售1组"
+							}]
+						}]
+					},
+					{
+						name: "市场部"
+					},
+					{
+						name: "销售部",
+						children: [{
+							name: "销售1部"
+		
+						}]
+					}
+				]
+			}
+		
+		];
+		zTreeObj = $.fn.zTree.init($("#user_select_tree"), setting, zNodes);
+	});
+	function show_user_select_tree() {
+		$("#user_select_tree").show();
+		$("body").bind("mousedown", onuser_select_BodyDown);
+	}
+	function hide_user_select_tree() {
+		$("#user_select_tree").hide();
+		$("body").unbind("mousedown", onuser_select_BodyDown);
+	}
+	function onuser_select_BodyDown(event) {
+		if (!(event.target.id == "user_select_department" || $(event.target).parents("#user_select_tree").length>0)) {
+			hide_user_select_tree();
+		}
+	}
+	function on_user_select_check(e, treeId, treeNode) {
+		var zTree = $.fn.zTree.getZTreeObj(treeId),
+		nodes = zTree.getCheckedNodes(true),
+		v = "",id = "";
+		console.log(nodes);
+		for (var i=0, l=nodes.length; i<l; i++) {
+			v += nodes[i].name + ",";
+		}
+		if (v.length > 0 ) v = v.substring(0, v.length-1);
+		$("#user_select_department").val(v);
+	}
+</script>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/style.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<link rel="stylesheet" href="../../lib/pick-pcc/pick-pcc.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/pick-pcc/pick-pcc.js"></script>
+	</head>
+
+	<body class="bgf2f2f2">
+		<div class="childrenBody" style="background:none;">
+			<div class="layui-col-md12 layui-col-sm12" style="background: #fff;">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="brief">
+						<ul class="layui-tab-title">
+							<li class="layui-this">基本信息</li>
+							<li class="">账户</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<!--信息填写-->
+								<div class="layui-card-body">头像管理：</div>
+								<form class="layui-form layui-row padding-t-15">
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<div class="layui-upload">
+											<div class="layui-form-text layui-col-md4 layui-col-sm4">
+												上传头像：
+											</div>
+											<div class="layui-upload-list">
+												<img class="layui-upload-img floatLeft  w120 h120  margin-r-10" style="border:1px solid #e6e6e6;">
+												<p id="demoText"></p>
+											</div>
+											<button type="button" class="layui-btn" id="upload1" style="">+</button>
+											<input class="layui-upload-file" type="file" accept="undefined" name="file">
+										</div>
+									</div>
+								</form>
+								<div class="layui-card-body">个人信息：</div>
+								<form class="layui-form layui-row padding-t-15">
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">姓名<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">性别<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<select>
+												<option></option>
+												<option>男</option>
+												<option>女</option>
+											</select>
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">电话<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">职位</label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<!--这里的职位从字段设置>职位管理处来-->
+											<select>
+												<option></option>
+												<option>出纳</option>
+												<option>会计</option>
+												<option>策划</option>
+											</select>
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">入职时间<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">在职状态<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<select>
+												<option></option>
+												<option>在职</option>
+												<option>离职</option>
+											</select>
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">邮箱</label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">生日<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">区域<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<div class="pick-area pick-area1"></div>
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">详细地址<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+								</form>
+								<div class="layui-card-body  padding-t-15">紧急联系人信息：</div>
+								<form class="layui-form layui-row padding-t-15">
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">姓名<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">性别<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<select>
+												<option></option>
+												<option>男</option>
+												<option>女</option>
+											</select>
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">关系<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<!--这里的职位从字段设置>关系管理处来-->
+											<select>
+												<option></option>
+												<option>母女</option>
+												<option>父女</option>
+											</select>
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">联系电话<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">区域<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<div class="pick-area pick-area2"></div>
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md6 layui-col-sm6">
+										<label class="layui-form-text layui-col-md4 layui-col-sm4">详细地址<span class="text-red"> *</span></label>
+										<div class="layui-col-md8 layui-col-sm8">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+								</form>
+
+								<div class="floatRight margin-b-20">
+									<button class="layui-btn layui-btn-danger">确定</button>
+									<button class="layui-btn layui-btn-FB6">继续添加</button>
+									<button class="layui-btn layui-btn-E05">返回</button>
+								</div>
+
+							</div>
+
+							<div class="layui-tab-item listnav">
+								<!--人员列表-->
+								<form class="layui-form layui-row padding-t-15">
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md12 layui-col-sm12">
+										<label class="layui-form-text layui-col-md2 layui-col-sm2">登陆账号<span class="text-red"> *</span></label>
+										<div class="layui-col-md10 layui-col-sm10">
+											<input type="text" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item margin-b-20 clearnone layui-col-md12 layui-col-sm12">
+										<label class="layui-form-text layui-col-md2 layui-col-sm2">账号密码<span class="text-red"> *</span></label>
+										<div class="layui-col-md10 layui-col-sm10">
+											<input type="password" class="layui-input">
+										</div>
+									</div>
+
+								</form>
+								<div class="floatRight margin-b-20">
+									<button class="layui-btn layui-btn-100">重置密码</button>
+									<button class="layui-btn layui-btn-danger">确定</button>
+									<button class="layui-btn layui-btn-E05">返回</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--弹窗  start-->
+		<script>
+			$(document).on('click', '.setBtn', function() {
+				layer.open({
+					type: 1,
+					title: false,
+					String: false,
+					closeBtn: 2,
+					area: '850px',
+					content: $('.linePop')
+				});
+			});
+			//关闭弹窗
+			$(".closePop").click(function() {
+				layer.closeAll()
+			})
+			//区域选择
+			$(".pick-area1,.pick-area2").pickArea({
+				"width": "auto",
+				"borderColor": "#e6e6e6", //文本边框的色值
+				"arrowColor": "#c2c2c2", //箭头颜色
+				"listBdColor": "#c2c2c2", //下拉框父元素ul的border色值
+				"hoverColor": "#5FB878",
+				"fontSize": "16px", //字体大小
+			});
+			layui.use([ 'laydate', 'laypage', 'table', 'element', 'slider'], function() {
+				var laydate = layui.laydate,
+					laypage = layui.laypage,
+					laytree = layui.tree,
+					table = layui.table,
+					element = layui.element,
+					slider = layui.slider;
+
+
+			});
+		</script>
+	</body>
+
+</html>

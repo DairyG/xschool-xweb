@@ -1,0 +1,48 @@
+[
+    {
+			"id":1,
+      "name": "zzz",
+      "open": true,
+      "children": [
+        {
+					"id":2,
+          "name": "1",
+          "open": false,
+          "children": [
+            {
+							"id":3,
+              "name": "1-1",
+              "open": false,
+              "children": [
+                {
+									"id":4,
+                  "name": "1-1-1",
+                  "open": false
+                },
+                {
+									"id":5,
+                  "name": "1-1-2",
+                  "open": false
+                }
+              ]
+            },
+            {
+							"id":6,
+              "name": "1-2",
+              "open": false
+            }
+          ]
+        },
+        {
+					"id":7,
+          "name": "2",
+          "open": false
+        },
+        {
+					"id":8,
+          "name": "3z",
+          "open": false
+        }
+      ]
+    }
+  ]
