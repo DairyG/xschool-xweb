@@ -2,14 +2,23 @@
 .childrenBody {background-color: #fff;position: absolute;right: 15px;left:15px;top:15px;bottom: 15px;}
 /* 字体颜色 */
 .fc-FB80 {color: #FFB800;}
-.text-red {color:red}
+.text-red  {color:red}
+.text-add {color:#1E9FFF}
+.text-edit {color:#FFB800}
+.text-del {color:#FF5722}
+
+
 /* 背景色 */
 .bgwhite {background: #ffffff !important;}
 .bgf2f2f2 {background: #f2f2f2 !important;}
 .bgfdfdfd {background: #fdfdfd !important;}
 /* 间距 */
+.padding-r-30 {padding-right: 30px;}
+.padding-r-50 {padding-right: 50px;}
 .padding-b-60 {padding-bottom: 60px;}
 .margin0 {margin:0 !important;}
+.margin-b-5 {margin-bottom: 5px;}
+.margin-b-10 {margin-bottom: 10px;}
 .margin-b-20 {margin-bottom: 20px !important;}
 .margin-t-10 {margin-top:10px;}
 .margin-t-3 {margin-top:3px;}
