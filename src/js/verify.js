@@ -10,6 +10,11 @@ layui.use(['form'], function() {
                 return '请填写'+$(obj).attr("placeholder");
             }
         },
+        select: function(value,obj) {
+            if(value == null || value.length == 0) {
+                return '请选择'+$(obj).attr("placeholder");
+            }
+        },
         code:function(value,obj){
             if(/^[a-zA-Z0-9]+$/.test(value)==false){
                 return $(obj).attr("placeholder")+"只能包含字母和数字";
@@ -27,7 +32,17 @@ layui.use(['form'], function() {
 			if(/^[0-9-]+$/.test(value)==false){
 			    return $(obj).attr("placeholder")+"格式不正确";
 			}
-		},
+        },
+        phone: function (value, obj) {
+            if (/^1[3456789]\d{9}$/.test(value) == false) {
+                return $(obj).attr("placeholder") + "格式不正确";
+            }
+        },
+        tel2: function (value, obj) {
+            if (/(^(\d{3,4}-)?\d{6,8}$)|(^1[3456789]\d{9}$)|(^400[0-9]{7})|(^800[0-9]{7})|(^(400)-(\d{3})-(\d{4}$))/.test(value) == false) {
+                return $(obj).attr("placeholder") + "格式不正确";
+            }
+        },
 		num: function(value,obj){
 			if(/^[0-9\.]+$/.test(value)==false){
 			    return $(obj).attr("placeholder")+"必须为数字";

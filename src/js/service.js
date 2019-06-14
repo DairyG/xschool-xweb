@@ -66,10 +66,9 @@ var Serv={
                     layer.alert('用户未授权',{icon:2,title:'登陆提示'});
                    }else{
                      layer.alert(json.error_description,{icon:2,title:'登陆提示'});
-                   }
-                  
+                   }                  
                 }
-                //console.log("err:",data);
+                console.log("err:",data);
             }
         });
     },

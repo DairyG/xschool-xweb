@@ -1,422 +1,320 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<title></title>
-		<link rel="stylesheet" href="../../layui/css/layui.css" />
-		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
-		<link rel="stylesheet" href="../../layui/css/common.css" />
-		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
-		<script type="text/javascript" src="../../layui/layui.js"></script>
-		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
-		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
-		<script type="text/javascript" src="../../js/common.js"></script>
-		<script type="text/javascript" src="../../js/service.js"></script>
-	</head>
-	<body class="bgf2f2f2">
-		<div class="childrenBody">
-			<div class="layui-card">
-				<div class="layui-card-body">
-					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
-						<ul class="layui-tab-title">
-							<li class="layui-this">基本信息</li>
-							<li>开户信息</li>
-							<li>公司介绍</li>
-							<li>账户信息</li>
-							<li>组织结构</li>
-						</ul>
-						<div class="layui-tab-content">
-							<div class="layui-tab-item layui-show">
-								<form class="layui-form layui-form2" >
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">上级部门</label>
-											<div class="layui-input-block">
-												<input type="text" id="citySel" class="layui-input" onclick="showMenu();">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">公司名称<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="CompanyName" required  lay-verify="required" placeholder="请输入公司名称" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">英文名称</label>
-											<div class="layui-input-block">
-												<input type="text" name="EnglishName" required  lay-verify="required" placeholder="请输入英文名称" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">信用代码<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="Credit" required  lay-verify="required" placeholder="请输入统一社会信用代码" autocomplete="off" class="layui-input">
-											</div>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link rel="stylesheet" href="../../layui/css/layui.css" />
+	<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+	<link rel="stylesheet" href="../../layui/css/common.css" />
+	<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+	<script type="text/javascript" src="../../js/common.js"></script>
+	<script type="text/javascript" src="../../js/service.js"></script>
+	<script type="text/javascript" src="../../js/verify.js"></script>
+</head>
+
+<body class="bgf2f2f2">
+	<div class="childrenBody">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+					<ul class="layui-tab-title">
+						<li class="layui-this">基本信息</li>
+						<li>开户信息</li>
+						<li>公司介绍</li>
+						<li>账户信息</li>
+						<li>组织结构</li>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show">
+							<form class="layui-form layui-form2" id="form_basicInfo">
+								<input type="hidden" name="Id" value="0">
+								<input type="hidden" name="Operation" value="1">
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">公司名称<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="CompanyName" maxlength="50" required
+												lay-verify="name" placeholder="公司名称" autocomplete="off"
+												class="layui-input">
 										</div>
 									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">公司类型</label>
-											<div class="layui-input-block">
-												<input type="text" name="CompanyType" required  lay-verify="required" placeholder="请输入公司类型" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">法人代表<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="LegalPerson" required  lay-verify="required" placeholder="请输入法人代表" autocomplete="off" class="layui-input">
-											</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">英文名称</label>
+										<div class="layui-input-block">
+											<input type="text" name="EnglishName" maxlength="50" placeholder="英文名称"
+												autocomplete="off" class="layui-input">
 										</div>
 									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">注册资本</label>
-											<div class="layui-input-inline">
-												<input type="text" name="RegisteredCapital" required  lay-verify="required" placeholder="请输入注册资本" autocomplete="off" class="layui-input">
-											</div>
-											<span class="layui-form-mid layui-word-aux">万元</span>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">成立日期<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="RegisteredTime" required  lay-verify="required" placeholder="请输入成立日期" autocomplete="off" class="layui-input" id="date1">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">营业期限<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="BusinessDate" required  lay-verify="required" placeholder="请输入营业期限" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">营业地址<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="BusinessAddress" required  lay-verify="required" placeholder="请输入营业地址" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">营业范围<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<textarea class="layui-textarea" name="BusinessScope" placeholder="请输入营业范围"></textarea>
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item">
-											<div class="layui-input-block text-right">
-												<button class="layui-btn" lay-submit lay-filter="basicinfo">立即提交</button>
-												<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-							<div class="layui-tab-item">
-								<form class="layui-form layui-form2" >
-									<div class="layui-row ">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">开户银行<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入开户银行" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">开户名称<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入开户名称" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">银行账号<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入银行账号" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">联系电话<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入联系电话" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">营业地址<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入营业地址" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item">
-											<div class="layui-input-block text-right">
-												<button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
-												<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-							<div class="layui-tab-item">
-								<form class="layui-form layui-form2" >
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">公司logo</label>
-											<div class="layui-input-block">
-												<label class="file-upload">
-													<span>+</span>
-													<input type="file">
-												</label>
-											</div>
-										</div>
- 									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">公司电话<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入公司电话" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">公司邮箱</label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入公司邮箱" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">办公地址<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入办公地址" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 margin-b-20">
-											<label class="layui-form-label">公司网址</label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入公司网址" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">公司介绍</label>
-											<div class="layui-input-block">
-												<textarea class="layui-textarea" placeholder="请输入公司介绍" id="editor1"></textarea>
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">公司文化</label>
-											<div class="layui-input-block">
-												<textarea class="layui-textarea" placeholder="请输入公司文化" id="editor2"></textarea>
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">发展历程</label>
-											<div class="layui-input-block">
-												<textarea class="layui-textarea" placeholder="请输入发展历程" id="editor3"></textarea>
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item">
-											<div class="layui-input-block text-right">
-												<button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
-												<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-							<div class="layui-tab-item">
-								<form class="layui-form layui-form2" >
-									<div class="layui-row ">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">登录账户<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入登录账户" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">登录密码<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item">
-											<div class="layui-input-block text-right">
-												<button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
-												<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-							<div class="layui-tab-item">
-								<div>
-									<ul id="tree" class="ztree"></ul>
 								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">信用代码<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="Credit" maxlength="50" required
+												lay-verify="name" placeholder="统一社会信用代码" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">公司类型</label>
+										<div class="layui-input-block">
+											<input type="text" name="CompanyType" maxlength="50" placeholder="公司类型"
+												autocomplete="off" class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">法人代表<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="LegalPerson" maxlength="50" required
+												lay-verify="name" placeholder="法人代表" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">注册资本</label>
+										<div class="layui-input-inline">
+											<input type="text" name="RegisteredCapital" maxlength="50"
+												placeholder="注册资本" autocomplete="off" class="layui-input">
+										</div>
+										<span class="layui-form-mid layui-word-aux">万元</span>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">成立日期<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="RegisteredTime" readonly required
+												lay-verify="select" placeholder="成立日期" autocomplete="off"
+												class="layui-input" id="date1">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">营业期限<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="BusinessDate" maxlength="50" required
+												lay-verify="name" placeholder="营业期限" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">营业地址<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="BusinessAddress" maxlength="200" required
+												lay-verify="name" placeholder="营业地址" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">营业范围<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<textarea class="layui-textarea" name="BusinessScope" maxlength="200"
+												required lay-verify="name" placeholder="营业范围"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item">
+										<div class="layui-input-block text-right">
+											<button class="layui-btn" lay-submit lay-filter="basicInfo">立即提交</button>
+											<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="layui-tab-item">
+							<form class="layui-form layui-form2" id="form_bankInfo">
+								<input type="hidden" name="Id" value="0">
+								<input type="hidden" name="CompanyId" value="0">
+								<div class="layui-row ">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">开户银行<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="OpenBank" maxlength="50" required
+												lay-verify="name" placeholder="开户银行" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">开户名称<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="OpenBankName" maxlength="50" required
+												lay-verify="name" placeholder="开户名称" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">银行账号<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="BankAccount" maxlength="50" required
+												lay-verify="name|num" placeholder="银行账号" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">联系电话<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="LinkPhone" maxlength="50" required
+												lay-verify="name" placeholder="联系电话" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">营业地址</label>
+										<div class="layui-input-block">
+											<input type="text" name="BusinessAddress" readonly placeholder="营业地址" class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item">
+										<div class="layui-input-block text-right">
+											<button class="layui-btn" lay-submit="" lay-filter="bankInfo">立即提交</button>
+											<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="layui-tab-item">
+							<form class="layui-form layui-form2" id="form_introduce">
+								<input type="hidden" name="Id" value="0">
+								<input type="hidden" name="Operation" value="2">
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">公司logo</label>
+										<div class="layui-input-block">
+											<label class="file-upload">
+												<span>+</span>
+												<input type="file">
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">公司电话<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="CompanyPhone" maxlength="50" required
+												lay-verify="name" placeholder="公司电话" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">公司邮箱</label>
+										<div class="layui-input-block">
+											<input type="text" name="Email" maxlength="50" placeholder="公司邮箱"
+												autocomplete="off" class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">办公地址<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="OfficeAddress" maxlength="200" required
+												lay-verify="name" placeholder="办公地址" autocomplete="off"
+												class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">公司网址</label>
+										<div class="layui-input-block">
+											<input type="text" name="WebSite" maxlength="200" placeholder="公司网址"
+												autocomplete="off" class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">公司介绍</label>
+										<div class="layui-input-block">
+											<textarea class="layui-textarea" lay-verify="Intro" name="Intro"
+												placeholder="公司介绍" id="LAY_Intro"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">公司文化</label>
+										<div class="layui-input-block">
+											<textarea class="layui-textarea" lay-verify="Culture" name="Culture"
+												placeholder="公司文化" id="LAY_Culture"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">发展历程</label>
+										<div class="layui-input-block">
+											<textarea class="layui-textarea" lay-verify="History" name="History"
+												placeholder="发展历程" id="LAY_History"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item">
+										<div class="layui-input-block text-right">
+											<button class="layui-btn" lay-submit="" lay-filter="introduce">立即提交</button>
+											<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="layui-tab-item">
+							<form class="layui-form layui-form2">
+								<div class="layui-row ">
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">登录账户<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required lay-verify="required"
+												placeholder="请输入登录账户" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">登录密码<span class="text-red"> *</span></label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required lay-verify="required"
+												placeholder="请输入登录密码" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item">
+										<div class="layui-input-block text-right">
+											<button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
+											<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="layui-tab-item">
+							<div>
+								<ul id="tree" class="ztree"></ul>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
-			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
-		</div>
-		<script type="text/javascript">
-			var data_col = [[
-				{type: 'numbers', title: '序号'},
-				{field: 'name', title: '公司名称'},
-				{field: 'ename', title: '上级部门'},
-				{field: 'dm', title: '信用代码'},
-				{field: 'lx', title: '公司类型'},
-				{field: 'db', title: '法人代表'},
-				{field: 'zb', title: '注册资本'},
-				{field: 'cl', title: '成立日期'},
-				{title:'操作',toolbar:'#toolbar'}
-			]];
-			var datas = [
-				{'name':'科技公司','ename':'','dm':'1283172812432525','lx':'股份制','db':'张三','zb':'100万','cl':'2018-10-1'}
-			];
-			layui.use([ 'table', 'element','laydate','layedit','form'], function() {
-				var table = layui.table,
-					element = layui.element
-					laydate = layui.laydate,
-					layedit = layui.layedit,
-					layform=layui.form;
-					
-					laydate.render({
-						elem: '#date1'
-					});
-					layedit.build('editor1',{height: 180});
-					layedit.build('editor2',{height: 180});
-					layedit.build('editor3',{height: 180});
+	</div>
+	<script type="text/javascript" src="../../js/dpt/companyEdit.js"></script>
+</body>
 
-					layform.on('submit(basicinfo)',function(laydata){
-						layer_load();
-						Serv.Post('company/add',laydata.field, function (response) {
-							layer.msg(response.message); 
-							layer.closeAll();
-                    	});
-						return false;
-					});
-			});
-			var setting = {
-				check: {
-					enable: true,
-					chkboxType: {"Y":"", "N":""}
-				},
-				view: {
-					dblClickExpand: false
-				},
-				data: {
-					simpleData: {
-						enable: true
-					}
-				},
-				callback: {
-					beforeClick: beforeClick,
-					onCheck: onCheck
-				}
-			};
-			var setting2 = {
-				view: {
-					dblClickExpand: false
-				},
-				data: {
-					simpleData: {
-						enable: true
-					}
-				},
-				callback: {
-					beforeClick: beforeClick,
-					onCheck: onCheck
-				}
-			};
-			var zNodes =[
-					{
-						name: "四川某某公司",
-						open: true,
-						nocheck:true,
-						children: [{
-								name: "销售部",
-								children: [{
-									name: "销售1部",
-									children: [{
-										name: "销售1组"
-									}]
-								}]
-							},
-							{
-								name: "市场部",
-							},
-							{
-								name: "策划部",
-								children: [{
-									name: "策划1部"
-							
-								}]
-							}
-						]
-					}
-				  ];
-		
-			function beforeClick(treeId, treeNode) {
-				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-				zTree.checkNode(treeNode, !treeNode.checked, null, true);
-				return false;
-			}
-			
-			function onCheck(e, treeId, treeNode) {
-				var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
-				nodes = zTree.getCheckedNodes(true),
-				v = "";
-				for (var i=0, l=nodes.length; i<l; i++) {
-					v += nodes[i].name + ",";
-				}
-				if (v.length > 0 ) v = v.substring(0, v.length-1);
-				var cityObj = $("#citySel");
-				cityObj.attr("value", v);
-			}
-
-			function showMenu() {
-				var cityObj = $("#citySel");
-				var cityOffset = $("#citySel").offset();
-				$("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px",width:cityObj.outerWidth() + "px"}).slideDown("fast");
-
-				$("body").bind("mousedown", onBodyDown);
-			}
-			function hideMenu() {
-				$("#menuContent").fadeOut("fast");
-				$("body").unbind("mousedown", onBodyDown);
-			}
-			function onBodyDown(event) {
-				if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
-					hideMenu();
-				}
-			}
-
-			$(document).ready(function(){
-				$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-				$.fn.zTree.init($("#tree"), setting2, zNodes);
-			});
-		</script>
-	</body>
 </html>
