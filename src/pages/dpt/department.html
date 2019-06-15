@@ -15,83 +15,96 @@
 	<script type="text/javascript" src="../../js/common.js"></script>
 	<script type="text/javascript" src="../../js/service.js"></script>
 	<script type="text/javascript" src="../../js/verify.js"></script>
+	<script type="text/javascript" src="../../lib/vue.js"></script>
 </head>
 
 <body class="bgf2f2f2">
-    <div class="childrenBody layui-row layui-col-space20" style="background:none;">
-        <div class="layui-col-md3 layui-col-sm3">
-            <div class="bgwhite">
-                <ul id="ztree" class="ztree"></ul>
-            </div>
-        </div>
-        <div class="layui-col-md9 layui-col-sm9">
-            <div class="bgwhite">
-                <form class="layui-form">
-                    <div class="layui-card-header">
-                        <span class="margin-r-10 fontsize-16">销售部</span>
-                        <a href="javascript:;" class="margin-r-10 text-edit"><i class="layui-icon">&#xe642;</i> 修改</a>
-                        <a href="javascript:;" class="margin-r-10 text-add" lay-submit lay-filter="btnAdd"><i class="layui-icon">&#xe654;</i> 添加</a>
-                        <a href="javascript:;" class="text-del" lay-submit lay-filter="btnDel">
-                            <i class="layui-icon">&#xe640;</i> 删除
-                        </a>
-                    </div>
-                    <div class="layui-card-body">
-						<input type="hidden" name="Id" value="1" />
-						<input type="hidden" name="HigherLevel" value="1" />
-						<input type="hidden" name="BelongCompany" value="1" />
-						<input type="hidden" name="DptStatus" value="1" />
+	<div class="childrenBody layui-row layui-col-space20" style="background:none;">
+		<div class="layui-col-md3 layui-col-sm3">
+			<div class="bgwhite">
+				<ul id="ztree" class="ztree"></ul>
+			</div>
+		</div>
+		<div class="layui-col-md9 layui-col-sm9">
+			<div class="bgwhite">
+				<form class="layui-form" id="dptForm">
+					<div class="layui-card-header">
+						<span class="margin-r-10 fontsize-16">销售部</span>
+						<a href="javascript:;" class="margin-r-10 text-edit" lay-filter="btnEdit"><i
+								class="layui-icon">&#xe642;</i> 修改</a>
+						<a href="javascript:;" class="margin-r-10 text-add" lay-filter="btnAdd"><i
+								class="layui-icon">&#xe654;</i> 添加</a>
+						<a href="javascript:;" class="text-del" lay-submit lay-filter="btnDel">
+							<i class="layui-icon">&#xe640;</i> 删除
+						</a>
+					</div>
+					<div class="layui-card-body">
+						<input type="hidden" name="Id" v-model="id" />
+						<input type="hidden" name="NodeId" />
+						<input type="hidden" name="HigherLevel" v-model="higherLevel" />
+						<input type="hidden" name="BelongCompany" v-model="belongCompany" value="1" />
+						<input type="hidden" name="DptStatus" v-model="dptStatus" value="1" />
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label"><span class="text-red">*</span>部门名称</label>
 							<div class="layui-input-block">
-								<input type="name" required lay-verify="name" placeholder="部门名称" name="DptName" class="layui-input">
+								<input type="name" required lay-verify="name" placeholder="部门名称" name="DptName"
+									v-model="dptName" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label"><span class="text-red">*</span>部门编号 </label>
 							<div class="layui-input-block">
-								<input type="name" required lay-verify="name" placeholder="部门编号" name="DptCode" class="layui-input">
+								<input type="name" required lay-verify="name" placeholder="部门编号" name="DptCode"
+									v-model="dptCode" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label"><span class="text-red">*</span>部门正职 </label>
 							<div class="layui-input-block">
-								<input type="name" required lay-verify="name" placeholder="部门正职" name="DptPositions" class="layui-input">
+								<input type="name" required lay-verify="name" placeholder="部门正职" name="DptPositions"
+									v-model="dptPositions" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">正职电话</label>
 							<div class="layui-input-block">
-								<input type="text" placeholder="正职电话" name="PositionsPhone" class="layui-input">
+								<input type="text" placeholder="正职电话" name="PositionsPhone" v-model="positionsPhone"
+									class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">部门副职</label>
 							<div class="layui-input-block">
-								<input type="tel" placeholder="部门副职" class="layui-input">
+								<input type="tel" placeholder="部门副职" class="layui-input" name="DptDeputy"
+									v-model="dptDeputy">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">副职电话</label>
 							<div class="layui-input-block">
-								<input type="text" placeholder="副职电话" name="DptDeputy" class="layui-input">
+								<input type="text" placeholder="副职电话" name="DeputyPhone" v-model="deputyPhone"
+									class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">部门秘书</label>
 							<div class="layui-input-block">
-								<input type="text" placeholder="部门秘书" name="DptSecretary" class="layui-input">
+								<input type="text" placeholder="部门秘书" name="DptSecretary" v-model="dptSecretary"
+									class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">秘书电话</label>
 							<div class="layui-input-block">
-								<input type="text" placeholder="秘书电话" name="SecretaryPhone" class="layui-input">
+								<input type="text" placeholder="秘书电话" name="SecretaryPhone" v-model="secretaryPhone"
+									class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">职责描述</label>
 							<div class="layui-input-block">
-								<textarea placeholder="职责描述" class="layui-textarea" name="DutiesDescription"></textarea>
+								<textarea placeholder="职责描述" class="layui-textarea" v-model="dutiesDescription"
+									name="DutiesDescription"></textarea>
 							</div>
 						</div>
 						<div class="layui-row text-right">
@@ -104,105 +117,7 @@
 		</div>
 	</div>
 	</div>
-
-    <script>
-        var zTreeObj;
-        var setting = {
-            view: {
-                dblClickExpand: false
-            },
-            data: {
-                key: { name: 'dptName', title: 'dptName' }
-                , simpleData: {
-                    enable: true
-                    , idKey: 'id'
-                    , pIdKey: 'higherLevel'
-                    , rootPId: '0'
-                }
-            },
-            callback: {
-                onClick: function (e, treeId, treeNode) {
-                    var tree = $.fn.zTree.getZTreeObj(treeId);
-                    tree.expandNode(treeNode);
-
-                    tnode = treeNode;
-                    console.log('tnode', tnode);
-                    console.log(tnode.id);
-                    currentid = treeNode.id;
-                },
-                onAsyncSuccess: function (event, treeId, treeNode, msg) {
-                    var nodes = zTree.getNodes();
-                    var node = nodes.length > 0 ? nodes[0] : null;
-                    console.log(node);
-                    if (node != null) {
-                        zTree.expandNode(node, true, false, false);
-                    }
-
-                }
-            }
-        }; // zTree 的参数配置，后面详解
-        $(document).ready(function () {
-            //zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
-        })
-
-        layui.use(['table', 'element', 'laydate', 'form'], function () {
-            var table = layui.table,
-                element = layui.element,
-                laydate = layui.laydate,
-                layform = layui.form;
-
-            function initTree() {
-                Serv.Get('department/gettree', {}, function (response) {
-                    zTreeObj = $.fn.zTree.init($("#ztree"), setting, response.data);
-                })
-            }
-
-            initTree();
-
-			table.render({
-				elem: '#lst'
-			});
-			layform.on('submit(dptInfo)', function (laydata) {
-				layer_load();
-				if ($("input[name='Id']").val()== "0") {
-					Serv.Post('Department/add', laydata.field, function (response) {
-						layer_alert(response.message);
-
-					})
-				} else {
-					Serv.Post('Department/update', laydata.field, function (response) {
-						layer_alert(response.message);
-					})
-				}
-				return false;
-			});
-			layform.on('submit(dptAdd)', function (laydata) {
-				layer_load();
-				if ($("input[name='Id']").val()== "0") {
-					Serv.Post('Department/add', laydata.field, function (response) {
-						layer_alert(response.message);
-						
-					})
-				} else {
-					Serv.Post('Department/update', laydata.field, function (response) {
-						layer_alert(response.message);
-						$("input[name='Id']").val("0");
-					})
-				}
-				return false;
-			});
-			layform.on('submit(btnDel)', function (laydata) {
-				laydata.field.DptStatus = 0;
-				Serv.Post('Department/update', laydata.field, function (response) {
-					layer_alert(response.message);
-				})
-			});
-			layform.on('submit(btnAdd)', function (laydata) {
-				$("input[name='Id']").val("0");
-			});
-		});
-
-    </script>
+	<script type="text/javascript" src="../../js/dpt/department.js"></script>
 </body>
 
 </html>
