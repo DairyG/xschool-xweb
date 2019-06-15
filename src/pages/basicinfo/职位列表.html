@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<table id="lst" lay-filter="lst"></table>
+								<script type="text/html" id="toolbar">
+									<button class="layui-btn  layui-btn-sm " lay-event="add">添加</button>
+								</script>
+								<script type="text/html" id="bar">
+									<button class="layui-btn  layui-btn-xs ">查看</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-normal">编辑</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-danger">删除</button>
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="linePop">
+			<div class="layui-card-body padding-r-50">
+				<form class="layui-form layui-form2" >
+					<div class="layui-row">
+						<div class="layui-form-item layui-col-md6 margin-b-20">
+							<label class="layui-form-label">职位名称<span class="text-red">*</span></label>
+							<div class="layui-input-block">
+								<input type="text" class="layui-input" placeholder="请输入职位名称">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20">
+							<label class="layui-form-label">显示顺序</label>
+							<div class="layui-input-block">
+								<input type="text" class="layui-input" placeholder="请输入显示顺序">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">职责</label>
+							<div class="layui-input-block">
+								<textarea class="layui-textarea" placeholder="请输入岗位职责"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+						 	<label class="layui-form-label">入职要求</label>
+						 	<div class="layui-input-block">
+						 		<textarea class="layui-textarea" placeholder="请输入入职要求"></textarea>
+						 	</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+						  	<label class="layui-form-label">职责说明书</label>
+						  	<div class="layui-input-block">
+						  		<span class="layui-btn layui-btn-normal" ><i class="layui-icon">&#xe67c;</i>上传文件</span>
+						  	</div>
+						</div>
+					</div>
+					<div class="layui-row">
+						<div class="layui-form-item">
+							<div class="layui-input-block text-right">
+								<button class="layui-btn" lay-submit="" lay-filter="formDemo">确认</button>
+								<span type="reset" class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var data_col = [[
+				{type: 'numbers', title: '序号'},
+				{field: 'name', title: '职位名称'},
+				{field: 'sort', title: '显示顺序'},
+				{field: 'zz', title: '岗位职责'},
+				{field: 'yq', title: '入职要求'},
+				{title:'操作',toolbar:'#bar'}
+			]];
+			var datas = [
+				{'name':'经理','sort':'10'},
+				{'name':'副经理','sort':'10'},
+				{'name':'市场总监','sort':'10'}
+			];
+			layui.use([ 'table'], function() {
+				var table = layui.table;
+					
+				table.render({
+					elem: '#lst',
+					data: datas,
+					cols: data_col,
+					toolbar:'#toolbar',
+					page:true,
+					even: true,
+					height:'full-110'
+				});
+				table.on('toolbar(lst)',function(data){
+					if(data.event == 'add'){
+						layer_linePop = layer.open({
+							type: 1,
+							title:'职位添加',
+							String: false,
+							closeBtn: 1,
+							skin: 'layui-layer-rim',
+							area: '750px',
+							content: $('.linePop')
+						});
+					}
+				});
+			});
+			function closePop(){
+				layer.close(layer_linePop);
+			}
+		</script>
+	</body>
+</html>

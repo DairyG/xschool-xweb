@@ -167,19 +167,19 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         return false;
     });
     layform.on('submit(btnDel)', function (laydata) {
-        Serv.Post('Department/count', {Id:$("input[name='NodeId']").val()}, function (response) {
-            console.log(response);
-            if (response > 0) {
-                layer_alert("该部门含有下级，无法删除！");
-            }
-            else {
-                laydata.field.DptStatus = 0;
-                Serv.Post('Department/update', laydata.field, function (response) {
-                    layer_alert(response.message, function () { window.location.reload() });
-                })
-            }
-        })
-
+        var zTree = $.fn.zTree.getZTreeObj('ztree');
+        nodes = zTree.getSelectedNodes();
+        var node = nodes[0];
+        if (node.isParent) {
+            //判断后做操作
+            layer_alert("该部门含有下级，无法删除！");
+        }
+        else {
+            laydata.field.DptStatus = 0;
+            Serv.Post('Department/update', laydata.field, function (response) {
+                layer_alert(response.message, function () { window.location.reload() });
+            })
+        }
 
     });
 });
