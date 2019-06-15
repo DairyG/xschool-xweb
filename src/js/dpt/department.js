@@ -41,7 +41,7 @@
 		var model = {
 			id: '',
 			belongCompany: '',
-			higherLevel: ''
+			higherLevel: '0'
 			, dptName: ''
 			, dptCode: ''
 			, dptPositions: ''
