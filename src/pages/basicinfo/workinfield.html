@@ -64,21 +64,21 @@
 	<script>
 		var layer_linePop;
 		var data_col = [[
-            { field: 'id', title: '序号' },
-            { field: 'name', title: '到岗时间' },
-            { field: 'sortId', title: '显示顺序' },
-            { field: 'memo', title: '备注' },
-            { title: '操作', toolbar: '#bar', width: 180 }
+			{ field: 'id', title: '序号' },
+			{ field: 'name', title: '到岗时间' },
+			{ field: 'sortId', title: '显示顺序' },
+			{ field: 'memo', title: '备注' },
+			{ title: '操作', toolbar: '#bar', width: 180 }
 		]];
 		//关闭弹窗
 		$(".closePop").click(function () {
-				layer.closeAll()
-			});
-		layui.use(['table','element'], function () {
+			layer.closeAll()
+		});
+		layui.use(['table', 'element'], function () {
 			var table = layui.table,
-			    element = layui.element;
+				element = layui.element;
 
-			
+
 			// var cols = [[
 			// 	{type:'numbers',title:'序号'},
 			// 	{field:'title',title:'到岗时间'},
@@ -86,62 +86,62 @@
 			// 	{field:'tips',title:'备注'},
 			// 	{toolbar:'#bar',title:'操作'}
 			// ]];
-// 			var datas = [
-// 				{'title':'随时','sort':10},
-// 				{'title':'一天内','sort':10},
-// 				{'title':'三天内','sort':10},
-// 				{'title':'一周内','sort':10},
-// 			];
-// //执行一个 table 实例
-// table.render({
-// 				elem: '#lst',
-// 				title: '用户表',
-// 				page: true,
-// 				toolbar: '#toolbar',
-// 				even: true,
-// 				height: 'full-80',
-// 				cols: cols,
-// 				// data: datas,
-// 			});
+			// 			var datas = [
+			// 				{'title':'随时','sort':10},
+			// 				{'title':'一天内','sort':10},
+			// 				{'title':'三天内','sort':10},
+			// 				{'title':'一周内','sort':10},
+			// 			];
+			// //执行一个 table 实例
+			// table.render({
+			// 				elem: '#lst',
+			// 				title: '用户表',
+			// 				page: true,
+			// 				toolbar: '#toolbar',
+			// 				even: true,
+			// 				height: 'full-80',
+			// 				cols: cols,
+			// 				// data: datas,
+			// 			});
 			//操作栏的回调函数
-            var onTools = function (layEvent, data) {
+			var onTools = function (layEvent, data) {
 				alert(layEvent);
-                var value = data.id;
+				var value = data.id;
 				//console.log(value);
-			 if (layEvent === 'view') {
-                    window.location.href = '/pages/dpt/companyAdd.html?id=' + value + '&operation=view';
-                } else if (layEvent === 'edit') {
-                    window.location.href = '/pages/dpt/companyAdd.html?id=' + value;
-                } else if (layEvent === "del") {
-                    layer_confirm('确定删除信息吗？', function () {
-                        layer_load();
-                        // Serv.Get('company/delete/' + value, {}, function (result) {
-                        //     if (result.code == "00") {
-                        //         layer_alert(result.message, function () {
-                        //             lstPager.refresh();
-                        //         });
-                        //     } else {
-                        //         layer_alert(result.message);
-                        //     }
-                        // });
-                    });
-                }
-            };
+				if (layEvent === 'view') {
+					window.location.href = '/pages/dpt/companyAdd.html?id=' + value + '&operation=view';
+				} else if (layEvent === 'edit') {
+					window.location.href = '/pages/dpt/companyAdd.html?id=' + value;
+				} else if (layEvent === "del") {
+					layer_confirm('确定删除信息吗？', function () {
+						layer_load();
+						// Serv.Get('company/delete/' + value, {}, function (result) {
+						//     if (result.code == "00") {
+						//         layer_alert(result.message, function () {
+						//             lstPager.refresh();
+						//         });
+						//     } else {
+						//         layer_alert(result.message);
+						//     }
+						// });
+					});
+				}
+			};
 
-            //分页初始化
+			//分页初始化
 			var lstPager = Pager(table,//lay-ui的table控件
-                "到岗时间",//列表名称
-                "lst",//绑定的列表Id
-                'toolbar',//绑定的工具条Id
-                data_col,//表头的显示行
-                "WorkerInField/get",//action url 只能post提交
-                null,//如果在显示之前需要对数据进行整理需要实现，否则传null
-                null,//有选择行才能有的操作，实现该方法,否则传null
-                onTools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
-                null,
-                'full-100'
+				"到岗时间",//列表名称
+				"lst",//绑定的列表Id
+				'toolbar',//绑定的工具条Id
+				data_col,//表头的显示行
+				"WorkerInField/get",//action url 只能post提交
+				null,//如果在显示之前需要对数据进行整理需要实现，否则传null
+				null,//有选择行才能有的操作，实现该方法,否则传null
+				onTools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+				null,
+				'full-100'
 			);
-			
+
 			table.on('toolbar(lst)', function (data) {
 				if (data.event == 'add') {
 					layer_linePop = layer.open({
@@ -155,7 +155,7 @@
 					});
 				}
 			});
-			
+
 		});
 		function closePop() {
 			layer.close(layer_linePop);

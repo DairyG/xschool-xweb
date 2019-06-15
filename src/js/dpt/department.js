@@ -21,6 +21,9 @@ var setting = {
             tnode = treeNode;
             currentid = treeNode.id;
             $('input[name="NodeId"]').val(currentid);
+            $("input").prop("disabled", true);
+            $("button").prop("disabled", true);
+            $("textarea").prop("disabled", true);
             GetSingle(currentid);
 
         },
@@ -111,8 +114,14 @@ function ClickAdd() {
 $(function () {
     $("a[lay-filter='btnAdd']").click(function () {
         ClickAdd();
+        $("input").prop("disabled", false);
+        $("button").prop("disabled", false);
+        $("textarea").prop("disabled", false);
     });
     $("a[lay-filter='btnEdit']").click(function () {
+        $("input").prop("disabled", false);
+        $("button").prop("disabled", false);
+        $("textarea").prop("disabled", false);
         $("input[name='Id']").val($("input[name='NodeId']").val());
     });
 });
