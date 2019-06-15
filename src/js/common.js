@@ -1,19 +1,3 @@
-/** 
- * 弹出输入层
- */
-function layui_prompt(obj) {
-    var default_val = $(obj).val();
-    layer.prompt({
-        formType: 2,
-        value: default_val,
-        title: '请输入',
-        area: ['350px', '120px'] //自定义文本域宽高
-    }, function (value, index, elem) {
-        $(obj).val(value);
-        layer.close(index);
-    });
-}
-
 /**
  * 弹出加载层
  */
@@ -38,6 +22,30 @@ function layer_alert(message, callBack) {
     layer.alert((message || '成功'), { title: '提示', closeBtn: 0 }, function (index) {
         layer.close(index);
         callBack && callBack();
+    });
+}
+
+/**
+ * 确认框；
+ * @param string message 提示信息
+ * @param function confirmBack 点击确定的回调函数
+  * @param function cancelBack 点击取消的回调函数
+ */
+function layer_confirm(message, confirmBack, cancelBack) {
+    layer.confirm((message || '确定提交数据吗?'), {
+        title: '确定信息'
+        , resize: false
+        , btn: ['确定', '取消']
+        , btnAlign: 'c'
+        , closeBtn: 0
+        , anim: 0
+        , icon: 3
+    }, function (index) {
+        layer.close(index);
+        confirmBack && confirmBack();
+    }, function (index) {
+        layer.close(index);
+        cancelBack && cancelBack();
     });
 }
 
@@ -72,6 +80,23 @@ function user_popup(obj) {
         }
     });
 }
+
+/** 
+ * 弹出输入层
+ */
+function layui_prompt(obj) {
+    var default_val = $(obj).val();
+    layer.prompt({
+        formType: 2,
+        value: default_val,
+        title: '请输入',
+        area: ['350px', '120px'] //自定义文本域宽高
+    }, function (value, index, elem) {
+        $(obj).val(value);
+        layer.close(index);
+    });
+}
+
 
 String.prototype.RTrim = function (c) {
     if (!c) {
@@ -132,6 +157,21 @@ String.prototype.IsTel2 = function () {
 String.prototype.IsUrl = function () {
     var reg = /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
     return reg.test(this);
+}
+/**
+ * 验证数字
+ */
+String.prototype.IsNum = function () {
+    var reg = /^[0-9\.]+$/;
+    return reg.test(this);
+}
+
+/**
+ * 验证数字
+  * @param string 待验证的值
+ */
+function IsNum(value) {
+    return /^[0-9\.]+$/.test(value)
 }
 
 /**
