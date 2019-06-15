@@ -2,18 +2,19 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <title></title>
-    <link rel="stylesheet" href="../../layui/css/layui.css" />
-    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
-    <link rel="stylesheet" href="../../layui/css/common.css" />
-    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="../../layui/layui.js"></script>
-    <script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
-    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
-    <script type="text/javascript" src="../../js/common.js"></script>
-    <script type="text/javascript" src="../../js/service.js"></script>
+	<meta charset="utf-8" />
+	<title></title>
+	<link rel="stylesheet" href="../../layui/css/layui.css" />
+	<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+	<link rel="stylesheet" href="../../layui/css/common.css" />
+	<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
+	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+	<script type="text/javascript" src="../../js/common.js"></script>
+	<script type="text/javascript" src="../../js/service.js"></script>
+	<script type="text/javascript" src="../../js/verify.js"></script>
 </head>
 
 <body class="bgf2f2f2">
@@ -35,75 +36,74 @@
                         </a>
                     </div>
                     <div class="layui-card-body">
-
-                        <input type="hidden" name="Id" value="1" />
-                        <input type="hidden" name="HigherLevel" value="1" />
-                        <input type="hidden" name="BelongCompany" value="1" />
-                        <input type="hidden" name="DptStatus" value="1" />
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label"><span class="text-red">*</span>部门名称</label>
-                            <div class="layui-input-block">
-                                <input type="name" placeholder="部门名称" name="DptName" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label"><span class="text-red">*</span>部门编号 </label>
-                            <div class="layui-input-block">
-                                <input type="name" placeholder="部门编号" name="DptCode" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label"><span class="text-red">*</span>部门正职 </label>
-                            <div class="layui-input-block">
-                                <input type="name" placeholder="部门正职" name="DptPositions" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label">正职电话</label>
-                            <div class="layui-input-block">
-                                <input type="text" placeholder="部门正职" name="PositionsPhone" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label">部门副职</label>
-                            <div class="layui-input-block">
-                                <input type="tel" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label">副职电话</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="DptDeputy" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label">部门秘书</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="DptSecretary" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label">秘书电话</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="SecretaryPhone" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item layui-col-md12 layui-col-sm12">
-                            <label class="layui-form-label">职责描述</label>
-                            <div class="layui-input-block">
-                                <textarea class="layui-textarea" name="DutiesDescription"></textarea>
-                            </div>
-                        </div>
-                        <div class="layui-row text-right">
-                            <button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptInfo">确认</button>
-                            <button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确认并继续添加</button>
-                            <span class="layui-btn" onclick="history.back(-1)">返回</span>
-                        </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    </div>
+						<input type="hidden" name="Id" value="1" />
+						<input type="hidden" name="HigherLevel" value="1" />
+						<input type="hidden" name="BelongCompany" value="1" />
+						<input type="hidden" name="DptStatus" value="1" />
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label"><span class="text-red">*</span>部门名称</label>
+							<div class="layui-input-block">
+								<input type="name" required lay-verify="name" placeholder="部门名称" name="DptName" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label"><span class="text-red">*</span>部门编号 </label>
+							<div class="layui-input-block">
+								<input type="name" required lay-verify="name" placeholder="部门编号" name="DptCode" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label"><span class="text-red">*</span>部门正职 </label>
+							<div class="layui-input-block">
+								<input type="name" required lay-verify="name" placeholder="部门正职" name="DptPositions" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label">正职电话</label>
+							<div class="layui-input-block">
+								<input type="text" placeholder="正职电话" name="PositionsPhone" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label">部门副职</label>
+							<div class="layui-input-block">
+								<input type="tel" placeholder="部门副职" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label">副职电话</label>
+							<div class="layui-input-block">
+								<input type="text" placeholder="副职电话" name="DptDeputy" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label">部门秘书</label>
+							<div class="layui-input-block">
+								<input type="text" placeholder="部门秘书" name="DptSecretary" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label">秘书电话</label>
+							<div class="layui-input-block">
+								<input type="text" placeholder="秘书电话" name="SecretaryPhone" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 layui-col-sm12">
+							<label class="layui-form-label">职责描述</label>
+							<div class="layui-input-block">
+								<textarea placeholder="职责描述" class="layui-textarea" name="DutiesDescription"></textarea>
+							</div>
+						</div>
+						<div class="layui-row text-right">
+							<button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptInfo">确认</button>
+							<button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptAdd">确认并继续添加</button>
+							<span class="layui-btn" onclick="history.back(-1)">返回</span>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
 
     <script>
         var zTreeObj;
@@ -159,37 +159,48 @@
 
             initTree();
 
-            table.render({
-                elem: '#lst'
-            });
-            layform.on('submit(dptInfo)', function (laydata) {
-                layer_load();
+			table.render({
+				elem: '#lst'
+			});
+			layform.on('submit(dptInfo)', function (laydata) {
+				layer_load();
+				if ($("input[name='Id']").val()== "0") {
+					Serv.Post('Department/add', laydata.field, function (response) {
+						layer_alert(response.message);
 
-                if ($("#Id").val() == "0") {
-                    Serv.Post('Department/add', laydata.field, function (response) {
-                        layer.msg(response.message);
-                        layer.closeAll();
-
-                    })
-                } else {
-                    Serv.Post('Department/update', laydata.field, function (response) {
-                        layer.msg(response.message);
-                        layer.closeAll();
-                    })
-                }
-                return false;
-            });
-            layform.on('submit(btnDel)', function (laydata) {
-                laydata.field.DptStatus = 0;
-                Serv.Post('Department/update', laydata.field, function (response) {
-                    layer.msg(response.message);
-                    layer.closeAll();
-                })
-            });
-            layform.on('submit(btnAdd)', function (laydata) {
-                $("input[name='Id']").val("0");
-            });
-        });
+					})
+				} else {
+					Serv.Post('Department/update', laydata.field, function (response) {
+						layer_alert(response.message);
+					})
+				}
+				return false;
+			});
+			layform.on('submit(dptAdd)', function (laydata) {
+				layer_load();
+				if ($("input[name='Id']").val()== "0") {
+					Serv.Post('Department/add', laydata.field, function (response) {
+						layer_alert(response.message);
+						
+					})
+				} else {
+					Serv.Post('Department/update', laydata.field, function (response) {
+						layer_alert(response.message);
+						$("input[name='Id']").val("0");
+					})
+				}
+				return false;
+			});
+			layform.on('submit(btnDel)', function (laydata) {
+				laydata.field.DptStatus = 0;
+				Serv.Post('Department/update', laydata.field, function (response) {
+					layer_alert(response.message);
+				})
+			});
+			layform.on('submit(btnAdd)', function (laydata) {
+				$("input[name='Id']").val("0");
+			});
+		});
 
     </script>
 </body>
