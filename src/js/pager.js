@@ -61,7 +61,7 @@ function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parse
     }
     if (toolFunc != null) {        //监听行工具事件         
         table.on('tool(' + tblId + ')', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            console.log(obj.event);
+            //console.log(obj.event);
             layEvent = obj.event
             data = obj.data;
             toolFunc(layEvent, data, obj);// 注：返回obj参数方便表格删除行
