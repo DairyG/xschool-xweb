@@ -1,3 +1,29 @@
+var model = {
+    id: 0
+    , companyName: ''
+    , englishName: ''
+    , credit: ''
+    , companyType: ''
+    , legalPerson: ''
+    , registeredCapital: ''
+    , responsible: ''
+    , responsiblePhone: ''
+    , registeredTime: ''
+    , businessDate: ''
+    , businessAddress: ''
+    , businessScope: ''
+    , logo: ''
+    , companyPhone: ''
+    , email: ''
+    , officeAddress: ''
+    , webSite: ''
+    , intro: ''
+    , culture: ''
+    , history: ''
+};
+
+var vmBasic = new Vue({ el: '#form_basicInfo', data: model });
+
 layui.use(['element', 'laydate', 'layedit', 'form'], function () {
     var element = layui.element,
         laydate = layui.laydate,
@@ -6,17 +32,31 @@ layui.use(['element', 'laydate', 'layedit', 'form'], function () {
 
     laydate.render({
         elem: '#date1'
+        , done: function (value) {
+            model.registeredTime = value;
+            vmBasic.$set({ data: model });
+        }
     });
-    layIntro = layedit.build('LAY_Intro', {
+    var layIntro = layedit.build('LAY_Intro', {
         height: 180
     });
-    layCulture = layedit.build('LAY_Culture', {
+    var layCulture = layedit.build('LAY_Culture', {
         height: 180
     });
-    layHistory = layedit.build('LAY_History', {
+    var layHistory = layedit.build('LAY_History', {
         height: 180
     });
 
+    var id = GetPara('id');
+    var operation = GetPara('operation');
+    if (!IsNum(id)) {
+        id = 0;
+    } else {
+        initData(id);
+    }
+    if (!isEmpty(operation)) {
+        $('.btnHidden').hide();
+    }
     layform.verify({
         Intro: function () {
             layedit.sync(layIntro);
@@ -29,6 +69,41 @@ layui.use(['element', 'laydate', 'layedit', 'form'], function () {
         }
     });
 
+    //初始化
+    function initData(value) {
+        Serv.Get('company/getInfo/' + value, {}, function (result) {
+            if (result.code == "00") {
+                model.id = result.data.id;
+                model.companyName = result.data.companyName;
+                model.englishName = result.data.englishName;
+                model.credit = result.data.credit;
+                model.companyType = result.data.companyType;
+                model.legalPerson = result.data.legalPerson;
+                model.registeredCapital = result.data.registeredCapital;
+                model.responsible = result.data.responsible;
+                model.responsiblePhone = result.data.responsiblePhone;
+                model.registeredTime = result.data.registeredTime.FormatDate(false);
+                model.businessDate = result.data.businessDate;
+                model.businessAddress = result.data.businessAddress;
+                model.businessScope = result.data.businessScope;
+                model.logo = result.data.logo;
+                model.companyPhone = result.data.companyPhone;
+                model.email = result.data.email;
+                model.officeAddress = result.data.officeAddress;
+                model.webSite = result.data.webSite;
+                model.intro = result.data.intro;
+                model.culture = result.data.culture;
+                model.history = result.data.history;
+                vmBasic.$set({ data: model });
+
+                layedit.setContent(layIntro, result.data.intro);
+                layedit.setContent(layCulture, result.data.culture);
+                layedit.setContent(layHistory, result.data.history);
+            } else {
+                layer_alert(result.message);
+            }
+        });
+    }
 
     $('#form_basicInfo').find('input[name="BusinessAddress"]').blur(function () {
         $('#form_bankInfo').find('input[name="BusinessAddress"]').val($(this).val());

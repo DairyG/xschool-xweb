@@ -12,6 +12,7 @@
     <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript" src="../../js/service.js"></script>
     <script type="text/javascript" src="../../js/verify.js"></script>
+    <script type="text/javascript" src="../../lib/vue.js"></script>
 </head>
 
 <body class="bgf2f2f2">
@@ -29,74 +30,74 @@
                         <div class="layui-tab-item layui-show">
                             <form class="layui-form layui-form2" id="form_basicInfo">
 
-                                <input type="hidden" name="Id" value="0">
+                                <input type="hidden" name="id" v-model="id" value="0">
 
                                 <div class="layui-row">
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司名称<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="CompanyName" maxlength="50" required lay-verify="name" placeholder="公司名称" autocomplete="off" class="layui-input">
+                                            <input type="text" name="companyName" v-model="companyName" maxlength="50" required lay-verify="name" placeholder="公司名称" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">英文名称</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="EnglishName" maxlength="50" placeholder="英文名称" autocomplete="off" class="layui-input">
+                                            <input type="text" name="englishName" v-model="englishName" maxlength="50" placeholder="英文名称" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">信用代码<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="Credit" maxlength="50" required lay-verify="name" placeholder="统一社会信用代码" autocomplete="off" class="layui-input">
+                                            <input type="text" name="credit" v-model="credit" maxlength="50" required lay-verify="name" placeholder="统一社会信用代码" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司类型</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="CompanyType" maxlength="50" placeholder="公司类型" autocomplete="off" class="layui-input">
+                                            <input type="text" name="companyType" v-model="companyType" maxlength="50" placeholder="公司类型" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">法人代表<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="LegalPerson" maxlength="50" required lay-verify="name" placeholder="法人代表" autocomplete="off" class="layui-input">
+                                            <input type="text" name="legalPerson" v-model="legalPerson" maxlength="50" required lay-verify="name" placeholder="法人代表" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">注册资本</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="RegisteredCapital" maxlength="50" placeholder="注册资本" autocomplete="off" class="layui-input">
+                                            <input type="text" name="registeredCapital" v-model="registeredCapital" maxlength="50" placeholder="注册资本" autocomplete="off" class="layui-input">
                                         </div>
                                         <span class="layui-form-mid layui-word-aux">万元</span>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司负责人<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="Responsible" maxlength="50" required lay-verify="name" placeholder="公司负责人" autocomplete="off" class="layui-input">
+                                            <input type="text" name="responsible" v-model="responsible" maxlength="50" required lay-verify="name" placeholder="公司负责人" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">负责人电话<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="ResponsiblePhone" maxlength="50" required lay-verify="name|phone" placeholder="负责人电话" autocomplete="off" class="layui-input">
+                                            <input type="text" name="responsiblePhone" v-model="responsiblePhone" maxlength="50" required lay-verify="name|phone" placeholder="负责人电话" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">成立日期<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="RegisteredTime" readonly required lay-verify="select" placeholder="成立日期" autocomplete="off" class="layui-input" id="date1">
+                                            <input type="text" name="registeredTime" v-model="registeredTime" readonly required lay-verify="select" placeholder="成立日期" autocomplete="off" class="layui-input" id="date1">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">营业期限<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="BusinessDate" maxlength="50" required lay-verify="name" placeholder="营业期限" autocomplete="off" class="layui-input">
+                                            <input type="text" name="businessDate" v-model="businessDate" maxlength="50" required lay-verify="name" placeholder="营业期限" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md12 margin-b-20">
                                         <label class="layui-form-label">营业地址<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="BusinessAddress" maxlength="200" required lay-verify="name" placeholder="营业地址" autocomplete="off" class="layui-input">
+                                            <input type="text" name="businessAddress" v-model="businessAddress" maxlength="200" required lay-verify="name" placeholder="营业地址" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +105,7 @@
                                     <div class="layui-form-item layui-col-md12 margin-b-20">
                                         <label class="layui-form-label">营业范围<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <textarea class="layui-textarea" name="BusinessScope" maxlength="200" required lay-verify="name" placeholder="营业范围"></textarea>
+                                            <textarea class="layui-textarea" name="businessScope" v-model="businessScope" maxlength="200" required lay-verify="name" placeholder="营业范围"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -113,6 +114,7 @@
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司logo</label>
                                         <div class="layui-input-block">
+                                            <input type="hidden" name="logo" v-model="logo" />
                                             <label class="file-upload">
                                                 <span>+</span>
                                                 <input type="file">
@@ -124,13 +126,13 @@
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司电话<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="CompanyPhone" maxlength="50" required lay-verify="name|tel2" placeholder="公司电话" autocomplete="off" class="layui-input">
+                                            <input type="text" name="companyPhone" v-model="companyPhone" maxlength="50" required lay-verify="name|tel2" placeholder="公司电话" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司邮箱</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="Email" maxlength="50" placeholder="公司邮箱" autocomplete="off" class="layui-input">
+                                            <input type="text" name="email" v-model="email" maxlength="50" placeholder="公司邮箱" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -138,13 +140,13 @@
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">办公地址<span class="text-red"> *</span></label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="OfficeAddress" maxlength="200" required lay-verify="name" placeholder="办公地址" autocomplete="off" class="layui-input">
+                                            <input type="text" name="officeAddress" v-model="officeAddress" maxlength="200" required lay-verify="name" placeholder="办公地址" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司网址</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="WebSite" maxlength="200" placeholder="公司网址" autocomplete="off" class="layui-input">
+                                            <input type="text" name="webSite" v-model="webSite" maxlength="200" placeholder="公司网址" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +154,7 @@
                                     <div class="layui-form-item layui-col-md12 margin-b-20">
                                         <label class="layui-form-label">公司介绍</label>
                                         <div class="layui-input-block">
-                                            <textarea class="layui-textarea" lay-verify="Intro" name="Intro" placeholder="公司介绍" id="LAY_Intro"></textarea>
+                                            <textarea class="layui-textarea" name="intro" v-model="intro" placeholder="公司介绍" id="LAY_Intro"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -160,7 +162,7 @@
                                     <div class="layui-form-item layui-col-md12 margin-b-20">
                                         <label class="layui-form-label">公司文化</label>
                                         <div class="layui-input-block">
-                                            <textarea class="layui-textarea" lay-verify="Culture" name="Culture" placeholder="公司文化" id="LAY_Culture"></textarea>
+                                            <textarea class="layui-textarea" name="culture" v-model="culture" placeholder="公司文化" id="LAY_Culture"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -168,7 +170,7 @@
                                     <div class="layui-form-item layui-col-md12 margin-b-20">
                                         <label class="layui-form-label">发展历程</label>
                                         <div class="layui-input-block">
-                                            <textarea class="layui-textarea" lay-verify="History" name="History" placeholder="发展历程" id="LAY_History"></textarea>
+                                            <textarea class="layui-textarea" name="history" v-model="history" placeholder="发展历程" id="LAY_History">测试数据</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -176,7 +178,7 @@
                                 <div class="layui-row">
                                     <div class="layui-form-item">
                                         <div class="layui-input-block text-right">
-                                            <button class="layui-btn layui-btn-danger" lay-submit lay-filter="basicInfo">确认</button>
+                                            <button class="layui-btn layui-btn-danger btnHidden" lay-submit lay-filter="basicInfo">确认</button>
                                             <span class="layui-btn" onclick="javascript:window.location.href='/pages/dpt/companyList.html'">返回</span>
                                         </div>
                                     </div>

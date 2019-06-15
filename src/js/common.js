@@ -111,16 +111,46 @@ String.prototype.RTrim = function (c) {
  */
 String.prototype.FormatDate = function (hasTime) {
     if (!this) { return ""; }
+    //try {
+    //    var d = new Date(Date.parse(this));
+    //    if (!d) { return ""; }
+    //    if (hasTime) {
+    //        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+    //    } else {
+    //        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    //    }
+    //} catch (ex) {
+    //    return "";
+    //}
+
+    var fmt = 'yyyy-MM-dd';
+    if (hasTime) {
+        fmt = 'yyyy-MM-dd hh:mm:ss'
+    }
+
     try {
-        var d = new Date(Date.parse(this));
-        if (!d) { return ""; }
-        if (hasTime) {
-            return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        } else {
-            return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+        var date = new Date(Date.parse(this));
+        if (!date) { return '' }
+
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
         }
-    } catch (ex) {
-        return "";
+        var o = {
+            'M+': date.getMonth() + 1
+            , 'd+': date.getDate()
+            , 'h+': date.getHours()
+            , 'm+': date.getMinutes()
+            , 's+': date.getSeconds()
+        };
+        for (let k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                var str = o[k] + '';
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str));
+            }
+        }
+        return fmt;
+    } catch (e) {
+        return '';
     }
 }
 /**
@@ -165,6 +195,16 @@ String.prototype.IsNum = function () {
     var reg = /^[0-9\.]+$/;
     return reg.test(this);
 }
+/**
+ * 验证空值
+ * @param string 待验证的值
+ */
+function isEmpty(value) {
+    if (value === null || value == undefined || value === '') {
+        return true;
+    }
+    return false;
+}
 
 /**
  * 验证数字
@@ -172,6 +212,13 @@ String.prototype.IsNum = function () {
  */
 function IsNum(value) {
     return /^[0-9\.]+$/.test(value)
+}
+
+/**
+ * 左边自动补全0
+ */
+function padLeftZero(value) {
+    return ('00' + value).substr(value.length);
 }
 
 /**
