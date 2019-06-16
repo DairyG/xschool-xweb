@@ -154,6 +154,15 @@ String.prototype.FormatDate = function (hasTime) {
     }
 }
 /**
+ * 验证空值
+ */
+String.prototype.isEmpty = function () {
+    if (this === null || this == undefined || this === '') {
+        return true;
+    }
+    return false;
+}
+/**
  * 验证邮件
  */
 String.prototype.IsEmail = function () {
@@ -185,7 +194,7 @@ String.prototype.IsTel2 = function () {
  * 验证Url地址
  */
 String.prototype.IsUrl = function () {
-    var reg = /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
+    var reg = /^(http:||https:)\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
     return reg.test(this);
 }
 /**

@@ -63,7 +63,7 @@
                 } else if (layEvent === 'edit') {
                     window.location.href = '/pages/dpt/companyAdd.html?id=' + value;
                 } else if (layEvent === "del") {
-                    layer_confirm('确定删除信息吗？', function () {
+                    layer_confirm('确定删除吗？', function () {
                         layer_load();
                         Serv.Get('company/delete/' + value, {}, function (result) {
                             if (result.code == "00") {

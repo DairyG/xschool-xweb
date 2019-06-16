@@ -21,9 +21,6 @@ var setting = {
             tnode = treeNode;
             currentid = treeNode.id;
             $('input[name="NodeId"]').val(currentid);
-            $("input").prop("disabled", true);
-            $("button").prop("disabled", true);
-            $("textarea").prop("disabled", true);
             GetSingle(currentid);
 
         },
@@ -114,14 +111,8 @@ function ClickAdd() {
 $(function () {
     $("a[lay-filter='btnAdd']").click(function () {
         ClickAdd();
-        $("input").prop("disabled", false);
-        $("button").prop("disabled", false);
-        $("textarea").prop("disabled", false);
     });
     $("a[lay-filter='btnEdit']").click(function () {
-        $("input").prop("disabled", false);
-        $("button").prop("disabled", false);
-        $("textarea").prop("disabled", false);
         $("input[name='Id']").val($("input[name='NodeId']").val());
     });
 });
@@ -176,19 +167,19 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         return false;
     });
     layform.on('submit(btnDel)', function (laydata) {
-        var zTree = $.fn.zTree.getZTreeObj('ztree');
-        nodes = zTree.getSelectedNodes();
-        var node = nodes[0];
-        if (node.isParent) {
-            //判断后做操作
-            layer_alert("该部门含有下级，无法删除！");
-        }
-        else {
-            laydata.field.DptStatus = 0;
-            Serv.Post('Department/update', laydata.field, function (response) {
-                layer_alert(response.message, function () { window.location.reload() });
-            })
-        }
+        Serv.Post('Department/count', {Id:$("input[name='NodeId']").val()}, function (response) {
+            console.log(response);
+            if (response > 0) {
+                layer_alert("该部门含有下级，无法删除！");
+            }
+            else {
+                laydata.field.DptStatus = 0;
+                Serv.Post('Department/update', laydata.field, function (response) {
+                    layer_alert(response.message, function () { window.location.reload() });
+                })
+            }
+        })
+
 
     });
 });
