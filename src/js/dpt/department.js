@@ -21,6 +21,10 @@ var setting = {
             tnode = treeNode;
             currentid = treeNode.id;
             $('input[name="NodeId"]').val(currentid);
+            $("input").prop("disabled", true);
+            $("button").prop("disabled", true);
+            $("textarea").prop("disabled", true);
+            $('input[name="NodeId"]').val(currentid);
             GetSingle(currentid);
 
         },
@@ -111,8 +115,14 @@ function ClickAdd() {
 $(function () {
     $("a[lay-filter='btnAdd']").click(function () {
         ClickAdd();
+        $("input").prop("disabled", false);
+        $("button").prop("disabled", false);
+        $("textarea").prop("disabled", false);
     });
     $("a[lay-filter='btnEdit']").click(function () {
+        $("input").prop("disabled", false);
+        $("button").prop("disabled", false);
+        $("textarea").prop("disabled", false);
         $("input[name='Id']").val($("input[name='NodeId']").val());
     });
 });
@@ -124,7 +134,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 
     function initTree() {
         Serv.Get('department/gettree', {}, function (response) {
-            zTreeObj = $.fn.zTree.init($("#ztree"), setting, response.data);
+            zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
         })
     }
 
@@ -135,13 +145,23 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     });
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
+        var pPhone = $.trim(laydata.field.positionsPhone);
+        console.log(pPhone.IsMobile());
+        if (!isEmpty(pPhone) && !pPhone.IsMobile()) {
+            layer_alert('正职电话格式不正确！');
+            return false;
+        }
         if ($("input[name='Id']").val() == "0") {
-            console.log(laydata.field.HigherLevel);
             laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.HigherLevel + ",";
             Serv.Post('Department/add', laydata.field, function (response) {
-                layer_confirm('添加成功，是否继续添加？', ClickAdd());
-                layer_load_lose();
-                initTree();
+                if (response.code == "00") {
+                    layer_confirm('添加成功，是否继续添加？', ClickAdd());
+                    layer_load_lose();
+                    initTree();
+                }
+                else {
+                    layer_alert(response.message);
+                }
             })
         } else {
             Serv.Post('Department/update', laydata.field, function (response) {
@@ -167,19 +187,18 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         return false;
     });
     layform.on('submit(btnDel)', function (laydata) {
-        Serv.Post('Department/count', {Id:$("input[name='NodeId']").val()}, function (response) {
-            console.log(response);
-            if (response > 0) {
-                layer_alert("该部门含有下级，无法删除！");
-            }
-            else {
-                laydata.field.DptStatus = 0;
-                Serv.Post('Department/update', laydata.field, function (response) {
-                    layer_alert(response.message, function () { window.location.reload() });
-                })
-            }
-        })
-
-
+        var zTree = $.fn.zTree.getZTreeObj('ztree');
+        nodes = zTree.getSelectedNodes();
+        var node = nodes[0];
+        if (node.isParent) {
+            //判断后做操作
+            layer_alert("该部门含有下级，无法删除！");
+        }
+        else {
+            laydata.field.DptStatus = 0;
+            Serv.Post('Department/update', laydata.field, function (response) {
+                layer_alert(response.message, function () { window.location.reload() });
+            })
+        }
     });
 });
