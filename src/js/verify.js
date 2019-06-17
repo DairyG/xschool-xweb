@@ -88,6 +88,12 @@ layui.use(['form'], function () {
                 return $(obj).attr("placeholder") + "格式错误";
             }
         },
+        phoneHas: function (value, obj) {
+            if (value == "" || value.length == 0) { return; }
+            if (/^1[3456789]\d{9}$/.test(value) == false) {
+                return $(obj).attr("placeholder") + "格式错误";
+            }
+        },
     });
 });
 

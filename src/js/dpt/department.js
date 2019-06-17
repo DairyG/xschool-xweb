@@ -137,7 +137,6 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
             zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
         })
     }
-
     initTree();
 
     table.render({
@@ -145,12 +144,6 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     });
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
-        var pPhone = $.trim(laydata.field.positionsPhone);
-        console.log(pPhone.IsMobile());
-        if (!isEmpty(pPhone) && !pPhone.IsMobile()) {
-            layer_alert('正职电话格式不正确！');
-            return false;
-        }
         if ($("input[name='Id']").val() == "0") {
             laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.HigherLevel + ",";
             Serv.Post('Department/add', laydata.field, function (response) {
@@ -158,6 +151,18 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
                     layer_load_lose();
                     initTree();
+                    // var nodes = zTreeObj.getSelectedNodes();
+                    // if(nodes.length > 0){
+                    //     var parentnodes = nodes[0];
+                    //     var newNode = [
+                    //         name=laydata.field.DptName,
+                    //         title=laydata.field.DptName,
+                    //         id = response.data,
+                    //         pid = parentnodes.id
+                    //     ];
+                    //     zTreeObj.addNodes(parentnodes,-1,newNode,true);
+                    // }
+
                 }
                 else {
                     layer_alert(response.message);

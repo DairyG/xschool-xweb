@@ -69,7 +69,7 @@
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">正职电话</label>
 							<div class="layui-input-block">
-								<input type="tel2" placeholder="正职电话" name="PositionsPhone" v-model="positionsPhone"
+								<input type="tel2" placeholder="正职电话" name="PositionsPhone" v-model="positionsPhone" required lay-verify="phoneHas"
 									class="layui-input">
 							</div>
 						</div>
@@ -83,7 +83,7 @@
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">副职电话</label>
 							<div class="layui-input-block">
-								<input type="text" placeholder="副职电话" name="DeputyPhone" v-model="deputyPhone"
+								<input type="text" placeholder="副职电话" name="DeputyPhone" v-model="deputyPhone" required lay-verify="phoneHas"
 									class="layui-input">
 							</div>
 						</div>
@@ -97,7 +97,7 @@
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">秘书电话</label>
 							<div class="layui-input-block">
-								<input type="text" placeholder="秘书电话" name="SecretaryPhone" v-model="secretaryPhone"
+								<input type="text" placeholder="秘书电话" name="SecretaryPhone" v-model="secretaryPhone" required lay-verify="phoneHas"
 									class="layui-input">
 							</div>
 						</div>
