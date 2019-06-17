@@ -72,10 +72,16 @@ new Vue({
 
             var id = GetPara('id');
             var operation = GetPara('operation');
+            if ((operation == 'view' || operation == 'edit') && !IsNum(id)) {
+                layer_alert('参数错误');
+                _this.hasSubmit = false;
+                return false;
+            }
             if (IsNum(id)) {
                 initData(id);
             }
-            if (!isEmpty(operation)) {
+
+            if (operation == 'view') {
                 _this.hasSubmit = false;
             }
 
@@ -84,36 +90,36 @@ new Vue({
                 layer_load();
                 Serv.Get('company/getInfo/' + value, {}, function (result) {
                     layer_load_lose();
-                    if (result.code == "00") {
-                        _this.company.id = result.data.id;
-                        _this.company.companyName = result.data.companyName;
-                        _this.company.englishName = result.data.englishName;
-                        _this.company.credit = result.data.credit;
-                        _this.company.companyType = result.data.companyType;
-                        _this.company.legalPerson = result.data.legalPerson;
-                        _this.company.registeredCapital = result.data.registeredCapital;
-                        _this.company.responsible = result.data.responsible;
-                        _this.company.responsiblePhone = result.data.responsiblePhone;
-                        _this.company.registeredTime = result.data.registeredTime.FormatDate(false);
-                        _this.company.businessDate = result.data.businessDate;
-                        _this.company.businessAddress = result.data.businessAddress;
-                        _this.company.businessScope = result.data.businessScope;
-                        _this.company.logo = result.data.logo;
-                        _this.company.companyPhone = result.data.companyPhone;
-                        _this.company.email = result.data.email;
-                        _this.company.officeAddress = result.data.officeAddress;
-                        _this.company.webSite = result.data.webSite;
-                        _this.company.intro = result.data.intro;
-                        _this.company.culture = result.data.culture;
-                        _this.company.history = result.data.history;
+                    if (result) {
+                        _this.company.id = result.id;
+                        _this.company.companyName = result.companyName;
+                        _this.company.englishName = result.englishName;
+                        _this.company.credit = result.credit;
+                        _this.company.companyType = result.companyType;
+                        _this.company.legalPerson = result.legalPerson;
+                        _this.company.registeredCapital = result.registeredCapital;
+                        _this.company.responsible = result.responsible;
+                        _this.company.responsiblePhone = result.responsiblePhone;
+                        _this.company.registeredTime = result.registeredTime.FormatDate(false);
+                        _this.company.businessDate = result.businessDate;
+                        _this.company.businessAddress = result.businessAddress;
+                        _this.company.businessScope = result.businessScope;
+                        _this.company.logo = result.logo;
+                        _this.company.companyPhone = result.companyPhone;
+                        _this.company.email = result.email;
+                        _this.company.officeAddress = result.officeAddress;
+                        _this.company.webSite = result.webSite;
+                        _this.company.intro = result.intro;
+                        _this.company.culture = result.culture;
+                        _this.company.history = result.history;
 
-                        eIntro.txt.html(result.data.intro);
-                        eCulture.txt.html(result.data.culture);
-                        eHistory.txt.html(result.data.history);
+                        eIntro.txt.html(result.intro);
+                        eCulture.txt.html(result.culture);
+                        eHistory.txt.html(result.history);
 
-                        _this.bankInfo.companyId = result.data.id;
+                        _this.bankInfo.companyId = result.id;
 
-                        _this.bankData = result.data.bank;
+                        _this.bankData = result.bank;
                     } else {
                         layer_alert(result.message);
                     }
@@ -123,22 +129,10 @@ new Vue({
             //基本信息
             layform.on('submit(basicInfo)', function (laydata) {
                 layer_load();
-
-                var email = $.trim(laydata.field.email);
-                if (!isEmpty(email) && !email.IsEmail()) {
-                    layer_alert('公司邮箱格式不正确');
-                    return false;
-                }
-                var webSite = $.trim(laydata.field.webSite);
-                if (!isEmpty(webSite) && !webSite.IsUrl()) {
-                    layer_alert('公司网址格式不正确');
-                    return false;
-                }
-
                 Serv.Post('company/edit', laydata.field, function (result) {
                     if (result.code == "00") {
-                        _this.company.id = result.data;
-                        _this.bankInfo.companyId = result.data;
+                        _this.company.id = result;
+                        _this.bankInfo.companyId = result;
                         layer_alert(result.message);
                     } else {
                         layer_alert(result.message);
@@ -212,7 +206,7 @@ new Vue({
             Serv.Get('company/getbank/' + _this.company.id, {}, function (result) {
                 layer_load_lose();
                 if (result.code == "00") {
-                    _this.bankData = result.data;
+                    _this.bankData = result;
                 } else {
                     layer_alert(result.message);
                 }

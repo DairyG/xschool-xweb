@@ -61,7 +61,7 @@
                 if (layEvent === 'view') {
                     window.location.href = '/pages/dpt/companyAdd.html?id=' + value + '&operation=view';
                 } else if (layEvent === 'edit') {
-                    window.location.href = '/pages/dpt/companyAdd.html?id=' + value;
+                    window.location.href = '/pages/dpt/companyAdd.html?id=' + value + '&operation=edit';
                 } else if (layEvent === "del") {
                     layer_confirm('确定删除吗？', function () {
                         layer_load();

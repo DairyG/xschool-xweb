@@ -132,7 +132,7 @@
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司邮箱</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="email" v-model="company.email" maxlength="50" placeholder="公司邮箱" autocomplete="off" class="layui-input">
+                                            <input type="text" name="email" v-model="company.email" required lay-verify="emailHas" maxlength="50" placeholder="公司邮箱" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司网址</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="webSite" v-model="company.webSite" maxlength="200" placeholder="公司网址" autocomplete="off" class="layui-input">
+                                            <input type="text" name="webSite" v-model="company.webSite" required lay-verify="urlHas"  maxlength="200" placeholder="公司网址" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>

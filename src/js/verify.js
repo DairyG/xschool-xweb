@@ -6,6 +6,10 @@ layui.use(['form'], function () {
 
     layform.verify({
         name: function (value, obj) {
+            if (!value) {
+                return '请填写' + $(obj).attr("placeholder");
+            }
+            value = value.replace(/(^\s*)|(\s*$)/g, '');
             if (value == null || value.length == 0) {
                 return '请填写' + $(obj).attr("placeholder");
             }
@@ -71,6 +75,19 @@ layui.use(['form'], function () {
             if (/^[0-9\.]+$/.test(value) == false) {
                 return $(obj).attr("placeholder") + "必须为数字";
             }
-        }
+        },
+        emailHas: function (value, obj) {
+            if (value == "" || value.length == 0) { return; }
+            if (/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(value) == false) {
+                return $(obj).attr("placeholder") + "格式错误";
+            }
+        },
+        urlHas: function (value, obj) {
+            if (value == "" || value.length == 0) { return; }
+            if (/^(http:||https:)\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/.test(value) == false) {
+                return $(obj).attr("placeholder") + "格式错误";
+            }
+        },
     });
 });
+
