@@ -146,7 +146,7 @@
                                     <div class="layui-form-item layui-col-md6 margin-b-20">
                                         <label class="layui-form-label">公司网址</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="webSite" v-model="company.webSite" required lay-verify="urlHas"  maxlength="200" placeholder="公司网址" autocomplete="off" class="layui-input">
+                                            <input type="text" name="webSite" v-model="company.webSite" required lay-verify="urlHas" maxlength="200" placeholder="公司网址" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -187,7 +187,7 @@
                             <div class="layui-form" id="vue_bankbasic">
                                 <div class="form-title">基本账户：</div>
                                 <div class="layui-card layui-card2">
-                                    <div class="layui-card-body" v-for="item in bankData" v-if="item.accountType=='基本账户'">
+                                    <div class="layui-card-body" v-for="item in bankData" v-if="item.accountType==1">
                                         <p>
                                             【{{item.openBank}}】{{item.openBankName}}
                                             <div class="layui-btn-group fr" v-if="hasSubmit">
@@ -202,7 +202,7 @@
                                 </div>
                                 <div class="form-title" v-if="bankData.length>0">一般账户：</div>
                                 <div class="layui-row layui-col-space20">
-                                    <div class="layui-col-md6" v-for="item in bankData" v-if="item.accountType=='一般账户'">
+                                    <div class="layui-col-md6" v-for="item in bankData" v-if="item.accountType==2">
                                         <div class="layui-card layui-card2">
                                             <div class="layui-card-body">
                                                 <p>
