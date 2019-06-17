@@ -205,7 +205,7 @@ new Vue({
             layer_load();
             Serv.Get('company/getbank/' + _this.company.id, {}, function (result) {
                 layer_load_lose();
-                if (result.code == "00") {
+                if (result) {
                     _this.bankData = result;
                 } else {
                     layer_alert(result.message);
@@ -218,7 +218,6 @@ new Vue({
                 layer_alert('请先填写基本信息');
                 return false;
             }
-
             layer.open({
                 type: 1,
                 title: operation + '银行账户',
