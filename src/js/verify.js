@@ -94,6 +94,12 @@ layui.use(['form'], function () {
                 return $(obj).attr("placeholder") + "格式错误";
             }
         },
+        numHas: function (value, obj) {
+            if (value == "" || value.length == 0) { return; }
+            if (/^[0-9\.]+$/.test(value) == false) {
+                return $(obj).attr("placeholder") + "必须为数字";
+            }
+        },
     });
 });
 
