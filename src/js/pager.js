@@ -4,7 +4,7 @@ function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parse
         elem: '#' + tblId,
         url: Serv.GetUrl(action), //数据接口
         method: "POST",
-        where: function () { if (searchFunc) { searchFunc() } },
+        where:searchFunc,  //function () { if (searchFunc){searchFunc() } },
         title: title,
         headers: Serv.GetHeaders(),
         page: true, //开启分页
@@ -36,7 +36,7 @@ function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parse
         done: doneFunc
     });
 
-    if (searchFunc != null) {
+    if (searchFunc) {
         tbl.search = function () {
             tbl.reload({
                 where: searchFunc(),
