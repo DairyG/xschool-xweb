@@ -95,7 +95,7 @@
 					} else if (layEvent === "del") {
 						layer_confirm('确定删除信息吗？', function () {
 							layer_load();
-							Serv.Post('WorkerInField/Delete', data, function (result) {
+							Serv.Post('InterviewMethod/Delete', data, function (result) {
 								if (result.code == "00") {
 									layer_alert(result.message, function () {
 										lstPager.refresh();
@@ -114,7 +114,7 @@
 					"lst",//绑定的列表Id
 					'toolbar',//绑定的工具条Id
 					data_col,//表头的显示行
-					"WorkerInField/Get",//action url 只能post提交
+					"InterviewMethod/Get",//action url 只能post提交
 					search,
 					null,//如果在显示之前需要对数据进行整理需要实现，否则传null
 					null,//有选择行才能有的操作，实现该方法,否则传null
@@ -147,7 +147,7 @@
 					layer_load();
 					if (laydata.field.Id == "") {
 						laydata.field.Id = 0;
-						Serv.Post('WorkerInField/add', laydata.field, function (response) {
+						Serv.Post('InterviewMethod/add', laydata.field, function (response) {
 							if (response.code == "00") {
 								layer_confirm('添加成功，是否继续添加？', function () {
 									EmptyModel();
@@ -168,7 +168,7 @@
 	
 						})
 					} else {
-						Serv.Post('WorkerInField/update', laydata.field, function (response) {
+						Serv.Post('InterviewMethod/update', laydata.field, function (response) {
 							if (response.code == "00") {
 								layer_alert(response.message);
 								lstPager.refresh();
@@ -199,7 +199,7 @@
 			};
 			var vm = new Vue({ el: '#workerinForm', data: model });
 			function GetSingle(wId) {
-				Serv.Post('WorkerInField/GetSingle', { Id: wId }, function (response) {
+				Serv.Post('InterviewMethod/GetSingle', { Id: wId }, function (response) {
 					model.id = response.id;
 					model.name = response.name;
 					model.sortId = response.sortId;
