@@ -33,9 +33,9 @@
 						<input type="hidden" name="Id" v-model="id" value="" />
 						<input type="hidden" name="WorkinStatus" v-model="workinStatus" value="0" />
 						<div class="layui-form-item layui-col-md12 margin-b-20">
-							<label class="layui-form-label">学历<span class="text-red"> *</span></label>
+							<label class="layui-form-label">教育性质<span class="text-red"> *</span></label>
 							<div class="layui-input-block">
-								<input type="text" name="Name" v-model="name" required lay-verify="name" placeholder="学历"
+								<input type="text" name="Name" v-model="name" required lay-verify="name" placeholder="教育性质"
 									autocomplete="off" class="layui-input">
 							</div>
 						</div>
@@ -64,7 +64,7 @@
 			var layer_linePop;
 			var data_col = [[
 				{ field: 'id', title: '序号' },
-				{ field: 'name', title: '学历' },
+				{ field: 'name', title: '教育性质' },
 				{ field: 'sortId', title: '显示顺序' },
 				{ field: 'memo', title: '备注' },
 				{ title: '操作', toolbar: '#bar', width: 180 }
@@ -84,7 +84,7 @@
 	
 						layer_linePop = layer.open({
 							type: 1,
-							title: '修改学历',
+							title: '修改教育性质',
 							String: false,
 							closeBtn: 1,
 							skin: 'layui-layer-rim',
@@ -95,7 +95,7 @@
 					} else if (layEvent === "del") {
 						layer_confirm('确定删除信息吗？', function () {
 							layer_load();
-							Serv.Post('EducationInfo/Delete', data, function (result) {
+							Serv.Post('Properties/Delete', data, function (result) {
 								if (result.code == "00") {
 									layer_alert(result.message, function () {
 										lstPager.refresh();
@@ -110,11 +110,11 @@
 	
 				//分页初始化
 				var lstPager = Pager(table,//lay-ui的table控件
-					"学历",//列表名称
+					"教育性质",//列表名称
 					"lst",//绑定的列表Id
 					'toolbar',//绑定的工具条Id
 					data_col,//表头的显示行
-					"EducationInfo/Get",//action url 只能post提交
+					"Properties/Get",//action url 只能post提交
 					search,
 					null,//如果在显示之前需要对数据进行整理需要实现，否则传null
 					null,//有选择行才能有的操作，实现该方法,否则传null
@@ -128,7 +128,7 @@
 						EmptyModel();
 						layer_linePop = layer.open({
 							type: 1,
-							title: '添加学历',
+							title: '添加教育性质',
 							String: false,
 							closeBtn: 1,
 							skin: 'layui-layer-rim',
@@ -147,13 +147,13 @@
 					layer_load();
 					if (laydata.field.Id == "") {
 						laydata.field.Id = 0;
-						Serv.Post('EducationInfo/add', laydata.field, function (response) {
+						Serv.Post('Properties/add', laydata.field, function (response) {
 							if (response.code == "00") {
 								layer_confirm('添加成功，是否继续添加？', function () {
 									EmptyModel();
 									layer_linePop = layer.open({
 										type: 1,
-										title: '修改学历',
+										title: '修改教育性质',
 										String: false,
 										closeBtn: 1,
 										skin: 'layui-layer-rim',
@@ -168,7 +168,7 @@
 	
 						})
 					} else {
-						Serv.Post('EducationInfo/update', laydata.field, function (response) {
+						Serv.Post('Properties/update', laydata.field, function (response) {
 							if (response.code == "00") {
 								layer_alert(response.message);
 								lstPager.refresh();
@@ -199,7 +199,7 @@
 			};
 			var vm = new Vue({ el: '#workerinForm', data: model });
 			function GetSingle(wId) {
-				Serv.Post('EducationInfo/GetSingle', { Id: wId }, function (response) {
+				Serv.Post('Properties/GetSingle', { Id: wId }, function (response) {
 					model.id = response.id;
 					model.name = response.name;
 					model.sortId = response.sortId;
