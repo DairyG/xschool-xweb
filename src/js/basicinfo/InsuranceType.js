@@ -4,7 +4,8 @@ var data_col = [[
 	// { field: 'id', title: '序号' },
 	{ type:'numbers',title:'序号'},
 	{ field: 'name', title: '到岗时间' },
-	{ field: 'sortId', title: '显示顺序' },
+    { field: 'sortId', title: '显示顺序' },
+    { field: 'workinStatusName', title: '状态' },
 	{ field: 'memo', title: '备注' },
 	{ title: '操作', toolbar: '#bar', width: 180 }
 ]];
@@ -50,7 +51,13 @@ var data_col = [[
 				}
 			}
 		};
-
+        //数据整理回调函数	
+        var parseData=function(items){
+            $.each(items,function(i,item){
+                item.workinStatusName=["","<font color=\'green\'>禁用</font>'","<font color=\'red\'>启用</font>"][item.workinStatus];                
+            });
+            return items;
+        };
 		//分页初始化
 		lstPager = Pager(table,//lay-ui的table控件
 			$("input[name='Type_Chinese']").val(),//列表名称
@@ -59,13 +66,13 @@ var data_col = [[
 			data_col,//表头的显示行
 			"WorkerInField/Get",//action url 只能post提交
 			search,
-			null,//如果在显示之前需要对数据进行整理需要实现，否则传null
+			parseData,//如果在显示之前需要对数据进行整理需要实现，否则传null
 			null,//有选择行才能有的操作，实现该方法,否则传null
 			onTools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
 			null,
 			'full-100'
 		);
-
+        
 		table.on('toolbar(lst)', function (data) {
 			if (data.event == 'add') {
 				EmptyModel();

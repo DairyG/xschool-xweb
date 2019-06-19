@@ -1,10 +1,10 @@
 
-function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parseFunc, toolBarFunc, toolFunc, doneFunc = null, height = 'full-300') {
+function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parseFunc, toolBarFunc, toolFunc, doneFunc = null, height = 'full-300') {    
     var tbl = table.render({
         elem: '#' + tblId,
         url: Serv.GetUrl(action), //数据接口
         method: "POST",
-        where:searchFunc,  //function () { if (searchFunc){searchFunc() } },
+        where:function(){if(searchFunc){return searchFunc();}}(),
         title: title,
         headers: Serv.GetHeaders(),
         page: true, //开启分页
@@ -38,6 +38,7 @@ function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parse
 
     if (searchFunc) {
         tbl.search = function () {
+
             tbl.reload({
                 where: searchFunc(),
                 page: { curr: 1 } //重新从第 1 页开始                    
