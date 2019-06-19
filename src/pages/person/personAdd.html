@@ -1,0 +1,1209 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/select.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <link rel="stylesheet" href="../../lib/pick-pcc/pick-pcc.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/verify.js"></script>
+    <script type="text/javascript" src="../../lib/vue.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../../lib/pick-pcc/pick-pcc.js"></script>
+    <script type="text/javascript" src="../../js/jquery.jarea.js"></script>
+</head>
+
+<body class="bgf2f2f2">
+    <div class="childrenBody" id="personBody">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">个人信息 </li>
+                        <li>职位信息</li>
+                        <li>合同信息</li>
+                        <li>账户信息</li>
+                        <li>工资管理</li>
+                        <li>资产信息</li>
+                        <li>日程安排</li>
+                        <li>代办事宜</li>
+                        <li>考勤记录</li>
+                        <li>奖惩情况</li>
+                        <li>考核情况</li>
+                        <li>成长管理</li>
+                    </ul>
+                    <div class="layui-tab-content">
+
+                        <div class="layui-tab-item layui-show" tab-name="个人信息">
+                            <form class="layui-form layui-form2" autocomplete="off">
+
+                                <input type="hidden" name="id" v-model="person.id" value="0">
+                                <input type="hidden" name="id" v-model="person.companyId" value="0">
+
+                                <div class="form-title">个人信息：</div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>个人姓名</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="userName" v-model="person.userName" maxlength="20"
+                                                required lay-verify="name" placeholder="个人姓名" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label">英文名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="englishName" v-model="person.englishName"
+                                                maxlength="50" placeholder="英文名称" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>个人性别</label>
+                                        <div class="layui-input-block">
+                                            <select name="gender" lay-filter="gender" v-model="person.gender">
+                                                <option value="1">男</option>
+                                                <option value="2">女</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>联系电话</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="linkPhone" v-model="person.linkPhone"
+                                                maxlength="20" required lay-verify="name|tel" placeholder="联系电话"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label">个人邮箱</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="email" v-model="person.email" maxlength="50"
+                                                required lay-verify="emailHas" placeholder="个人邮箱" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label">个人QQ</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="qq" v-model="person.qq" maxlength="20" required
+                                                lay-verify="numHas" placeholder="个人QQ" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>所属民族</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="folk" v-model="person.folk" maxlength="50" required
+                                                lay-verify="name" placeholder="所属民族" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>个人籍贯</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="nativePlace" v-model="person.nativePlace"
+                                                maxlength="50" required lay-verify="name" placeholder="个人籍贯"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>政治面貌</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="politicalStatus" v-model="person.politicalStatus"
+                                                maxlength="50" required lay-verify="name" placeholder="政治面貌"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>身份证号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="idCard" v-model="person.idCard" maxlength="30"
+                                                required lay-verify="name|card" placeholder="身份证号" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>年龄</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="age" v-model="person.age" maxlength="4" required
+                                                lay-verify="name|numNotZore" placeholder="年龄" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>出生日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="birthDay" name="birthDay" v-model="person.birthDay"
+                                                readonly required lay-verify="name" placeholder="出生日期"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>毕业院校</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="graduateInstitutions"
+                                                v-model="person.graduateInstitutions" maxlength="50" required
+                                                lay-verify="name" placeholder="毕业院校" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>所学专业</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="professional" v-model="person.professional"
+                                                maxlength="50" required lay-verify="name" placeholder="所学专业"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>最高学历</label>
+                                        <div class="layui-input-block">
+                                            <select name="degree" v-model="person.degree" required lay-verify="select"
+                                                placeholder="最高学历" lay-filter="degree">
+                                                <option value="">请选择</option>
+                                                <option>小学</option>
+                                                <option>初中</option>
+                                                <option>高中</option>
+                                                <option>中转</option>
+                                                <option>大专</option>
+                                                <option>本科</option>
+                                                <option>硕士</option>
+                                                <option>博士</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>毕业时间</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="graduationDate" name="graduationDate"
+                                                v-model="person.graduationDate" readonly required lay-verify="name"
+                                                placeholder="毕业时间" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label">身高CM</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="stature" v-model="person.stature" maxlength="5"
+                                                required lay-verify="numHas" placeholder="身高" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label">体重KG</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="weight" v-model="person.weight" maxlength="5"
+                                                required lay-verify="numHas" placeholder="体重" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label">婚姻状况</label>
+                                        <div class="layui-input-block">
+                                            <select name="marriage" v-model="person.marriage" lay-filter="marriage">
+                                                <option value="已婚">已婚</option>
+                                                <option value="未婚">未婚</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label">有无子女</label>
+                                        <div class="layui-input-block">
+                                            <select name="children" v-model="person.children" lay-filter="children">
+                                                <option value="无">无</option>
+                                                <option value="有">有</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label">招聘来源</label>
+                                        <div class="layui-input-block">
+                                            <select name="recruitSource" v-model="person.recruitSource"
+                                                lay-filter="recruitSource">
+                                                <option>招聘会</option>
+                                                <option>智联</option>
+                                                <option>58</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>应聘职位</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="jobCandidates" v-model="person.jobCandidates"
+                                                maxlength="50" required lay-verify="name" placeholder="应聘职位"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>期望月薪(税前)</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="expectSalary" v-model="person.expectSalary"
+                                                maxlength="50" required lay-verify="name" placeholder="期望月薪（税前）"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>到岗时间</label>
+                                        <div class="layui-input-block">
+                                            <select name="arrivalTime" v-model="person.arrivalTime" required
+                                                lay-verify="select" placeholder="到岗时间" lay-filter="arrivalTime">
+                                                <option value="">请选择</option>
+                                                <option v-for="arrival in arrivalData" :value="arrival.name">{{arrival.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">身份证地址</label>
+                                        <div class="layui-input-block">
+                                            <div class="pick-area pick-area1 margin-b-5" id="idCardAddress"></div>
+                                            <input type="text" name="idCardAddress" maxlength="100"
+                                                placeholder="请输入身份证地址" class="layui-input">
+                                            <input type="hidden" name="idCardProvince" v-model="person.idCardProvince">
+                                            <input type="hidden" name="idCardCity" v-model="person.idCardCity">
+                                            <input type="hidden" name="idCardCounty" v-model="person.idCardCounty">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">居住地址</label>
+                                        <div class="layui-input-block">
+                                            <div class="pick-area pick-area1 margin-b-5"></div>
+                                            <input type="text" name="liveAddress" maxlength="100" placeholder="请输入居住地址"
+                                                class="layui-input">
+                                            <input type="hidden" name="liveProvince" v-model="person.liveProvince">
+                                            <input type="hidden" name="liveCity" v-model="person.liveCity">
+                                            <input type="hidden" name="liveCounty" v-model="person.liveCounty">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">兴趣爱好</label>
+                                        <div class="layui-input-block">
+                                            <textarea class="layui-textarea" name="hobby"
+                                                v-model="person.hobby"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">个人照片</label>
+                                        <div class="layui-input-block">
+                                            <input type="hidden" name="photoPath" v-model="person.photoPath">
+                                            <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
+                                                    class="layui-icon">&#xe67c;</i>上传照片</span>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">证书证件</label>
+                                        <div class="layui-input-block">
+                                            <input type="hidden" name="certificatePath"
+                                                v-model="person.certificatePath">
+                                            <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
+                                                    class="layui-icon">&#xe67c;</i>上传证件</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="layui-bg-blue hrheight3">
+                                <div class="form-title">家庭成员及主要社会关系：</div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <table class="layui-table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="60">序号</th>
+                                                    <th>姓名</th>
+                                                    <th>关系</th>
+                                                    <th>电话</th>
+                                                    <th>通讯地址</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="table-btn-jia">+</span><span
+                                                            class="table-btn-jian">-</span></td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                    <td>
+                                                        <select>
+                                                            <option></option>
+                                                            <option>父母</option>
+                                                            <option>兄妹</option>
+                                                            <option>子女</option>
+                                                            <option>其他</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <hr class="layui-bg-blue hrheight3">
+                                <div class="form-title">教育经历：</div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <table class="layui-table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="60">序号</th>
+                                                    <th>毕业院校</th>
+                                                    <th>学历</th>
+                                                    <th>性质</th>
+                                                    <th>专业</th>
+                                                    <th>学习年限</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="table-btn-jia">+</span><span
+                                                            class="table-btn-jian">-</span></td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                    <td>
+                                                        <select>
+                                                            <option></option>
+                                                            <option>小学</option>
+                                                            <option>初中</option>
+                                                            <option>高中</option>
+                                                            <option>中转</option>
+                                                            <option>大专</option>
+                                                            <option>本科</option>
+                                                            <option>硕士</option>
+                                                            <option>博士</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select>
+                                                            <option></option>
+                                                            <option>统招</option>
+                                                            <option>成教</option>
+                                                            <option>自考</option>
+                                                            <option>网教</option>
+                                                            <option>其他</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                    <td><input type="text" class="layui-input date3" readonly /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <hr class="layui-bg-blue hrheight3">
+                                <div class="form-title">工作经历：</div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <table class="layui-table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="60">序号</th>
+                                                    <th>工作年限</th>
+                                                    <th>公司名称</th>
+                                                    <th>部门</th>
+                                                    <th>职位</th>
+                                                    <th>主要成绩</th>
+                                                    <th>离职原因</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="table-btn-jia">+</span><span
+                                                            class="table-btn-jian">-</span></td>
+                                                    <td><input type="text" class="layui-input date3" readonly /></td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                    <td><input type="text" class="layui-input" readonly
+                                                            onclick="layui_prompt(this)" /></td>
+                                                    <td><input type="text" class="layui-input" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block text-right">
+                                            <button class="layui-btn layui-btn-danger" lay-submit
+                                                lay-filter="basicInfo">确认</button>
+                                            <span class="layui-btn" onclick="history.back(-1)">返回</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="layui-tab-item" tab-name="职位信息">
+                            <form class="layui-form layui-form2">
+                                <div class="layui-row">
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>所属部门</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请选择部门" class="layui-input" readonly onclick="showMenu()"
+                                                id="treeIpt">
+                                        </div>
+                                    </div>
+                                    <!-- 职位从基础信息->职位管理->职位管理中获取 -->
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>所属职位</label>
+                                        <div class="layui-input-block">
+                                            <select>
+                                                <option></option>
+                                                <option>职位一</option>
+                                                <option>职位二</option>
+                                                <option>职位三</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>员工工号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入员工工号" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>在职状态</label>
+                                        <div class="layui-input-block">
+                                            <select>
+                                                <option></option>
+                                                <option>试用</option>
+                                                <option>转正</option>
+                                                <option>离职</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label">办公电话</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入办公电话" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label">办公邮箱</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入办公邮箱" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label">传真号码</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入传真号码" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label">推荐人</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入推荐人" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">办公地址</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入办公地址" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">职位描述</label>
+                                        <div class="layui-input-block">
+                                            <textarea class="layui-textarea" placeholder="请输入职位描述"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">分管部门</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-input">
+                                                <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"
+                                                    onclick="user_popup()">请选择</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block text-right">
+                                            <button class="layui-btn layui-btn-danger" lay-submit
+                                                lay-filter="submit">确认</button>
+                                            <span class="layui-btn" onclick="history.back(-1)">返回</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="layui-tab-item" tab-name="合同信息">
+                            <form class="layui-form layui-form2">
+                                <div class="layui-row">
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>用工性质</label>
+                                        <div class="layui-input-block">
+                                            <select>
+                                                <option>请选择用工性质</option>
+                                                <option>劳动合同</option>
+                                                <option>退休聘用协议</option>
+                                                <option>兼职协议</option>
+                                                <option>劳务派遣协议其他</option>
+                                                <option>其他</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>合同签定日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="合同签定日期" class="layui-input date" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>试用开始日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="试用开始日期" class="layui-input date" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>试用结束日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="试用结束日期" class="layui-input date" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label">正式开始日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="正式开始日期" class="layui-input date" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label">正式结束日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="正式结束日期" class="layui-input date" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label">解除日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="解除日期" class="layui-input date" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label">解除原因</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="解除原因" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">备注</label>
+                                        <div class="layui-input-block">
+                                            <textarea class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">合同附件</label>
+                                        <div class="layui-input-block">
+                                            <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
+                                                    class="layui-icon">&#xe67c;</i>上传附件</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block text-right">
+                                            <button class="layui-btn layui-btn-danger" lay-submit
+                                                lay-filter="submit">确认</button>
+                                            <span class="layui-btn" onclick="history.back(-1)">返回</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="layui-tab-item" tab-name="账户信息">
+                            <form class="layui-form layui-form2">
+                                <div class="layui-row">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>登录账号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" class="layui-input" placeholder="请输入登录账号" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>登录密码</label>
+                                        <div class="layui-input-block">
+                                            <input type="password" class="layui-input" placeholder="请输入登录密码" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>系统角色</label>
+                                        <div class="layui-input-block">
+                                            <select multiple>
+                                                <option>选择角色</option>
+                                                <option>角色一</option>
+                                                <option>角色二</option>
+                                                <option>角色三</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>管理部门</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-input">
+                                                <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"
+                                                    onclick="user_popup()">请选择</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block text-right">
+                                            <button class="layui-btn layui-btn-danger" lay-submit
+                                                lay-filter="submit">确认</button>
+                                            <span class="layui-btn" onclick="history.back(-1)">返回</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="layui-tab-item" tab-name="工资管理">
+                            <div class="form-title">工资账户：</div>
+                            <div class="layui-form layui-form2 layui-row">
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label"><span class="text-red"> *</span>开户银行</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入银行名称" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label"><span class="text-red"> *</span>开户名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入开户名称" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label"><span class="text-red"> *</span>银行账户</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入银行账户" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label"><span class="text-red"> *</span>预留手机</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入预留手机" />
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="layui-bg-blue hrheight3" />
+                            <div class="form-title">工资科目：<span class="layui-btn layui-btn-xs layui-btn-normal"
+                                    onclick="show_change()">工资调整</span></div>
+                            <div class="layui-form layui-form2 layui-row">
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label"><span class="text-red"> *</span>基本工资</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入基本工资" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">餐费补助</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入餐费补助" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">话费补助</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入话费补助" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">交通补助</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入交通补助" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">高温补助</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入高温补助" />
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="layui-bg-blue hrheight3" />
+                            <div class="form-title">保险科目：</div>
+                            <div class="layui-form layui-form2 layui-row">
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">养老保险</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="养老保险总金额" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">个人缴纳</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="养老保险个人缴纳" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">公司缴纳</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="养老保险公司缴纳" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">失业保险</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="请输入失业保险" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">个人缴纳</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="失业保险个人缴纳" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-col-md4">
+                                    <label class="layui-form-label">公司缴纳</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" placeholder="失业保险公司缴纳" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block text-right">
+                                        <button class="layui-btn layui-btn-danger" lay-submit
+                                            lay-filter="submit">确认</button>
+                                        <span class="layui-btn" onclick="history.back(-1)">返回</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item" tab-name="资产信息"></div>
+                        <div class="layui-tab-item" tab-name="日程安排"></div>
+                        <div class="layui-tab-item" tab-name="代办事宜"></div>
+                        <div class="layui-tab-item" tab-name="考勤记录"></div>
+                        <div class="layui-tab-item" tab-name="奖惩情况"></div>
+                        <div class="layui-tab-item" tab-name="考核情况"></div>
+
+                        <div class="layui-tab-item" tab-name="成长管理">
+                            <form class="layui-form layui-form2">
+                                <div class="layui-row">
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>培训课程</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入培训课程" class="layui-input" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>培训机构</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入培训机构" class="layui-input" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>开始时间</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入开始时间" class="layui-input date" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>结束时间</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入结束时间" class="layui-input date" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>培训地点</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                placeholder="请输入培训地点" class="layui-input" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label"><span class="text-red"> *</span>培训内容</label>
+                                        <div class="layui-input-block">
+                                            <textarea class="layui-textarea" placeholder="请输入培训内容"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">所获荣誉</label>
+                                        <div class="layui-input-block">
+                                            <textarea class="layui-textarea" placeholder="请输入所获荣誉"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                                        <label class="layui-form-label">附件</label>
+                                        <div class="layui-input-block">
+                                            <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
+                                                    class="layui-icon">&#xe67c;</i>上传照片</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-row">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block text-right">
+                                            <button class="layui-btn layui-btn-danger" lay-submit
+                                                lay-filter="submit">确认</button>
+                                            <span class="layui-btn" onclick="history.back(-1)">返回</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+        <ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+    </div>
+
+    <div class="linePop" id="wages_popup">
+        <div class="layui-card-body padding-r-50">
+            <form class="layui-form layui-form2">
+                <div class="layui-row">
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>调整事由</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" required lay-verify="required" placeholder="请输入调整事由"
+                                class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>执行日期</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" required lay-verify="required" placeholder="请输入执行日期"
+                                class="layui-input date" readonly />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                        <label class="layui-form-label">调整备注</label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea" placeholder="请输入调整备注"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var gz_col1 = [
+            [{
+                    type: 'numbers',
+                    title: '序号'
+                },
+                {
+                    field: 'ym',
+                    title: '年月'
+                },
+                {
+                    field: 'gs',
+                    title: '基本工资'
+                },
+                {
+                    field: 'bm',
+                    title: '部门'
+                },
+                {
+                    field: 'date',
+                    title: '浏览日期'
+                },
+            ]
+        ];
+        var gz_datas = [{
+                'ny': '2019-4',
+                amount: '8000',
+                jb: '10000',
+                cb: '100',
+                jt: 100,
+                hf: 100,
+                gw: 100,
+                yn: '<span class="text-red">-100</span>',
+                sy: '<span class="text-red">-100</span>',
+                amount1: 8000,
+                amount2: 10000,
+                cd: '<span class="text-red">-100</span>',
+                qj: '<span class="text-red">-10</span>',
+                jj: 200
+            },
+            {
+                'ny': '2019-3',
+                amount: '8000',
+                jb: '10000',
+                cb: '100',
+                jt: 100,
+                hf: 100,
+                gw: 100,
+                yn: '<span class="text-red">-100</span>',
+                sy: '<span class="text-red">-100</span>',
+                amount1: 8000,
+                amount2: 10000,
+                cd: '<span class="text-red">-100</span>',
+                qj: '<span class="text-red">-10</span>',
+                jj: 200
+            },
+            {
+                'ny': '2019-2',
+                amount: '8000',
+                jb: '10000',
+                cb: '100',
+                jt: 100,
+                hf: 100,
+                gw: 100,
+                yn: '<span class="text-red">-100</span>',
+                sy: '<span class="text-red">-100</span>',
+                amount1: 8000,
+                amount2: 10000,
+                cd: '<span class="text-red">-100</span>',
+                qj: '<span class="text-red">-10</span>',
+                jj: 200
+            },
+            {
+                'ny': '2019-1',
+                amount: '8000',
+                jb: '10000',
+                cb: '100',
+                jt: 100,
+                hf: 100,
+                gw: 100,
+                yn: '<span class="text-red">-100</span>',
+                sy: '<span class="text-red">-100</span>',
+                amount1: 8000,
+                amount2: 10000,
+                cd: '<span class="text-red">-100</span>',
+                qj: '<span class="text-red">-10</span>',
+                jj: 200
+            },
+        ];
+
+        var data_col = [
+            [{
+                    type: 'numbers',
+                    title: '序号'
+                },
+                {
+                    field: 'name',
+                    title: '姓名'
+                },
+                {
+                    field: 'sex',
+                    title: '性别',
+                    width: 60
+                },
+                {
+                    field: 'age',
+                    title: '年龄',
+                    width: 60
+                },
+                {
+                    field: 'mobile',
+                    title: '联系电话'
+                },
+                {
+                    field: 'zw',
+                    title: '应聘职位'
+                },
+                {
+                    field: 'gz_y',
+                    title: '工作年限',
+                    width: 100
+                },
+                {
+                    field: 'gz',
+                    title: '期望月薪',
+                    width: 100
+                },
+                {
+                    field: 'dg',
+                    title: '到岗时间'
+                },
+                {
+                    field: 'zt',
+                    title: '状态'
+                },
+                {
+                    title: '操作',
+                    toolbar: '#toolbar',
+                    width: 180,
+                    fixed: 'right'
+                }
+            ]
+        ];
+        var datas = [{
+                name: '张三',
+                sex: '男',
+                age: '22',
+                mobile: '15333333333',
+                mail: '12414@qq.com',
+                zw: '开发工程师',
+                gz_y: '2',
+                qw_city: '成都',
+                jz_city: '成都',
+                gz: '6000',
+                dg: '随时',
+                zt: '面试中'
+            },
+            {
+                name: '李四',
+                sex: '男',
+                age: '22',
+                mobile: '15333333333',
+                mail: '12414@qq.com',
+                zw: '开发工程师',
+                gz_y: '2',
+                qw_city: '成都',
+                jz_city: '成都',
+                gz: '6000',
+                dg: '3天内',
+                zt: '已面试'
+            },
+            {
+                name: '王五',
+                sex: '男',
+                age: '22',
+                mobile: '15333333333',
+                mail: '12414@qq.com',
+                zw: '开发工程师',
+                gz_y: '2',
+                qw_city: '成都',
+                jz_city: '成都',
+                gz: '6000',
+                dg: '一周内',
+                zt: '已面试'
+            },
+        ];
+
+        var setting = {
+            check: {
+                enable: true,
+                chkStyle: "radio",
+                radioType: "all"
+            },
+            view: {
+                dblClickExpand: false
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                beforeClick: beforeClick,
+                onCheck: onCheck
+            }
+        };
+        var zNodes = [{
+            name: "四川某某公司",
+            open: true,
+            nocheck: true,
+            children: [{
+                    name: "销售部",
+                    children: [{
+                        name: "销售1部",
+                        children: [{
+                            name: "销售1组"
+                        }]
+                    }]
+                },
+                {
+                    name: "市场部",
+                },
+                {
+                    name: "策划部",
+                    children: [{
+                        name: "策划1部"
+
+                    }]
+                }
+            ]
+        }];
+
+        function beforeClick(treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.checkNode(treeNode, !treeNode.checked, null, true);
+            return false;
+        }
+
+        function onCheck(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                nodes = zTree.getCheckedNodes(true),
+                v = "";
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                v += nodes[i].name + ",";
+            }
+            if (v.length > 0) v = v.substring(0, v.length - 1);
+            var cityObj = $("#treeIpt");
+            cityObj.attr("value", v);
+        }
+
+        function showMenu() {
+            var cityObj = $("#treeIpt");
+            var cityOffset = $("#treeIpt").offset();
+            $("#menuContent").css({
+                left: cityOffset.left + "px",
+                top: cityOffset.top + cityObj.outerHeight() + "px",
+                width: cityObj.outerWidth() + "px"
+            }).slideDown("fast");
+
+            $("body").bind("mousedown", onBodyDown);
+        }
+
+        function hideMenu() {
+            $("#menuContent").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        }
+
+        function onBodyDown(event) {
+            if (!(event.target.id == "menuBtn" || event.target.id == "treeIpt" || event.target.id == "menuContent" || $(
+                    event.target).parents("#menuContent").length > 0)) {
+                hideMenu();
+            }
+        }
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        });
+
+
+        function show_change() {
+            layer.open({
+                type: 1,
+                title: '工资调整',
+                btn: ['确认', '取消'],
+                String: false,
+                closeBtn: 1,
+                skin: 'layui-layer-rim',
+                area: ['680px', '380px'],
+                content: $('#wages_popup'),
+                yes: function (index, layero) {
+
+                },
+                btn2: function (index, layero) {
+
+                    layer.close(index);
+                }
+            });
+        }
+    </script>
+
+    <!-- <script src="" id="personEditJs" type="text/javascript"></script>
+    <script type="text/javascript">
+        document.getElementById("personEditJs").src = "../../js/person/personEdit.js?v=" + Math.random();
+    </script> -->
+    <script type="text/javascript" src="../../js/person/personEdit.js"></script>
+</body>
+
+</html>

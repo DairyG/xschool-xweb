@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab " lay-filter="component-tabs-brief">
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<form class="layui-form layui-form2 layui-search-form">
+									<div class="layui-row">
+										<div class="layui-form-item layui-col-md3 margin-b-20">
+											<label class="layui-form-label">姓名</label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md3 margin-b-20">
+											<label class="layui-form-label">手机</label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md2 margin-b-20">
+											<button class="layui-btn layui-btn-normal">搜索</button>
+										</div>	
+									</div>
+								</form>
+								<table id="lst" lay-filter="lst"></table>
+								<script type="text/html" id="toolbar">
+									<button class="layui-btn  layui-btn-xs ">查看</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-normal">编辑</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-danger">删除</button>
+								</script>
+								<script type="text/html" id="bar">
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var data_col = [[
+				{type: 'numbers', title: '序号'},
+				{field: 'bm', title: '部门'},
+				{field: 'zw', title: '职位',width:80},
+				{field: 'name', title: '姓名',width:80},
+				{field: 'state', title: '状态'},
+				{field: 'no', title: '工号'},
+				{field: 'js', title: '角色'},
+				{field: 'sex', title: '性别',width:60},
+				{field: 'mobile', title: '电话',width:120},
+				{field: 'bg_mobile', title: '办公电话',width:120},
+				{title:'操作',toolbar:'#toolbar',width:170}
+			]];
+			var datas = [
+				{bm:'组织部',zw:'主管',name:'<a class="text-add" href="../人事管理/员工信息.html">张三</a>',state:'正式员工',no:'56546323',sex:'男',mobile:'1634544444',bg_mobile:'028-11111111',js:'人事管理员<span class="text-red">|</span>简历管理员'},
+				{bm:'组织部',zw:'主管',name:'<a class="text-add" href="../人事管理/员工信息.html">张三</a>',state:'正式员工',no:'56546323',sex:'男',mobile:'1634544444',bg_mobile:'028-11111111',js:'公司职员'},
+				{bm:'组织部',zw:'主管',name:'<a class="text-add" href="../人事管理/员工信息.html">张三</a>',state:'正式员工',no:'56546323',sex:'男',mobile:'1634544444',bg_mobile:'028-11111111',js:'公司职员'},
+				{bm:'组织部',zw:'主管',name:'<a class="text-add" href="../人事管理/员工信息.html">张三</a>',state:'正式员工',no:'56546323',sex:'男',mobile:'1634544444',bg_mobile:'028-11111111',js:'公司职员'},
+			];
+			layui.use([ 'table'], function() {
+				var table = layui.table;
+					
+					table.render({
+						elem: '#lst',
+						data: datas,
+						cols: data_col,
+						toolbar:'#bar',
+						page:true,
+						even: true,
+						height:'full-140'
+					});
+			});
+		</script>
+	</body>
+</html>

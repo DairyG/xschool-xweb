@@ -1,5 +1,4 @@
 (function($){
-
     var methods={
         init:function(options){
             var defaults={

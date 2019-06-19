@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/template.css" />
+		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+	</head>
+	<body>
+		<div class="childrenBody bgf2f2f2">
+			<div class="layui-row layui-col-space15">
+				<div class="layui-col-md2">
+					<div class="layadmin-homepage-panel layadmin-homepage-shadow">
+						<div class="layui-card text-center">
+							<div class="layui-card-body">
+								<div class="layadmin-homepage-pad-ver">
+									<img class="layadmin-homepage-pad-img" src="../../img/head.jpg" width="96" height="96">
+								</div>
+								<h4 class="layadmin-homepage-font">张三 <i class="layui-icon layui-icon-male"></i> <span class="layui-badge">试</span></h4>
+								<p class="layadmin-homepage-min-font">人事部</p>
+								<p>工号：32532421123</p>
+								<p>试用期</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md10">
+					<div class="layui-card">
+						<div class="layui-card-body">
+							<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+								<ul class="layui-tab-title">
+									<li class="layui-this">职位信息</li>
+									<li>个人信息</li>
+									<li>合同信息</li>
+									<li>工资福利</li>
+									<li>工资记录</li>
+									<li>资产信息</li>
+									<li>日程安排</li>
+									<li>代办事宜</li>
+									<li>考勤记录</li>
+									<li>奖惩情况</li>
+									<li>考核情况</li>
+									<li>成长记录</li>
+									<a href="javascript:;" class="layui-btn layui-btn-sm fr" onclick="history.back(-1)">返回</a>
+								</ul>
+								<div class="layui-tab-content">
+									<div class="layui-tab-item layui-show" tab-name="职位信息">
+										<div class="layui-form layui-form2 layui-form-info layui-row">
+											<div class="layui-form-item layui-col-md6 ">
+												<label class="layui-form-label">所属部门：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">总经理办公室</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 ">
+												<label class="layui-form-label">所属职位：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">总经理</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 ">
+												<label class="layui-form-label">员工工号：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">573453223</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 ">
+												<label class="layui-form-label">在职状态：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">总经理</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 ">
+												<label class="layui-form-label">办公电话：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">02843535</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 ">
+												<label class="layui-form-label">办公邮箱：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">777777@qq.com</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 ">
+												<label class="layui-form-label">传真号码：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">0235-34234</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">推荐人：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">李四</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md12 ">
+												<label class="layui-form-label">办公地址：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">成都高新区世纪城</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md12 ">
+												<label class="layui-form-label">职位描述：</label> 
+												<div class="layui-input-block">
+													<div class="padding-t-9 padding-l-15">董事总经理表示他既是董事会成员之一的董事，又是负责经营的总经理；若仅仅只是总经理职位，至多只能列席董事会，无法参予表决。简单言之，总经理只是一个组织内的职位名称。总经理的权力有多大，要参考其雇佣合约条款及工作范围。总经理位置有多高，要研究其组织架构图 (Organizational chart)，有不少企业其内部有不少于一个总经理。
+总经理（General manager）传统意义上是一个公司的最高领导人或该公司的创始人。但实际上，总经理所在的层级，还是会因公司的规模而有所不同。例如在一般的中小企业，总经理通常就是整个组织里职务最高的管理者与负责人。而若是在规模较大的组织里 (如跨国企业)，总经理所扮演的角色，通常是旗下某个事业体或分支机构的最高负责人。
+股份公司的总经理是董事会聘任的，对董事会负责，在董事会的授权下，执行董事会的战略决策，实现董事会制定的企业经营目标。并通过组建必要的职能部门，组聘管理人员，形成一个以总经理为中心的组织、管理、领导体系，实施对公司的有效管理。总经理的主要职责是负责公司日常业务的经营管理，经董事会授权，对外签订合同和处理业务；组织经营管理班子，提出任免副总经理、总经济师、总工程师及部门经理等高级职员的人选，并报董事会批准；定期向董事会报告业务情况，向董事会提交年度报告及各种报表、计划、方案，包括经营计划、利润分配方案、弥补亏损方案等。</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="layui-tab-item" tab-name="个人信息" >
+										<div class="layui-form layui-form2 layui-form-info layui-row">
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">个人姓名：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">张三</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">英文名称：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid"></div>
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">性别：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">男</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">个人电话：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">15333333333</div>
+												</div>
+											</div>			
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">个人邮箱：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">123151@qq.com</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">个人QQ：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">总经理</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">所属民族：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">汉</div>
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">个人籍贯：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">四川</div>
+												</div>
+											</div>			
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">政治面貌：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">群众</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">身份证号：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">53233333333333333</div>
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">年龄：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">25</div>
+												</div>
+											</div>		
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">出生日期：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">2000-1-1</div>
+												</div>
+											</div>				
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">毕业院校：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid"></div>
+												</div>
+											</div>		
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">所学专业：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">电气自动化</div>
+												</div>
+											</div>		
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">最高学历	：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">博士</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">毕业时间	：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">2000-1-1</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">身高CM：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">180cm</div>
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">体重KG：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">70KG</div>
+												</div>
+											</div>		
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">婚姻状况：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid"></div>
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">有无子女：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid"></div>
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">招聘来源：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">招聘会</div>
+												</div>
+											</div>
+											<!-- <div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">应聘职位：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">JAVA开发工程师</div>
+												</div>
+											</div> -->
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">税前月薪：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">10000000</div>
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md12">
+												<label class="layui-form-label">身份证地址：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">四川成都</div>
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md12">
+												<label class="layui-form-label">居住地址：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">四川成都</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md12">
+												<label class="layui-form-label">兴趣爱好：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid"></div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md12">
+												<label class="layui-form-label">个人照片：</label>
+												<div class="layui-input-block">
+													
+												</div>
+											</div>	
+											<div class="layui-form-item layui-col-md12">
+												<label class="layui-form-label">证书证件：</label>
+												<div class="layui-input-block">
+													
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md12">
+												<label class="layui-form-label">简历附件：</label>
+												<div class="layui-input-block">
+													
+												</div>
+											</div>
+											<hr class="layui-bg-blue hrheight3">
+											<div class="layui-row">
+												<div class="layui-card-body clearnone">家庭成员及主要社会关系：</div>
+												<div class="layui-form-item layui-col-md12 margin-b-20">
+													<table class="layui-table">
+														<thead>
+															<tr>
+																<th class="table_label">姓名</th>
+																<th class="table_label">关系</th>
+																<th class="table_label">电话</th>
+																<th class="table_label">通讯地址</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td>张三</td>
+																<td>兄妹</td>
+																<td>15333333333</td>
+																<td>四川成都市高新区中和镇中和大道147号</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<hr class="layui-bg-blue hrheight3">
+											<div class="layui-card-body">教育经历：</div>
+											<div class="layui-row">
+												<div class="layui-form-item layui-col-md12 margin-b-20">
+													<table class="layui-table">
+														<thead>
+															<tr>
+																<th class="table_label">毕业院校</th>
+																<th class="table_label">学历</th>
+																<th class="table_label">性质</th>
+																<th class="table_label">专业</th>
+																<th class="table_label">学习年限</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td>四川大学</td>
+																<td>本科</td>
+																<td>统招</td>
+																<td>园林自动化</td>
+																<td>4</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<hr class="layui-bg-blue hrheight3">
+											<div class="layui-card-body">工作经历：</div>
+											<div class="layui-row">
+												<div class="layui-form-item layui-col-md12 margin-b-20">
+													<table class="layui-table">
+														<thead>
+															<tr>
+																<th class="table_label" width="150">工作年限</th>
+																<th class="table_label">公司名称</th>
+																<th class="table_label">部门</th>
+																<th class="table_label">职位</th>
+																<th class="table_label">离职原因</th>
+															</tr>
+														</thead>					
+														<tbody>
+															<tr>
+																<td>2015-8 -- 2018-10</td>
+																<td>四川某某某有限公司</td>
+																<td>市场部</td>
+																<td>市场经理</td>
+																<td>个人原因</td>
+															</tr>
+															<tr>
+																<td class="table_label">主要成绩</td>
+																<td colspan="4">主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="layui-tab-item" tab-name="合同信息" >
+										<div class="layui-form layui-form2 layui-form-info layui-row">
+											<div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">用工性质：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">劳动合同</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">合同签定日期：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">2019-5-1</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">试用起始日期：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">2019-5-1 -- 2019-8-1</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">正式起始日期：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">2019-7-1</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">解除日期：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid">2019-9-1</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">解除原因：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid"></div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md12">
+												<label class="layui-form-label">备注：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid"></div>
+												</div>
+											</div>
+											<div class="layui-form-item">
+												<label class="layui-form-label">合同附件：</label> 
+												<div class="layui-input-block">
+													<div class="layui-form-mid"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="layui-tab-item" tab-name="工资福利">
+										<div class="form-title">工资账户：</div>
+										<div class="layui-form layui-form2 layui-form-info layui-row">
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">开户银行：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">建设银行高新支行</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">开户名称：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">张三</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">银行账户：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">642424324234234234</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">预留手机：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">1533333333</div>
+												</div>
+											</div>
+										</div>
+										<hr class="layui-bg-blue hrheight3" />
+										<div class="form-title">工资科目：</div>
+										<div class="layui-form layui-form2 layui-form-info layui-row">
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">基本工资：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">1000</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">餐费补助：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">100</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">话费补助：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">100</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">交通补助：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">100</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">高温补助：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">100</div>
+												</div>
+											</div>
+										</div>
+										<hr class="layui-bg-blue hrheight3" />
+										<div class="form-title">保险科目：</div>
+										<div class="layui-form layui-form2 layui-form-info layui-row">
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">养老保险：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">300</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">个人缴纳：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">200</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">公司缴纳：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">100</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">失业保险：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">300</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">个人缴纳：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">200</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md4">
+												<label class="layui-form-label">公司缴纳：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">100</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="layui-tab-item" tab-name="工资记录">
+										<div class="layui-tab">
+											<ul class="layui-tab-title">
+												<li class="layui-this">发放记录</li>
+												<li>调整记录</li>
+											</ul>
+											<div class="layui-tab-content">
+												<div class="layui-tab-item layui-show">
+													<table class="layui-table" lay-data="{data:gz_datas, page: true,totalRow:true}" >
+														<thead>
+															<tr>
+																<th lay-data="{type:'numbers'}" rowspan="2">序号</th>
+																<th lay-data="{field:'ny',align:'center',totalRowText:'合计'}" rowspan="2">年月</th>
+																<th lay-data="{align:'center',totalRow:true}" colspan="5">工资</th>
+																<th lay-data="{align:'center',totalRow:true}" colspan="3">奖惩</th>
+																<th lay-data="{align:'center',totalRow:true}" colspan="2">保险</th>
+																<th lay-data="{field:'amount1',totalRow:true,minWidth:'120'}" rowspan="2">应发</th>
+																<th lay-data="{field:'amount2',totalRow:true,minWidth:'120'}" rowspan="2">实发</th>
+															</tr>
+															<tr>
+																<th lay-data="{field:'jb',minWidth:'100',totalRow:true}">基本工资</th>
+																<th lay-data="{field:'cb',minWidth:'100',totalRow:true}">餐补</th>
+																<th lay-data="{field:'jt',minWidth:'100',totalRow:true}">交通补助</th>
+																<th lay-data="{field:'hf',minWidth:'100',totalRow:true,minWidth:'100'}">话费补助</th>
+																<th lay-data="{field:'gw',minWidth:'100',totalRow:true}">高温补助</th>
+																<th lay-data="{field:'cd',minWidth:'100',totalRow:true}">迟到</th>
+																<th lay-data="{field:'qj',minWidth:'100',totalRow:true}">请假</th>
+																<th lay-data="{field:'jj',minWidth:'100',totalRow:true}">奖金</th>
+																<th lay-data="{field:'yn',minWidth:'100',totalRow:true}">养老保险</th>
+																<th lay-data="{field:'sy',minWidth:'100',totalRow:true}">失业保险</th>
+															</tr>
+														</thead>
+													</table>
+												</div>
+												<div class="layui-tab-item">
+													<ul class="layui-timeline">
+														<li class="layui-timeline-item">
+															<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+															<div class="layui-timeline-content layui-text">
+																<h3 class="layui-timeline-title">2019年5月17日 17:22:15</h3>
+																<p>【行政部】张三 15333333333</p>
+																<p>调整事由：转正工资调整</p>
+																<p class="text-red">执行日期：2019年5月17日</p>
+																<p>调整备注：试用期满调整工资基数</p>
+																<div class="layui-form">
+																	<table class="layui-table ">
+																		<thead>
+																			<tr>
+																				<th class="table_label">调整项</th>
+																				<th class="table_label">调整前</th>
+																				<th class="table_label">调整后</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr>
+																				<td>基本工资</td>
+																				<td>800</td>
+																				<td>1000</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+														</li>
+														<li class="layui-timeline-item">
+															<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+															<div class="layui-timeline-content layui-text">
+																<h3 class="layui-timeline-title">2019年5月17日 17:22:15</h3>
+																<p>【行政部】张三 15333333333</p>
+																<p>调整事由：转正工资调整</p>
+																<p class="text-red">执行日期：2019年5月17日</p>
+																<p>调整备注：试用期满调整工资基数</p>
+																<div class="layui-form">
+																	<table class="layui-table">
+																		<thead>
+																			<tr>
+																				<th class="table_label">调整项</th>
+																				<th class="table_label">调整前</th>
+																				<th class="table_label">调整后</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr>
+																				<td>基本工资</td>
+																				<td>800</td>
+																				<td>1000</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+														</li>
+													</ul>
+												</div>
+												<script type="text/html" id="bar">
+													
+												</script>
+											</div>
+										</div>
+									</div>
+									<div class="layui-tab-item" tab-name="资产信息"></div>
+									<div class="layui-tab-item" tab-name="日程安排"></div>
+									<div class="layui-tab-item" tab-name="代办事宜"></div>
+									<div class="layui-tab-item" tab-name="考勤记录"></div>
+									<div class="layui-tab-item" tab-name="奖惩情况"></div>
+									<div class="layui-tab-item" tab-name="考核情况"></div>
+									<div class="layui-tab-item" tab-name="成长记录">
+										<div class="layui-row margin-b-20">
+											<table class="layui-table">
+												<tr>
+													<td class="table_label" width="120">培训课程</td>
+													<td>少儿编程</td>
+													<td class="table_label">培训机构</td>
+													<td>XXXX机构</td>
+												</tr>
+												<tr>
+													<td class="table_label">起始时间</td>
+													<td>2019-5-1 -- 2019-8-1</td>
+													<td class="table_label">培训地点</td>
+													<td>四川成都高新区天府大道9999999号</td>
+												</tr>
+												<tr>
+													<td class="table_label">培训内容</td>
+													<td colspan="3">培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容</td>
+												</tr>
+												<tr>
+													<td class="table_label">所获荣誉</td>
+													<td colspan="3">所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉</td>
+												</tr>
+											</table>
+										</div>
+										<div class="layui-row margin-b-20">
+											<table class="layui-table">
+												<tr>
+													<td class="table_label" width="120">培训课程</td>
+													<td>少儿编程</td>
+													<td class="table_label">培训机构</td>
+													<td>XXXX机构</td>
+												</tr>
+												<tr>
+													<td class="table_label">起始时间</td>
+													<td>2019-5-1 -- 2019-8-1</td>
+													<td class="table_label">培训地点</td>
+													<td>四川成都高新区天府大道9999999号</td>
+												</tr>
+												<tr>
+													<td class="table_label">培训内容</td>
+													<td colspan="3">培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容</td>
+												</tr>
+												<tr>
+													<td class="table_label">所获荣誉</td>
+													<td colspan="3">所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var gz_datas = [
+				{'ny':'2019-4',amount:'8000',jb:'10000',cb:'100',jt:100,hf:100,gw:100,yn:'<span class="text-red">-100</span>',sy:'<span class="text-red">-100</span>',amount1:8000,amount2:10000,cd:'<span class="text-red">-100</span>',qj:'<span class="text-red">-10</span>',jj:200},
+				{'ny':'2019-3',amount:'8000',jb:'10000',cb:'100',jt:100,hf:100,gw:100,yn:'<span class="text-red">-100</span>',sy:'<span class="text-red">-100</span>',amount1:8000,amount2:10000,cd:'<span class="text-red">-100</span>',qj:'<span class="text-red">-10</span>',jj:200},
+				{'ny':'2019-2',amount:'8000',jb:'10000',cb:'100',jt:100,hf:100,gw:100,yn:'<span class="text-red">-100</span>',sy:'<span class="text-red">-100</span>',amount1:8000,amount2:10000,cd:'<span class="text-red">-100</span>',qj:'<span class="text-red">-10</span>',jj:200},
+				{'ny':'2019-1',amount:'8000',jb:'10000',cb:'100',jt:100,hf:100,gw:100,yn:'<span class="text-red">-100</span>',sy:'<span class="text-red">-100</span>',amount1:8000,amount2:10000,cd:'<span class="text-red">-100</span>',qj:'<span class="text-red">-10</span>',jj:200},
+			];
+			layui.use([ 'table','element','laydate'], function() {
+				var table = layui.table,
+					element = layui.element,
+					laydate = layui.laydate;
+					
+			});
+			
+		</script>
+	</body>
+</html>
