@@ -182,7 +182,7 @@ var model = {
 var vm = new Vue({ el: '#workerinForm', data: model });
 function GetSingle(wId) {
 	Serv.Post('BonusPenalty/GetSingle', { Id: wId }, function (response) {
-        //$("#select[name='AddSubtraction']").val(response.addSubtraction);
+		$("select[name='AddSubtraction']").val(response.addSubtraction);
 		model.id = response.id;
 		model.name = response.name;
 		model.sortId = response.sortId;
@@ -191,6 +191,7 @@ function GetSingle(wId) {
         model.isSystem = response.isSystem;
         model.addSubtraction = response.addSubtraction;
 		vm.$set({ data: model });
+		layui.form.render("select");
 	})
 }
 function EmptyModel() {
