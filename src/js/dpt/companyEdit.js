@@ -4,36 +4,36 @@ new Vue({
         return {
             hasSubmit: true,
             company: {
-                id: 0
-                , companyName: ''
-                , englishName: ''
-                , credit: ''
-                , companyType: ''
-                , legalPerson: ''
-                , registeredCapital: ''
-                , responsible: ''
-                , responsiblePhone: ''
-                , registeredTime: ''
-                , businessDate: ''
-                , businessAddress: ''
-                , businessScope: ''
-                , logo: ''
-                , companyPhone: ''
-                , email: ''
-                , officeAddress: ''
-                , webSite: ''
-                , intro: ''
-                , culture: ''
-                , history: ''
+                id: 0,
+                companyName: '',
+                englishName: '',
+                credit: '',
+                companyType: '',
+                legalPerson: '',
+                registeredCapital: '',
+                responsible: '',
+                responsiblePhone: '',
+                registeredTime: '',
+                businessDate: '',
+                businessAddress: '',
+                businessScope: '',
+                logo: '',
+                companyPhone: '',
+                email: '',
+                officeAddress: '',
+                webSite: '',
+                intro: '',
+                culture: '',
+                history: ''
             },
             bankInfo: {
-                id: 0
-                , companyId: 0
-                , openBank: ''
-                , openBankName: ''
-                , bankAccount: ''
-                , linkPhone: ''
-                , remarks: ''
+                id: 0,
+                companyId: 0,
+                openBank: '',
+                openBankName: '',
+                bankAccount: '',
+                linkPhone: '',
+                remarks: ''
             },
             bankData: []
         }
@@ -47,8 +47,8 @@ new Vue({
                 layform = layui.form;
 
             laydate.render({
-                elem: '#date1'
-                , done: function (value) {
+                elem: '#date1',
+                done: function (value) {
                     _this.company.registeredTime = value;
                 }
             });
@@ -71,13 +71,14 @@ new Vue({
             eHistory.create();
 
             var id = GetPara('id');
+            id = !id ? '' : id;
             var operation = GetPara('operation');
-            if ((operation == 'view' || operation == 'edit') && !IsNum(id)) {
+            if ((operation == 'view' || operation == 'edit') && !id.IsNum()) {
                 layer_alert('参数错误');
                 _this.hasSubmit = false;
                 return false;
             }
-            if (IsNum(id)) {
+            if (id.IsNum()) {
                 initData(id);
             }
 

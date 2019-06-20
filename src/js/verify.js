@@ -182,5 +182,14 @@ layui.use(['form'], function () {
                 return $(obj).attr("placeholder") + "必须为数字";
             }
         },
+        areaHas: function (value, obj) {
+            value = value.replace(/(^\s*)|(\s*$)/g, '');
+            if (value == "" || value.length == 0) {
+                return;
+            }
+            if(value.split(',').length != 3){
+                return $(obj).attr("placeholder") + "必须选择省市区";
+            }
+        },
     });
 });

@@ -1,46 +1,74 @@
 @charset "utf-8";
 .childrenBody {background-color: #fff;position: absolute;right: 15px;left:15px;top:15px;bottom: 15px;}
+.icon_group1{background: url('../../lib/ztree/css/metroStyle/img/metro.png');background-position: -149px -3px;width: 18px;height: 18px;display: inline-block;vertical-align: middle;}
+.icon_group2{background: url('../../lib/ztree/css/metroStyle/img/metro.png');background-position: -149px -25px;width: 18px;height: 18px;display: inline-block;vertical-align: middle;}
+/* 宽高 */
+.height-100 {height: 100%;}
 /* 字体颜色 */
 .fc-FB80 {color: #FFB800;}
 .text-red  {color:red}
 .text-add {color:#1E9FFF}
 .text-edit {color:#FFB800}
 .text-del {color:#FF5722}
-
+.text-span {color:#009688}
+.text-85 {color:#858585}
+.text-a {color:#1E9FFF}
+/* 边框 */
+.border-1 {border:1px solid #ddd;}
+.border-l-20 {border-left:20px solid #f2f2f2;}
+.border-l-1 {border-left:1px solid #ddd;}
 
 /* 背景色 */
 .bgwhite {background: #ffffff !important;}
 .bgf2f2f2 {background: #f2f2f2 !important;}
 .bgfdfdfd {background: #fdfdfd !important;}
 /* 间距 */
+.padding-10 {padding: 10px;}
+.padding-t-0 {padding-top: 0;}
+.padding-t-9 {padding-top: 9px;}
+.padding-t-10 {padding-top: 10px;}
+.padding-t-20 {padding-top: 20px;}
+.padding-l-0 {padding-left: 0 !important;}
+.padding-l-10 {padding-left: 10px;}
+.padding-l-15 {padding-left: 15px;}
+.padding-r-0 {padding-right: 0 !important;}
 .padding-r-30 {padding-right: 30px;}
 .padding-r-50 {padding-right: 50px;}
+.padding-b-10 {padding-bottom: 10px;}
 .padding-b-60 {padding-bottom: 60px;}
 .margin0 {margin:0 !important;}
 .margin-b-5 {margin-bottom: 5px;}
 .margin-b-10 {margin-bottom: 10px;}
 .margin-b-20 {margin-bottom: 20px !important;}
+.margin-t-0 {margin-top:0 !important;}
 .margin-t-10 {margin-top:10px;}
 .margin-t-3 {margin-top:3px;}
+.margin-t-7 {margin-top:7px;}
 .margin-t-20 {margin-top:20px;}
+.margin-r-10 {margin-right: 10px;}
 /* 字体大小 */
-.fontsize-14 {font-size: 14px;}
-.fontsize-16 {font-size: 16px;}
-.fontsize-18 {font-size: 18px;}
-.fontsize-20 {font-size: 20px;}
-.fontsize-24 {font-size: 24px;}
+.fontsize-12 {font-size: 12px !important;}
+.fontsize-14 {font-size: 14px !important;}
+.fontsize-16 {font-size: 16px !important;}
+.fontsize-18 {font-size: 18px !important;}
+.fontsize-20 {font-size: 20px !important;}
+.fontsize-24 {font-size: 24px !important;}
+
+/* 边框线 */
+.border-b-0 {border-bottom:0 !important;}
 
 .fl {float: left;}
 .fr {float: right;}
 .clearnone {clear: none;}
 
 .text-right {text-align: right;}
-
+.text-center {text-align: center;}
 /* layui-form 样式 重写 */
 label input[type='file'] {display: none;}
 .layui-form2 .layui-form-item {clear: unset;}
 .layui-form2 .layui-form-label {width: 120px;}
 .layui-form2 .layui-input-block {margin-left: 150px;}
+.layui-form-140 .layui-form-label {width: 140px;}
 .layui-search-form .layui-form-label {width: auto;}
 .layui-search-form .layui-input-block {margin-left: 0;float: left;}
 .layui-search-form .layui-form-select .layui-input {width: auto;}
@@ -57,7 +85,7 @@ label input[type='file'] {display: none;}
 .layui-form2 .layui-rate {margin:0;padding: 0;}
 .layui-form2 .layui-rate li {margin-bottom: 0;}
 .form-title {    position: relative;padding: 10px 15px;line-height: 24px;font-size: 16px;}
-.layui-form table .table_label {background: #fdfdfd;}
+.layui-form table .table_label {background: #fdfdfd;white-space: nowrap;}
 .layui-form table td:not(.table_label) {color:#000}
 
 .linePop {display: none;position: relative;}
@@ -77,18 +105,115 @@ label input[type='file'] {display: none;}
 .ztree li a.curSelectedNode  {height:28px;}
 
 .table-btn-jia,.table-btn-jian {cursor: pointer;display: inline-block;font-weight: bold;padding: 0 5px;color:#888}
-.table-btn-jia {font-size: 28px;}
-.table-btn-jian {font-size: 32px;}
+.table-btn-jia {font-size: 28px;color:#009688}
+.table-btn-jian {font-size: 32px;color:#FF5722}
 
 .table_label {background: #f2f2f2; }
 
 /* 用户选择弹出框 */
-#popup_content {display: none;}
+#popup_content {display: none;height: 100%;}
 #user_select_tree {position: absolute;left: 48px;top: 40px;background: #fff;z-index: 999;border: 1px solid #ddd;min-width:300px;display: none;}
-
+#popup_content .search_box {position: relative;}
+#popup_content .search_box i.layui-icon-search{position: absolute;right: 0;top:0;font-size: 18px;padding: 9px;cursor:pointer}
+#popup_content .loaction_box {padding: 10px 0;}
+#popup_content input[type='checkbox'] {margin-right: 5px;vertical-align: middle;border: 1px solid #ddd;appearance: none !important;-webkit-appearance: none !important;-moz-appearance: none !important;-ms-appearance: none !important;height:18px;width: 18px;cursor:pointer;border-radius: 2px;}
+#popup_content input[type='checkbox']:checked {background: url(../images/checkbox.png);border:1px solid #5FB878;} 
+#popup_content .select_box {}
+#popup_content .select_box ul {height: 250px;overflow-y: auto;}
+#popup_content .select_box ul li {white-space: nowrap;overflow: hidden;text-overflow: ellipsis;padding:5px 10px;}
+#popup_content .select_box ul li span:hover{cursor: pointer;}
+#popup_content .select_content {height:100%;}
+#popup_content .select_content>div {height:360px}
+#popup_content .selected_box {height: 340px;overflow-y: auto;}
+#popup_content .selected_box li {padding: 5px;}
+#popup_content .selected_box li:hover {background: #f2f2f2;}
+#popup_content .selected_box li i {cursor:pointer;padding-top: 2px;}
 /* 查看人选择 */
 #sel_item_box { width:auto;}
 #sel_item_box .sel_item {display: none;}
 .layui-badge2 {padding:2px 4px;margin-right:10px; margin-bottom: 5px;float: left;}
 .layui-badge2 .layui-icon {cursor: pointer;    float: right;}
 .hrheight3{ height:3px;}
+
+/* 卡片 */
+.layui-card2 { /* box-shadow: #aaa 0px 1px 2px 0px; */    border: 1px solid #eee;}
+.layui-card2 .layui-icon-delete{cursor: pointer;}
+
+table .layui-input {height:28px;line-height: 28px;}
+
+/* 日程 */
+.schedule_box {}
+.schedule_box table {width: 100%;}
+.schedule_box .layui-laydate {width: 100%;}
+.schedule_box .layui-laydate-main {width: 100%;}
+.schedule_box .layui-laydate-content td,.schedule_box  .layui-laydate-content th {height: 80px;}
+.schedule_box .layui-laydate .layui-this {background: #fff !important;color: #333 !important;}
+.schedule_box .layui-laydate .laydate-day-mark{background: #fff;line-height: 180%;padding-top: 5px;}
+.schedule_box .layui-laydate .laydate-day-mark p {white-space: nowrap;text-overflow: ellipsis;overflow: hidden;margin: 0 5px;}
+.schedule_box .layui-laydate .laydate-day-mark .laydate-day-mark-day{position: absolute;left: 0;top: 0;background: #009688;color: #fff;width: 20px;height: 20px;line-height: 20px;}
+
+/* 流程列表 */
+.process_box {clear: both;}
+.process_box .process_item {padding: 10px 0;}
+.process_content  {padding: 10px;border-bottom: 1px solid #ddd;}
+.process_content .process_img {position: relative;}
+.process_content .process_img img {width: 50px;height: 50px;margin-right: 12px;border-radius: 8px;}
+.process_content .process_img .process_img_info{position: absolute;left:65px;top:0;}
+.process_content .process_img .process_img_info p{line-height: 150%;}
+.process_content  a {color: #1E9FFF;padding: 0 3px;}
+.process_content  .opt_box {line-height: 60px;}
+
+.process_add_form {}
+.process_add_form .process_box{width:400px;margin: 0 auto;}
+.process_add_form .layui-card {border:1px solid #ddd;margin-bottom: 0;}
+.process_add_form .layui-card .layui-card-header{color:#fff;}
+.process_add_form .process_box .faqi_card .layui-card-header{background: #393D49;}
+.process_add_form .process_box .shenpi_card .layui-card-header{background: #FF5722;}
+.process_add_form .process_box .cahosong_card .layui-card-header{background: #01AAED;}
+.process_add_form .process_box .layui-card-body {position:relative;}
+.process_add_form .process_box .faqi_card:hover{border:1px solid #393D49;}
+.process_add_form .process_box .shenpi_card:hover{border:1px solid #FF5722;}
+.process_add_form .process_box .cahosong_card:hover{border:1px solid #01AAED;}
+.process_add_form .process_box .layui-card-body .show_div{padding-right: 35px;min-height: 24px;}
+.process_add_form .process_box .layui-card-body .add_icon{position: absolute;right:0;top:0;cursor: pointer;    width: 100%;height: 100%;text-align: right;line-height: 44px;}
+.process_add_form .process_box .fupan_card .layui-card-header{background: #5FB878;}
+.process_add_form .process_box .process_add_btn_item {text-align: center;height: 40px;padding:15px 0 25px 0;background: url(../../img/process_jt.png) no-repeat center bottom;}
+.process_add_form .process_box .process_add_btn_item i{color: #01AAED;font-size: 40px;vertical-align: middle;height: 40px;line-height: 40px;cursor:pointer;background: #fff;}
+.process_add_form .process_box .process_add_btn_item_end {text-align: center;height: 40px;padding:15px 0 25px 0;background: url(../../img/process_end.png) no-repeat center bottom;}
+.process_add_form .process_box label {}
+.process_add_form .process_box label input {display: none !important;}
+
+.add_item label {white-space: pre-line;cursor:pointer;}
+.add_item span {}
+.add_item i { font-size: 38px;}
+
+.layui-icon-close-fill  {cursor:pointer}
+
+.demand_item {position:relative;}
+.demand_item .layui-icon-close-fill{ position: absolute;z-index: 999;color: #999;right: -10px;top: -10px;font-size: 24px;}
+
+.layadmin-carousel{height:185px!important;background-color:#fff}
+.layadmin-carousel .layui-carousel-ind li{background-color:#e2e2e2}
+.layadmin-carousel .layui-carousel-ind li:hover{background-color:#c2c2c2}
+.layadmin-carousel .layui-carousel-ind li.layui-this{background-color:#999}
+.layadmin-carousel .layui-carousel,.layadmin-carousel>[carousel-item]>*{background-color:#fff}
+.layadmin-carousel .layui-col-space10{margin:0}
+.layadmin-carousel .layui-carousel-ind{position:absolute;top:-41px;text-align:right}
+.layadmin-carousel .layui-carousel-ind ul{background:0 0}
+
+.layadmin-shortcut li{text-align:center}
+.layadmin-shortcut li .img { display: inline-block;width: 100%;height: 60px;text-align: center;border-radius: 2px;color: #333;transition: all .3s;-webkit-transition: all .3s;}
+.layadmin-shortcut li .img img {width: 60px;height: 60px;}
+.layadmin-shortcut li cite{position:relative;top:2px;display:block;color:#666;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;font-size:14px}
+.layadmin-shortcut li:hover .layui-icon{background-color:#f2f2f2}
+
+.box-shadow-0 {box-shadow: 0;}
+
+/** 步骤条 **/
+.process_step {padding: 20px 0 10px 0;overflow: hidden;}
+.process_step li {float: left;padding: 0 30px;background: url(../../img/step.png) center;height: 30px;line-height: 30px;margin-bottom: 10px;}
+.process_step li i {background: #ddd;text-decoration: none;border-radius: 50%;width: 25px;height: 25px;text-align: center;line-height: 25px;display: inline-block;color:#fff;font-style: normal;}
+.process_step li span {padding:0 5px;background: #fff;}
+.process_step li.active {background: url(../../img/step1.png) center;}
+.process_step li.active span {color: #1E9FFF;}
+.process_step li.active i {background: #1E9FFF;width: 30px;height: 30px;line-height: 30px;}

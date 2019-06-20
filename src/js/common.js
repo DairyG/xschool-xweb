@@ -160,18 +160,6 @@ String.prototype.FormatDate = function (hasTime) {
     if (!this) {
         return "";
     }
-    //try {
-    //    var d = new Date(Date.parse(this));
-    //    if (!d) { return ""; }
-    //    if (hasTime) {
-    //        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-    //    } else {
-    //        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-    //    }
-    //} catch (ex) {
-    //    return "";
-    //}
-
     var fmt = 'yyyy-MM-dd';
     if (hasTime) {
         fmt = 'yyyy-MM-dd hh:mm:ss'
