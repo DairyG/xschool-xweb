@@ -38,7 +38,7 @@ layui.use(['form'], function () {
             }
         },
         phone: function (value, obj) {
-            if (/^1[3456789]\d{9}$/.test(value) == false) {
+            if (/^(1[345789][0-9])[0-9]{8}$/.test(value) == false) {
                 return $(obj).attr("placeholder") + "格式不正确";
             }
         },
@@ -146,6 +146,16 @@ layui.use(['form'], function () {
                 }
             }
         },
+        //统一社会信用代码
+        credit:function(value,obj){
+            value = value.replace(/(^\s*)|(\s*$)/g, '');
+            if (value == "" || value.length == 0) {
+                return;
+            }
+            if (/^[^_IOZSVa-z\W]{2}\d{6}[^_IOZSVa-z\W]{10}$/g.test(value) == false) {
+                return $(obj).attr("placeholder") + "格式错误";
+            }
+        },
         emailHas: function (value, obj) {
             value = value.replace(/(^\s*)|(\s*$)/g, '');
             if (value == "" || value.length == 0) {
@@ -187,7 +197,8 @@ layui.use(['form'], function () {
             if (value == "" || value.length == 0) {
                 return;
             }
-            if(value.split(',').length != 3){
+            var code = $(obj).attr('data-areacode');
+            if(code.split(',').length != 3){
                 return $(obj).attr("placeholder") + "必须选择省市区";
             }
         },

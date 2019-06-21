@@ -1,6 +1,7 @@
-new Vue({
+var vm = new Vue({
     el: '#personBody',
     data: {
+        hasSubmit: false,
         person: {
             id: 0,
             //先给默认值
@@ -68,79 +69,181 @@ new Vue({
     },
     mounted: function () {
         var _this = this;
-        layui.use(['element', 'form', 'table', 'laydate'], function () {
-            var element = layui.element,
-                table = layui.table,
-                laydate = layui.laydate,
-                form = layui.form;
-
-            _this.getBasic(table);
-            _this.onBasicSelect(form);
-
-            $("._idCardArea").jarea();
-            $("._idCardArea").jarea('val');
-            $("._liveArea").jarea();
-            $("._liveArea").jarea('val');
-
-            //出生日期
-            laydate.render({
-                elem: '#birthDay',
-                done: function (value, date, endDate) {
-                    _this.person.birthDay = value;
-                }
-            });
-            //毕业时间
-            laydate.render({
-                elem: '#graduationDate',
-                done: function (value, date, endDate) {
-                    _this.person.graduationDate = value;
-                }
-            });
-
-            //身份证
-            $('input[name="idCard"]').blur(function () {
-                var value = $.trim($(this).val());
-                if (value && isCard(value) == '') {
-                    var birthday = getBirthdayFromIdCard(value);
-                    var age = getAgeFromIdCard(value);
-                    _this.person.birthDay = birthday;
-                    _this.person.age = age;
-                }
-            });
-
-
-            //基本信息
-            form.on('submit(basicInfo)', function (laydata) {
-                console.log(laydata.field);
-                // layer_load();
-                // Serv.Post('company/edit', laydata.field, function (result) {
-                //     if (result.code == '00') {
-                //         _this.company.id = result;
-                //         _this.bankInfo.companyId = result;
-                //         layer_alert(result.message);
-                //     } else {
-                //         layer_alert(result.message);
-                //     }
-                // });
-                return false;
-            });
-        });
-
-
+        _this.initLayui();
     },
     methods: {
+        initLayui: function () {
+            var _this = this;
+            layui.use(['element', 'form', 'table', 'laydate'], function () {
+                var element = layui.element,
+                    table = layui.table,
+                    laydate = layui.laydate,
+                    form = layui.form;
+
+                _this.getBasic(table);
+                _this.onBasicSelect(form);
+
+                $("._idCardArea").jarea();
+                $("._idCardArea").jarea('val');
+                $("._liveArea").jarea();
+                $("._liveArea").jarea('val');
+
+                //出生日期
+                laydate.render({
+                    elem: '#birthDay',
+                    done: function (value, date, endDate) {
+                        _this.person.birthDay = value;
+                    }
+                });
+                //毕业时间
+                laydate.render({
+                    elem: '#graduationDate',
+                    done: function (value, date, endDate) {
+                        _this.person.graduationDate = value;
+                    }
+                });
+
+                //身份证
+                $('input[name="idCard"]').blur(function () {
+                    var value = $.trim($(this).val());
+                    if (value && isCard(value) == '') {
+                        var birthday = getBirthdayFromIdCard(value);
+                        var age = getAgeFromIdCard(value);
+                        _this.person.birthDay = birthday;
+                        _this.person.age = age;
+                    }
+                });
+
+
+                //基本信息
+                form.on('submit(basicInfo)', function (laydata) {
+                    layer_load();
+
+                    laydata.field.idCardProvince = '';
+                    laydata.field.idCardCity = '';
+                    laydata.field.idCardCounty = '';
+                    _this.person.idCardProvince = '';
+                    _this.person.idCardCity = '';
+                    _this.person.idCardCounty = '';
+                    //身份证地址
+                    if ($.trim(_this.person.idCardAddress)) {
+                        var idCardAreaCode = $('input[name="idCardArea"]').attr('data-areacode');
+                        var idCardAreaArr = idCardAreaCode.split(',');
+                        if (!idCardAreaCode) {
+                            layer_alert('请选择身份证地址的省市区');
+                            return false;
+                        }
+                        if (idCardAreaArr.length != 3) {
+                            layer_alert('身份证地址必须选择省市区');
+                            return false;
+                        }
+
+                        laydata.field.idCardProvince = idCardAreaArr[0];
+                        laydata.field.idCardCity = idCardAreaArr[1];
+                        laydata.field.idCardCounty = idCardAreaArr[2];
+                        _this.person.idCardProvince = idCardAreaArr[0];
+                        _this.person.idCardCity = idCardAreaArr[1];
+                        _this.person.idCardCounty = idCardAreaArr[2];
+                    }
+
+                    laydata.field.liveProvince = '';
+                    laydata.field.liveCity = '';
+                    laydata.field.liveCounty = '';
+                    _this.person.liveProvince = '';
+                    _this.person.liveCity = '';
+                    _this.person.liveCounty = '';
+                    //居住地址
+                    if ($.trim(_this.person.liveAddress)) {
+                        var liveAreaCode = $('input[name="liveArea"]').attr('data-areacode');
+                        var liveAreaArr = liveAreaCode.split(',');
+                        if (!liveAreaCode) {
+                            layer_alert('请选择居住地址的省市区');
+                            return false;
+                        }
+                        if (liveAreaArr.length != 3) {
+                            layer_alert('居住地址必须选择省市区');
+                            return false;
+                        }
+
+                        laydata.field.liveProvince = liveAreaArr[0];
+                        laydata.field.liveCity = liveAreaArr[1];
+                        laydata.field.liveCounty = liveAreaArr[2];
+
+                        _this.person.liveProvince = liveAreaArr[0];
+                        _this.person.liveCity = liveAreaArr[1];
+                        _this.person.liveCounty = liveAreaArr[2];
+                    }
+
+                    //家庭成员
+                    var hasFamily = _this.validateFamily($('#familyPanel').find('div.layui-table-body'), true);
+                    if (!hasFamily) {
+                        return false;
+                    }
+                    laydata.field.family = '';
+                    _this.person.family = '';
+                    if (_this.familyData.length > 0) {
+                        var familyJson = JSON.stringify(_this.familyData);
+                        laydata.field.family = familyJson;
+                        _this.person.family = familyJson;
+                    }
+
+                    //教育经历
+                    var hasEducation = _this.validateEducation($('#educationPanel').find('div.layui-table-body'), true);
+                    if (!hasEducation) {
+                        return false;
+                    }
+                    laydata.field.education = '';
+                    _this.person.education = '';
+                    if (_this.educationData.length > 0) {
+                        var educationJson = JSON.stringify(_this.educationData);
+                        laydata.field.education = educationJson;
+                        _this.person.education = educationJson;
+                    }
+
+                    //工作经历
+                    var hasWork = _this.validateWork($('#workPanel').find('div.layui-table-body'), true);
+                    if (!hasWork) {
+                        return false;
+                    }
+                    laydata.field.work = '';
+                    _this.person.work = '';
+                    if (_this.workData.length > 0) {
+                        var workJson = JSON.stringify(_this.workData);
+                        laydata.field.work = workJson;
+                        _this.person.work = workJson;
+                    }
+
+                    console.log(laydata.field);
+                    console.log(_this.person);
+
+                    Serv.Post('person/edit?peration=1', laydata.field, function (result) {
+                        if (result.code == '00') {
+                            _this.person.id = result.data;
+                            layer_alert(result.message);
+                        } else {
+                            layer_alert(result.message);
+                        }
+                    });
+                    return false;
+                });
+            });
+        },
         //获取基础信息
-        getBasic: function (table) {
+        getBasic: function (table, uid) {
             var _this = this;
             layer_load();
             Serv.Get('workerinfield/getdata?type=1,3,4,5,6', {}, function (result) {
                 layer_load_lose();
                 if (result) {
+                    _this.hasSubmit = true;
+
                     _this.basicArrival = result.workerInField;
                     _this.basicEducation = result.education;
                     _this.basicProperties = result.properties;
                     _this.basicRelations = result.socialRelations;
                     _this.basicRecruitment = result.recruitmentSource;
+
+                    // console.log(_this.basicEducation);
 
                     _this.intiFamily(table);
                     _this.initEducation(table);
@@ -194,7 +297,7 @@ new Vue({
 
             var cols = [
                 [{
-                        field: 'id',
+                        field: 'FamId',
                         title: '序号',
                         width: 90,
                         templet: function (d) {
@@ -202,31 +305,31 @@ new Vue({
                         }
                     },
                     {
-                        field: 'name',
+                        field: 'FamName',
                         title: '姓名',
                         templet: function (d) {
-                            return _this.getInputTpl('name', d.name, 10);
+                            return _this.getInputTpl('FamName', d.FamName, 10);
                         }
                     },
                     {
-                        field: 'relations',
+                        field: 'FamRelations',
                         title: '关系',
                         templet: function (d) {
-                            return _this.getSelectTpl(_this.basicRelations, 'relations', d.relations);
+                            return _this.getSelectTpl(_this.basicRelations, 'FamRelations', d.FamRelations);
                         }
                     },
                     {
-                        field: 'linkPhone',
+                        field: 'FamLinkPhone',
                         title: '电话',
                         templet: function (d) {
-                            return _this.getInputTpl('linkPhone', d.linkPhone, 20);
+                            return _this.getInputTpl('FamLinkPhone', d.FamLinkPhone, 20);
                         }
                     },
                     {
-                        field: 'address',
+                        field: 'FamAddress',
                         title: '通讯地址',
                         templet: function (d) {
-                            return _this.getInputTpl('address', d.address, 100);
+                            return _this.getInputTpl('FamAddress', d.FamAddress, 100);
                         }
                     }
                 ]
@@ -241,7 +344,7 @@ new Vue({
             table.on('tool(familyTable)', function (obj) {
                 if (obj.event == 'familyAdd') {
                     layer_load();
-                    var hasResult = _this.validateFamily(obj);
+                    var hasResult = _this.validateFamily(obj.tr, false);
                     if (!hasResult) {
                         layer_load_lose();
                         return false;
@@ -269,55 +372,66 @@ new Vue({
                 _this.familyData = [];
             }
             _this.familyData.push({
-                "id": _this.familyData + 1,
-                "name": '',
-                "relations": '',
-                "linkPhone": '',
-                "address": ''
+                "FamId": _this.familyData + 1,
+                "FamName": '',
+                "FamRelations": '',
+                "FamLinkPhone": '',
+                "FamAddress": ''
             });
         },
         //验证 家庭成员
-        validateFamily: function (obj) {
+        validateFamily: function (obj, hasSubmit) {
             var _this = this;
             var hasResult = true;
             _this.familyData = [];
-            obj.tr.parents('table').find('tr').each(function () {
-                var name = $.trim($(this).find('input[name="name"]').val());
+            obj = hasSubmit ? obj : obj.parents('table');
+
+            obj.find('tr').each(function () {
+                var name = $.trim($(this).find('input[name="FamName"]').val());
+                var relations = $(this).find('select[name="FamRelations"]').val();
+                var linkPhone = $(this).find('input[name="FamLinkPhone"]').val();
+                var address = $.trim($(this).find('input[name="FamAddress"]').val());
+
+                //是否提交数据
+                if (hasSubmit && (!name && !relations && !linkPhone && !address)) {
+                    hasResult = true;
+                    return false;
+                }
+
                 if (!name) {
-                    layer_alert('请输入姓名');
+                    layer_alert('请输入[家庭成员项]中的姓名');
                     hasResult = false;
                     return false;
                 }
-                var relations = $(this).find('select[name="relations"]').val();
+
                 if (!relations) {
-                    layer_alert('请选择关系');
+                    layer_alert('请选择[家庭成员项]中的关系');
                     hasResult = false;
                     return false;
                 }
-                var linkPhone = $(this).find('input[name="linkPhone"]').val();
+
                 if (!linkPhone) {
-                    layer_alert('请输入电话');
+                    layer_alert('请输入[家庭成员项]中的电话');
                     hasResult = false;
                     return false;
                 }
                 if (!linkPhone.IsMobile() && !linkPhone.IsTelPhone()) {
-                    layer_alert('电话格式错误');
+                    layer_alert('[家庭成员项]中的电话格式错误');
                     hasResult = false;
                     return false;
                 }
-                var address = $.trim($(this).find('input[name="address"]').val());
                 if (!address) {
-                    layer_alert('请输入通讯地址');
+                    layer_alert('请输入[家庭成员项]中的通讯地址');
                     hasResult = false;
                     return false;
                 }
 
                 _this.familyData.push({
-                    "id": _this.educationData.length + 1,
-                    "name": name,
-                    "relations": relations,
-                    "linkPhone": linkPhone,
-                    "address": address
+                    "FamId": _this.educationData.length + 1,
+                    "FamName": name,
+                    "FamRelations": relations,
+                    "FamLinkPhone": linkPhone,
+                    "FamAddress": address
                 });
             });
 
@@ -334,7 +448,7 @@ new Vue({
 
             var cols = [
                 [{
-                        field: 'id',
+                        field: 'EduId',
                         title: '序号',
                         width: 90,
                         templet: function (d) {
@@ -342,39 +456,39 @@ new Vue({
                         }
                     },
                     {
-                        field: 'finishSchool',
+                        field: 'EduFinishSchool',
                         title: '毕业院校',
                         templet: function (d) {
-                            return _this.getInputTpl('finishSchool', d.finishSchool, 50);
+                            return _this.getInputTpl('EduFinishSchool', d.EduFinishSchool, 50);
                         }
                     },
                     {
-                        field: 'degree',
+                        field: 'EduDegree',
                         title: '学历',
                         templet: function (d) {
-                            return _this.getSelectTpl(_this.basicEducation, 'degree', d.degree);
+                            return _this.getSelectTpl(_this.basicEducation, 'EduDegree', d.EduDegree);
                         }
                     },
                     {
-                        field: 'nature',
+                        field: 'EduNature',
                         title: '性质',
                         templet: function (d) {
-                            return _this.getSelectTpl(_this.basicProperties, 'nature', d.nature);
+                            return _this.getSelectTpl(_this.basicProperties, 'EduNature', d.EduNature);
                         }
                     },
                     {
-                        field: 'professional',
+                        field: 'EduProfessional',
                         title: '专业',
                         templet: function (d) {
-                            return _this.getInputTpl('professional', d.professional, 50);
+                            return _this.getInputTpl('EduProfessional', d.EduProfessional, 50);
                         }
                     },
                     {
-                        field: 'eduTime',
+                        field: 'EduTime',
                         title: '学习年限',
-                        event: 'eduTime',
+                        event: 'EduTime',
                         templet: function (d) {
-                            return _this.getTimeTpl(d.id, 'eduTime', d.eduTime);
+                            return _this.getTimeTpl(d.id, 'EduTime', d.EduTime);
                         }
                     }
                 ]
@@ -387,11 +501,11 @@ new Vue({
             });
 
             table.on('tool(educationTable)', function (obj) {
-                if (obj.event == 'eduTime') {
-                    _this.showLaydate('.eduTime-' + obj.data.id);
+                if (obj.event == 'EduTime') {
+                    _this.showLaydate('.EduTime-' + obj.data.id);
                 } else if (obj.event == 'educationAdd') {
                     layer_load();
-                    var hasResult = _this.validateEducation(obj);
+                    var hasResult = _this.validateEducation(obj.tr, false);
                     if (!hasResult) {
                         layer_load_lose();
                         return false;
@@ -419,58 +533,68 @@ new Vue({
                 _this.educationData = [];
             }
             _this.educationData.push({
-                "id": _this.educationData.length + 1,
-                "finishSchool": '',
-                "degree": '',
-                "nature": '',
-                "professional": '',
-                "eduTime": ''
+                "EduId": _this.educationData.length + 1,
+                "EduFinishSchool": '',
+                "EduDegree": '',
+                "EduNature": '',
+                "EduProfessional": '',
+                "EduTime": ''
             });
         },
         //验证 教育经历
-        validateEducation: function (obj) {
+        validateEducation: function (obj, hasSubmit) {
             var _this = this;
             var hasResult = true;
             _this.educationData = [];
-            obj.tr.parents('table').find('tr').each(function () {
-                var finishSchool = $.trim($(this).find('input[name="finishSchool"]').val());
+
+            obj = hasSubmit ? obj : obj.parents('table');
+
+            obj.find('tr').each(function () {
+                var finishSchool = $.trim($(this).find('input[name="EduFinishSchool"]').val());
+                var degree = $(this).find('select[name="EduDegree"]').val();
+                var nature = $(this).find('select[name="EduNature"]').val();
+                var professional = $.trim($(this).find('input[name="EduProfessional"]').val());
+                var eduTime = $.trim($(this).find('input[name="EduTime"]').val());
+
+                //是否提交数据
+                if (hasSubmit && (!finishSchool && !degree && !nature && !professional && !eduTime)) {
+                    hasResult = true;
+                    return false;
+                }
+
                 if (!finishSchool) {
-                    layer_alert('请输入毕业院校');
+                    layer_alert('请输入[教育经历项]中的毕业院校');
                     hasResult = false;
                     return false;
                 }
-                var degree = $(this).find('select[name="degree"]').val();
                 if (!degree) {
-                    layer_alert('请选择学历');
+                    layer_alert('请选择[教育经历项]中的学历');
                     hasResult = false;
                     return false;
                 }
-                var nature = $(this).find('select[name="nature"]').val();
                 if (!nature) {
-                    layer_alert('请选择性质');
+                    layer_alert('请选择[教育经历项]中的性质');
                     hasResult = false;
                     return false;
                 }
-                var professional = $.trim($(this).find('input[name="professional"]').val());
                 if (!professional) {
-                    layer_alert('请输入专业');
+                    layer_alert('请输入[教育经历项]中的专业');
                     hasResult = false;
                     return false;
                 }
-                var eduTime = $.trim($(this).find('input[name="eduTime"]').val());
                 if (!eduTime) {
-                    layer_alert('请选择学习年限');
+                    layer_alert('请选择[教育经历项]中的学习年限');
                     hasResult = false;
                     return false;
                 }
 
                 _this.educationData.push({
-                    "id": _this.educationData.length + 1,
-                    "finishSchool": finishSchool,
-                    "degree": degree,
-                    "nature": nature,
-                    "professional": professional,
-                    "eduTime": eduTime
+                    "EduId": _this.educationData.length + 1,
+                    "EduFinishSchool": finishSchool,
+                    "EduDegree": degree,
+                    "EduNature": nature,
+                    "EduProfessional": professional,
+                    "EduTime": eduTime
                 });
             });
 
@@ -488,7 +612,7 @@ new Vue({
 
             var cols = [
                 [{
-                        field: 'id',
+                        field: 'WorkId',
                         title: '序号',
                         width: 90,
                         templet: function (d) {
@@ -496,46 +620,46 @@ new Vue({
                         }
                     },
                     {
-                        field: 'workTime',
+                        field: 'WorkTime',
                         title: '工作年限',
-                        event: 'workTime',
+                        event: 'WorkTime',
                         templet: function (d) {
-                            return _this.getTimeTpl(d.id, 'workTime', d.workTime);
+                            return _this.getTimeTpl(d.id, 'WorkTime', d.WorkTime);
                         }
                     },
                     {
-                        field: 'companyName',
+                        field: 'WorkCompanyName',
                         title: '公司名称',
                         templet: function (d) {
-                            return _this.getInputTpl('companyName', d.companyName, 50);
+                            return _this.getInputTpl('WorkCompanyName', d.WorkCompanyName, 50);
                         }
                     },
                     {
-                        field: 'department',
+                        field: 'WorkDepartment',
                         title: '部门',
                         templet: function (d) {
-                            return _this.getInputTpl('department', d.department, 50);
+                            return _this.getInputTpl('WorkDepartment', d.WorkDepartment, 50);
                         }
                     },
                     {
-                        field: 'position',
+                        field: 'WorkPosition',
                         title: '职位',
                         templet: function (d) {
-                            return _this.getInputTpl('position', d.position, 50);
+                            return _this.getInputTpl('WorkPosition', d.WorkPosition, 50);
                         }
                     },
                     {
-                        field: 'workDescribe',
+                        field: 'WorkDescribe',
                         title: '主要成绩',
                         templet: function (d) {
-                            return _this.getTextareaTpl('workDescribe', d.workDescribe);
+                            return _this.getTextareaTpl('WorkDescribe', d.WorkDescribe);
                         }
                     },
                     {
-                        field: 'quitReason',
+                        field: 'WorkQuitReason',
                         title: '离职原因',
                         templet: function (d) {
-                            return _this.getInputTpl('quitReason', d.quitReason, 200);
+                            return _this.getInputTpl('WorkQuitReason', d.WorkQuitReason, 200);
                         }
                     }
                 ]
@@ -548,11 +672,11 @@ new Vue({
             });
 
             table.on('tool(workTable)', function (obj) {
-                if (obj.event == 'workTime') {
-                    _this.showLaydate('.workTime-' + obj.data.id);
+                if (obj.event == 'WorkTime') {
+                    _this.showLaydate('.WorkTime-' + obj.data.id);
                 } else if (obj.event == 'workAdd') {
                     layer_load();
-                    var hasResult = _this.validateWork(obj);
+                    var hasResult = _this.validateWork(obj.tr, false);
                     if (!hasResult) {
                         layer_load_lose();
                         return false;
@@ -580,66 +704,76 @@ new Vue({
                 _this.workData = [];
             }
             _this.workData.push({
-                "id": _this.workData.length + 1,
-                "workTime": '',
-                "companyName": '',
-                "department": '',
-                "position": '',
-                "workDescribe": '',
-                "quitReason": '',
+                "WorkId": _this.workData.length + 1,
+                "WorkTime": '',
+                "WorkCompanyName": '',
+                "WorkDepartment": '',
+                "WorkPosition": '',
+                "WorkDescribe": '',
+                "WorkQuitReason": '',
             });
         },
         //验证 工作经历
-        validateWork: function (obj) {
+        validateWork: function (obj, hasSubmit) {
             var _this = this;
             var hasResult = true;
             _this.workData = [];
-            obj.tr.parents('table').find('tr').each(function () {
-                var workTime = $.trim($(this).find('input[name="workTime"]').val());
+
+            obj = hasSubmit ? obj : obj.parents('table');
+
+            obj.find('tr').each(function () {
+                var workTime = $.trim($(this).find('input[name="WorkTime"]').val());
+                var companyName = $.trim($(this).find('input[name="WorkCompanyName"]').val());
+                var department = $.trim($(this).find('input[name="WorkDepartment"]').val());
+                var position = $.trim($(this).find('input[name="WorkPosition"]').val());
+                var workDescribe = $.trim($(this).find('textarea[name="WorkDescribe"]').val());
+                var quitReason = $.trim($(this).find('input[name="WorkQuitReason"]').val());
+
+                //是否提交数据
+                if (hasSubmit && (!workTime && !companyName && !department && !position && !workDescribe && !quitReason)) {
+                    hasResult = true;
+                    return false;
+                }
+
                 if (!workTime) {
-                    layer_alert('请选择工作年限');
+                    layer_alert('请选择[工作经历项]中的工作年限');
                     hasResult = false;
                     return false;
                 }
-                var companyName = $.trim($(this).find('input[name="companyName"]').val());
                 if (!companyName) {
-                    layer_alert('请输入公司名称');
+                    layer_alert('请输入[工作经历项]中的公司名称');
                     hasResult = false;
                     return false;
                 }
-                var department = $.trim($(this).find('input[name="department"]').val());
                 if (!department) {
-                    layer_alert('请输入部门');
+                    layer_alert('请输入[工作经历项]中的部门');
                     hasResult = false;
                     return false;
                 }
-                var position = $.trim($(this).find('input[name="position"]').val());
                 if (!position) {
-                    layer_alert('请输入职位');
+                    layer_alert('请输入[工作经历项]中的职位');
                     hasResult = false;
                     return false;
                 }
-                var workDescribe = $.trim($(this).find('textarea[name="workDescribe"]').val());
                 if (!workDescribe) {
-                    layer_alert('请输入主要成绩');
+                    layer_alert('请输入[工作经历项]中的主要成绩');
                     hasResult = false;
                     return false;
                 }
-                var quitReason = $.trim($(this).find('input[name="quitReason"]').val());
                 if (!quitReason) {
-                    layer_alert('请输入离职原因');
+                    layer_alert('请输入[工作经历项]中的离职原因');
                     hasResult = false;
                     return false;
                 }
 
                 _this.workData.push({
-                    "id": _this.workData.length + 1,
-                    "workTime": workTime,
-                    "companyName": companyName,
-                    "department": department,
-                    "position": position,
-                    "workDescribe": workDescribe,
-                    "quitReason": quitReason
+                    "WorkId": _this.workData.length + 1,
+                    "WorkTime": workTime,
+                    "WorkCompanyName": companyName,
+                    "WorkDepartment": department,
+                    "WorkPosition": position,
+                    "WorkDescribe": workDescribe,
+                    "WorkQuitReason": quitReason
                 });
             });
 
@@ -701,4 +835,4 @@ new Vue({
             return html;
         },
     }
-})
+});

@@ -88,7 +88,7 @@
 										<label class="layui-form-label"><span class="text-red"> *</span>联系电话</label>
 										<div class="layui-input-block">
 											<input type="text" name="linkPhone" v-model="person.linkPhone"
-												maxlength="20" required lay-verify="name|tel" placeholder="联系电话"
+												maxlength="20" required lay-verify="name|phone" placeholder="联系电话"
 												class="layui-input">
 										</div>
 									</div>
@@ -173,10 +173,8 @@
 											<select name="degree" v-model="person.degree" required lay-verify="select"
 												placeholder="最高学历" lay-filter="degree">
 												<option value="">请选择</option>
-												<option v-if="item.name" v-for="item in basicEducation"
-													:value="item.name">
-													{{item.name}}
-												</option>
+												<option v-if="basicEducation.length>0" v-for="item in basicEducation"
+													:value="item.name">{{item.name}}</option>
 											</select>
 										</div>
 									</div>
@@ -226,9 +224,8 @@
 											<select name="recruitSource" v-model="person.recruitSource"
 												lay-filter="recruitSource">
 												<option value="">请选择</option>
-												<option v-if="item.name" v-for="item in basicRecruitment"
-													:value="item.name">
-													{{item.name}}
+												<option v-if="basicRecruitment.length>0"
+													v-for="item in basicRecruitment" :value="item.name">{{item.name}}
 												</option>
 											</select>
 										</div>
@@ -255,10 +252,8 @@
 											<select name="arrivalTime" v-model="person.arrivalTime" required
 												lay-verify="select" placeholder="到岗时间" lay-filter="arrivalTime">
 												<option value="">请选择</option>
-												<option v-if="item.name" v-for="item in basicArrival"
-													:value="item.name">
-													{{item.name}}
-												</option>
+												<option v-if="basicArrival.length>0" v-for="item in basicArrival"
+													:value="item.name">{{item.name}}</option>
 											</select>
 										</div>
 									</div>
@@ -267,7 +262,7 @@
 										<div class="layui-input-block">
 											<div class="pick-area pick-area1 margin-b-5"></div>
 											<input type="hidden" name="idCardArea" class="_idCardArea" required
-												lay-verify="name|areaHas" placeholder="身份证地址" value="" data-areacode="">
+												lay-verify="areaHas" placeholder="身份证地址" value="" data-areacode="">
 											<input type="text" name="idCardAddress" v-model="person.idCardAddress"
 												maxlength="100" placeholder="请输入身份证详细地址" class="layui-input">
 											<input type="hidden" name="idCardProvince" v-model="person.idCardProvince">
@@ -280,7 +275,7 @@
 										<div class="layui-input-block">
 											<div class="pick-area pick-area1 margin-b-5"></div>
 											<input type="hidden" name="liveArea" class="_liveArea" required
-												lay-verify="name|areaHas" placeholder="居住地址" value="" data-areacode="">
+												lay-verify="areaHas" placeholder="居住地址" value="" data-areacode="">
 											<input type="text" name="liveAddress" v-model="person.liveAddress"
 												maxlength="100" placeholder="请输入居住详细地址" class="layui-input">
 											<input type="hidden" name="liveProvince" v-model="person.liveProvince">
@@ -316,14 +311,16 @@
 								<hr class="layui-bg-blue hrheight3">
 								<div class="form-title">家庭成员及主要社会关系：</div>
 								<div class="layui-row">
-									<div class="layui-form-item layui-col-md12 margin-b-20">
+									<input type="hidden" name="family" v-model="person.family">
+									<div class="layui-form-item layui-col-md12 margin-b-20" id="familyPanel">
 										<table class="layui-table" id="familyTable" lay-filter="familyTable"></table>
 									</div>
 								</div>
 								<hr class="layui-bg-blue hrheight3">
 								<div class="form-title">教育经历：</div>
 								<div class="layui-row">
-									<div class="layui-form-item layui-col-md12 margin-b-20">
+									<input type="hidden" name="education" v-model="person.education">
+									<div class="layui-form-item layui-col-md12 margin-b-20" id="educationPanel">
 										<table class="layui-table" id="educationTable" lay-filter="educationTable">
 										</table>
 									</div>
@@ -331,16 +328,18 @@
 								<hr class="layui-bg-blue hrheight3">
 								<div class="form-title">工作经历：</div>
 								<div class="layui-row">
-									<div class="layui-form-item layui-col-md12 margin-b-20">
+									<input type="hidden" name="work" v-model="person.work">
+									<div class="layui-form-item layui-col-md12 margin-b-20" id="workPanel">
 										<table class="layui-table" id="workTable" lay-filter="workTable"></table>
 									</div>
 								</div>
 								<div class="layui-row">
 									<div class="layui-form-item">
 										<div class="layui-input-block text-right">
-											<button class="layui-btn layui-btn-danger" lay-submit
-												lay-filter="submit">确认</button>
-											<span class="layui-btn" onclick="history.back(-1)">返回</span>
+											<input type="button" class="layui-btn layui-btn-danger" lay-submit
+												lay-filter="basicInfo" value="确认" v-if="hasSubmit">
+											<span class="layui-btn"
+												onclick="javascript:window.location.href='/pages/person/personList.html'">返回</span>
 										</div>
 									</div>
 								</div>
