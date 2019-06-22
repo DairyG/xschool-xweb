@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="../../layui/css/layui.css" />
+	<link rel="stylesheet" href="../../layui/css/common.css" />
+	<link rel="stylesheet" href="../../layui/css/treetable.css" />
+	<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript" src="../../js/service.js"></script>
+	<script type="text/javascript" src="../../js/verify.js"></script>
+	<script type="text/javascript" src="../../js/common.js"></script>
+	<script type="text/javascript" src="../../lib/vue.js"></script>
+</head>
+
+<body class="bgf2f2f2">
+	<div class="childrenBody">
+		<div class="layui-card-body">
+			<table class="layui-table" id="lst" lay-filter="lst"></table>
+			<script type="text/html" id="bar">
+					{{#if(d.isSystem == 1){ }}
+						<button class="layui-btn layui-btn-xs layui-btn-warm layui-btn-disabled" lay-event="edit">编辑</button>
+							<button class="layui-btn layui-btn-danger layui-btn-xs layui-btn-disabled" lay-event="del">删除</button>
+					{{# }else{ }}
+						<button class="layui-btn layui-btn-xs layui-btn-warm" lay-event="edit">编辑</button>
+						{{#  if(d.bgStatus == 1){ }}
+						<button class="layui-btn layui-btn-xs" lay-event="del">启用</button>
+						{{# }else{ }}
+						<button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">停用</button>
+						{{# } }}
+					{{# } }}
+				</script>
+			<script type="text/html" id="toolbar">
+					<button class="layui-btn  layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i> 添加</button>
+				</script>
+		</div>
+	</div>
+	<div class="linePop">
+		<div class="layui-card-body padding-r-50">
+			<form class="layui-form layui-form2" id="budgetForm">
+				<div class="layui-row">
+					<input type="hidden" name="Id" v-model="id" value="" />
+					<!-- <input type="hidden" name="Pid" v-model="pid" value="" /> -->
+					<input type="hidden" name="BgStatus" v-model="bgStatus" value="0" />
+					<input type="hidden" name="Type" v-model="type" value="1" />
+					<input type="hidden" name="IsSystem" v-model="isSystem" value="0" />
+					<input type="hidden" name="LevelMap" v-model="levelMap" value="0," />
+					<input type="hidden" name="Type_Chinese" value="费用预算" e-value="CostBudget" />
+					<div class="layui-form-item layui-col-md12 margin-b-20">
+						<label class="layui-form-label">费用名称<span class="text-red"> *</span></label>
+						<div class="layui-input-block">
+							<input type="text" name="name" v-model="name" required lay-verify="name"
+								placeholder="费用名称" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md12 margin-b-20">
+						<label class="layui-form-label">费用名称<span class="text-red"> *</span></label>
+						<div class="layui-input-block" id="divsel">
+							
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md12 margin-b-20">
+						<label class="layui-form-label">显示顺序</label>
+						<div class="layui-input-block">
+							<input type="text" name="SortId" v-model="sortId" required lay-verify="numHas"
+								placeholder="显示顺序" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item layui-col-md12 margin-b-20">
+						<label class="layui-form-label">备注</label>
+						<div class="layui-input-block">
+							<textarea class="layui-textarea" name="Memo" v-model="memo" placeholder="备注"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="layui-row text-right">
+					<button class="layui-btn" lay-submit lay-filter="formDemo">确认</button>
+					<span class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" src="../../js/basicinfo/budget.js"></script>
+</body>
+
+</html>
