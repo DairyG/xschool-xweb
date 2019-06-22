@@ -3,6 +3,7 @@ new Vue({
     data() {
         return {
             hasSubmit: true,
+            hasReadonly: false,
             company: {
                 id: 0,
                 companyName: '',
@@ -92,6 +93,8 @@ new Vue({
                 Serv.Get('company/getInfo/' + value, {}, function (result) {
                     layer_load_lose();
                     if (result) {
+                        _this.hasReadonly = true;
+
                         _this.company.id = result.id;
                         _this.company.companyName = result.companyName;
                         _this.company.englishName = result.englishName;
@@ -132,8 +135,11 @@ new Vue({
                 layer_load();
                 Serv.Post('company/edit', laydata.field, function (result) {
                     if (result.code == "00") {
-                        _this.company.id = result;
-                        _this.bankInfo.companyId = result;
+                        _this.company.id = result.data;
+                        _this.bankInfo.companyId = result.data;
+
+                        _this.hasReadonly = true;
+
                         layer_alert(result.message);
                     } else {
                         layer_alert(result.message);
