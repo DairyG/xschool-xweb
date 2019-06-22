@@ -69,10 +69,12 @@ var vm = new Vue({
     },
     mounted: function () {
         var _this = this;
-        _this.initLayui();
+        var id = GetPara('id');
+        id = !id ? '' : id;
+        _this.initLayui(id);
     },
     methods: {
-        initLayui: function () {
+        initLayui: function (id) {
             var _this = this;
             layui.use(['element', 'form', 'table', 'laydate'], function () {
                 var element = layui.element,
@@ -80,13 +82,8 @@ var vm = new Vue({
                     laydate = layui.laydate,
                     form = layui.form;
 
-                _this.getBasic(table);
+                _this.getBasic(table, id);
                 _this.onBasicSelect(form);
-
-                $("._idCardArea").jarea();
-                $("._idCardArea").jarea('val');
-                $("._liveArea").jarea();
-                $("._liveArea").jarea('val');
 
                 //出生日期
                 laydate.render({
@@ -113,7 +110,6 @@ var vm = new Vue({
                         _this.person.age = age;
                     }
                 });
-
 
                 //基本信息
                 form.on('submit(basicInfo)', function (laydata) {
@@ -229,7 +225,7 @@ var vm = new Vue({
             });
         },
         //获取基础信息
-        getBasic: function (table, uid) {
+        getBasic: function (table, id) {
             var _this = this;
             layer_load();
             Serv.Get('workerinfield/getdata?type=1,3,4,5,6', {}, function (result) {
@@ -245,14 +241,74 @@ var vm = new Vue({
 
                     // console.log(_this.basicEducation);
 
+                    if (id.IsNum()) {
+                        _this.getPerson(id, table);
+                    } else {
+                        _this.intiFamily(table);
+                        _this.initEducation(table);
+                        _this.initWork(table);
+
+                        $("._idCardArea").jarea();
+                        $("._idCardArea").jarea('val');
+                        $("._liveArea").jarea();
+                        $("._liveArea").jarea('val');
+
+                        _this.$nextTick(function () {
+                            layui.form.render('select');
+                        });
+                    }
+                } else {
+                    _this.hasSubmit = false;
+                    layer_alert(result.message);
+                }
+            });
+        },
+        //获取员工
+        getPerson: function (value, table) {
+            var _this = this;
+            layer_load();
+            Serv.Get('person/getInfo/' + value, {}, function (result) {
+                layer_load_lose();
+                if (result) {
+                    _this.person = result;
+
+                    var idCardAreaCode = '';
+                    if (_this.person.idCardProvince && _this.person.idCardCity && _this.person.idCardCounty) {
+                        idCardAreaCode = _this.person.idCardProvince + ',' + _this.person.idCardCity + ',' + _this.person.idCardCounty;
+                    }
+                    $('input[name="idCardArea"]').attr('data-areacode', idCardAreaCode).val(_this.person.idCardArea);
+
+                    var liveAreaCode = '';
+                    if (_this.person.liveProvince && _this.person.liveCity && _this.person.liveCounty) {
+                        liveAreaCode = _this.person.liveProvince + ',' + _this.person.liveCity + ',' + _this.person.liveCounty;
+                    }
+                    $('input[name="liveArea"]').attr('data-areacode', liveAreaCode).val(_this.person.liveArea);
+
+                    if (_this.person.family) {
+                        _this.familyData = JSON.parse(_this.person.family);
+                    }
+                    if (_this.person.education) {
+                        _this.educationData = JSON.parse(_this.person.education);
+                    }
+                    if (_this.person.work) {
+                        _this.workData = JSON.parse(_this.person.work);
+                    }
+
                     _this.intiFamily(table);
                     _this.initEducation(table);
                     _this.initWork(table);
 
+                    $("._idCardArea").jarea();
+                    $("._idCardArea").jarea('val');
+                    $("._liveArea").jarea();
+                    $("._liveArea").jarea('val');
+
                     _this.$nextTick(function () {
                         layui.form.render('select');
                     });
+
                 } else {
+                    _this.hasSubmit = false;
                     layer_alert(result.message);
                 }
             });
