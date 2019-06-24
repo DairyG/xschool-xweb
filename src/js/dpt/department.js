@@ -10,7 +10,7 @@ var setting = {
         , simpleData: {
             enable: true
             , idKey: 'id'
-            , pIdKey: 'higherLevel'
+            , pIdKey: 'pId'
             , rootPId: '0'
         }
     },
@@ -44,8 +44,8 @@ $(document).ready(function () {
 })
 var model = {
     id: '',
-    belongCompany: '',
-    higherLevel: '0'
+    companyId: '',
+    pId: '0'
     , dptName: ''
     , dptCode: ''
     , dptPositions: ''
@@ -62,8 +62,8 @@ var vm = new Vue({ el: '#dptForm', data: model });
 function GetSingle(Id) {
     Serv.Post('Department/GetSingle', { Id: Id }, function (response) {
         model.id = response.id;
-        model.belongCompany = response.belongCompany;
-        model.higherLevel = response.higherLevel;
+        model.companyId = response.companyId;
+        model.pId = response.pId;
         model.dptName = response.dptName;
         model.dptCode = response.dptCode;
         model.dptPositions = response.dptPositions;
@@ -80,8 +80,8 @@ function GetSingle(Id) {
 }
 function ClearModel(dpt) {
     model.id = dpt.id;
-    model.belongCompany = dpt.belongCompany;
-    model.higherLevel = dpt.higherLevel;
+    model.companyId = dpt.companyId;
+    model.pId = dpt.pId;
     model.dptName = dpt.dptName;
     model.dptCode = dpt.dptCode;
     model.dptPositions = dpt.dptPositions;
@@ -97,8 +97,8 @@ function ClearModel(dpt) {
 function ClickAdd() {
     var dpt = {
         id: 0,
-        belongCompany: 1,
-        higherLevel: $("input[name='NodeId']").val(),
+        companyId: 1,
+        pId: $("input[name='NodeId']").val(),
         dptName: '',
         dptCode: '',
         dptPositions: '',
@@ -145,7 +145,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
-            laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.HigherLevel + ",";
+            laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.pId + ",";
             Serv.Post('Department/add', laydata.field, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());

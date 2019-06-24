@@ -7,13 +7,21 @@
 		<link rel="stylesheet" href="../../layui/css/layui.css" />
 		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
 		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<link rel="stylesheet" href="../../lib/pick-pcc/pick-pcc.css" />
 		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/verify.js"></script>
+		<script type="text/javascript" src="../../lib/vue.js"></script>
 		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
 		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+		<script type="text/javascript" src="../../lib/pick-pcc/pick-pcc.js"></script>
+		<script type="text/javascript" src="../../js/jquery.jarea.js"></script>
+		<script type="text/javascript" src="../../js/ztree.radio.js"></script>
 	</head>
 	<body class="bgf2f2f2">
-		<div class="childrenBody">
+		<div class="childrenBody" id="resumeBody">
 			<div class="layui-card">
 				<div class="layui-card-body">
 					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
@@ -22,370 +30,298 @@
 							<li>添加简历</li>
 						</ul>
 						<div class="layui-tab-content">
-							<div class="layui-tab-item layui-show">
-								<form class="layui-form layui-form2 layui-search-form">
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md3 margin-b-20">
-											<label class="layui-form-label">姓名<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md3 margin-b-20">
-											<label class="layui-form-label">手机<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">状态<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<select>
-													<option></option>
-													<option>未面试</option>
-													<option>已面试</option>
-													<option>未通过</option>
-												</select>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md2 margin-b-20">
-											<button class="layui-btn layui-btn-normal">搜索</button>
-										</div>	
-									</div>
-								</form>
-								<table id="lst" lay-filter="lst"></table>
-								<script type="text/html" id="toolbar">
-									<button class="layui-btn  layui-btn-xs" lay-event="info">查看</button>
-									<button class="layui-btn  layui-btn-xs layui-btn-normal">编辑</button>
-									<button class="layui-btn  layui-btn-xs layui-btn-danger">删除</button>
-								</script>
-								<script type="text/html" id="bar">
-								</script>
+
+							<div class="layui-tab-item layui-show" tab-name="简历列表">
+								
 							</div>
-							<div class="layui-tab-item">
-								<form class="layui-form layui-form2">
-									<div class="layui-card-body">个人信息：</div>
+	
+							<div class="layui-tab-item" tab-name="个人信息">
+								<form class="layui-form layui-form2" autocomplete="off">
+	
+									<input type="hidden" name="id" v-model="person.id" value="0">
+									<input type="hidden" name="companyId" v-model="person.companyId" value="0">
+	
+									<div class="form-title">个人信息：</div>
 									<div class="layui-row">
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">姓名<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>个人姓名</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+												<input type="text" name="userName" v-model="person.userName" maxlength="20"
+													required lay-verify="name" placeholder="个人姓名" class="layui-input">
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">英文名</label>
+											<label class="layui-form-label">英文名称</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入英文名" autocomplete="off" class="layui-input">
+												<input type="text" name="englishName" v-model="person.englishName"
+													maxlength="50" placeholder="英文名称" class="layui-input">
 											</div>
-										</div>	
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">性别<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>个人性别</label>
 											<div class="layui-input-block">
-												<select>
-													<option>男</option>
-													<option>女</option>
+												<select name="gender" lay-filter="gender" v-model="person.gender">
+													<option value="1">男</option>
+													<option value="2">女</option>
 												</select>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">电话<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>联系电话</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入电话" autocomplete="off" class="layui-input">
-											</div>
-										</div>			
-										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">邮箱</label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+												<input type="text" name="linkPhone" v-model="person.linkPhone"
+													maxlength="20" required lay-verify="name|phone" placeholder="联系电话"
+													class="layui-input">
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">QQ</label>
+											<label class="layui-form-label">个人邮箱</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入QQ" autocomplete="off" class="layui-input">
+												<input type="text" name="email" v-model="person.email" maxlength="50"
+													required lay-verify="emailHas" placeholder="个人邮箱" class="layui-input">
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">民族<span class="text-red"> *</span></label>
+											<label class="layui-form-label">个人QQ</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入民族" autocomplete="off" class="layui-input">
-											</div>
-										</div>	
-										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">籍贯<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入籍贯" autocomplete="off" class="layui-input">
-											</div>
-										</div>			
-										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">政治面貌<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入政治面貌" autocomplete="off" class="layui-input">
+												<input type="text" name="qq" v-model="person.qq" maxlength="20" required
+													lay-verify="numHas" placeholder="个人QQ" class="layui-input">
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">身份证号<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>所属民族</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入身份证号" autocomplete="off" class="layui-input">
+												<input type="text" name="folk" v-model="person.folk" maxlength="50" required
+													lay-verify="name" placeholder="所属民族" class="layui-input">
 											</div>
-										</div>	
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">年龄<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>个人籍贯</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入年龄" autocomplete="off" class="layui-input">
+												<input type="text" name="nativePlace" v-model="person.nativePlace"
+													maxlength="50" required lay-verify="name" placeholder="个人籍贯"
+													class="layui-input">
 											</div>
-										</div>		
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">出生日期<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>政治面貌</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入出生日期" autocomplete="off" class="layui-input" id="date1">
+												<input type="text" name="politicalStatus" v-model="person.politicalStatus"
+													maxlength="50" required lay-verify="name" placeholder="政治面貌"
+													class="layui-input">
 											</div>
-										</div>				
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">毕业院校<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>身份证号</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入毕业院校" autocomplete="off" class="layui-input">
+												<input type="text" name="idCard" v-model="person.idCard" maxlength="30"
+													required lay-verify="name|card" placeholder="身份证号" class="layui-input">
 											</div>
-										</div>		
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">所学专业<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>年龄</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入所学专业" autocomplete="off" class="layui-input">
+												<input type="text" name="age" v-model="person.age" maxlength="4" required
+													lay-verify="name|numNotZore" placeholder="年龄" class="layui-input">
 											</div>
-										</div>		
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">最高学历	<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>出生日期</label>
 											<div class="layui-input-block">
-												<select>
-													<option></option>
-													<option>小学</option>
-													<option>初中</option>
-													<option>高中</option>
-													<option>中转</option>
-													<option>大专</option>
-													<option>本科</option>
-													<option>硕士</option>
-													<option>博士</option>
+												<input type="text" id="birthDay" name="birthDay" v-model="person.birthDay"
+													readonly required lay-verify="name" placeholder="出生日期"
+													class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>毕业院校</label>
+											<div class="layui-input-block">
+												<input type="text" name="graduateInstitutions"
+													v-model="person.graduateInstitutions" maxlength="50" required
+													lay-verify="name" placeholder="毕业院校" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>所学专业</label>
+											<div class="layui-input-block">
+												<input type="text" name="professional" v-model="person.professional"
+													maxlength="50" required lay-verify="name" placeholder="所学专业"
+													class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>最高学历</label>
+											<div class="layui-input-block">
+												<select name="degree" v-model="person.degree" required lay-verify="select"
+													placeholder="最高学历" lay-filter="degree">
+													<option value="">请选择</option>
+													<option v-if="basicEducation.length>0" v-for="item in basicEducation"
+														:value="item.name">{{item.name}}</option>
 												</select>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">毕业时间	<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>毕业时间</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入毕业时间" autocomplete="off" class="layui-input" id="date2">
+												<input type="text" id="graduationDate" name="graduationDate"
+													v-model="person.graduationDate" readonly required lay-verify="name"
+													placeholder="毕业时间" class="layui-input">
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">身高</label>
+											<label class="layui-form-label">身高CM</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入身高" autocomplete="off" class="layui-input">
+												<input type="text" name="stature" v-model="person.stature" maxlength="5"
+													required lay-verify="numHas" placeholder="身高" class="layui-input">
 											</div>
-										</div>	
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">体重</label>
+											<label class="layui-form-label">体重KG</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入体重" autocomplete="off" class="layui-input">
+												<input type="text" name="weight" v-model="person.weight" maxlength="5"
+													required lay-verify="numHas" placeholder="体重" class="layui-input">
 											</div>
-										</div>		
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
 											<label class="layui-form-label">婚姻状况</label>
 											<div class="layui-input-block">
-												<select>
-													<option></option>
-													<option>已婚</option>
-													<option>未婚</option>
+												<select name="marriage" v-model="person.marriage" lay-filter="marriage">
+													<option value="已婚">已婚</option>
+													<option value="未婚">未婚</option>
 												</select>
 											</div>
-										</div>	
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
 											<label class="layui-form-label">有无子女</label>
 											<div class="layui-input-block">
-												<select>
-													<option></option>
-													<option>无</option>
-													<option>有</option>
+												<select name="children" v-model="person.children" lay-filter="children">
+													<option value="无">无</option>
+													<option value="有">有</option>
 												</select>
 											</div>
-										</div>	
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
 											<label class="layui-form-label">招聘来源</label>
 											<div class="layui-input-block">
-												<select>
-													<option></option>
-													<option>招聘会</option>
-													<option>智联</option>
-													<option>58</option>
+												<select name="recruitSource" v-model="person.recruitSource"
+													lay-filter="recruitSource">
+													<option value="">请选择</option>
+													<option v-if="basicRecruitment.length>0"
+														v-for="item in basicRecruitment" :value="item.name">{{item.name}}
+													</option>
 												</select>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">应聘职位<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>应聘职位</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入应聘职位" autocomplete="off" class="layui-input">
+												<input type="text" name="jobCandidates" v-model="person.jobCandidates"
+													maxlength="50" required lay-verify="name" placeholder="应聘职位"
+													class="layui-input">
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">期望薪水(税前)<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>期望月薪(税前)</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入期望薪水（税前）" autocomplete="off" class="layui-input">
+												<input type="text" name="expectSalary" v-model="person.expectSalary"
+													maxlength="50" required lay-verify="name" placeholder="期望月薪（税前）"
+													class="layui-input">
 											</div>
-										</div>	
+										</div>
 										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">到岗时间<span class="text-red"> *</span></label>
+											<label class="layui-form-label"><span class="text-red"> *</span>到岗时间</label>
 											<div class="layui-input-block">
-												<select>
-													<option>随时</option>
-													<option>三天内</option>
-													<option>一周内</option>
+												<select name="arrivalTime" v-model="person.arrivalTime" required
+													lay-verify="select" placeholder="到岗时间" lay-filter="arrivalTime">
+													<option value="">请选择</option>
+													<option v-if="basicArrival.length>0" v-for="item in basicArrival"
+														:value="item.name">{{item.name}}</option>
 												</select>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md12 margin-b-20">
 											<label class="layui-form-label">身份证地址</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入身份证地址" autocomplete="off" class="layui-input">
+												<div class="pick-area pick-area1 margin-b-5"></div>
+												<input type="hidden" name="idCardArea" class="_idCardArea" required
+													lay-verify="areaHas" placeholder="身份证地址" value="" data-areacode="">
+												<input type="text" name="idCardAddress" v-model="person.idCardAddress"
+													maxlength="100" placeholder="请输入身份证详细地址" class="layui-input">
+												<input type="hidden" name="idCardProvince" v-model="person.idCardProvince">
+												<input type="hidden" name="idCardCity" v-model="person.idCardCity">
+												<input type="hidden" name="idCardCounty" v-model="person.idCardCounty">
 											</div>
-										</div>	
+										</div>
 										<div class="layui-form-item layui-col-md12 margin-b-20">
 											<label class="layui-form-label">居住地址</label>
 											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入居住地址" autocomplete="off" class="layui-input">
+												<div class="pick-area pick-area1 margin-b-5"></div>
+												<input type="hidden" name="liveArea" class="_liveArea" required
+													lay-verify="areaHas" placeholder="居住地址" value="" data-areacode="">
+												<input type="text" name="liveAddress" v-model="person.liveAddress"
+													maxlength="100" placeholder="请输入居住详细地址" class="layui-input">
+												<input type="hidden" name="liveProvince" v-model="person.liveProvince">
+												<input type="hidden" name="liveCity" v-model="person.liveCity">
+												<input type="hidden" name="liveCounty" v-model="person.liveCounty">
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md12 margin-b-20">
 											<label class="layui-form-label">兴趣爱好</label>
 											<div class="layui-input-block">
-												<textarea class="layui-textarea"></textarea>
+												<textarea class="layui-textarea" name="hobby"
+													v-model="person.hobby"></textarea>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">照片</label>
+											<label class="layui-form-label">个人照片</label>
 											<div class="layui-input-block">
-												<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" ><i class="layui-icon">&#xe67c;</i>上传照片</span>
+												<input type="hidden" name="photoPath" v-model="person.photoPath">
+												<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
+														class="layui-icon">&#xe67c;</i>上传照片</span>
 											</div>
-										</div>	
+										</div>
 										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<label class="layui-form-label">证件</label>
+											<label class="layui-form-label">证书证件</label>
 											<div class="layui-input-block">
-												<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" ><i class="layui-icon">&#xe67c;</i>上传证件</span>
+												<input type="hidden" name="certificatePath"
+													v-model="person.certificatePath">
+												<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
+														class="layui-icon">&#xe67c;</i>上传证件</span>
 											</div>
 										</div>
 									</div>
-									<div class="layui-card-body">家庭成员及主要社会关系：</div>
+									<hr class="layui-bg-blue hrheight3">
+									<div class="form-title">家庭成员及主要社会关系：</div>
 									<div class="layui-row">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<table class="layui-table">
-												<thead>
-													<tr>
-														<th width="60">序号</th>
-														<th>姓名</th>
-														<th>关系</th>
-														<th>电话</th>
-														<th>通讯地址</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
-														<td><input type="text" class="layui-input" /></td>
-														<td>
-															<select>
-																<option></option>
-																<option>父母</option>
-																<option>兄妹</option>
-																<option>子女</option>
-																<option>其他</option>
-															</select>
-														</td>
-														<td><input type="text" class="layui-input" /></td>
-														<td><input type="text" class="layui-input" /></td>
-													</tr>
-												</tbody>
+										<input type="hidden" name="family" v-model="person.family">
+										<div class="layui-form-item layui-col-md12 margin-b-20" id="familyPanel">
+											<table class="layui-table" id="familyTable" lay-filter="familyTable"></table>
+										</div>
+									</div>
+									<hr class="layui-bg-blue hrheight3">
+									<div class="form-title">教育经历：</div>
+									<div class="layui-row">
+										<input type="hidden" name="education" v-model="person.education">
+										<div class="layui-form-item layui-col-md12 margin-b-20" id="educationPanel">
+											<table class="layui-table" id="educationTable" lay-filter="educationTable">
 											</table>
 										</div>
 									</div>
-									<div class="layui-card-body">教育经历：</div>
+									<hr class="layui-bg-blue hrheight3">
+									<div class="form-title">工作经历：</div>
 									<div class="layui-row">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<table class="layui-table">
-												<thead>
-													<tr>
-														<th width="60">序号</th>
-														<th>毕业院校</th>
-														<th>学历</th>
-														<th>性质</th>
-														<th>专业</th>
-														<th>学习年限</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
-														<td><input type="text" class="layui-input" /></td>
-														<td>
-															<select>
-																<option></option>
-																<option>小学</option>
-																<option>初中</option>
-																<option>高中</option>
-																<option>中转</option>
-																<option>大专</option>
-																<option>本科</option>
-																<option>硕士</option>
-																<option>博士</option>
-															</select>
-														</td>
-														<td>
-															<select>
-																<option></option>
-																<option>统招</option>
-																<option>成教</option>
-																<option>自考</option>
-																<option>网教</option>
-																<option>其他</option>
-															</select>
-														</td>
-														<td><input type="text" class="layui-input" /></td>
-														<td><input type="text" class="layui-input date3" readonly /></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-									<div class="layui-card-body">工作经历：</div>
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md12 margin-b-20">
-											<table class="layui-table">
-												<thead>
-													<tr>
-														<th width="60">序号</th>
-														<th>工作年限</th>
-														<th>公司名称</th>
-														<th>部门</th>
-														<th>职位</th>
-														<th>主要成绩</th>
-														<th>离职原因</th>
-													</tr>
-												</thead>					
-												<tbody>
-													<tr>
-														<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
-														<td><input type="text" class="layui-input date3" readonly/></td>
-														<td><input type="text" class="layui-input" /></td>
-														<td><input type="text" class="layui-input" /></td>
-														<td><input type="text" class="layui-input" /></td>
-														<td><input type="text" class="layui-input" /></td>
-														<td><input type="text" class="layui-input" /></td>
-													</tr>
-												</tbody>
-											</table>
+										<input type="hidden" name="work" v-model="person.work">
+										<div class="layui-form-item layui-col-md12 margin-b-20" id="workPanel">
+											<table class="layui-table" id="workTable" lay-filter="workTable"></table>
 										</div>
 									</div>
 									<div class="layui-row">
 										<div class="layui-form-item">
 											<div class="layui-input-block text-right">
-												<button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
-												<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+												<input type="button" class="layui-btn layui-btn-danger" lay-submit
+													lay-filter="basicInfo" value="确认" v-if="hasSubmit">
+												<span class="layui-btn"
+													onclick="javascript:window.location.href='/pages/recruit/resumeList.html'">返回</span>
 											</div>
 										</div>
 									</div>
@@ -399,7 +335,8 @@
 		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
 			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
 		</div>
-		<script type="text/javascript">
+		<script type="text/javascript" src="../../js/resume/resume.js"></script>
+		<!-- <script type="text/javascript">
 			var data_col = [[
 				{type: 'numbers', title: '序号'},
 				{field: 'name', title: '姓名'},
@@ -537,6 +474,6 @@
 			$(document).ready(function(){
 				$.fn.zTree.init($("#treeDemo"), setting, zNodes);
 			});
-		</script>
+		</script> -->
 	</body>
 </html>
