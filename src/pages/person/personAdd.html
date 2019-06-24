@@ -19,6 +19,7 @@
 	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
 	<script type="text/javascript" src="../../lib/pick-pcc/pick-pcc.js"></script>
 	<script type="text/javascript" src="../../js/jquery.jarea.js"></script>
+	<script type="text/javascript" src="../../js/ztree.radio.js"></script>
 	<style>
 		.layui-table-box,
 		.layui-table-body {
@@ -352,80 +353,86 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>所属部门</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请选择部门" autocomplete="off" class="layui-input" readonly
-												onclick="showMenu()" id="treeIpt">
+											<input type="hidden" v-model="person.departmentId" name="departmentId" />
+											<input type="text" name="departmentName" v-model="person.departmentName"
+												required lay-verify="name" placeholder="请选择部门" class="layui-input"
+												readonly id="departmentName" data-id="">
 										</div>
 									</div>
-									<!-- 职位从基础信息->职位管理->职位管理中获取 -->
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>所属职位</label>
 										<div class="layui-input-block">
-											<select>
-												<option></option>
-												<option>职位一</option>
-												<option>职位二</option>
-												<option>职位三</option>
+											<select name="positionId" v-model="person.positionId" required
+												lay-verify="select" placeholder="所属职位" lay-filter="positionId">
+												<option value="0">请选择</option>
+												<option v-if="basicPosition.length>0" v-for="item in basicPosition"
+													:value="item.id">{{item.name}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>员工工号</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入员工工号" autocomplete="off" class="layui-input">
+											<input type="text" name="employeeNo" maxlength="30" required
+												lay-verify="name|code" placeholder="员工工号" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>在职状态</label>
 										<div class="layui-input-block">
-											<select>
-												<option></option>
-												<option>试用</option>
-												<option>转正</option>
-												<option>离职</option>
+											<select name="status" v-model="person.status" required lay-verify="select"
+												placeholder="所属职位" lay-filter="status">
+												<option value="0">未入职</option>
+												<option value="1">试用</option>
+												<option value="2">转正</option>
+												<option value="-1">离职</option>
 											</select>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">办公电话</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入办公电话" autocomplete="off" class="layui-input">
+											<input type="text" name="officePhone" v-model="person.officePhone"
+												maxlength="50" required lay-verify="telHas" placeholder="办公电话"
+												class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">办公邮箱</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入办公邮箱" autocomplete="off" class="layui-input">
+											<input type="text" name="officeEmail" v-model="person.officeEmail"
+												maxlength="50" required lay-verify="emailHas" placeholder="办公邮箱"
+												class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">传真号码</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入传真号码" autocomplete="off" class="layui-input">
+											<input type="text" name="faxNumber" v-model="person.faxNumber"
+												maxlength="50" required lay-verify="faxHas" placeholder="传真号码"
+												class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">推荐人</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入推荐人" autocomplete="off" class="layui-input">
+											<input type="text" name="referees" v-model="person.referees" maxlength="20"
+												placeholder="推荐人" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">办公地址</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入办公地址" autocomplete="off" class="layui-input">
+											<input type="text" name="officeAddress" v-model="person.officeAddress"
+												maxlength="100" placeholder="办公地址" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">职位描述</label>
 										<div class="layui-input-block">
-											<textarea class="layui-textarea" placeholder="请输入职位描述"></textarea>
+											<textarea class="layui-textarea" name="positionDescribe"
+												v-model="person.positionDescribe" maxlength="700"
+												placeholder="职位描述"></textarea>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
@@ -441,9 +448,10 @@
 								<div class="layui-row">
 									<div class="layui-form-item">
 										<div class="layui-input-block text-right">
-											<button class="layui-btn layui-btn-danger" lay-submit
-												lay-filter="submit">确认</button>
-											<span class="layui-btn" onclick="history.back(-1)">返回</span>
+											<input type="button" class="layui-btn layui-btn-danger" lay-submit
+												lay-filter="positionInfo" value="确认" v-if="hasSubmit">
+											<span class="layui-btn"
+												onclick="javascript:window.location.href='/pages/person/personList.html'">返回</span>
 										</div>
 									</div>
 								</div>
@@ -470,54 +478,49 @@
 										<label class="layui-form-label"><span class="text-red"> *</span>合同签定日期</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="合同签定日期" autocomplete="off" class="layui-input date"
-												readonly />
+												placeholder="合同签定日期" class="layui-input date" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>试用开始日期</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="试用开始日期" autocomplete="off" class="layui-input date"
-												readonly />
+												placeholder="试用开始日期" class="layui-input date" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>试用结束日期</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="试用结束日期" autocomplete="off" class="layui-input date"
-												readonly />
+												placeholder="试用结束日期" class="layui-input date" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">正式开始日期</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="正式开始日期" autocomplete="off" class="layui-input date"
-												readonly />
+												placeholder="正式开始日期" class="layui-input date" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">正式结束日期</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="正式结束日期" autocomplete="off" class="layui-input date"
-												readonly />
+												placeholder="正式结束日期" class="layui-input date" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">解除日期</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="解除日期" autocomplete="off" class="layui-input date" readonly>
+												placeholder="解除日期" class="layui-input date" readonly>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">解除原因</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="解除原因" autocomplete="off" class="layui-input">
+												placeholder="解除原因" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
@@ -552,8 +555,7 @@
 									<div class="layui-form-item">
 										<label class="layui-form-label"><span class="text-red"> *</span>登录账号</label>
 										<div class="layui-input-block">
-											<input type="text" autocomplete="off" class="layui-input"
-												placeholder="请输入登录账号" />
+											<input type="text" class="layui-input" placeholder="请输入登录账号" />
 										</div>
 									</div>
 									<div class="layui-form-item">
@@ -601,29 +603,25 @@
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label"><span class="text-red"> *</span>开户银行</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入银行名称" />
+										<input type="text" class="layui-input" placeholder="请输入银行名称" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label"><span class="text-red"> *</span>开户名称</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入开户名称" />
+										<input type="text" class="layui-input" placeholder="请输入开户名称" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label"><span class="text-red"> *</span>银行账户</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入银行账户" />
+										<input type="text" class="layui-input" placeholder="请输入银行账户" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label"><span class="text-red"> *</span>预留手机</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入预留手机" />
+										<input type="text" class="layui-input" placeholder="请输入预留手机" />
 									</div>
 								</div>
 							</div>
@@ -634,36 +632,31 @@
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label"><span class="text-red"> *</span>基本工资</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入基本工资" />
+										<input type="text" class="layui-input" placeholder="请输入基本工资" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">餐费补助</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入餐费补助" />
+										<input type="text" class="layui-input" placeholder="请输入餐费补助" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">话费补助</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入话费补助" />
+										<input type="text" class="layui-input" placeholder="请输入话费补助" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">交通补助</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入交通补助" />
+										<input type="text" class="layui-input" placeholder="请输入交通补助" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">高温补助</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入高温补助" />
+										<input type="text" class="layui-input" placeholder="请输入高温补助" />
 									</div>
 								</div>
 							</div>
@@ -673,43 +666,37 @@
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">养老保险</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="养老保险总金额" />
+										<input type="text" class="layui-input" placeholder="养老保险总金额" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">个人缴纳</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="养老保险个人缴纳" />
+										<input type="text" class="layui-input" placeholder="养老保险个人缴纳" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">公司缴纳</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="养老保险公司缴纳" />
+										<input type="text" class="layui-input" placeholder="养老保险公司缴纳" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">失业保险</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="请输入失业保险" />
+										<input type="text" class="layui-input" placeholder="请输入失业保险" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">个人缴纳</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="失业保险个人缴纳" />
+										<input type="text" class="layui-input" placeholder="失业保险个人缴纳" />
 									</div>
 								</div>
 								<div class="layui-form-item layui-col-md4">
 									<label class="layui-form-label">公司缴纳</label>
 									<div class="layui-input-block">
-										<input type="text" autocomplete="off" class="layui-input"
-											placeholder="失业保险公司缴纳" />
+										<input type="text" class="layui-input" placeholder="失业保险公司缴纳" />
 									</div>
 								</div>
 							</div>
@@ -738,37 +725,35 @@
 										<label class="layui-form-label"><span class="text-red"> *</span>培训课程</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入培训课程" autocomplete="off" class="layui-input" />
+												placeholder="请输入培训课程" class="layui-input" />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>培训机构</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入培训机构" autocomplete="off" class="layui-input" />
+												placeholder="请输入培训机构" class="layui-input" />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>开始时间</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入开始时间" autocomplete="off" class="layui-input date"
-												readonly />
+												placeholder="请输入开始时间" class="layui-input date" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>结束时间</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入结束时间" autocomplete="off" class="layui-input date"
-												readonly />
+												placeholder="请输入结束时间" class="layui-input date" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>培训地点</label>
 										<div class="layui-input-block">
 											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入培训地点" autocomplete="off" class="layui-input" />
+												placeholder="请输入培训地点" class="layui-input" />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
@@ -809,8 +794,8 @@
 		</div>
 	</div>
 
-	<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
-		<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+	<div id="deptTreeContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+		<ul id="deptTree" class="ztree" style="width: 100%;"></ul>
 	</div>
 
 	<div class="linePop" id="wages_popup">
@@ -821,14 +806,14 @@
 						<label class="layui-form-label"><span class="text-red"> *</span>调整事由</label>
 						<div class="layui-input-block">
 							<input type="text" name="title" required lay-verify="required" placeholder="请输入调整事由"
-								autocomplete="off" class="layui-input">
+								class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item layui-col-md12 margin-b-20">
 						<label class="layui-form-label"><span class="text-red"> *</span>执行日期</label>
 						<div class="layui-input-block">
 							<input type="text" name="title" required lay-verify="required" placeholder="请输入执行日期"
-								autocomplete="off" class="layui-input date" readonly />
+								class="layui-input date" readonly />
 						</div>
 					</div>
 					<div class="layui-form-item layui-col-md12 margin-b-20">

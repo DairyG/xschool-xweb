@@ -62,15 +62,22 @@ var vm = new Vue({
         basicProperties: [], //教育性质
         basicRelations: [], //社会关系
         basicRecruitment: [], //招聘来源
+        basicPosition: [], //招聘来源
+
+        departmentData: [], //部门数据
 
         familyData: [], //家庭成员
         educationData: [], //教育经历
-        workData: [], //工作经历
+        workData: [], //职位
+
+        dptZTreeObj: null, //部门树
     },
     mounted: function () {
         var _this = this;
         var id = GetPara('id');
         id = !id ? '' : id;
+
+        _this.dptZTreeObj = new ZTreeRadio('departmentName', 'deptTreeContent', 'deptTree');
         _this.initLayui(id);
     },
     methods: {
@@ -84,6 +91,12 @@ var vm = new Vue({
 
                 _this.getBasic(table, id);
                 _this.onBasicSelect(form);
+
+                _this.getDept(_this.person.companyId);
+
+                $('#departmentName').on('click', function () {
+                    _this.dptZTreeObj.showZTree();
+                });
 
                 //出生日期
                 laydate.render({
@@ -222,13 +235,20 @@ var vm = new Vue({
                     });
                     return false;
                 });
+
+                //职位信息
+                form.on('submit(positionInfo)', function (laydata) {
+
+                    
+                });
+
             });
         },
         //获取基础信息
         getBasic: function (table, id) {
             var _this = this;
             layer_load();
-            Serv.Get('workerinfield/getdata?type=1,3,4,5,6', {}, function (result) {
+            Serv.Get('workerinfield/getdata?type=1,3,4,5,6,10', {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.hasSubmit = true;
@@ -238,6 +258,7 @@ var vm = new Vue({
                     _this.basicProperties = result.properties;
                     _this.basicRelations = result.socialRelations;
                     _this.basicRecruitment = result.recruitmentSource;
+                    _this.basicPosition = result.positionType;
 
                     // console.log(_this.basicEducation);
 
@@ -340,6 +361,15 @@ var vm = new Vue({
             form.on('select(arrivalTime)', function (data) {
                 _this.person.arrivalTime = data.value;
             });
+            //所属职位
+            form.on('select(positionId)', function (data) {
+                _this.person.positionId = data.value;
+            });
+            //在职状态
+            form.on('select(status)', function (data) {
+                _this.person.status = data.value;
+            });
+
         },
 
         //初始化 家庭成员
@@ -890,5 +920,20 @@ var vm = new Vue({
             html += '</select>';
             return html;
         },
+
+        //获取部门
+        getDept: function (cId) {
+            var _this = this;
+            layer_load();
+            Serv.Get('department/getztree/' + cId, {}, function (result) {
+                layer_load_lose();
+                if (result) {
+                    _this.dptZTreeObj.reload(result);
+                } else {
+                    _this.hasSubmit = false;
+                    layer_alert(result.message);
+                }
+            });
+        }
     }
 });

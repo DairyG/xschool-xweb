@@ -147,7 +147,7 @@ layui.use(['form'], function () {
             }
         },
         //统一社会信用代码
-        credit:function(value,obj){
+        credit: function (value, obj) {
             value = value.replace(/(^\s*)|(\s*$)/g, '');
             if (value == "" || value.length == 0) {
                 return;
@@ -183,6 +183,24 @@ layui.use(['form'], function () {
                 return $(obj).attr("placeholder") + "格式错误";
             }
         },
+        telHas: function (value, obj) {
+            value = value.replace(/(^\s*)|(\s*$)/g, '');
+            if (value == "" || value.length == 0) {
+                return;
+            }
+            if (/(^(\d{3,4}-)?\d{6,8}$)|(^1[3456789]\d{9}$)/.test(value) == false) {
+                return $(obj).attr("placeholder") + "格式错误";
+            }
+        },
+        faxHas: function (value, obj) {
+            value = value.replace(/(^\s*)|(\s*$)/g, '');
+            if (value == "" || value.length == 0) {
+                return;
+            }
+            if (/^(\d{3,4}-)?\d{7,8}$/.test(value) == false) {
+                return $(obj).attr("placeholder") + "格式错误";
+            }
+        },
         numHas: function (value, obj) {
             value = value.replace(/(^\s*)|(\s*$)/g, '');
             if (value == "" || value.length == 0) {
@@ -198,7 +216,7 @@ layui.use(['form'], function () {
                 return;
             }
             var code = $(obj).attr('data-areacode');
-            if(code.split(',').length != 3){
+            if (code.split(',').length != 3) {
                 return $(obj).attr("placeholder") + "必须选择省市区";
             }
         },
