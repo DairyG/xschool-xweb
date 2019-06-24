@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+        <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+        <script type="text/javascript" src="../../js/service.js"></script>
+        <script type="text/javascript" src="../../lib/vue.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<ul class="layui-tab-title">
+                                <li onclick="javascript:window.location.href='resumeList.html'">简历列表</li>
+                                <li class="layui-this">简历详情</li>
+                                <li onclick="javascript:window.location.href='resumeAdd.html'">添加简历</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item">
+							</div>
+							<div class="layui-tab-item layui-show">
+								<form class="layui-form layui-form2 layui-form-info" id="resumeInfo">
+									<div class="form-title">个人信息：</div>
+									<div class="layui-row" v-if="user!=null">
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">个人姓名：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">
+                                                    {{user.userName}}
+                                                </div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">英文名称：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid"></div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">个人性别：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">男</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">联系电话：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">15322222222</div>
+											</div>
+										</div>			
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">个人邮箱：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">12313@qq.com</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">个人QQ：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">12345345</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">所属民族：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">汉</div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">个人籍贯：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">四川成都</div>
+											</div>
+										</div>			
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">政治面貌：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">群众</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">身份证号：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">553353434534444444</div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">年龄：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">18</div>
+											</div>
+										</div>		
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">出生日期：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">2000-1-1</div>
+											</div>
+										</div>				
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">毕业院校：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">四川大学</div>
+											</div>
+										</div>		
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">所学专业：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">流弊专业</div>
+											</div>
+										</div>		
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">最高学历：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid"></div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">毕业时间：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">2000-1-1</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">身高CM：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">180</div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">体重KG：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">65</div>
+											</div>
+										</div>		
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">婚姻状况：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">未婚</div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">有无子女：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">无</div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">招聘来源：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">招聘会</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">应聘职位：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">JAVA开发工程师</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">期望月薪：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">1000000</div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md4 ">
+											<label class="layui-form-label">到岗时间：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">随时</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 ">
+											<label class="layui-form-label">身份证地址：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">四川成都高新区中和镇中和大道99999号</div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md12 ">
+											<label class="layui-form-label">居住地址：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">四川成都高新区中和镇中和大道99999号</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 ">
+											<label class="layui-form-label">兴趣爱好：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid"></div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 ">
+											<label class="layui-form-label">个人照片：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid"></div>
+											</div>
+										</div>	
+										<div class="layui-form-item layui-col-md12 ">
+											<label class="layui-form-label">证书证件：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid"></div>
+											</div>
+										</div>
+									</div>									
+									<hr class="layui-bg-blue hrheight3">
+									<div class="layui-row">
+										<div class="form-title clearnone">家庭成员及主要社会关系：</div>
+										<div class="layui-form-item layui-col-md12 ">
+											<table class="layui-table">
+												<thead>
+													<tr>
+														<th class="table_label">姓名</th>
+														<th class="table_label">关系</th>
+														<th class="table_label">电话</th>
+														<th class="table_label">通讯地址</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>张三</td>
+														<td>兄妹</td>
+														<td>15333333333</td>
+														<td>四川成都市高新区中和镇中和大道147号</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<hr class="layui-bg-blue hrheight3">
+									<div class="form-title">教育经历：</div>
+									<div class="layui-row">
+										<div class="layui-form-item layui-col-md12 ">
+											<table class="layui-table">
+												<thead>
+													<tr>
+														<th class="table_label">毕业院校</th>
+														<th class="table_label">学历</th>
+														<th class="table_label">性质</th>
+														<th class="table_label">专业</th>
+														<th class="table_label">学习年限</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>四川大学</td>
+														<td>本科</td>
+														<td>统招</td>
+														<td>园林自动化</td>
+														<td>4</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<hr class="layui-bg-blue hrheight3">
+									<div class="form-title">工作经历：</div>
+									<div class="layui-row">
+										<div class="layui-form-item layui-col-md12 ">
+											<table class="layui-table">
+												<thead>
+													<tr>
+														<th width="150" class="table_label">工作年限</th>
+														<th class="table_label">公司名称</th>
+														<th class="table_label">部门</th>
+														<th class="table_label">职位</th>
+														<th class="table_label">离职原因</th>
+													</tr>
+												</thead>					
+												<tbody>
+													<tr>
+														<td>2015-8 -- 2018-10</td>
+														<td>四川某某某有限公司</td>
+														<td>市场部</td>
+														<td>市场经理</td>
+														<td>个人原因</td>
+													</tr>
+													<tr>
+														<td class="table_label">主要成绩</td>
+														<td colspan="4">主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="layui-row">
+										<div class="layui-form-item">
+											<div class="layui-input-block text-right">
+												<button type="reset" class="layui-btn layui-btn-primary">返回</button>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="layui-tab-item">
+								<div class="form-title">面试结果：</div>
+								<form class="layui-form layui-form2">
+									<div class="layui-row">
+										<div class="layui-form-item layui-col-md6 ">
+											<label class="layui-form-label">面试方式<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<select>
+													<option>面试</option>
+													<option>笔试</option>
+													<option>电话</option>
+												</select>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6">
+											<label class="layui-form-label">选择面试人<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<span class="layui-btn layui-btn-normal" onclick="user_popup($('#user_sel_box'))"><i class="layui-icon layui-icon-add-1"></i>选择面试人</span>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12" >
+											<label class="layui-form-label">面试人<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<div id="user_sel_box"  style="padding-top:7px">
+													
+												</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 ">
+											<label class="layui-form-label">面试内容<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<textarea class="layui-textarea"></textarea>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 ">
+											<label class="layui-form-label">面试意见<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<textarea class="layui-textarea"></textarea>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 ">
+											<label class="layui-form-label">仪容仪表<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<div id="rate1" class="rate"></div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6">
+											<label class="layui-form-label">沟通表达<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<div id="rate2" class="rate"></div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6">
+											<label class="layui-form-label">专业知识<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<div id="rate6" class="rate"></div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 ">
+											<label class="layui-form-label">亲和力<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<div id="rate3" class="rate"></div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 ">
+											<label class="layui-form-label">逻辑思维<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<div id="rate4" class="rate"></div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 ">
+											<label class="layui-form-label">综合评分<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<div id="rate5" class="rate"></div>
+											</div>
+										</div>
+									</div>
+									<div class="layui-row">
+										<div class="layui-form-item">
+											<div class="layui-input-block text-right">
+												<button type="reset" class="layui-btn">面试未通过</button>
+												<button type="reset" class="layui-btn">发送OFFER</button>
+												<button type="reset" class="layui-btn">保存</button>
+												<button type="reset" class="layui-btn layui-btn-primary">返回</button>
+											</div>
+										</div>
+									</div>
+									<hr class="layui-bg-blue hrheight3">
+									<div class="form-title">过往面试结果：</div>
+									<div class="layui-row">
+										<table class="layui-table">
+											<tr>
+												<th class="table_label" width="120">面试时间</th>
+												<th class="table_label">面试方式</th>
+												<th class="table_label">面试人</th>
+											</tr>
+											<tr>
+												<td>2019-5-1</td>
+												<td>笔试</td>
+												<td>张三</td>
+											</tr>
+											<tr>
+												<td class="table_label">仪容仪表</td>
+												<td class="table_label">沟通表达</td>
+												<td class="table_label">专业知识</td>
+											</tr>
+											<tr>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+											</tr>
+											<tr>
+												<td class="table_label">亲和力</td>
+												<td class="table_label">逻辑思维</td>
+												<td class="table_label">综合评分</td>
+											</tr>
+											<tr>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+											</tr>
+											<tr>
+												<td class="table_label">面试内容</td>
+												<td colspan="2">面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容</td>
+											</tr>
+											<tr>
+												<td class="table_label">面试建议</td>
+												<td colspan="2">面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议</td>
+											</tr>
+										</table>
+									</div>
+									<div class="layui-row margin-t-20">
+										<table class="layui-table">
+											<tr>
+												<th class="table_label" width="120">面试时间</th>
+												<th class="table_label">面试方式</th>
+												<th class="table_label">面试人</th>
+											</tr>
+											<tr>
+												<td>2019-5-1</td>
+												<td>笔试</td>
+												<td>张三</td>
+											</tr>
+											<tr>
+												<td class="table_label">仪容仪表</td>
+												<td class="table_label">沟通表达</td>
+												<td class="table_label">专业知识</td>
+											</tr>
+											<tr>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+											</tr>
+											<tr>
+												<td class="table_label">亲和力</td>
+												<td class="table_label">逻辑思维</td>
+												<td class="table_label">综合评分</td>
+											</tr>
+											<tr>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
+											</tr>
+											<tr>
+												<td class="table_label">面试内容</td>
+												<td colspan="2">面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容</td>
+											</tr>
+											<tr>
+												<td class="table_label">面试建议</td>
+												<td colspan="2">面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议</td>
+											</tr>
+										</table>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+		</div>
+        <script type="text/javascript">
+        // var model = {
+        //         id: '',
+        //         userName: '',
+        //         pinYinName:'',
+        //     };
+			
+            var id = GetPara('id');
+            var vm = new Vue({ el: '#resumeInfo', data: {
+                user:{}
+            } ,mounted:function(){
+                var _this=this;
+                layui.use([ 'table','element','laydate','rate'], function() {
+				var table = layui.table,
+					element = layui.element,
+					laydate = layui.laydate,
+                    rate = layui.rate;
+                    //_this.data= response;
+                    Serv.Get('Resume/GetInfo/' + id, {},function (response) {
+                        console.log(response);
+                        _this.data= response;
+                        // model.id = response.id;
+                        // model.userName = response.userName;
+                        //vm.$set({ data: model });
+                    })
+			    });		
+            }});
+            // id: 0,
+            //         //先给默认值
+            //         companyId: 1,
+            //         userName: '',
+            //         englishName: '',
+            //         gender: 1,
+            //         linkPhone: '',
+            //         email: '',
+            //         qq: '',
+            //         folk: '',
+            //         nativePlace: '',
+            //         politicalStatus: '',
+            //         idCard: '',
+            //         age: '',
+            //         birthDay: '',
+            //         graduateInstitutions: '',
+            //         professional: '',
+            //         degree: '',
+            //         graduationDate: '',
+            //         stature: '',
+            //         weight: '',
+            //         marriage: '未婚',
+            //         children: '无',
+            //         recruitSource: '',
+            //         jobCandidates: '',
+            //         expectSalary: '',
+            //         arrivalTime: '',
+            //         idCardProvince: '',
+            //         idCardCity: '',
+            //         idCardCounty: '',
+            //         idCardArea: '',
+            //         idCardAddress: '',
+            //         liveProvince: '',
+            //         liveCity: '',
+            //         liveCounty: '',
+            //         liveArea: '',
+            //         liveAddress: '',
+            //         hobby: '',
+            //         photoPath: '',
+            //         certificatePath: '',
+            //         family: '',
+            //         education: '',
+            //         work: '',
+            //         departmentId: 0,
+            //         positionId: 0,
+            //         employeeNo: '',
+            //         officePhone: '',
+            //         officeEmail: '',
+            //         faxNumber: '',
+            //         referees: '',
+            //         officeAddress: '',
+            //         positionDescribe: '',
+		</script>
+	</body>
+</html>
