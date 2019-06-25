@@ -9,7 +9,7 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom) {
     var options = {
         text: 'dptName',
         key: 'id',
-        parentKey: 'higherLevel',
+        parentKey: 'pId',
         nameDOM: $('#' + nameDom),
         menuContentDOM: $('#' + menuContent),
         zTreeDOM: $('#' + zTreeDom),
@@ -70,7 +70,8 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom) {
         var value = options.nameDOM.attr('data-id');
         var node = zTreeObj.getNodeByParam('id', value, null);
         if (node != null) {
-            zTreeObj.selectNode(node, false, false);
+            zTreeObj.checkNode(node, true, false);
+            // zTreeObj.selectNode(node, true, false);
         }
     };
 

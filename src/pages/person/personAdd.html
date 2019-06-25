@@ -56,9 +56,8 @@
 
 						<div class="layui-tab-item layui-show" tab-name="个人信息">
 							<form class="layui-form layui-form2" autocomplete="off">
-
 								<input type="hidden" name="id" v-model="person.id" value="0">
-								<input type="hidden" name="companyId" v-model="person.companyId" value="0">
+								<input type="hidden" name="companyId" v-model="person.companyId" value="">
 
 								<div class="form-title">个人信息：</div>
 								<div class="layui-row">
@@ -348,15 +347,16 @@
 						</div>
 
 						<div class="layui-tab-item" tab-name="职位信息">
-							<form class="layui-form layui-form2">
+							<form class="layui-form layui-form2" autocomplete="off">
 								<div class="layui-row">
+
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>所属部门</label>
 										<div class="layui-input-block">
-											<input type="hidden" v-model="person.departmentId" name="departmentId" />
-											<input type="text" name="departmentName" v-model="person.departmentName"
-												required lay-verify="name" placeholder="请选择部门" class="layui-input"
-												readonly id="departmentName" data-id="">
+											<input type="hidden" name="departmentId" v-model="person.departmentId" />
+											<input type="text" name="departmentName" required lay-verify="select"
+												placeholder="所属部门" class="layui-input" readonly id="departmentName"
+												data-id="">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
@@ -373,7 +373,7 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>员工工号</label>
 										<div class="layui-input-block">
-											<input type="text" name="employeeNo" maxlength="30" required
+											<input type="text" name="employeeNo" v-model="person.employeeNo" maxlength="30" required
 												lay-verify="name|code" placeholder="员工工号" class="layui-input">
 										</div>
 									</div>
@@ -440,8 +440,9 @@
 										<div class="layui-input-block">
 											<div class="layui-input">
 												<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"
-													onclick="user_popup()">请选择</span>
+													id="deptPopup">请选择</span>
 											</div>
+											<div id="deptPopupPanel" style="margin-top: 10px"></div>
 										</div>
 									</div>
 								</div>
@@ -794,8 +795,8 @@
 		</div>
 	</div>
 
-	<div id="deptTreeContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
-		<ul id="deptTree" class="ztree" style="width: 100%;"></ul>
+	<div id="deptTreeContent" class="menuContent" style="display:none; position: absolute;background: #fff">
+		<ul id="deptTree" class="ztree" style="width: 100%; height: 400px; overflow-y: auto"></ul>
 	</div>
 
 	<div class="linePop" id="wages_popup">

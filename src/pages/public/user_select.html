@@ -4,16 +4,35 @@
 	<form class="layui-form layui-search-form">
 		<div class="layui-row margin-t-10">
 			<div class="search_item">
-				<span>姓名</span><input type="text" name="title" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+				<span>公司</span>
+				<div class="fl">
+					<select>
+						<option></option>
+						<option>本公司</option>
+						<option>公司一</option>
+						<option>公司二</option>
+					</select>
+				</div>
 			</div>
 			<div class="search_item" style="position: relative;">
 				<span>部门</span>
 				<input type="text" name="title" placeholder="请输入部门" autocomplete="off" class="layui-input" id="user_select_department" onclick="show_user_select_tree()" readonly />
-				<input type="text" id="department_id" />
+				<input type="hidden" id="department_id" />
 				<ul id="user_select_tree" class="ztree"></ul>
 			</div>
 			<div class="search_item">
-				<span>职位</span><input type="text" name="title" placeholder="请输入职位" autocomplete="off" class="layui-input">
+				<span>职位</span>
+				<div class="fl">
+					<select>
+						<option></option>
+						<option>经理</option>
+						<option>总监</option>
+						<option>主管</option>
+					</select>
+				</div>
+			</div>
+			<div class="search_item">
+				<span>姓名</span><input type="text" name="title" placeholder="请输入姓名" autocomplete="off" class="layui-input">
 			</div>
 			<div class="search_item">
 				<button class="layui-btn layui-btn-normal">搜索</button>
@@ -46,44 +65,68 @@
 			{'id':8,'name':'副经理','lx':'管理','jb':'M2'},
 			{'id':9,'name':'市场总监','lx':'管理','jb':'M3'}
 		];
-		layui.use([ 'table'], function() {
-			var table = layui.table;
+		layui.use([ 'table','form'], function() {
+			var table = layui.table,
+				form = layui.form;
 				table.render({
 					elem: '#user_select_lst',
 					data: datas,
 					cols: data_col,
 					limit:5,
 					page:true,
-					height:'320'
+					height:'280'
 				});
+				form.render('select');
 		});
 		var zTreeObj;
 		var setting = {
+			check: {
+				enable: true,
+				chkboxType: {"Y":"", "N":""}
+				/* chkStyle: "radio",
+				radioType: "all" */
+			},
+			view: {
+			    dblClickExpand: false
+			},
 			callback: {
-				onCheck: on_user_select_check
+				onCheck: on_user_select_check,
+			    onClick: function (e, treeId, treeNode) {
+			        var tree = $.fn.zTree.getZTreeObj(treeId);
+			        tree.expandNode(treeNode);
+			
+					tnode=treeNode;
+			        currentid=treeNode.id;
+			    }
 			}
 		};
 		var zNodes = [ // zTree 的数据属性，此处使用标准json格式
 			{
+				id:1,
 				name: "四川某某公司",
 				open: true,
 				children: [{
 						name: "销售部",
+						id:2,
 						children: [{
 							name: "销售1部",
+							id:3,
 							children: [{
-								name: "销售1组"
+								name: "销售1组",
+								id:4,
 							}]
 						}]
 					},
 					{
-						name: "市场部"
+						name: "市场部",
+						id:5,
 					},
 					{
 						name: "销售部",
+						id:6,
 						children: [{
-							name: "销售1部"
-		
+							name: "销售1部",
+							id:7,
 						}]
 					}
 				]
@@ -109,11 +152,11 @@
 		var zTree = $.fn.zTree.getZTreeObj(treeId),
 		nodes = zTree.getCheckedNodes(true),
 		v = "",id = "";
-		console.log(nodes);
 		for (var i=0, l=nodes.length; i<l; i++) {
-			v += nodes[i].name + ",";
+			v += (v == "" ) ? nodes[i].name : ','+nodes[i].name ;
+			id += (id == "" ) ? nodes[i].id : ','+nodes[i].id;
 		}
-		if (v.length > 0 ) v = v.substring(0, v.length-1);
 		$("#user_select_department").val(v);
+		$("#department_id").val(id);
 	}
 </script>
