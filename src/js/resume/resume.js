@@ -222,9 +222,9 @@ var vm = new Vue({
                         laydata.field.work = workJson;
                         _this.person.work = workJson;
                     }
-
-                    console.log(laydata.field);
-                    console.log(_this.person);
+                    laydata.field.status = 1;
+                    // console.log(laydata.field);
+                    // console.log(_this.person);
 
                     Serv.Post('Resume/edit', laydata.field, function (result) {
                         if (result.code == '00') {
