@@ -46,8 +46,8 @@ var vm = new Vue({
             family: '',
             education: '',
             work: '',
-            departmentId: 0,
-            positionId: 0,
+            departmentId: '',
+            positionId: '0',
             employeeNo: '',
             officePhone: '',
             officeEmail: '',
@@ -55,6 +55,7 @@ var vm = new Vue({
             referees: '',
             officeAddress: '',
             positionDescribe: '',
+            status: 0,
         },
 
         basicArrival: [], //到岗时间
@@ -75,7 +76,7 @@ var vm = new Vue({
     mounted: function () {
         var _this = this;
         var id = GetPara('id');
-        id = !id ? '' : id;
+        id = !id ? '' : id;        
 
         _this.dptZTreeObj = new ZTreeRadio('departmentName', 'deptTreeContent', 'deptTree');
         _this.initLayui(id);
@@ -94,8 +95,14 @@ var vm = new Vue({
 
                 _this.getDept(_this.person.companyId);
 
+                //所属部门
                 $('#departmentName').on('click', function () {
                     _this.dptZTreeObj.showZTree();
+                });
+
+                //分管部门
+                $('#deptPopup').on('click', function () {
+                    user_popup($('#deptPopupPanel'), false, true, false);
                 });
 
                 //出生日期
@@ -128,12 +135,10 @@ var vm = new Vue({
                 form.on('submit(basicInfo)', function (laydata) {
                     layer_load();
 
-                    laydata.field.idCardProvince = '';
-                    laydata.field.idCardCity = '';
-                    laydata.field.idCardCounty = '';
                     _this.person.idCardProvince = '';
                     _this.person.idCardCity = '';
                     _this.person.idCardCounty = '';
+                    _this.person.idCardArea = '';
                     //身份证地址
                     if ($.trim(_this.person.idCardAddress)) {
                         var idCardAreaCode = $('input[name="idCardArea"]').attr('data-areacode');
@@ -147,20 +152,16 @@ var vm = new Vue({
                             return false;
                         }
 
-                        laydata.field.idCardProvince = idCardAreaArr[0];
-                        laydata.field.idCardCity = idCardAreaArr[1];
-                        laydata.field.idCardCounty = idCardAreaArr[2];
                         _this.person.idCardProvince = idCardAreaArr[0];
                         _this.person.idCardCity = idCardAreaArr[1];
                         _this.person.idCardCounty = idCardAreaArr[2];
+                        _this.person.idCardArea = $('input[name="idCardArea"]').val();
                     }
 
-                    laydata.field.liveProvince = '';
-                    laydata.field.liveCity = '';
-                    laydata.field.liveCounty = '';
                     _this.person.liveProvince = '';
                     _this.person.liveCity = '';
                     _this.person.liveCounty = '';
+                    _this.person.liveArea = '';
                     //居住地址
                     if ($.trim(_this.person.liveAddress)) {
                         var liveAreaCode = $('input[name="liveArea"]').attr('data-areacode');
@@ -174,13 +175,10 @@ var vm = new Vue({
                             return false;
                         }
 
-                        laydata.field.liveProvince = liveAreaArr[0];
-                        laydata.field.liveCity = liveAreaArr[1];
-                        laydata.field.liveCounty = liveAreaArr[2];
-
                         _this.person.liveProvince = liveAreaArr[0];
                         _this.person.liveCity = liveAreaArr[1];
                         _this.person.liveCounty = liveAreaArr[2];
+                        _this.person.liveArea = $('input[name="liveArea"]').val();
                     }
 
                     //家庭成员
@@ -188,11 +186,10 @@ var vm = new Vue({
                     if (!hasFamily) {
                         return false;
                     }
-                    laydata.field.family = '';
                     _this.person.family = '';
                     if (_this.familyData.length > 0) {
                         var familyJson = JSON.stringify(_this.familyData);
-                        laydata.field.family = familyJson;
+                        // laydata.field.family = familyJson;
                         _this.person.family = familyJson;
                     }
 
@@ -201,11 +198,10 @@ var vm = new Vue({
                     if (!hasEducation) {
                         return false;
                     }
-                    laydata.field.education = '';
                     _this.person.education = '';
                     if (_this.educationData.length > 0) {
                         var educationJson = JSON.stringify(_this.educationData);
-                        laydata.field.education = educationJson;
+                        // laydata.field.education = educationJson;
                         _this.person.education = educationJson;
                     }
 
@@ -214,18 +210,15 @@ var vm = new Vue({
                     if (!hasWork) {
                         return false;
                     }
-                    laydata.field.work = '';
                     _this.person.work = '';
                     if (_this.workData.length > 0) {
                         var workJson = JSON.stringify(_this.workData);
-                        laydata.field.work = workJson;
                         _this.person.work = workJson;
                     }
 
-                    console.log(laydata.field);
                     console.log(_this.person);
 
-                    Serv.Post('person/edit?peration=1', laydata.field, function (result) {
+                    Serv.Post('person/edit?operation=1', _this.person, function (result) {
                         if (result.code == '00') {
                             _this.person.id = result.data;
                             layer_alert(result.message);
@@ -238,8 +231,30 @@ var vm = new Vue({
 
                 //职位信息
                 form.on('submit(positionInfo)', function (laydata) {
+                    layer_load();
+                    if (_this.person.id <= 0) {
+                        layer_alert('请先填写个人信息');
+                        return false;
+                    }
+                    _this.person.departmentId = $('input[name="departmentName"]').attr('data-id');
+                    if (!_this.person.departmentId) {
+                        layer_alert('请选择所属部门');
+                        return false;
+                    }
+                    if (laydata.field.status == 0) {
+                        layer_alert('请选择在职状态');
+                        return false;
+                    }
 
-                    
+                    Serv.Post('person/edit?operation=2', _this.person, function (result) {
+                        if (result.code == '00') {
+                            layer_alert(result.message);
+                        } else {
+                            layer_alert(result.message);
+                        }
+                    });
+                    return false;
+
                 });
 
             });
@@ -293,6 +308,9 @@ var vm = new Vue({
                 if (result) {
                     _this.person = result;
 
+                    _this.person.birthDay = result.birthDay.FormatDate(false);
+                    _this.person.graduationDate = result.graduationDate.FormatDate(false);
+
                     var idCardAreaCode = '';
                     if (_this.person.idCardProvince && _this.person.idCardCity && _this.person.idCardCounty) {
                         idCardAreaCode = _this.person.idCardProvince + ',' + _this.person.idCardCity + ',' + _this.person.idCardCounty;
@@ -314,6 +332,10 @@ var vm = new Vue({
                     if (_this.person.work) {
                         _this.workData = JSON.parse(_this.person.work);
                     }
+
+                    $('#departmentName').attr('data-id', _this.person.departmentId).val(result.departmentName);
+
+                    _this.dptZTreeObj.setCheck();
 
                     _this.intiFamily(table);
                     _this.initEducation(table);
@@ -383,7 +405,7 @@ var vm = new Vue({
 
             var cols = [
                 [{
-                        field: 'FamId',
+                        field: 'Number',
                         title: '序号',
                         width: 90,
                         templet: function (d) {
@@ -441,7 +463,7 @@ var vm = new Vue({
                 } else if (obj.event == 'familyDel') {
                     layer_confirm('确定删除吗？', function () {
                         if (_this.familyData.length > 1) {
-                            _this.removeData(obj.data.id, _this.familyData);
+                            _this.removeData(obj.data.Number, _this.familyData);
                             obj.tr.remove();
                         } else {
                             _this.intiFamilyData(true);
@@ -458,7 +480,7 @@ var vm = new Vue({
                 _this.familyData = [];
             }
             _this.familyData.push({
-                "FamId": _this.familyData + 1,
+                "Number": _this.familyData + 1,
                 "FamName": '',
                 "FamRelations": '',
                 "FamLinkPhone": '',
@@ -513,7 +535,7 @@ var vm = new Vue({
                 }
 
                 _this.familyData.push({
-                    "FamId": _this.educationData.length + 1,
+                    "Number": _this.educationData.length + 1,
                     "FamName": name,
                     "FamRelations": relations,
                     "FamLinkPhone": linkPhone,
@@ -534,7 +556,7 @@ var vm = new Vue({
 
             var cols = [
                 [{
-                        field: 'EduId',
+                        field: 'Number',
                         title: '序号',
                         width: 90,
                         templet: function (d) {
@@ -574,7 +596,7 @@ var vm = new Vue({
                         title: '学习年限',
                         event: 'EduTime',
                         templet: function (d) {
-                            return _this.getTimeTpl(d.id, 'EduTime', d.EduTime);
+                            return _this.getTimeTpl(d.Number, 'EduTime', d.EduTime);
                         }
                     }
                 ]
@@ -588,7 +610,7 @@ var vm = new Vue({
 
             table.on('tool(educationTable)', function (obj) {
                 if (obj.event == 'EduTime') {
-                    _this.showLaydate('.EduTime-' + obj.data.id);
+                    _this.showLaydate('.EduTime-' + obj.data.Number);
                 } else if (obj.event == 'educationAdd') {
                     layer_load();
                     var hasResult = _this.validateEducation(obj.tr, false);
@@ -602,7 +624,7 @@ var vm = new Vue({
                 } else if (obj.event == 'educationDel') {
                     layer_confirm('确定删除吗？', function () {
                         if (_this.educationData.length > 1) {
-                            _this.removeData(obj.data.id, _this.educationData);
+                            _this.removeData(obj.data.Number, _this.educationData);
                             obj.tr.remove();
                         } else {
                             _this.initEducationData(true);
@@ -619,7 +641,7 @@ var vm = new Vue({
                 _this.educationData = [];
             }
             _this.educationData.push({
-                "EduId": _this.educationData.length + 1,
+                "Number": _this.educationData.length + 1,
                 "EduFinishSchool": '',
                 "EduDegree": '',
                 "EduNature": '',
@@ -675,7 +697,7 @@ var vm = new Vue({
                 }
 
                 _this.educationData.push({
-                    "EduId": _this.educationData.length + 1,
+                    "Number": _this.educationData.length + 1,
                     "EduFinishSchool": finishSchool,
                     "EduDegree": degree,
                     "EduNature": nature,
@@ -698,7 +720,7 @@ var vm = new Vue({
 
             var cols = [
                 [{
-                        field: 'WorkId',
+                        field: 'Number',
                         title: '序号',
                         width: 90,
                         templet: function (d) {
@@ -710,7 +732,7 @@ var vm = new Vue({
                         title: '工作年限',
                         event: 'WorkTime',
                         templet: function (d) {
-                            return _this.getTimeTpl(d.id, 'WorkTime', d.WorkTime);
+                            return _this.getTimeTpl(d.Number, 'WorkTime', d.WorkTime);
                         }
                     },
                     {
@@ -759,7 +781,7 @@ var vm = new Vue({
 
             table.on('tool(workTable)', function (obj) {
                 if (obj.event == 'WorkTime') {
-                    _this.showLaydate('.WorkTime-' + obj.data.id);
+                    _this.showLaydate('.WorkTime-' + obj.data.Number);
                 } else if (obj.event == 'workAdd') {
                     layer_load();
                     var hasResult = _this.validateWork(obj.tr, false);
@@ -773,7 +795,7 @@ var vm = new Vue({
                 } else if (obj.event == 'workDel') {
                     layer_confirm('确定删除吗？', function () {
                         if (_this.workData.length > 1) {
-                            _this.removeData(obj.data.id, _this.workData);
+                            _this.removeData(obj.data.number, _this.workData);
                             obj.tr.remove();
                         } else {
                             _this.initWorkData(true);
@@ -790,7 +812,7 @@ var vm = new Vue({
                 _this.workData = [];
             }
             _this.workData.push({
-                "WorkId": _this.workData.length + 1,
+                "Number": _this.workData.length + 1,
                 "WorkTime": '',
                 "WorkCompanyName": '',
                 "WorkDepartment": '',
@@ -853,7 +875,7 @@ var vm = new Vue({
                 }
 
                 _this.workData.push({
-                    "WorkId": _this.workData.length + 1,
+                    "Number": _this.workData.length + 1,
                     "WorkTime": workTime,
                     "WorkCompanyName": companyName,
                     "WorkDepartment": department,
@@ -878,7 +900,7 @@ var vm = new Vue({
         //移除数据
         removeData: function (id, data) {
             for (var i = 0; i < data.length; i++) {
-                if (data[i].id == id) {
+                if (data[i].Number == id) {
                     data.splice(i, 1);
                     return false;
                 }
