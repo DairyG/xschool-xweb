@@ -60,7 +60,7 @@ var model = {
 };
 var vm = new Vue({ el: '#dptForm', data: model });
 function GetSingle(Id) {
-    Serv.Post('Department/GetSingle', { Id: Id }, function (response) {
+    Serv.Post('uc/Department/GetSingle', { Id: Id }, function (response) {
         model.id = response.id;
         model.companyId = response.companyId;
         model.pId = response.pId;
@@ -133,7 +133,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         layform = layui.form;
 
     function initTree() {
-        Serv.Get('department/gettree', {}, function (response) {
+        Serv.Get('uc/department/gettree', {}, function (response) {
             zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
         })
     }
@@ -146,7 +146,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
             laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.pId + ",";
-            Serv.Post('Department/add', laydata.field, function (response) {
+            Serv.Post('uc/Department/add', laydata.field, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
                     layer_load_lose();
@@ -169,7 +169,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                 }
             })
         } else {
-            Serv.Post('Department/update', laydata.field, function (response) {
+            Serv.Post('uc/Department/update', laydata.field, function (response) {
                 layer_alert(response.message, initTree());
             })
         }
@@ -183,7 +183,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                 initTree();
             })
         } else {
-            Serv.Post('Department/update', laydata.field, function (response) {
+            Serv.Post('uc/Department/update', laydata.field, function (response) {
                 layer_alert(response.message, ClickAdd());
                 $("input[name='Id']").val("0");
                 initTree();
@@ -201,7 +201,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         }
         else {
             laydata.field.DptStatus = 0;
-            Serv.Post('Department/update', laydata.field, function (response) {
+            Serv.Post('uc/Department/update', laydata.field, function (response) {
                 layer_alert(response.message, function () { window.location.reload() });
             })
         }
