@@ -907,6 +907,7 @@ var vm = new Vue({
         },
         //select模板
         getSelectTpl: function (data, name, value) {
+            console.log(data);
             var html = '<select name="' + name + '">';
             html += '<option value="">请选择</option>';
             $.each(data, function (i, item) {

@@ -31,169 +31,168 @@
 							<div class="layui-tab-item layui-show">
 								<form class="layui-form layui-form2 layui-form-info" id="resumeInfo">
 									<div class="form-title">个人信息：</div>
-									<div class="layui-row" v-if="user!=null">
+									<div class="layui-row">
+											<!-- v-if="user!=null" -->
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">个人姓名：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">
-                                                    {{user.userName}}
-                                                </div>
+												<div class="layui-form-mid">{{userName}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">英文名称：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid"></div>
+												<div class="layui-form-mid">{{englishName}}</div>
 											</div>
 										</div>	
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">个人性别：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">男</div>
+												<div class="layui-form-mid">{{gender == 1 ? '男' : '女'}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">联系电话：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">15322222222</div>
+												<div class="layui-form-mid">{{linkPhone}}</div>
 											</div>
 										</div>			
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">个人邮箱：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">12313@qq.com</div>
+												<div class="layui-form-mid">{{email}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">个人QQ：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">12345345</div>
+												<div class="layui-form-mid">{{qq}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">所属民族：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">汉</div>
+												<div class="layui-form-mid">{{folk}}</div>
 											</div>
 										</div>	
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">个人籍贯：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">四川成都</div>
+												<div class="layui-form-mid">{{nativePlace}}</div>
 											</div>
 										</div>			
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">政治面貌：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">群众</div>
+												<div class="layui-form-mid">{{politicalStatus}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">身份证号：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">553353434534444444</div>
+												<div class="layui-form-mid">{{idCard}}</div>
 											</div>
 										</div>	
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">年龄：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">18</div>
+												<div class="layui-form-mid">{{age}}</div>
 											</div>
 										</div>		
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">出生日期：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">2000-1-1</div>
+												<div class="layui-form-mid">{{birthDay}}</div>
 											</div>
 										</div>				
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">毕业院校：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">四川大学</div>
+												<div class="layui-form-mid">{{graduateInstitutions}}</div>
 											</div>
 										</div>		
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">所学专业：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">流弊专业</div>
+												<div class="layui-form-mid">{{professional}}</div>
 											</div>
 										</div>		
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">最高学历：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid"></div>
+												<div class="layui-form-mid">{{degree}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">毕业时间：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">2000-1-1</div>
+												<div class="layui-form-mid">{{graduationDate}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">身高CM：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">180</div>
+												<div class="layui-form-mid">{{stature}}</div>
 											</div>
 										</div>	
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">体重KG：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">65</div>
+												<div class="layui-form-mid">{{weight}}</div>
 											</div>
 										</div>		
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">婚姻状况：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">未婚</div>
+												<div class="layui-form-mid">{{marriage}}</div>
 											</div>
 										</div>	
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">有无子女：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">无</div>
+												<div class="layui-form-mid">{{children}}</div>
 											</div>
 										</div>	
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">招聘来源：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">招聘会</div>
+												<div class="layui-form-mid">{{recruitSource}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">应聘职位：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">JAVA开发工程师</div>
+												<div class="layui-form-mid">{{jobCandidates}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">期望月薪：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">1000000</div>
+												<div class="layui-form-mid">{{expectSalary}}</div>
 											</div>
 										</div>	
 										<div class="layui-form-item layui-col-md4 ">
 											<label class="layui-form-label">到岗时间：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">随时</div>
+												<div class="layui-form-mid">{{arrivalTime}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md12 ">
 											<label class="layui-form-label">身份证地址：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">四川成都高新区中和镇中和大道99999号</div>
+												<div class="layui-form-mid">{{idCardArea}}{{idCardAddress}}</div>
 											</div>
 										</div>	
 										<div class="layui-form-item layui-col-md12 ">
 											<label class="layui-form-label">居住地址：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">四川成都高新区中和镇中和大道99999号</div>
+												<div class="layui-form-mid">{{liveArea}}{{liveAddress}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md12 ">
 											<label class="layui-form-label">兴趣爱好：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid"></div>
+												<div class="layui-form-mid">{{hobby}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md12 ">
@@ -205,7 +204,7 @@
 										<div class="layui-form-item layui-col-md12 ">
 											<label class="layui-form-label">证书证件：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid"></div>
+												<div class="layui-form-mid">{{certificatePath}}</div>
 											</div>
 										</div>
 									</div>									
@@ -222,12 +221,12 @@
 														<th class="table_label">通讯地址</th>
 													</tr>
 												</thead>
-												<tbody>
+												<tbody v-for="item in basicRelations">
 													<tr>
-														<td>张三</td>
-														<td>兄妹</td>
-														<td>15333333333</td>
-														<td>四川成都市高新区中和镇中和大道147号</td>
+														<td>{{item.FamName}}</td>
+														<td>{{item.FamRelations}}</td>
+														<td>{{item.FamLinkPhone}}</td>
+														<td>{{item.FamAddress}}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -247,13 +246,13 @@
 														<th class="table_label">学习年限</th>
 													</tr>
 												</thead>
-												<tbody>
+												<tbody v-for="item in basicEducation">
 													<tr>
-														<td>四川大学</td>
-														<td>本科</td>
-														<td>统招</td>
-														<td>园林自动化</td>
-														<td>4</td>
+															<td>{{item.EduFinishSchool}}</td>
+															<td>{{item.EduDegree}}</td>
+															<td>{{item.EduNature}}</td>
+															<td>{{item.EduProfessional}}</td>
+															<td>{{item.EduTime}}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -273,17 +272,17 @@
 														<th class="table_label">离职原因</th>
 													</tr>
 												</thead>					
-												<tbody>
+												<tbody v-for="item in basicWork">
 													<tr>
-														<td>2015-8 -- 2018-10</td>
-														<td>四川某某某有限公司</td>
-														<td>市场部</td>
-														<td>市场经理</td>
-														<td>个人原因</td>
+															<td>{{item.WorkTime}}</td>
+															<td>{{item.WorkCompanyName}}</td>
+															<td>{{item.WorkDepartment}}</td>
+															<td>{{item.WorkPosition}}</td>
+															<td>{{item.WorkQuitReason}}</td>
 													</tr>
 													<tr>
 														<td class="table_label">主要成绩</td>
-														<td colspan="4">主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩主要成绩</td>
+														<td colspan="4">{{item.WorkDescribe}}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -292,7 +291,7 @@
 									<div class="layui-row">
 										<div class="layui-form-item">
 											<div class="layui-input-block text-right">
-												<button type="reset" class="layui-btn layui-btn-primary">返回</button>
+												<button type="reset" class="layui-btn layui-btn-primary" onclick="javascript:window.location.href='resumeList.html'">返回</button>
 											</div>
 										</div>
 									</div>
@@ -482,84 +481,133 @@
 			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
 		</div>
         <script type="text/javascript">
-        // var model = {
-        //         id: '',
-        //         userName: '',
-        //         pinYinName:'',
-        //     };
+        var model = {
+					//先给默认值
+					id : 0,
+                    companyId: 1,
+                    userName: '',
+                    englishName: '',
+                    gender: 1,
+                    linkPhone: '',
+                    email: '',
+                    qq: '',
+                    folk: '',
+                    nativePlace: '',
+                    politicalStatus: '',
+                    idCard: '',
+                    age: '',
+                    birthDay: '',
+                    graduateInstitutions: '',
+                    professional: '',
+                    degree: '',
+                    graduationDate: '',
+                    stature: '',
+                    weight: '',
+                    marriage: '未婚',
+                    children: '无',
+                    recruitSource: '',
+					jobCandidates: '',
+					jobYears: '',
+                    expectSalary: '',
+                    arrivalTime: '',
+                    idCardProvince: '',
+                    idCardCity: '',
+                    idCardCounty: '',
+                    idCardArea: '',
+                    idCardAddress: '',
+                    liveProvince: '',
+                    liveCity: '',
+                    liveCounty: '',
+                    liveArea: '',
+                    liveAddress: '',
+                    hobby: '',
+                    photoPath: '',
+                    certificatePath: '',
+                    family: '',
+                    education: '',
+                    work: '',
+                    departmentId: 0,
+                    positionId: 0,
+                    employeeNo: '',
+                    officePhone: '',
+                    officeEmail: '',
+                    faxNumber: '',
+                    referees: '',
+                    officeAddress: '',
+					positionDescribe: '',
+					basicRelations: [], //社会关系
+					basicEducation:[], //教育经历
+					basicWork:[],//工作经历
+            };
 			
             var id = GetPara('id');
-            var vm = new Vue({ el: '#resumeInfo', data: {
-                user:{}
-            } ,mounted:function(){
-                var _this=this;
+			var vm = new Vue({ el: '#resumeInfo', data: model});
+			
                 layui.use([ 'table','element','laydate','rate'], function() {
-				var table = layui.table,
-					element = layui.element,
-					laydate = layui.laydate,
-                    rate = layui.rate;
-                    //_this.data= response;
-                    Serv.Get('Resume/GetInfo/' + id, {},function (response) {
-                        console.log(response);
-                        _this.data= response;
-                        // model.id = response.id;
-                        // model.userName = response.userName;
-                        //vm.$set({ data: model });
-                    })
-			    });		
-            }});
-            // id: 0,
-            //         //先给默认值
-            //         companyId: 1,
-            //         userName: '',
-            //         englishName: '',
-            //         gender: 1,
-            //         linkPhone: '',
-            //         email: '',
-            //         qq: '',
-            //         folk: '',
-            //         nativePlace: '',
-            //         politicalStatus: '',
-            //         idCard: '',
-            //         age: '',
-            //         birthDay: '',
-            //         graduateInstitutions: '',
-            //         professional: '',
-            //         degree: '',
-            //         graduationDate: '',
-            //         stature: '',
-            //         weight: '',
-            //         marriage: '未婚',
-            //         children: '无',
-            //         recruitSource: '',
-            //         jobCandidates: '',
-            //         expectSalary: '',
-            //         arrivalTime: '',
-            //         idCardProvince: '',
-            //         idCardCity: '',
-            //         idCardCounty: '',
-            //         idCardArea: '',
-            //         idCardAddress: '',
-            //         liveProvince: '',
-            //         liveCity: '',
-            //         liveCounty: '',
-            //         liveArea: '',
-            //         liveAddress: '',
-            //         hobby: '',
-            //         photoPath: '',
-            //         certificatePath: '',
-            //         family: '',
-            //         education: '',
-            //         work: '',
-            //         departmentId: 0,
-            //         positionId: 0,
-            //         employeeNo: '',
-            //         officePhone: '',
-            //         officeEmail: '',
-            //         faxNumber: '',
-            //         referees: '',
-            //         officeAddress: '',
-            //         positionDescribe: '',
+					var table = layui.table,
+						element = layui.element,
+						laydate = layui.laydate,
+						rate = layui.rate;
+						Serv.Get('Resume/GetInfo/' + id, {},function (response) {
+							model.id = response.id;
+							model.userName = response.userName;
+							model.companyId = response.companyId;
+							model.englishName = response.englishName;
+							model.gender = response.gender;
+							model.linkPhone = response.linkPhone;
+							model.email = response.email;
+							model.qq = response.qq;
+							model.folk = response.folk;
+							model.nativePlace = response.nativePlace;
+							model.politicalStatus = response.politicalStatus;
+							model.idCard = response.idCard;
+							model.age = response.age;
+							model.birthDay = response.birthDay;
+							model.graduateInstitutions = response.graduateInstitutions;
+							model.professional = response.professional;
+							model.degree = response.degree;
+							model.graduationDate = response.graduationDate;
+							model.stature = response.stature;
+							model.weight = response.weight;
+							model.marriage = response.marriage;
+							model.children = response.children;
+							model.recruitSource = response.recruitSource;
+							model.jobCandidates = response.jobCandidates;
+							model.jobYears = response.jobYears;
+							model.expectSalary = response.expectSalary;
+							model.arrivalTime = response.arrivalTime;
+							model.idCardProvince = response.idCardProvince;
+							model.idCardCity = response.idCardCity;
+							model.idCardCounty = response.idCardCounty;
+							model.idCardArea = response.idCardArea;
+							model.idCardAddress = response.idCardAddress;
+							model.liveProvince = response.liveProvince;
+							model.liveCity = response.liveCity;
+							model.liveCounty = response.liveCounty;
+							model.liveArea = response.liveArea;
+							model.liveAddress = response.liveAddress;
+							model.hobby = response.hobby;
+							model.photoPath = response.photoPath;
+							model.certificatePath = response.certificatePath;
+							model.family = response.family;
+							model.education = response.education;
+							model.work = response.work;
+							model.departmentId = response.departmentId;
+							model.positionId = response.positionId;
+							model.employeeNo = response.employeeNo;
+							model.officePhone = response.officePhone;
+							model.officeEmail = response.officeEmail;
+							model.faxNumber = response.faxNumber;
+							model.referees = response.referees;
+							model.officeAddress = response.officeAddress;
+							model.positionDescribe = response.positionDescribe;
+							model.basicRelations = JSON.parse(response.family);
+							model.basicEducation = JSON.parse(response.education);
+							model.basicWork = JSON.parse(response.work);
+							// model = response;
+							vm.$set({ data: model });
+						})
+			    });	
 		</script>
 	</body>
 </html>
