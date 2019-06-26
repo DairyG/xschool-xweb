@@ -63,7 +63,7 @@ function GetSingle(Id) {
     Serv.Post('uc/Department/GetSingle', { Id: Id }, function (response) {
         model.id = response.id;
         model.companyId = response.companyId;
-        model.pId = response.pId;
+        model.pId = response.pid;
         model.dptName = response.dptName;
         model.dptCode = response.dptCode;
         model.dptPositions = response.dptPositions;
@@ -164,7 +164,8 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                 }
             })
         } else {
-            Serv.Post('uc/Department/update', laydata.field, function (response) {
+            console.log(laydata.field);
+            Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, initTree());
             })
         }
@@ -173,12 +174,12 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(dptAdd)', function (laydata) {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
-            Serv.Post('uc/Department/add', laydata.field, function (response) {
+            Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, ClickAdd());
                 initTree();
             })
         } else {
-            Serv.Post('uc/Department/update', laydata.field, function (response) {
+            Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, ClickAdd());
                 $("input[name='Id']").val("0");
                 initTree();
@@ -195,8 +196,8 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
             layer_alert("该部门含有下级，无法删除！");
         }
         else {
-            laydata.field.DptStatus = 0;
-            Serv.Post('uc/Department/update', laydata.field, function (response) {
+            //laydata.field.dptStatus = 0;
+            Serv.Get('uc/Department/Delete/' + laydata.field.Id,null, function (response) {
                 layer_alert(response.message, function () { window.location.reload() });
             })
         }
