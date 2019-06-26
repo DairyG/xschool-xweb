@@ -38,8 +38,9 @@
 			<form class="layui-form layui-form2" Id="workerinForm">
 				<div class="layui-row">
 					<input type="hidden" name="Id" v-model="id" value="" />
-					<input type="hidden" name="WorkinStatus" v-model="workinStatus" value="1" />
-					<input type="hidden" name="IsSystem" v-model="isSystem" value="0" />
+					<input type="hidden" name="CompanyId" v-model="companyId" value="1" />
+					<!-- <input type="hidden" name="WorkinStatus" v-model="workinStatus" value="1" />
+					<input type="hidden" name="IsSystem" v-model="isSystem" value="0" /> -->
 					<div class="layui-form-item layui-col-md6 margin-b-20">
 						<label class="layui-form-label">职位名称<span class="text-red">*</span></label>
 						<div class="layui-input-block">
@@ -50,21 +51,21 @@
 					<div class="layui-form-item layui-col-md6 margin-b-20">
 						<label class="layui-form-label">显示顺序</label>
 						<div class="layui-input-block">
-							<input type="text" class="layui-input" name="SortId" v-model="sortId" value="1" required
+							<input type="text" class="layui-input" name="Index" v-model="index" value="1" required
 								lay-verify="numHas" placeholder="显示顺序">
 						</div>
 					</div>
 					<div class="layui-form-item layui-col-md12 margin-b-20">
 						<label class="layui-form-label">职责</label>
 						<div class="layui-input-block">
-							<textarea class="layui-textarea" name="Duty" v-model="duty"
+							<textarea class="layui-textarea" name="Description" v-model="description"
 								placeholder="请输入岗位职责"></textarea>
 						</div>
 					</div>
 					<div class="layui-form-item layui-col-md12 margin-b-20">
 						<label class="layui-form-label">入职要求</label>
 						<div class="layui-input-block">
-							<textarea class="layui-textarea" name="Demand" v-model="demand"
+							<textarea class="layui-textarea" name="Require" v-model="require"
 								placeholder="请输入入职要求"></textarea>
 						</div>
 					</div>

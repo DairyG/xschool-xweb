@@ -10,7 +10,7 @@ var setting = {
         , simpleData: {
             enable: true
             , idKey: 'id'
-            , pIdKey: 'higherLevel'
+            , pIdKey: 'pid'
             , rootPId: '0'
         }
     },
@@ -39,7 +39,7 @@ $(document).ready(function () {
     //zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
 })
 function initTree() {
-    Serv.Get('department/gettree', {}, function (response) {
+    Serv.Get('uc/department/gettree', {}, function (response) {
         zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
     })
 }

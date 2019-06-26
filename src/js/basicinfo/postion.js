@@ -4,9 +4,9 @@ var data_col = [[
     // { field: 'id', title: '序号' },
     { type: 'numbers', title: '序号' },
     { field: 'name', title: '职位名称' },
-    { field: 'sortId', title: '显示顺序' },
-    { field: 'duty', title: '岗位职责' },
-    { field: 'demand', title: '入职要求' },
+    { field: 'index', title: '显示顺序' },
+    { field: 'description', title: '岗位职责' },
+    { field: 'require', title: '入职要求' },
     { title: '操作', toolbar: '#bar', width: 180 }
 ]];
 
@@ -15,7 +15,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         element = layui.element;
 
     var search = function () {
-
+        return {"companyId":1};
     };
     //操作栏的回调函数
     var onTools = function (layEvent, data) {
@@ -38,7 +38,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
             } else if (layEvent === "del") {
                 layer_confirm('确定删除信息吗？', function () {
                     layer_load();
-                    Serv.Post('Position/Delete', data, function (result) {
+                    Serv.Get('uc/job/Delete/' + value,null, function (result) {
                         if (result.code == "00") {
                             layer_alert(result.message, function () {
                                 lstPager.refresh();
@@ -58,7 +58,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         "lst",//绑定的列表Id
         'toolbar',//绑定的工具条Id
         data_col,//表头的显示行
-        "Position/Get",//action url 只能post提交
+        "uc/job/Get",//action url 只能post提交
         search,
         null,//如果在显示之前需要对数据进行整理需要实现，否则传null
         null,//有选择行才能有的操作，实现该方法,否则传null
@@ -91,10 +91,11 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         layer_load();
         if (laydata.field.Id == "") {
             laydata.field.Id = 0;
-            laydata.field.IsSystem = 0;
-            laydata.field.Type = $("input[name='Type_Chinese']").attr('e-value');
+            laydata.field.CompanyId = 1;
+            //laydata.field.IsSystem = 0;
+            //laydata.field.Type = $("input[name='Type_Chinese']").attr('e-value');
             console.log(laydata.field);
-            Serv.Post('Position/add', { positionSetting: laydata.field }, function (response) {
+            Serv.Post('uc/job/edit', { positionSetting: laydata.field }, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', function () {
                         EmptyModel();
@@ -119,7 +120,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                 layer_alert($("input[name='Type_Chinese']").val() + "为系统数据，无法进行修改操作！");
             }
             else {
-                Serv.Post('Position/update', laydata.field, function (response) {
+                Serv.Post('uc/job/edit', laydata.field, function (response) {
                     if (response.code == "00") {
                         layer_alert(response.message);
                         lstPager.refresh();
@@ -147,36 +148,36 @@ function closePop() {
 
 var model = {
     id: '',
+    companyId : '1',
     name: '',
-    sortId: '0',
-    duty: '',
-    demand: '',
-    fileUrl: '',
-    workinStatus: 1,
-    isSystem: ''
+    description : '',
+    require : '' ,
+    index : 0,
 };
 var vm = new Vue({ el: '#workerinForm', data: model });
 function GetSingle(wId) {
-    Serv.Post('Position/GetSingle', { Id: wId }, function (response) {
+    Serv.Get('uc/job/Get/'+wId,null, function (response) {
         model.id = response.id;
+        model.companyId = response.companyId;
         model.name = response.name;
-        model.sortId = response.sortId;
-        model.duty = response.duty;
-        model.demand = response.demand;
+        model.index = response.index;
+        model.description = response.description;
+        model.require = response.require;
         model.fileUrl = response.fileUrl;
-        model.workinStatus = response.workinStatus;
-        model.isSystem = response.isSystem;
+        // model.workinStatus = response.workinStatus;
+        // model.isSystem = response.isSystem;
         vm.$set({ data: model });
     })
 }
 function EmptyModel() {
     model.id = "";
+    model.companyId = "1";
     model.name = "";
-    model.sortId = "1";
-    model.duty = "";
-    model.demand = "";
+    model.index = "0";
+    model.description = "";
+    model.require = "";
     model.fileUrl = "";
-    model.workinStatus = 1;
-    model.isSystem = 0;
+    // model.workinStatus = 1;
+    // model.isSystem = 0;
     vm.$set({ data: model });
 }
