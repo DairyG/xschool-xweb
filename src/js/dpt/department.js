@@ -145,7 +145,13 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
-            laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.pId + ",";
+            if(laydata.field.pId == 0)
+            {
+                laydata.field.LevelMap = "0,";
+            }
+            else{
+                laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.pId + ",";
+            }
             Serv.Post('uc/Department/add', laydata.field, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
