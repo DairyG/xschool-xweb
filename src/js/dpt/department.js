@@ -145,30 +145,19 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
-            if(laydata.field.pId == 0)
+            if(laydata.field.PId == 0)
             {
                 laydata.field.LevelMap = "0,";
             }
             else{
-                laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.pId + ",";
+                laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.PId + ",";
             }
+
             Serv.Post('uc/Department/add', laydata.field, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
                     layer_load_lose();
                     initTree();
-                    // var nodes = zTreeObj.getSelectedNodes();
-                    // if(nodes.length > 0){
-                    //     var parentnodes = nodes[0];
-                    //     var newNode = [
-                    //         name=laydata.field.DptName,
-                    //         title=laydata.field.DptName,
-                    //         id = response.data,
-                    //         pid = parentnodes.id
-                    //     ];
-                    //     zTreeObj.addNodes(parentnodes,-1,newNode,true);
-                    // }
-
                 }
                 else {
                     layer_alert(response.message);
@@ -184,7 +173,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(dptAdd)', function (laydata) {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
-            Serv.Post('Department/add', laydata.field, function (response) {
+            Serv.Post('uc/Department/add', laydata.field, function (response) {
                 layer_alert(response.message, ClickAdd());
                 initTree();
             })
