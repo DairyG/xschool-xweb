@@ -46,7 +46,7 @@ var vm = new Vue({
             family: '',
             education: '',
             work: '',
-            departmentId: '',
+            departmentId: '0',
             positionId: '0',
             employeeNo: '',
             officePhone: '',
@@ -218,7 +218,7 @@ var vm = new Vue({
 
                     console.log(_this.person);
 
-                    Serv.Post('person/edit?operation=1', _this.person, function (result) {
+                    Serv.Post('uc/employee/edit?operation=1', _this.person, function (result) {
                         if (result.code == '00') {
                             _this.person.id = result.data;
                             layer_alert(result.message);

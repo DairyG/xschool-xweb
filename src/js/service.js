@@ -1,6 +1,7 @@
 
 var Serv = {
-    ServiceUrl: "http://localhost:54546/api/v1/",
+     ServiceUrl: "http://localhost:8000/api/v1/",
+    //ServiceUrl: "http://192.168.3.8:8500/api/v1/",    
     //ServiceUrl:"http://192.168.0.253/api/v1/",
     // ServiceUrl:"http://114.116.54.157/ecenter/api/v1/", //api访问地址
     // ServiceUrl:"http://localhost/api/v1/",
