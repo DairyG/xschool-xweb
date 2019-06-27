@@ -10,7 +10,7 @@ var setting = {
         , simpleData: {
             enable: true
             , idKey: 'id'
-            , pIdKey: 'pId'
+            , pIdKey: 'pid'
             , rootPId: '0'
         }
     },
@@ -63,7 +63,7 @@ function GetSingle(Id) {
     Serv.Post('uc/Department/GetSingle', { Id: Id }, function (response) {
         model.id = response.id;
         model.companyId = response.companyId;
-        model.pId = response.pId;
+        model.pId = response.pid;
         model.dptName = response.dptName;
         model.dptCode = response.dptCode;
         model.dptPositions = response.dptPositions;
@@ -145,31 +145,27 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
-            laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.pId + ",";
+            if(laydata.field.PId == 0)
+            {
+                laydata.field.LevelMap = "0,";
+            }
+            else{
+                laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.PId + ",";
+            }
+
             Serv.Post('uc/Department/add', laydata.field, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
                     layer_load_lose();
                     initTree();
-                    // var nodes = zTreeObj.getSelectedNodes();
-                    // if(nodes.length > 0){
-                    //     var parentnodes = nodes[0];
-                    //     var newNode = [
-                    //         name=laydata.field.DptName,
-                    //         title=laydata.field.DptName,
-                    //         id = response.data,
-                    //         pid = parentnodes.id
-                    //     ];
-                    //     zTreeObj.addNodes(parentnodes,-1,newNode,true);
-                    // }
-
                 }
                 else {
                     layer_alert(response.message);
                 }
             })
         } else {
-            Serv.Post('uc/Department/update', laydata.field, function (response) {
+            console.log(laydata.field);
+            Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, initTree());
             })
         }
@@ -178,12 +174,12 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(dptAdd)', function (laydata) {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
-            Serv.Post('Department/add', laydata.field, function (response) {
+            Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, ClickAdd());
                 initTree();
             })
         } else {
-            Serv.Post('uc/Department/update', laydata.field, function (response) {
+            Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, ClickAdd());
                 $("input[name='Id']").val("0");
                 initTree();
@@ -200,8 +196,8 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
             layer_alert("该部门含有下级，无法删除！");
         }
         else {
-            laydata.field.DptStatus = 0;
-            Serv.Post('uc/Department/update', laydata.field, function (response) {
+            //laydata.field.dptStatus = 0;
+            Serv.Get('uc/Department/Delete/' + laydata.field.Id,null, function (response) {
                 layer_alert(response.message, function () { window.location.reload() });
             })
         }
