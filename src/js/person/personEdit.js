@@ -57,6 +57,17 @@ var vm = new Vue({
             positionDescribe: '',
             status: 0,
         },
+        training: {
+            id: 0,
+            course: '',
+            institutions: '',
+            startDate: '',
+            endDate: '',
+            address: '',
+            content: '',
+            honor: '',
+            attachment: ''
+        },
 
         basicArrival: [], //到岗时间
         basicEducation: [], //学历
@@ -118,6 +129,21 @@ var vm = new Vue({
                     elem: '#graduationDate',
                     done: function (value, date, endDate) {
                         _this.person.graduationDate = value;
+                    }
+                });
+
+                //成长 开始时间
+                laydate.render({
+                    elem: '#startDate',
+                    done: function (value, date, endDate) {
+                        _this.training.starDate = value;
+                    }
+                });
+                //成长 结束时间
+                laydate.render({
+                    elem: '#endDate',
+                    done: function (value, date, endDate) {
+                        _this.training.endDate = value;
                     }
                 });
 
@@ -217,9 +243,10 @@ var vm = new Vue({
                         _this.person.work = workJson;
                     }
 
-                    console.log(_this.person);
+                    // console.log(_this.person);
 
                     Serv.Post('uc/employee/edit?operation=1', _this.person, function (result) {
+                        layer_load_lose();
                         if (result.code == '00') {
                             _this.person.id = result.data;
                             layer_alert(result.message);
@@ -248,7 +275,33 @@ var vm = new Vue({
                     }
 
                     Serv.Post('uc/employee/edit?operation=2', _this.person, function (result) {
+                        layer_load_lose();
                         if (result.code == '00') {
+                            layer_alert(result.message);
+                        } else {
+                            layer_alert(result.message);
+                        }
+                    });
+                    return false;
+
+                });
+
+                //成长管理
+                form.on('submit(training)', function (laydata) {
+                    layer_load();
+                    if (_this.person.id <= 0) {
+                        layer_alert('请先填写个人信息');
+                        return false;
+                    }
+                    if (!compareDate(laydata.field.endDate, laydata.field.startDate)) {
+                        layer_alert('结束时间不能小于开始时间');
+                        return false;
+                    }
+
+                    Serv.Post('training/edit', laydata.field, function (result) {
+                        layer_load_lose();
+                        if (result.code == '00') {
+                            _this.training.id = result.data;
                             layer_alert(result.message);
                         } else {
                             layer_alert(result.message);

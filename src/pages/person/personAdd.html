@@ -721,58 +721,68 @@
 						<div class="layui-tab-item" tab-name="考核情况"></div>
 
 						<div class="layui-tab-item" tab-name="成长管理">
-							<form class="layui-form layui-form2">
+							<form class="layui-form layui-form2" autocomplete="off">
+								<input type="hidden" name="id" v-model="training.id" value="0">
+								<input type="hidden" name="personId" v-model="person.id" value="">
+
 								<div class="layui-row">
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>培训课程</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入培训课程" class="layui-input" />
+											<input type="text" name="course" v-model="training.course" maxlength="100"
+												required lay-verify="name" placeholder="培训课程" class="layui-input" />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>培训机构</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入培训机构" class="layui-input" />
+											<input type="text" name="institutions" v-model="training.institutions"
+												maxlength="100" required lay-verify="name" placeholder="培训机构"
+												class="layui-input" />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>开始时间</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入开始时间" class="layui-input date" readonly />
+											<input type="text" id="startDate" name="startDate" v-model="training.starDate"
+												required lay-verify="name" placeholder="开始时间" class="layui-input"
+												readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>结束时间</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入结束时间" class="layui-input date" readonly />
+											<input type="text" id="endDate" name="endDate" v-model="training.endDate"
+												required lay-verify="name" placeholder="开始时间" class="layui-input"
+												readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>培训地点</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入培训地点" class="layui-input" />
+											<input type="text" name="address" v-model="training.address" maxlength="200"
+												required lay-verify="name" placeholder="培训地点" class="layui-input" />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>培训内容</label>
 										<div class="layui-input-block">
-											<textarea class="layui-textarea" placeholder="请输入培训内容"></textarea>
+											<textarea name="content" v-model="training.content" maxlength="1500"
+												required lay-verify="name" placeholder="培训内容"
+												class="layui-textarea"></textarea>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">所获荣誉</label>
 										<div class="layui-input-block">
-											<textarea class="layui-textarea" placeholder="请输入所获荣誉"></textarea>
+											<textarea name="honor" v-model="training.honor" maxlength="800"
+												placeholder="所获荣誉" class="layui-textarea"></textarea>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">附件</label>
 										<div class="layui-input-block">
+											<input type="hidden" name="attachment" v-model="training.attachment">
 											<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
 													class="layui-icon">&#xe67c;</i>上传照片</span>
 										</div>
@@ -781,9 +791,10 @@
 								<div class="layui-row">
 									<div class="layui-form-item">
 										<div class="layui-input-block text-right">
-											<button class="layui-btn layui-btn-danger" lay-submit
-												lay-filter="submit">确认</button>
-											<span class="layui-btn" onclick="history.back(-1)">返回</span>
+											<input type="button" class="layui-btn layui-btn-danger" lay-submit
+												lay-filter="training" value="确认" v-if="hasSubmit">
+											<span class="layui-btn"
+												onclick="javascript:window.location.href='/pages/person/personList.html'">返回</span>
 										</div>
 									</div>
 								</div>
@@ -829,7 +840,7 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" src="../../js/person/personEdit.js?555555"></script>
+	<script type="text/javascript" src="../../js/person/personEdit.js"></script>
 </body>
 
 </html>

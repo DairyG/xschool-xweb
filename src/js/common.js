@@ -341,6 +341,16 @@ function getAgeFromIdCard(idCard) {
     return age;
 }
 
+
+/**
+ * 时间比较>=
+ * @param string t1 日期
+ * @param string t2 日期
+ */
+function compareDate(t1, t2) {
+    return new Date(t1.replace(/-/g, "/")) >= new Date(t2.replace(/-/g, "/"));
+}
+
 /**
  * 左边自动补全0
  */

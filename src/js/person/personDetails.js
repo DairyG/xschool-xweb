@@ -1,10 +1,15 @@
 var vm = new Vue({
     el: '#personBody',
     data: {
+        hasInit: {
+            training: true,
+        },
         person: null,
         familyData: [], //家庭成员
         educationData: [], //教育经历
-        workData: [], //职位 
+        workData: [], //职位
+
+        trainingData: [], //成长记录
     },
     mounted: function () {
         var _this = this;
@@ -27,13 +32,20 @@ var vm = new Vue({
 
                 _this.getPerson(id, table);
 
+                //一些事件监听
+                element.on('tab(component-tabs)', function (data) {
+                    var text = $(this).text();
+                    if (text == '成长记录' && _this.hasInit.training) {
+                        _this.getTraining(id);
+                    }
+                });
             });
         },
         //获取员工
         getPerson: function (value, table) {
             var _this = this;
             layer_load();
-            Serv.Get('person/getInfo/' + value, {}, function (result) {
+            Serv.Get('uc/employee/get/' + value, {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.person = result;
@@ -54,10 +66,22 @@ var vm = new Vue({
                         _this.workData = JSON.parse(_this.person.work);
                     }
 
-                    console.log(_this.workData);
+                    // console.log(_this.workData);
 
                 } else {
-                    layer_alert(result.message);
+                    layer_alert('未获取到相关数据');
+                }
+            });
+        },
+        //获取成长管理
+        getTraining: function (value) {
+            var _this = this;
+            layer_load();
+            Serv.Get('training/query/' + value, {}, function (result) {
+                layer_load_lose();
+                if (result) {
+                    _this.hasInit.training = false;
+                    _this.trainingData = result;
                 }
             });
         },
@@ -77,6 +101,13 @@ var vm = new Vue({
             value = value.replace(/\r\n/g, '<br>');
             value = value.replace(/\n/g, '<br>');
             return value;
+        },
+        //格式化时间
+        formatDate: function (value, hasTime) {
+            if (!value) {
+                return '';
+            }
+            return value.FormatDate(hasTime);
         }
     }
 });

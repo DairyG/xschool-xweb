@@ -39,7 +39,7 @@
 			<div class="layui-col-md10">
 				<div class="layui-card">
 					<div class="layui-card-body">
-						<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<div class="layui-tab layui-tab-brief" lay-filter="component-tabs">
 							<ul class="layui-tab-title">
 								<li class="layui-this">职位信息</li>
 								<li>个人信息</li>
@@ -660,58 +660,32 @@
 								<div class="layui-tab-item" tab-name="奖惩情况"></div>
 								<div class="layui-tab-item" tab-name="考核情况"></div>
 								<div class="layui-tab-item" tab-name="成长记录">
-									<div class="layui-row margin-b-20">
+									<div class="layui-row margin-b-20" v-if="trainingData.length>0"
+										v-for="item in trainingData">
 										<table class="layui-table">
 											<tr>
 												<td class="table_label" width="120">培训课程</td>
-												<td>少儿编程</td>
+												<td>{{item.course}}</td>
 												<td class="table_label">培训机构</td>
-												<td>XXXX机构</td>
+												<td>{{item.institutions}}</td>
 											</tr>
 											<tr>
 												<td class="table_label">起始时间</td>
-												<td>2019-5-1 -- 2019-8-1</td>
+												<td>{{formatDate(item.startDate,false)}} -- {{formatDate(item.endDate,false)}}</td>
 												<td class="table_label">培训地点</td>
-												<td>四川成都高新区天府大道9999999号</td>
+												<td>{{item.address}}</td>
 											</tr>
 											<tr>
 												<td class="table_label">培训内容</td>
-												<td colspan="3">
-													培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容
-												</td>
+												<td colspan="3" v-html="replaceLine(item.content)"></td>
 											</tr>
 											<tr>
 												<td class="table_label">所获荣誉</td>
-												<td colspan="3">所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉</td>
+												<td colspan="3" v-html="replaceLine(item.honor)"></td>
 											</tr>
 										</table>
 									</div>
-									<div class="layui-row margin-b-20">
-										<table class="layui-table">
-											<tr>
-												<td class="table_label" width="120">培训课程</td>
-												<td>少儿编程</td>
-												<td class="table_label">培训机构</td>
-												<td>XXXX机构</td>
-											</tr>
-											<tr>
-												<td class="table_label">起始时间</td>
-												<td>2019-5-1 -- 2019-8-1</td>
-												<td class="table_label">培训地点</td>
-												<td>四川成都高新区天府大道9999999号</td>
-											</tr>
-											<tr>
-												<td class="table_label">培训内容</td>
-												<td colspan="3">
-													培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容培训内容
-												</td>
-											</tr>
-											<tr>
-												<td class="table_label">所获荣誉</td>
-												<td colspan="3">所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉所获荣誉</td>
-											</tr>
-										</table>
-									</div>
+									<div class="layui-row margin-b-20" v-if="trainingData.length==0">没有成长记录</div>
 								</div>
 							</div>
 						</div>
@@ -720,79 +694,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- <script type="text/javascript">
-		var gz_datas = [{
-				'ny': '2019-4',
-				amount: '8000',
-				jb: '10000',
-				cb: '100',
-				jt: 100,
-				hf: 100,
-				gw: 100,
-				yn: '<span class="text-red">-100</span>',
-				sy: '<span class="text-red">-100</span>',
-				amount1: 8000,
-				amount2: 10000,
-				cd: '<span class="text-red">-100</span>',
-				qj: '<span class="text-red">-10</span>',
-				jj: 200
-			},
-			{
-				'ny': '2019-3',
-				amount: '8000',
-				jb: '10000',
-				cb: '100',
-				jt: 100,
-				hf: 100,
-				gw: 100,
-				yn: '<span class="text-red">-100</span>',
-				sy: '<span class="text-red">-100</span>',
-				amount1: 8000,
-				amount2: 10000,
-				cd: '<span class="text-red">-100</span>',
-				qj: '<span class="text-red">-10</span>',
-				jj: 200
-			},
-			{
-				'ny': '2019-2',
-				amount: '8000',
-				jb: '10000',
-				cb: '100',
-				jt: 100,
-				hf: 100,
-				gw: 100,
-				yn: '<span class="text-red">-100</span>',
-				sy: '<span class="text-red">-100</span>',
-				amount1: 8000,
-				amount2: 10000,
-				cd: '<span class="text-red">-100</span>',
-				qj: '<span class="text-red">-10</span>',
-				jj: 200
-			},
-			{
-				'ny': '2019-1',
-				amount: '8000',
-				jb: '10000',
-				cb: '100',
-				jt: 100,
-				hf: 100,
-				gw: 100,
-				yn: '<span class="text-red">-100</span>',
-				sy: '<span class="text-red">-100</span>',
-				amount1: 8000,
-				amount2: 10000,
-				cd: '<span class="text-red">-100</span>',
-				qj: '<span class="text-red">-10</span>',
-				jj: 200
-			},
-		];
-		layui.use(['table', 'element', 'laydate'], function () {
-			var table = layui.table,
-				element = layui.element,
-				laydate = layui.laydate;
-
-		});
-	</script> -->
 	<script type="text/javascript" src="../../js/person/personDetails.js"></script>
 </body>
 
