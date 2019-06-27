@@ -365,7 +365,7 @@
 											<select name="positionId" v-model="person.positionId" required
 												lay-verify="select" placeholder="所属职位" lay-filter="positionId">
 												<option value="0">请选择</option>
-												<option v-if="basicPosition.length>0" v-for="item in basicPosition"
+												<option v-if="basicJob.length>0" v-for="item in basicJob"
 													:value="item.id">{{item.name}}</option>
 											</select>
 										</div>
@@ -373,8 +373,9 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>员工工号</label>
 										<div class="layui-input-block">
-											<input type="text" name="employeeNo" v-model="person.employeeNo" maxlength="30" required
-												lay-verify="name|code" placeholder="员工工号" class="layui-input">
+											<input type="text" name="employeeNo" v-model="person.employeeNo"
+												maxlength="30" required lay-verify="name|code" placeholder="员工工号"
+												class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
@@ -828,7 +829,7 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" src="../../js/person/personEdit.js"></script>
+	<script type="text/javascript" src="../../js/person/personEdit.js?555555"></script>
 </body>
 
 </html>

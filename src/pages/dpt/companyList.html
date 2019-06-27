@@ -65,7 +65,7 @@
                 } else if (layEvent === "del") {
                     layer_confirm('确定删除吗？', function () {
                         layer_load();
-                        Serv.Get('company/delete/' + value, {}, function (result) {
+                        Serv.Get('uc/company/delete/' + value, {}, function (result) {
                             if (result.code == "00") {
                                 layer_alert(result.message, function () {
                                     lstPager.refresh();
@@ -84,7 +84,7 @@
                 "lst",//绑定的列表Id
                 "",//绑定的工具条Id
                 data_col,//表头的显示行
-                "company/get",//action url 只能post提交
+                "uc/company/get",//action url 只能post提交
                 search, //获取查询条件的函数
                 null,//如果在显示之前需要对数据进行整理需要实现，否则传null
                 null,//有选择行才能有的操作，实现该方法,否则传null

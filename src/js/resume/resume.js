@@ -55,6 +55,7 @@ var vm = new Vue({
             referees: '',
             officeAddress: '',
             positionDescribe: '',
+            status:1,
         },
 
         basicArrival: [], //到岗时间
@@ -221,11 +222,11 @@ var vm = new Vue({
                         laydata.field.work = workJson;
                         _this.person.work = workJson;
                     }
+                    laydata.field.status = 1;
+                    // console.log(laydata.field);
+                    // console.log(_this.person);
 
-                    console.log(laydata.field);
-                    console.log(_this.person);
-
-                    Serv.Post('Resume/edit?peration=1', laydata.field, function (result) {
+                    Serv.Post('Resume/edit', laydata.field, function (result) {
                         if (result.code == '00') {
                             _this.person.id = result.data;
                             layer_alert(result.message);
@@ -361,9 +362,9 @@ var vm = new Vue({
                 _this.person.positionId = data.value;
             });
             //在职状态
-            form.on('select(status)', function (data) {
-                _this.person.status = data.value;
-            });
+            // form.on('select(status)', function (data) {
+            //     _this.person.status = data.value;
+            // });
 
         },
 

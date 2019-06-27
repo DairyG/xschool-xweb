@@ -63,7 +63,7 @@ var vm = new Vue({
         basicProperties: [], //教育性质
         basicRelations: [], //社会关系
         basicRecruitment: [], //招聘来源
-        basicPosition: [], //招聘来源
+        basicJob: [], //所属职位
 
         departmentData: [], //部门数据
 
@@ -76,7 +76,7 @@ var vm = new Vue({
     mounted: function () {
         var _this = this;
         var id = GetPara('id');
-        id = !id ? '' : id;        
+        id = !id ? '' : id;
 
         _this.dptZTreeObj = new ZTreeRadio('departmentName', 'deptTreeContent', 'deptTree');
         _this.initLayui(id);
@@ -94,6 +94,7 @@ var vm = new Vue({
                 _this.onBasicSelect(form);
 
                 _this.getDept(_this.person.companyId);
+                _this.getJob(_this.person.companyId);
 
                 //所属部门
                 $('#departmentName').on('click', function () {
@@ -246,7 +247,7 @@ var vm = new Vue({
                         return false;
                     }
 
-                    Serv.Post('person/edit?operation=2', _this.person, function (result) {
+                    Serv.Post('uc/employee/edit?operation=2', _this.person, function (result) {
                         if (result.code == '00') {
                             layer_alert(result.message);
                         } else {
@@ -263,7 +264,7 @@ var vm = new Vue({
         getBasic: function (table, id) {
             var _this = this;
             layer_load();
-            Serv.Get('workerinfield/getdata?type=1,3,4,5,6,10', {}, function (result) {
+            Serv.Get('workerinfield/getdata?type=1,3,4,5,6', {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.hasSubmit = true;
@@ -273,7 +274,6 @@ var vm = new Vue({
                     _this.basicProperties = result.properties;
                     _this.basicRelations = result.socialRelations;
                     _this.basicRecruitment = result.recruitmentSource;
-                    _this.basicPosition = result.positionType;
 
                     // console.log(_this.basicEducation);
 
@@ -303,7 +303,7 @@ var vm = new Vue({
         getPerson: function (value, table) {
             var _this = this;
             layer_load();
-            Serv.Get('person/getInfo/' + value, {}, function (result) {
+            Serv.Get('uc/employee/get/' + value, {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.person = result;
@@ -947,10 +947,32 @@ var vm = new Vue({
         getDept: function (cId) {
             var _this = this;
             layer_load();
-            Serv.Get('department/getztree/' + cId, {}, function (result) {
+            Serv.Get('uc/department/gettree?companyId=' + cId, {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.dptZTreeObj.reload(result);
+                } else {
+                    _this.hasSubmit = false;
+                    layer_alert(result.message);
+                }
+            });
+        },
+        //获取职位
+        getJob: function (cId) {
+            var _this = this;
+            layer_load();
+            Serv.Post('uc/job/get', {
+                page: 1,
+                limit: 50,
+                companyId: cId
+            }, function (result) {
+                layer_load_lose();
+                if (result) {
+                    _this.basicJob = result.items;
+
+                    _this.$nextTick(function () {
+                        layui.form.render('select');
+                    });
                 } else {
                     _this.hasSubmit = false;
                     layer_alert(result.message);

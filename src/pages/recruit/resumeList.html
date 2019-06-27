@@ -434,9 +434,9 @@
 					} else if (layEvent === "del") {
 						layer_confirm('确定删除吗？', function () {
 							layer_load();
-							Serv.Get('company/delete/' + value, {}, function (result) {
-								if (result.code == "00") {
-									layer_alert(result.message, function () {
+							Serv.Post('Resume/delete', {model:data,id:data.id}, function (result) {
+								if (result > 0) {
+									layer_alert("删除成功！", function () {
 										lstPager.refresh();
 									});
 								} else {

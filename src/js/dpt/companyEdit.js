@@ -90,7 +90,7 @@ new Vue({
             //初始化
             function initData(value) {
                 layer_load();
-                Serv.Get('company/getInfo/' + value, {}, function (result) {
+                Serv.Get('uc/company/get/' + value, {}, function (result) {
                     layer_load_lose();
                     if (result) {
                         _this.hasReadonly = true;
@@ -123,7 +123,7 @@ new Vue({
 
                         _this.bankInfo.companyId = result.id;
 
-                        _this.bankData = result.bank;
+                        _this.bankData = result.banks;
                     } else {
                         layer_alert(result.message);
                     }
@@ -133,7 +133,7 @@ new Vue({
             //基本信息
             layform.on('submit(basicInfo)', function (laydata) {
                 layer_load();
-                Serv.Post('company/edit', laydata.field, function (result) {
+                Serv.Post('uc/company/edit', laydata.field, function (result) {
                     if (result.code == "00") {
                         _this.company.id = result.data;
                         _this.bankInfo.companyId = result.data;
@@ -165,7 +165,7 @@ new Vue({
                     return false;
                 }
                 layer_load();
-                Serv.Post('company/editbank', laydata.field, function (result) {
+                Serv.Post('uc/bank/edit', laydata.field, function (result) {
                     if (result.code == "00") {
                         layer_alert(result.message, function () {
                             layer.closeAll();
@@ -196,7 +196,7 @@ new Vue({
             var _this = this;
             layer_confirm('确定删除吗？', function () {
                 layer_load();
-                Serv.Get('company/delbank/' + value, {}, function (result) {
+                Serv.Get('uc/bank/delete/' + value, {}, function (result) {
                     if (result.code == "00") {
                         layer_alert(result.message, function () {
                             _this.getBank();
@@ -210,7 +210,7 @@ new Vue({
         getBank: function () {
             var _this = this;
             layer_load();
-            Serv.Get('company/getbank/' + _this.company.id, {}, function (result) {
+            Serv.Get('uc/bank/query/' + _this.company.id, {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.bankData = result;

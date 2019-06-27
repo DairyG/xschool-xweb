@@ -152,7 +152,7 @@ layui.use(['form'], function () {
             if (value == "" || value.length == 0) {
                 return;
             }
-            if (/^[^_IOZSVa-z\W]{2}\d{6}[^_IOZSVa-z\W]{10}$/g.test(value) == false) {
+            if (/[^_IOZSVa-z\W]{2}\d{6}[^_IOZSVa-z\W]{10}$/g.test(value) == false) {
                 return $(obj).attr("placeholder") + "格式错误";
             }
         },
