@@ -50,6 +50,7 @@ var vm = new Vue({
                 if (result) {
                     _this.person = result;
 
+                    _this.person.statusText = ["未入职", "试用", "转正", "离职"][result.status];
                     _this.person.gender = ["", "男", "女"][result.gender];
                     _this.person.birthDay = result.birthDay.FormatDate(false);
                     _this.person.graduationDate = result.graduationDate.FormatDate(false);

@@ -29,7 +29,7 @@
 									class="layui-icon"
 									:class="person.gender=='男'?'layui-icon-male':'layui-icon-female'"></i>
 								<span class="layui-badge">{{person?person.statusText:''}}</span></h4>
-							<p class="layadmin-homepage-min-font">{{person?person.departmentName:''}}</p>
+							<p class="layadmin-homepage-min-font">{{person?person.dptName:''}}</p>
 							<p>工号：{{person?person.employeeNo:''}}</p>
 							<p>{{person?person.statusText:''}}</p>
 						</div>
@@ -62,13 +62,13 @@
 										<div class="layui-form-item layui-col-md6 ">
 											<label class="layui-form-label">所属部门：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">{{person.departmentName}}</div>
+												<div class="layui-form-mid">{{person.dptName}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md6 ">
 											<label class="layui-form-label">所属职位：</label>
 											<div class="layui-input-block">
-												<div class="layui-form-mid">{{person.positionName}}</div>
+												<div class="layui-form-mid">{{person.jobName}}</div>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md6 ">
@@ -671,7 +671,8 @@
 											</tr>
 											<tr>
 												<td class="table_label">起始时间</td>
-												<td>{{formatDate(item.startDate,false)}} -- {{formatDate(item.endDate,false)}}</td>
+												<td>{{formatDate(item.startDate,false)}} --
+													{{formatDate(item.endDate,false)}}</td>
 												<td class="table_label">培训地点</td>
 												<td>{{item.address}}</td>
 											</tr>

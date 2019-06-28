@@ -43,9 +43,10 @@
 							</form>
 							<table id="lst" lay-filter="lst"></table>
 							<script type="text/html" id="toolbar">
-                                <button class="layui-btn layui-btn-xs" lay-event="view">查看</button>
-                                <button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</button>
-                                <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+								<button class="layui-btn layui-btn-xs" lay-event="view">查看</button>
+								<button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</button>
+								<button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="openAccount">开通账户</button>
+								<button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
 							</script>
 							<script type="text/html" id="bar">
 							</script>
@@ -58,15 +59,15 @@
 	<script type="text/javascript">
 		var data_col = [
 			[{
-					type: 'id',
+					field: 'id',
 					title: '序号'
 				},
 				{
-					field: 'departmentName',
+					field: 'dptName',
 					title: '部门'
 				},
 				{
-					field: 'positionName',
+					field: 'jobName',
 					title: '职位',
 					width: 80
 				},
@@ -76,8 +77,18 @@
 					width: 80
 				},
 				{
-					field: 'statusText',
-					title: '状态'
+					field: 'status',
+					title: '状态',
+					templet: function (d) {
+						return ['未入职', '试用', '转正', '离职'][d.status];
+					}
+				},
+				{
+					field: 'isOpenAccount',
+					title: '开通账户',
+					templet: function (d) {
+						return d.isOpenAccount ? '<span class="text-span">已开通</span>' : '<span class="text-del">未开通</span>';
+					}
 				},
 				{
 					field: 'employeeNo',
@@ -113,12 +124,18 @@
 			]
 		];
 
+		var parameter = {
+			companyId: 1,
+			linkPhone: '',
+			userName: ''
+		};
+
 		layui.use(['table', 'element'], function () {
 			var table = layui.table,
 				element = layui.element;
 
 			function search() {
-
+				return parameter;
 			}
 
 			//操作栏的回调函数
@@ -128,6 +145,19 @@
 					window.location.href = '/pages/person/personDetails.html?id=' + value;
 				} else if (layEvent === 'edit') {
 					window.location.href = '/pages/person/personAdd.html?id=' + value;
+				} else if (layEvent === 'openAccount') {
+					layer_confirm('确定开通账户吗？', function () {
+						layer_load();
+						Serv.Get('uc/employee/openaccount/' + value, {}, function (result) {
+							if (result.succeed) {
+								layer_alert('开户成功', function () {
+									lstPager.refresh();
+								});
+							} else {
+								layer_alert(result.message);
+							}
+						});
+					});
 				} else if (layEvent === "del") {
 					layer_confirm('确定删除吗？', function () {
 						layer_load();

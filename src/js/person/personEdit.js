@@ -46,8 +46,8 @@ var vm = new Vue({
             family: '',
             education: '',
             work: '',
-            departmentId: '0',
-            positionId: '0',
+            dptId: '0',
+            jobId: '0',
             employeeNo: '',
             officePhone: '',
             officeEmail: '',
@@ -89,7 +89,7 @@ var vm = new Vue({
         var id = GetPara('id');
         id = !id ? '' : id;
 
-        _this.dptZTreeObj = new ZTreeRadio('departmentName', 'deptTreeContent', 'deptTree');
+        _this.dptZTreeObj = new ZTreeRadio('dptName', 'deptTreeContent', 'deptTree');
         _this.initLayui(id);
     },
     methods: {
@@ -108,7 +108,7 @@ var vm = new Vue({
                 _this.getJob(_this.person.companyId);
 
                 //所属部门
-                $('#departmentName').on('click', function () {
+                $('#dptName').on('click', function () {
                     _this.dptZTreeObj.showZTree();
                 });
 
@@ -264,8 +264,8 @@ var vm = new Vue({
                         layer_alert('请先填写个人信息');
                         return false;
                     }
-                    _this.person.departmentId = $('input[name="departmentName"]').attr('data-id');
-                    if (!_this.person.departmentId) {
+                    _this.person.dptId = $('input[name="dptName"]').attr('data-id');
+                    if (!_this.person.dptId) {
                         layer_alert('请选择所属部门');
                         return false;
                     }
@@ -302,7 +302,17 @@ var vm = new Vue({
                         layer_load_lose();
                         if (result.code == '00') {
                             _this.training.id = result.data;
-                            layer_alert(result.message);
+                            layer_confirm('操作成功，确定继续吗？', function () {
+                                _this.training.id = '0';
+                                _this.training.course = '';
+                                _this.training.institutions = '';
+                                _this.training.startDate = '';
+                                _this.training.endDate = '';
+                                _this.training.address = '';
+                                _this.training.content = '';
+                                _this.training.content = '';
+                                _this.training.attachment = '';
+                            });
                         } else {
                             layer_alert(result.message);
                         }
@@ -386,7 +396,7 @@ var vm = new Vue({
                         _this.workData = JSON.parse(_this.person.work);
                     }
 
-                    $('#departmentName').attr('data-id', _this.person.departmentId).val(result.departmentName);
+                    $('#dptName').attr('data-id', _this.person.dptId).val(result.dptName);
 
                     _this.dptZTreeObj.setCheck();
 
@@ -437,8 +447,8 @@ var vm = new Vue({
                 _this.person.arrivalTime = data.value;
             });
             //所属职位
-            form.on('select(positionId)', function (data) {
-                _this.person.positionId = data.value;
+            form.on('select(jobId)', function (data) {
+                _this.person.jobId = data.value;
             });
             //在职状态
             form.on('select(status)', function (data) {
@@ -1000,7 +1010,7 @@ var vm = new Vue({
         getDept: function (cId) {
             var _this = this;
             layer_load();
-            Serv.Get('uc/department/gettree?companyId=' + cId, {}, function (result) {
+            Serv.Get('uc/department/getbycompany/' + cId, {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.dptZTreeObj.reload(result);
