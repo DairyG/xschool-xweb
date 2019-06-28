@@ -226,7 +226,7 @@ var vm = new Vue({
                     // console.log(laydata.field);
                     // console.log(_this.person);
 
-                    Serv.Post('Resume/edit', laydata.field, function (result) {
+                    Serv.Post('gc/Resume/edit', laydata.field, function (result) {
                         if (result.code == '00') {
                             _this.person.id = result.data;
                             layer_alert(result.message);
@@ -284,7 +284,7 @@ var vm = new Vue({
         getPerson: function (value, table) {
             var _this = this;
             layer_load();
-            Serv.Get('Resume/getInfo/' + value, {}, function (result) {
+            Serv.Get('gc/Resume/getInfo/' + value, {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.person = result;
@@ -922,7 +922,7 @@ var vm = new Vue({
         getDept: function (cId) {
             var _this = this;
             layer_load();
-            Serv.Get('department/getztree/' + cId, {}, function (result) {
+            Serv.Get('uc/department/GetByCompany/' + cId, {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.dptZTreeObj.reload(result);

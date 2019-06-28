@@ -37,7 +37,7 @@ var data_col = [[
 				} else if (layEvent === "del") {
 					layer_confirm('确定删除信息吗？', function () {
 						layer_load();
-						Serv.Post('WorkerInField/Delete', data, function (result) {
+						Serv.Post('gc/WorkerInField/Delete', data, function (result) {
 							if (result.code == "00") {
 								layer_alert(result.message, function () {
 									lstPager.refresh();
@@ -57,7 +57,7 @@ var data_col = [[
 			"lst",//绑定的列表Id
 			'toolbar',//绑定的工具条Id
 			data_col,//表头的显示行
-			"WorkerInField/Get",//action url 只能post提交
+			"gc/WorkerInField/Get",//action url 只能post提交
 			search,
 			null,//如果在显示之前需要对数据进行整理需要实现，否则传null
 			null,//有选择行才能有的操作，实现该方法,否则传null
@@ -93,7 +93,7 @@ var data_col = [[
 				laydata.field.IsSystem = 0;
 				laydata.field.Type = $("input[name='Type_Chinese']").attr('e-value');
 				console.log(laydata.field);
-				Serv.Post('WorkerInField/add', {workerInField:laydata.field}, function (response) {
+				Serv.Post('gc/WorkerInField/add', {workerInField:laydata.field}, function (response) {
 					if (response.code == "00") {
 						layer_confirm('添加成功，是否继续添加？', function () {
 							EmptyModel();
@@ -118,7 +118,7 @@ var data_col = [[
 					layer_alert( $("input[name='Type_Chinese']").val() + "为系统数据，无法进行修改操作！");
 				}
 				else {
-					Serv.Post('WorkerInField/update', laydata.field, function (response) {
+					Serv.Post('gc/WorkerInField/update', laydata.field, function (response) {
 						if (response.code == "00") {
 							layer_alert(response.message);
 							lstPager.refresh();
@@ -155,7 +155,7 @@ var data_col = [[
 	};
 	var vm = new Vue({ el: '#workerinForm', data: model });
 	function GetSingle(wId) {
-		Serv.Post('WorkerInField/GetSingle', { Id: wId }, function (response) {
+		Serv.Post('gc/WorkerInField/GetSingle', { Id: wId }, function (response) {
 			model.id = response.id;
 			model.name = response.name;
 			model.sortId = response.sortId;

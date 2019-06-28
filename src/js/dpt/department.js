@@ -133,7 +133,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         layform = layui.form;
 
     function initTree() {
-        Serv.Get('uc/department/gettree', {}, function (response) {
+        Serv.Get('uc/department/GetByCompany/' + 1, {}, function (response) {
             zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
         })
     }
@@ -196,6 +196,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
             layer_alert("该部门含有下级，无法删除！");
         }
         else {
+            console.log(laydata.field.Id);
             //laydata.field.dptStatus = 0;
             Serv.Get('uc/Department/Delete/' + laydata.field.Id,null, function (response) {
                 layer_alert(response.message, function () { window.location.reload() });

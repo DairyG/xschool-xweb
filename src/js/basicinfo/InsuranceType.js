@@ -40,7 +40,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 					data.workinStatus = 2;
 					layer_confirm('确定启用信息吗？', function () {
 						layer_load();
-						Serv.Post('InsuranceType/Delete', data, function (result) {
+						Serv.Post('gc/InsuranceType/Delete', data, function (result) {
 							if (result.code == "00") {
 								layer_alert(result.message, function () {
 									lstPager.refresh();
@@ -55,7 +55,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 					data.workinStatus = 1;
 					layer_confirm('确定停用信息吗？', function () {
 						layer_load();
-						Serv.Post('InsuranceType/Delete', data, function (result) {
+						Serv.Post('gc/InsuranceType/Delete', data, function (result) {
 							if (result.code == "00") {
 								layer_alert(result.message, function () {
 									lstPager.refresh();
@@ -82,7 +82,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 		"lst",//绑定的列表Id
 		'toolbar',//绑定的工具条Id
 		data_col,//表头的显示行
-		"InsuranceType/Get",//action url 只能post提交
+		"gc/InsuranceType/Get",//action url 只能post提交
 		search,
 		parseData,//如果在显示之前需要对数据进行整理需要实现，否则传null
 		null,//有选择行才能有的操作，实现该方法,否则传null
@@ -118,7 +118,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 			laydata.field.IsSystem = 0;
 			laydata.field.Type = $("input[name='Type_Chinese']").attr('e-value');
 			console.log(laydata.field);
-			Serv.Post('InsuranceType/add', { workerInField: laydata.field }, function (response) {
+			Serv.Post('gc/InsuranceType/add', { workerInField: laydata.field }, function (response) {
 				if (response.code == "00") {
 					layer_confirm('添加成功，是否继续添加？', function () {
 						EmptyModel();
@@ -143,7 +143,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 				layer_alert($("input[name='Type_Chinese']").val() + "为系统数据，无法进行修改操作！");
 			}
 			else {
-				Serv.Post('InsuranceType/update', laydata.field, function (response) {
+				Serv.Post('gc/InsuranceType/update', laydata.field, function (response) {
 					if (response.code == "00") {
 						layer_alert(response.message);
 						lstPager.refresh();
@@ -180,7 +180,7 @@ var model = {
 };
 var vm = new Vue({ el: '#workerinForm', data: model });
 function GetSingle(wId) {
-	Serv.Post('InsuranceType/GetSingle', { Id: wId }, function (response) {
+	Serv.Post('gc/InsuranceType/GetSingle', { Id: wId }, function (response) {
 		model.id = response.id;
 		model.name = response.name;
 		model.sortId = response.sortId;
