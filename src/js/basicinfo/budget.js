@@ -20,7 +20,7 @@ layui.config({
         layform = layui.form;
 
         var initTable = function(){
-            Serv.Post('Budget/Get', { search: $("input[name='Type_Chinese']").attr('e-value') }, function (result) {
+            Serv.Post('gc/Budget/Get', { search: $("input[name='Type_Chinese']").attr('e-value') }, function (result) {
                 datas = result;
                 treetable.render({
                     treeColIndex: 1,
@@ -64,7 +64,7 @@ layui.config({
                         data.bgStatus = 2;
                         layer_confirm('确定启用信息吗？', function () {
                             layer_load();
-                            Serv.Post('Budget/Delete', data, function (result) {
+                            Serv.Post('gc/Budget/Delete', data, function (result) {
                                 if (result.code == "00") {
                                     layer_alert(result.message, function () {
                                         window.location.reload();
@@ -81,7 +81,7 @@ layui.config({
                             data.bgStatus = 1;
                             layer_confirm('确定停用信息吗？', function () {
                                 layer_load();
-                                Serv.Post('Budget/Delete', data, function (result) {
+                                Serv.Post('gc/Budget/Delete', data, function (result) {
                                     if (result.code == "00") {
                                         layer_alert(result.message, function () {
                                             window.location.reload();
@@ -132,7 +132,7 @@ layui.config({
             }
             
             //console.log(laydata.field);
-            Serv.Post('Budget/add', { budget: laydata.field }, function (response) {
+            Serv.Post('gc/Budget/add', { budget: laydata.field }, function (response) {
                 if (response.code == "00") {
                     initTable(initTable);
                     // layer_confirm('添加成功，是否继续添加？', function () {
@@ -157,7 +157,7 @@ layui.config({
                 layer_alert($("input[name='Type_Chinese']").val() + "为系统数据，无法进行修改操作！");
             }
             else {
-                Serv.Post('Budget/update', laydata.field, function (response) {
+                Serv.Post('gc/Budget/update', laydata.field, function (response) {
                     if (response.code == "00") {
                         layer_alert(response.message,function(){ window.location.reload()});
                         
@@ -275,7 +275,7 @@ var model = {
 };
 var vm = new Vue({ el: '#budgetForm', data: model });
 function GetSingle(wId) {
-    Serv.Post('Budget/GetSingle', { Id: wId }, function (response) {
+    Serv.Post('gc/Budget/GetSingle', { Id: wId }, function (response) {
         model.id = response.id;
         model.name = response.name;
         model.sortId = response.sortId;

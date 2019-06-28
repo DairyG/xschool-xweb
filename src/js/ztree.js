@@ -39,7 +39,7 @@ $(document).ready(function () {
     //zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
 })
 function initTree() {
-    Serv.Get('uc/department/gettree', {}, function (response) {
+    Serv.Get('uc/department/GetByCompany/' + 1, {}, function (response) {
         zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
     })
 }
