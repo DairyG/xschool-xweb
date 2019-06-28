@@ -50,8 +50,8 @@ var vm = new Vue({
                 if (result) {
                     _this.person = result;
 
-                    _this.person.statusText = ["未入职", "试用", "转正", "离职"][result.status];
-                    _this.person.gender = ["", "男", "女"][result.gender];
+                    _this.person.statusText = ['未入职', '试用', '转正', '离职'][result.status];
+                    _this.person.gender = ['', '男', '女'][result.gender];
                     _this.person.birthDay = result.birthDay.FormatDate(false);
                     _this.person.graduationDate = result.graduationDate.FormatDate(false);
 
@@ -78,7 +78,7 @@ var vm = new Vue({
         getTraining: function (value) {
             var _this = this;
             layer_load();
-            Serv.Get('training/query/' + value, {}, function (result) {
+            Serv.Get('gc/training/query/' + value, {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.hasInit.training = false;

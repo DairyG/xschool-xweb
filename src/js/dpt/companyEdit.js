@@ -1,5 +1,5 @@
 new Vue({
-    el: "#formEdit",
+    el: '#formEdit',
     data() {
         return {
             hasSubmit: true,
@@ -134,7 +134,7 @@ new Vue({
             layform.on('submit(basicInfo)', function (laydata) {
                 layer_load();
                 Serv.Post('uc/company/edit', laydata.field, function (result) {
-                    if (result.code == "00") {
+                    if (result.succeed) {
                         _this.company.id = result.data;
                         _this.bankInfo.companyId = result.data;
 
@@ -148,7 +148,7 @@ new Vue({
                 return false;
             });
 
-            $("#addBlank").click(function () {
+            $('#addBlank').click(function () {
                 _this.bankInfo.id = 0;
                 _this.bankInfo.openBank = '';
                 _this.bankInfo.openBankName = '';
@@ -166,7 +166,7 @@ new Vue({
                 }
                 layer_load();
                 Serv.Post('uc/bank/edit', laydata.field, function (result) {
-                    if (result.code == "00") {
+                    if (result.succeed) {
                         layer_alert(result.message, function () {
                             layer.closeAll();
                             _this.getBank();
@@ -197,7 +197,7 @@ new Vue({
             layer_confirm('确定删除吗？', function () {
                 layer_load();
                 Serv.Get('uc/bank/delete/' + value, {}, function (result) {
-                    if (result.code == "00") {
+                    if (result.succeed) {
                         layer_alert(result.message, function () {
                             _this.getBank();
                         });

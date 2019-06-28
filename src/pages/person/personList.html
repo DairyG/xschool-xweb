@@ -161,8 +161,8 @@
 				} else if (layEvent === "del") {
 					layer_confirm('确定删除吗？', function () {
 						layer_load();
-						Serv.Get('company/delete/' + value, {}, function (result) {
-							if (result.code == "00") {
+						Serv.Get('uc/company/delete/' + value, {}, function (result) {
+							if (result.succeed) {
 								layer_alert(result.message, function () {
 									lstPager.refresh();
 								});
@@ -176,11 +176,11 @@
 
 			//分页初始化
 			var lstPager = Pager(table, //lay-ui的table控件
-				"员工列表", //列表名称
-				"lst", //绑定的列表Id
-				"", //绑定的工具条Id
+				'员工列表', //列表名称
+				'lst', //绑定的列表Id
+				'', //绑定的工具条Id
 				data_col, //表头的显示行
-				"uc/employee/get", //action url 只能post提交
+				'uc/employee/get', //action url 只能post提交
 				search, //获取查询条件的函数
 				null, //如果在显示之前需要对数据进行整理需要实现，否则传null
 				null, //有选择行才能有的操作，实现该方法,否则传null

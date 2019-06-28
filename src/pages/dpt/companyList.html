@@ -12,6 +12,7 @@
     <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript" src="../../js/pager.js"></script>
 </head>
+
 <body class="bgf2f2f2">
     <div class="childrenBody">
         <div class="layui-card">
@@ -32,20 +33,45 @@
         </div>
     </div>
     <script type="text/javascript">
-        var data_col = [[
-            { field: 'id', title: '序号' },
-            { field: 'companyName', title: '公司名称' },
-            { field: 'credit', title: '信用代码' },
-            { field: 'companyType', title: '公司类型' },
-            { field: 'legalPerson', title: '法人代表' },
-            { field: 'registeredCapital', title: '注册资本' },
-            {
-                field: 'registeredTime', title: '成立日期', templet: function (d) {
-                    return d.registeredTime.FormatDate(false);
+        var data_col = [
+            [{
+                    field: 'id',
+                    title: '序号'
+                },
+                {
+                    field: 'companyName',
+                    title: '公司名称'
+                },
+                {
+                    field: 'credit',
+                    title: '信用代码'
+                },
+                {
+                    field: 'companyType',
+                    title: '公司类型'
+                },
+                {
+                    field: 'legalPerson',
+                    title: '法人代表'
+                },
+                {
+                    field: 'registeredCapital',
+                    title: '注册资本'
+                },
+                {
+                    field: 'registeredTime',
+                    title: '成立日期',
+                    templet: function (d) {
+                        return d.registeredTime.FormatDate(false);
+                    }
+                },
+                {
+                    title: '操作',
+                    toolbar: '#toolbar',
+                    width: 180
                 }
-            },
-            { title: '操作', toolbar: '#toolbar', width: 180 }
-        ]];
+            ]
+        ];
         layui.use(['table', 'element'], function () {
             var table = layui.table,
                 element = layui.element;
@@ -66,7 +92,7 @@
                     layer_confirm('确定删除吗？', function () {
                         layer_load();
                         Serv.Get('uc/company/delete/' + value, {}, function (result) {
-                            if (result.code == "00") {
+                            if (result.succeed) {
                                 layer_alert(result.message, function () {
                                     lstPager.refresh();
                                 });
@@ -79,15 +105,15 @@
             };
 
             //分页初始化
-            var lstPager = Pager(table,//lay-ui的table控件
-                "公司列表",//列表名称
-                "lst",//绑定的列表Id
-                "",//绑定的工具条Id
-                data_col,//表头的显示行
-                "uc/company/get",//action url 只能post提交
+            var lstPager = Pager(table, //lay-ui的table控件
+                '公司列表', //列表名称
+                'lst', //绑定的列表Id
+                '', //绑定的工具条Id
+                data_col, //表头的显示行
+                'uc/company/get', //action url 只能post提交
                 search, //获取查询条件的函数
-                null,//如果在显示之前需要对数据进行整理需要实现，否则传null
-                null,//有选择行才能有的操作，实现该方法,否则传null
+                null, //如果在显示之前需要对数据进行整理需要实现，否则传null
+                null, //有选择行才能有的操作，实现该方法,否则传null
                 onTools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
                 null,
                 'full-100'
@@ -95,4 +121,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -247,7 +247,7 @@ var vm = new Vue({
 
                     Serv.Post('uc/employee/edit?operation=1', _this.person, function (result) {
                         layer_load_lose();
-                        if (result.code == '00') {
+                        if (result.succeed) {
                             _this.person.id = result.data;
                             layer_alert(result.message);
                         } else {
@@ -276,7 +276,7 @@ var vm = new Vue({
 
                     Serv.Post('uc/employee/edit?operation=2', _this.person, function (result) {
                         layer_load_lose();
-                        if (result.code == '00') {
+                        if (result.succeed) {
                             layer_alert(result.message);
                         } else {
                             layer_alert(result.message);
@@ -298,9 +298,9 @@ var vm = new Vue({
                         return false;
                     }
 
-                    Serv.Post('training/edit', laydata.field, function (result) {
+                    Serv.Post('gc/training/edit', laydata.field, function (result) {
                         layer_load_lose();
-                        if (result.code == '00') {
+                        if (result.succeed) {
                             _this.training.id = result.data;
                             layer_confirm('操作成功，确定继续吗？', function () {
                                 _this.training.id = '0';
@@ -327,7 +327,7 @@ var vm = new Vue({
         getBasic: function (table, id) {
             var _this = this;
             layer_load();
-            Serv.Get('workerinfield/getdata?type=1,3,4,5,6', {}, function (result) {
+            Serv.Get('gc/workerinfield/getdata?type=1,3,4,5,6', {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.hasSubmit = true;
