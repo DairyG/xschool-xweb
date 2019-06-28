@@ -20,24 +20,23 @@
 				<div class="layui-tab " lay-filter="component-tabs-brief">
 					<div class="layui-tab-content">
 						<div class="layui-tab-item layui-show">
-							<form class="layui-form layui-form2 layui-search-form">
+							<form class="layui-form layui-form2 layui-search-form" autocomplete="off">
 								<div class="layui-row">
 									<div class="layui-form-item layui-col-md3 margin-b-20">
 										<label class="layui-form-label">姓名</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入姓名" autocomplete="off" class="layui-input">
+											<input type="text" name="userName" placeholder="姓名" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md3 margin-b-20">
 										<label class="layui-form-label">手机</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入手机" autocomplete="off" class="layui-input">
+											<input type="text" name="linkPhone" placeholder="手机号码" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md2 margin-b-20">
-										<button class="layui-btn layui-btn-normal">搜索</button>
+										<input type="button" class="layui-btn layui-btn-normal" lay-submit
+											lay-filter="search" value="搜索">
 									</div>
 								</div>
 							</form>
@@ -87,7 +86,8 @@
 					field: 'isOpenAccount',
 					title: '开通账户',
 					templet: function (d) {
-						return d.isOpenAccount ? '<span class="text-span">已开通</span>' : '<span class="text-del">未开通</span>';
+						return d.isOpenAccount ? '<span class="text-span">已开通</span>' :
+							'<span class="text-del">未开通</span>';
 					}
 				},
 				{
@@ -130,9 +130,18 @@
 			userName: ''
 		};
 
-		layui.use(['table', 'element'], function () {
+		layui.use(['table', 'element', 'form'], function () {
 			var table = layui.table,
-				element = layui.element;
+				element = layui.element,
+				form = layui.form;
+
+			//基本信息
+			form.on('submit(search)', function (laydata) {
+				parameter.userName = laydata.field.userName;
+				parameter.linkPhone = laydata.field.linkPhone;
+
+				lstPager.refresh();
+			});
 
 			function search() {
 				return parameter;
