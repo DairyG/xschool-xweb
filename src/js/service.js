@@ -1,6 +1,17 @@
+var verifyModel = {
+    pwd: {
+        client_id: '725A78E65DD14658A8947F68C27BD322',
+        client_secret: '367CA1C1E7F64A2883B978DD7CEC043B',
+        grant_type: 'password',
+    },
+    salt: {
+        letter1: '$$$',
+        letter2: '7CD955AE-6A04-41BC-952F-0366D2532C95'
+    }
+}
 
 var Serv = {
-     ServiceUrl: "http://localhost:8000/api/v1/",
+    ServiceUrl: "http://localhost:8000/api/v1/",
     //ServiceUrl: "http://192.168.3.8:8500/api/v1/",    
     //ServiceUrl:"http://192.168.0.253/api/v1/",
     // ServiceUrl:"http://114.116.54.157/ecenter/api/v1/", //api访问地址
@@ -8,8 +19,8 @@ var Serv = {
     // ServiceUrl:"http://ecenter.logistics.com/api/v1/",
     // ServiceUrl:"http://www.lui.com/json/", //数据地址
     UCenterUrl: "",
-    Code: "JDWL",//站点名称
-    Token: "",//用户的Token
+    // Code: "JDWL",//站点名称
+    Token: "", //用户的Token
     GetToken: function () {
         if (this.Token == "" || this.Token == null) {
             this.Token = localStorage.getItem("Service_Token");
@@ -30,7 +41,7 @@ var Serv = {
     },
     GetHeaders: function () {
         return {
-            "_CODE_": Serv.Code,
+            // "_CODE_": Serv.Code,
             "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
             "Authorization": Serv.GetToken()
         }
@@ -64,9 +75,15 @@ var Serv = {
                 if (data.status == 400) {
                     var json = JSON.parse(data.responseText);
                     if (json.error == 'invalid_client') {
-                        layer.alert('用户未授权', { icon: 2, title: '登陆提示' });
+                        layer.alert('用户未授权', {
+                            icon: 2,
+                            title: '登陆提示'
+                        });
                     } else {
-                        layer.alert(json.error_description, { icon: 2, title: '登陆提示' });
+                        layer.alert(json.error_description, {
+                            icon: 2,
+                            title: '登陆提示'
+                        });
                     }
                 }
                 console.log("err:", data);
@@ -82,4 +99,3 @@ var Serv = {
 
     }
 };
-
