@@ -30,6 +30,8 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         var value = data.id;
         if (layEvent === 'edit') {
             loadSelect();
+            $("select[name='EvaluationTypeId']").val(data.evaluationTypeId);
+            layui.form.render("select");
             layer_linePop = layer.open({
                 type: 1,
                 title: '修改考核项目',
@@ -77,8 +79,11 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     //数据整理回调函数
     var parseData = function (items) {
         $.each(items, function (i, item) {
+            var typenames = datas.filter(function(itype){
+                return itype.id == item.evaluationTypeId; 
+            });
             item.evaStatus = ["", "<font color=\'red\'>停用</font>", "<font color=\'green\'>启用</font>"][item.status];
-            //item.typename = ["", types][item.evaluationTypeId];
+            item.typename = typenames ? typenames[0].name : "";
         });
         return items;
     };
@@ -109,12 +114,23 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                 content: $('.linePop1')
             });
         }
+        if (data.event == 'add_cate') {
+            layer_linePop = layer.open({
+                type: 1,
+                title: '添加考核分类',
+                String: false,
+                closeBtn: 1,
+                skin: 'layui-layer-rim',
+                area: '450px',
+                content: $('.linePop2')
+            });
+        }
     });
     layform.on('submit(formDemo)', function (laydata) {
         layer_load();
         laydata.field.evaluationTypeId = $("select[name='EvaluationTypeId']").val();
         if (laydata.field.evaluationTypeId == 0) {
-            layer_alert("请选择考核类型！");
+            layer_alert("请选择考核分类！");
             return false;
         }
         if (laydata.field.Id == "") {
@@ -125,7 +141,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                         //EmptyModel();
                         layer_linePop = layer.open({
                             type: 1,
-                            title: '修改奖惩类别',
+                            title: '添加考核项目',
                             String: false,
                             closeBtn: 1,
                             skin: 'layui-layer-rim',
@@ -158,8 +174,12 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(formTypes)', function (laydata) {
         layer_load();
         laydata.field.id = 0;
+        Typemodel = laydata.field;
         Serv.Post('gc/EvaluationType/add', { model: laydata.field }, function (response) {
             if (response.code == "00") {
+                Typemodel.id = response.data;
+                Typemodel.name = Typemodel.Name;
+                datas.push(Typemodel);
                 layer_confirm('添加成功，是否继续添加？', function () {
                     layer_linePop = layer.open({
                         type: 1,
@@ -167,7 +187,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                         String: false,
                         closeBtn: 1,
                         skin: 'layui-layer-rim',
-                        area: '750px',
+                        area: '450px',
                         content: $('.linePop2')
                     });
                 }, layer.closeAll());
@@ -249,7 +269,7 @@ function GetSingle(wId) {
 function loadSelect() {
     $("#divsel").empty();
     var htmlsel = "";
-    if (datas) {
+    if (datas && datas.length > 0) {
         htmlsel += '<div class="layui-block margin-b-10">';
         htmlsel += '<select name="EvaluationTypeId" lay-filter="selParent">';
         htmlsel += '<option value="0">==请选择考核分类==</option>';
@@ -265,7 +285,7 @@ function loadSelect() {
     else {
         htmlsel += '<div class="layui-block margin-b-10">';
         htmlsel += '<select name="EvaluationTypeId" lay-filter="selParent">';
-        htmlsel += '<option value="0">==请先创建考核分类==</option>';
+        htmlsel += '<option value="0">==请先添加考核分类==</option>';
         htmlsel += '</select>';
         $("#divsel").append(
             htmlsel

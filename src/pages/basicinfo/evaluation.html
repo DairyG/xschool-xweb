@@ -52,13 +52,13 @@
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">显示顺序</label>
 							<div class="layui-input-block">
-								<input type="text" name="Index" required  lay-verify="hasNum" v-model="index" placeholder="请输入显示顺序" autocomplete="off" class="layui-input" value="0">
+								<input type="text" name="Index" required  lay-verify="numHas" v-model="index" placeholder="显示顺序" autocomplete="off" class="layui-input" value="0">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">备注</label>
 							<div class="layui-input-block">
-								<textarea class="layui-textarea" name="Description" v-model="description" placeholder="请输入备注"></textarea>
+								<textarea class="layui-textarea" name="Description" v-model="description" placeholder="备注"></textarea>
 							</div>
 						</div>
 					</div>	
@@ -76,7 +76,7 @@
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label"><span class="text-red"> *</span>分类名称</label>
 							<div class="layui-input-block">
-								<input type="text" name="Name" v-model="name" required  lay-verify="name" placeholder="请输入分类名称" autocomplete="off" class="layui-input">
+								<input type="text" name="Name" v-model="name" required  lay-verify="name" placeholder="分类名称" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 					</div>	
@@ -88,68 +88,5 @@
 			</div>
 		</div>
 		<script type="text/javascript" src="../../js/basicinfo/evaluation.js"></script>
-		<!-- <script>
-			var layer_linePop;
-			var cols = [[
-				{type:'numbers',title:'序号'},
-				{field:'title',title:'考核项目'},
-				{field:'cate',title:'所属分类',sort:true},
-				{field:'sort',title:'显示顺序'},
-				{field:'state',title:'状态',templet:function(d){ if(d.state == 1){ return "<span class='text-span'>启用</span>";}else { return "<span class='text-del'>停用</span>";} }},
-				{field:'tips',title:'备注'},
-				{toolbar:'#bar',title:'操作'}
-			]];
-			var datas = [
-				{'title':'工资预算',cate:'人事考核','sort':10,total:'1000',gr:'300',gs:'700',state:'1'},
-				{'title':'招聘指标',cate:'人事考核','sort':10,total:'1000',gr:'300',gs:'700',state:'0'},
-				{'title':'报表统计',cate:'人事考核','sort':10,total:'1000',gr:'300',gs:'700',state:'0'},
-				{'title':'销售指标',cate:'销售考核','sort':10,total:'1000',gr:'300',gs:'700',state:'0'},
-			];
-			layui.use(['table'], function() {
-				var table = layui.table;
-				//关闭弹窗
-				$(".closePop").click(function(){
-					layer.closeAll()
-				})
-				//执行一个 table 实例
-				table.render({
-					elem: '#lst',
-					title: '用户表',
-					page: true,
-					toolbar: '#toolbar',
-					even: true,
-					height: 'full-80',
-					cols: cols,
-					data: datas,
-				});
-				table.on('toolbar(lst)',function(data){
-					if(data.event == 'add'){
-						layer_linePop = layer.open({
-							type: 1,
-							title:'添加考核项目',
-							String: false,
-							closeBtn: 1,
-							skin: 'layui-layer-rim',
-							area: '750px',
-							content: $('.linePop1')
-						});
-					}
-					if(data.event == 'add_cate'){
-						layer_linePop = layer.open({
-							type: 1,
-							title:'添加考核分类',
-							String: false,
-							closeBtn: 1,
-							skin: 'layui-layer-rim',
-							area: '450px',
-							content: $('.linePop2')
-						});
-					}
-				});
-			});
-			function closePop(){
-				layer.close(layer_linePop);
-			}
-		</script> -->
 	</body>
 </html>
