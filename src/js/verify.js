@@ -1,6 +1,4 @@
 //自定义验证规则
-
-
 layui.use(['form'], function () {
     var layform = layui.form
 

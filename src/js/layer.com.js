@@ -30,6 +30,9 @@ function layer_alert(message, callBack) {
     });
 }
 
-function phone(value) {
+function isPhone(value) {
     return /^(1[345789][0-9])[0-9]{8}$/.test(value);
+}
+function isNum(value){
+    return /^[0-9\.]+$/.test(value);
 }

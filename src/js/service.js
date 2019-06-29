@@ -4,6 +4,11 @@ var verifyModel = {
         client_secret: '367CA1C1E7F64A2883B978DD7CEC043B',
         grant_type: 'password',
     },
+    phone: {
+        client_id: 'phone_number_authentication',
+        client_secret: '367CA1C1E7F64A2883B978DD7CEC043B',
+        grant_type: 'phone_number_token',
+    },
     salt: {
         letter1: '$$$',
         letter2: '7CD955AE-6A04-41BC-952F-0366D2532C95'

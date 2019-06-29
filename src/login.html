@@ -35,62 +35,101 @@
 <body>
 	<div id="mydiv">
 		<div class="login-main">
-			<div class="layui-elip">管理系统后台登录</div>
-			<form class="layui-form" autocomplete="off">
-				<div class="layui-form-item">
-					<div class="layui-input-inline input-item">
-						<label for="username">手机号码/账号/身份证号码</label>
-						<input type="text" name="username" lay-verify="required" placeholder="手机号码/账号/身份证号码"
-							class="layui-input">
+			<div class="layui-tab">
+				<ul class="layui-tab-title">
+					<li class="layui-this">账号密码登陆</li>
+					<li>手机登录</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show">
+						<form class="layui-form" autocomplete="off">
+							<div class="layui-form-item">
+								<div class="layui-input-inline input-item">
+									<label for="username">用户名</label>
+									<input type="text" name="username" maxlength="25" placeholder="账号"
+										class="layui-input">
+								</div>
+								<div class="layui-input-inline input-item">
+									<label for="password">密码</label>
+									<input type="password" name="password" maxlength="25" placeholder="密码"
+										class="layui-input input-val">
+								</div>
+								<div class="layui-input-inline input-item verify-box">
+									<label for="verify">验证码</label>
+									<input type="text" name="verify" maxlength="8" placeholder="验证码"
+										class="layui-input">
+									<canvas id="canvas" class="captcha" width="120" height="36"></canvas>
+								</div>
+								<div class="layui-input-inline login-btn">
+									<button class="layui-btn" lay-filter="login" lay-submit>登录</button>
+								</div>
+								<p class="text-right">
+									<a href="findPassword.html">忘记密码</a>
+								</p>
+							</div>
+						</form>
 					</div>
-					<div class="layui-input-inline input-item">
-						<label for="pwd">密码</label>
-						<input type="password" name="password" lay-verify="required" placeholder="密码"
-							class="layui-input input-val">
+					<div class="layui-tab-item">
+						<form class="layui-form" autocomplete="off">
+							<div class="layui-form-item">
+								<div class="layui-input-inline input-item">
+									<label for="username">手机号码</label>
+									<input type="text" name="phone_number" maxlength="15" placeholder="手机号码"
+										class="layui-input">
+								</div>
+								<div class="layui-input-inline input-item verify-box">
+									<label for="verify">验证码</label>
+									<input type="text" name="verify_token" maxlength="8" placeholder="验证码"
+										class="layui-input">
+									<input type="button" id="getPhoneNo" class="layui-btn layui-btn-primary fr"
+										style="width: 130px;" value="获取验证码" onclick="onVerify()">
+									<input type="button" id="sendMsg" class="layui-btn layui-btn-primary fr"
+										style="width: 120px;" value="获取动态密码">
+								</div>
+								<div class="layui-input-inline login-btn">
+									<button class="layui-btn" lay-filter="phone" lay-submit>登录</button>
+								</div>
+								<p class="text-right">
+									<a href="findPassword.html">忘记密码</a>
+								</p>
+							</div>
+						</form>
 					</div>
-					<div class="layui-input-inline input-item verify-box">
-						<label for="verify">验证码</label>
-						<input type="text" name="verify" placeholder="验证码" class="layui-input">
-						<canvas id="canvas" class="captcha" width="120" height="36"></canvas>
-					</div>
-					<div class="layui-input-inline login-btn">
-						<input type="button" class="layui-btn" style="width: 100%" value="登录" lay-submit
-							lay-filter="login">
-					</div>
-					<p class="text-right">
-						<a href="忘记密码.html">忘记密码</a>
-					</p>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
+
 	<script>
-		layui.use(['form', 'layer', 'jquery'], function () {
-			var form = layui.form,
+		layui.use(['element', 'form', 'layer', 'jquery'], function () {
+			var element = layui.element,
+				form = layui.form,
 				layer = layui.layer,
 				$ = layui.jquery;
 
+			changeAstate();
+
 			//表单输入效果
-			$(".login-main .input-item").click(function (e) {
+			$('.login-main .input-item').click(function (e) {
 				e.stopPropagation();
-				$(this).addClass("layui-input-focus").find(".layui-input").focus();
+				$(this).addClass('layui-input-focus').find('.layui-input').focus();
 			})
-			$(".login-main .input-item .layui-input").focus(function () {
-				$(this).parent().addClass("layui-input-focus");
+			$('.login-main .input-item .layui-input').focus(function () {
+				$(this).parent().addClass('layui-input-focus');
 			})
-			$(".login-main .input-item .layui-input").blur(function () {
-				$(this).parent().removeClass("layui-input-focus");
+			$('.login-main .input-item .layui-input').blur(function () {
+				$(this).parent().removeClass('layui-input-focus');
 				if ($(this).val() != '') {
-					$(this).parent().addClass("layui-input-active");
+					$(this).parent().addClass('layui-input-active');
 				} else {
-					$(this).parent().removeClass("layui-input-active");
+					$(this).parent().removeClass('layui-input-active');
 				}
 			})
 
 			//刷新验证码
-			$("#verify").click(function () {
-				var verifyimg = $("#verify").attr("src");
-				$("#verify").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+			$('#verify').click(function () {
+				var verifyimg = $('#verify').attr("src");
+				$('#verify').attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
 			});
 
 			function parseJwt(token) {
@@ -101,19 +140,34 @@
 
 			form.on('submit(login)', function (data) {
 				layer_load();
+				var username = $.trim(data.field.username);
+				if (!username) {
+					layer_alert('请输入手机号码/账号/身份证号码');
+					return false;
+				}
+				var pwd = data.field.password;
+				if (!pwd) {
+					layer_alert('请输入密码');
+					return false;
+				}
+				var verify = $.trim(data.field.verify);
+				if (!verify) {
+					layer_alert('请输入验证码');
+					return false;
+				}
+
 				data.field.client_id = verifyModel.pwd.client_id;
 				data.field.client_secret = verifyModel.pwd.client_secret;
 				data.field.grant_type = verifyModel.pwd.grant_type;
 				data.field.password = $.md5(data.field.password + verifyModel.salt.letter1 + verifyModel.salt
 						.letter2)
 					.toUpperCase();
-				Serv.Post("uc/account/signin", data.field, function (result) {
+				Serv.Post('uc/account/signin', data.field, function (result) {
 					layer_load_lose();
 					console.log(result);
 
-
 					Serv.SetToken(result.token_type + " " + result.access_token);
-					
+
 					var token = parseJwt(result.access_token);
 					console.log(token);
 
@@ -127,7 +181,106 @@
 				});
 				return false;
 			});
+
+			form.on('submit(phone)', function (data) {
+				layer_load();
+				var phone = $.trim(data.field.phone_number);
+				if (!phone) {
+					layer_alert('请输入手机号码');
+					return false;
+				}
+				if (!isPhone(phone)) {
+					layer_alert('手机号码格式不正确');
+					return false;
+				}
+				var token = $.trim(data.field.verify_token);
+				if (!token) {
+					layer_alert('请输入验证码');
+					return false;
+				}
+
+				data.field.client_id = verifyModel.phone.client_id;
+				data.field.client_secret = verifyModel.phone.client_secret;
+				data.field.grant_type = verifyModel.phone.grant_type;
+				Serv.Post('uc/account/signin', data.field, function (result) {
+					layer_load_lose();
+					console.log(result);
+
+					Serv.SetToken(result.token_type + " " + result.access_token);
+
+					var token = parseJwt(result.access_token);
+					console.log(token);
+
+					// Serv.Get('user/init', null, function (response) {
+					// 	response.UserInfo = token;
+					// 	var stringJson = JSON.stringify(response);
+					// 	localStorage.setItem("LOCAL_USER_DATA", stringJson);
+					// 	layer.closeAll();
+					// 	window.location.href = 'pages/index.html';
+					// });
+				});
+				return false;
+			});
+
 		})
+
+
+		var sendAgainNo = 60;
+		var hasClick = false;
+
+		//初始化
+		function changeAstate() {
+			$('#getPhoneNo').css('display', 'inline-block');
+			$('#sendMsg').css('display', 'none');
+		}
+
+		//获取验证码
+		function onVerify() {
+			var value = $.trim($('input[name="phone_number"]').val());
+			if (!value) {
+				layer_alert('请输入手机号码');
+				return false;
+			}
+			if (!isPhone(value)) {
+				layer_alert('手机号码格式不正确');
+				return false;
+			}
+			if (hasClick) {
+				return false;
+			}
+			hasClick = true;
+
+			layer_load();
+			Serv.Post("uc/account/send_phonenumber_verify", {
+				phoneNumber: value
+			}, function (result) {
+				layer_load_lose();
+				if (result.succeed) {
+					sendAgin();
+					layer_alert('发送成功');
+					$('input[name="verify_token"]').val(result.data);
+				} else {
+					layer_alert(result.message);
+					hasClick = false
+				}
+			});
+		}
+
+		//发送成功
+		function sendAgin() {
+			if (sendAgainNo == 0) {
+				changeAstate();
+				sendAgainNo = 60;
+				hasClick = false
+			} else {
+				$('#getPhoneNo').css('display', 'none');
+				$('#sendMsg').css('display', 'inline-block').val('重新发送(' + sendAgainNo + ')s');
+				sendAgainNo--;
+				setTimeout(function () {
+					sendAgin()
+				}, 1000)
+			}
+		}
 	</script>
 </body>
 
