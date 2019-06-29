@@ -23,11 +23,9 @@
 						<ul class="layui-tab-title">
                                 <li onclick="javascript:window.location.href='resumeList.html'">简历列表</li>
                                 <li class="layui-this">简历详情</li>
-                                <li onclick="javascript:window.location.href='resumeAdd.html'">添加简历</li>
+                                <li onclick="goRecord()">面试记录</li>
 						</ul>
 						<div class="layui-tab-content">
-							<div class="layui-tab-item">
-							</div>
 							<div class="layui-tab-item layui-show">
 								<form class="layui-form layui-form2 layui-form-info" id="resumeInfo">
 									<div class="form-title">个人信息：</div>
@@ -297,188 +295,10 @@
 									</div>
 								</form>
 							</div>
-							<div class="layui-tab-item">
-								<div class="form-title">面试结果：</div>
-								<form class="layui-form layui-form2">
-									<div class="layui-row">
-										<div class="layui-form-item layui-col-md6 ">
-											<label class="layui-form-label">面试方式<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<select>
-													<option>面试</option>
-													<option>笔试</option>
-													<option>电话</option>
-												</select>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6">
-											<label class="layui-form-label">选择面试人<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<span class="layui-btn layui-btn-normal" onclick="user_popup($('#user_sel_box'))"><i class="layui-icon layui-icon-add-1"></i>选择面试人</span>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md12" >
-											<label class="layui-form-label">面试人<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<div id="user_sel_box"  style="padding-top:7px">
-													
-												</div>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md12 ">
-											<label class="layui-form-label">面试内容<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<textarea class="layui-textarea"></textarea>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md12 ">
-											<label class="layui-form-label">面试意见<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<textarea class="layui-textarea"></textarea>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 ">
-											<label class="layui-form-label">仪容仪表<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<div id="rate1" class="rate"></div>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6">
-											<label class="layui-form-label">沟通表达<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<div id="rate2" class="rate"></div>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6">
-											<label class="layui-form-label">专业知识<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<div id="rate6" class="rate"></div>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 ">
-											<label class="layui-form-label">亲和力<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<div id="rate3" class="rate"></div>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 ">
-											<label class="layui-form-label">逻辑思维<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<div id="rate4" class="rate"></div>
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md6 ">
-											<label class="layui-form-label">综合评分<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<div id="rate5" class="rate"></div>
-											</div>
-										</div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item">
-											<div class="layui-input-block text-right">
-												<button type="reset" class="layui-btn">面试未通过</button>
-												<button type="reset" class="layui-btn">发送OFFER</button>
-												<button type="reset" class="layui-btn">保存</button>
-												<button type="reset" class="layui-btn layui-btn-primary">返回</button>
-											</div>
-										</div>
-									</div>
-									<hr class="layui-bg-blue hrheight3">
-									<div class="form-title">过往面试结果：</div>
-									<div class="layui-row">
-										<table class="layui-table">
-											<tr>
-												<th class="table_label" width="120">面试时间</th>
-												<th class="table_label">面试方式</th>
-												<th class="table_label">面试人</th>
-											</tr>
-											<tr>
-												<td>2019-5-1</td>
-												<td>笔试</td>
-												<td>张三</td>
-											</tr>
-											<tr>
-												<td class="table_label">仪容仪表</td>
-												<td class="table_label">沟通表达</td>
-												<td class="table_label">专业知识</td>
-											</tr>
-											<tr>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-											</tr>
-											<tr>
-												<td class="table_label">亲和力</td>
-												<td class="table_label">逻辑思维</td>
-												<td class="table_label">综合评分</td>
-											</tr>
-											<tr>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-											</tr>
-											<tr>
-												<td class="table_label">面试内容</td>
-												<td colspan="2">面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容</td>
-											</tr>
-											<tr>
-												<td class="table_label">面试建议</td>
-												<td colspan="2">面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议</td>
-											</tr>
-										</table>
-									</div>
-									<div class="layui-row margin-t-20">
-										<table class="layui-table">
-											<tr>
-												<th class="table_label" width="120">面试时间</th>
-												<th class="table_label">面试方式</th>
-												<th class="table_label">面试人</th>
-											</tr>
-											<tr>
-												<td>2019-5-1</td>
-												<td>笔试</td>
-												<td>张三</td>
-											</tr>
-											<tr>
-												<td class="table_label">仪容仪表</td>
-												<td class="table_label">沟通表达</td>
-												<td class="table_label">专业知识</td>
-											</tr>
-											<tr>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-											</tr>
-											<tr>
-												<td class="table_label">亲和力</td>
-												<td class="table_label">逻辑思维</td>
-												<td class="table_label">综合评分</td>
-											</tr>
-											<tr>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-												<td><i class="layui-icon layui-icon-rate-solid fc-FB80"></i><i class="layui-icon layui-icon-rate-solid fc-FB80"></i></td>
-											</tr>
-											<tr>
-												<td class="table_label">面试内容</td>
-												<td colspan="2">面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容面试内容</td>
-											</tr>
-											<tr>
-												<td class="table_label">面试建议</td>
-												<td colspan="2">面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议面试建议</td>
-											</tr>
-										</table>
-									</div>
-								</form>
-							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
-			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
 		</div>
         <script type="text/javascript">
         var model = {
@@ -542,8 +362,7 @@
 			
             var id = GetPara('id');
 			var vm = new Vue({ el: '#resumeInfo', data: model});
-			
-                layui.use([ 'table','element','laydate','rate'], function() {
+            layui.use([ 'table','element','laydate','rate'], function() {
 					var table = layui.table,
 						element = layui.element,
 						laydate = layui.laydate,
@@ -608,6 +427,9 @@
 							vm.$set({ data: model });
 						})
 			    });	
+			function goRecord(){
+				window.location.href = "/pages/recruit/resumeRecord.html?id=" + id;
+			}
 		</script>
 	</body>
 </html>

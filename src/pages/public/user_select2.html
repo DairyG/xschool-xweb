@@ -120,7 +120,7 @@
 			show_items('company', user_company.id);
 			//$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'company\','+user_company.id+',\''+company_arr[0].name+'\')">'+company_arr[0].name+'</a>&gt;</span>') ;
 		} else {
-			Serv.Get('department/getztree/' + user_company.id, {}, function (result) {
+			Serv.Get('uc/department/GetByCompany/' + user_company.id, {}, function (result) {
 				if (result) {
 					department_arr = result;
 					show_items('department', user_company.id);

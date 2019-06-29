@@ -14,9 +14,9 @@ var datas;
 layui.use(['table', 'element', 'laydate', 'form'], function () {
     var table = layui.table,
         element = layui.element;
-    laydate = layui.laydate,
+        laydate = layui.laydate,
         layform = layui.form;
-
+        
     Serv.Get('gc/EvaluationType/Get', {}, function (result) {
         datas = result;
         //console.log(datas);
@@ -233,38 +233,6 @@ function GetSingle(wId) {
         layui.form.render("select");
     })
 }
-
-// function loadSelect() {
-//     $("#divsel").empty();
-//     Serv.Get('gc/EvaluationType/Get',{}, function (result) {
-//         datas = result;
-//         var htmlsel = "";
-//         if (datas) {
-//             htmlsel += '<div class="layui-block margin-b-10">';
-//             htmlsel += '<select name="EvaluationTypeId" lay-filter="selParent">';
-//             htmlsel += '<option value="0">==请选择考核分类==</option>';
-//             for (var i = 0; i < datas.length; i++) {
-//                 htmlsel += '<option value="' + datas[i].id + '">' + datas[i].name + '</option>';
-//             }
-//             htmlsel += '</select>';
-//             $("#divsel").append(
-//                 htmlsel
-//             );
-//             layui.form.render('select');
-//         }
-//         else {
-//             htmlsel += '<div class="layui-block margin-b-10">';
-//             htmlsel += '<select name="EvaluationTypeId" lay-filter="selParent">';
-//             htmlsel += '<option value="0">==请先创建考核分类==</option>';
-//             htmlsel += '</select>';
-//             $("#divsel").append(
-//                 htmlsel
-//             );
-//             layui.form.render('select');
-//         }
-//     });
-
-// }
 
 function loadSelect() {
     $("#divsel").empty();
