@@ -548,7 +548,7 @@
 						element = layui.element,
 						laydate = layui.laydate,
 						rate = layui.rate;
-						Serv.Get('Resume/GetInfo/' + id, {},function (response) {
+						Serv.Get('gc/Resume/GetInfo/' + id, {},function (response) {
 							model.id = response.id;
 							model.userName = response.userName;
 							model.companyId = response.companyId;

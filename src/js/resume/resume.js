@@ -244,7 +244,7 @@ var vm = new Vue({
         getBasic: function (table, id) {
             var _this = this;
             layer_load();
-            Serv.Get('workerinfield/getdata?type=1,3,4,5,6,10', {}, function (result) {
+            Serv.Get('gc/workerinfield/getdata?type=1,3,4,5,6,10', {}, function (result) {
                 layer_load_lose();
                 if (result) {
                     _this.hasSubmit = true;
@@ -908,7 +908,7 @@ var vm = new Vue({
         },
         //select模板
         getSelectTpl: function (data, name, value) {
-            console.log(data);
+            //console.log(data);
             var html = '<select name="' + name + '">';
             html += '<option value="">请选择</option>';
             $.each(data, function (i, item) {
