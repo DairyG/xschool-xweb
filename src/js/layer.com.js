@@ -1,10 +1,19 @@
 /**
  * 弹出加载层
+ * @param string message 提示信息
  */
-function layer_load() {
-    window.layer_loading_id = layer.load(3, {
-        shade: 0.3
-    });
+function layer_load(message) {
+    if (message) {
+        window.layer_loading_id = layer.msg(message, {
+            icon: 16,
+            shade: 0.3,
+            time: 0
+        });
+    } else {
+        window.layer_loading_id = layer.load(3, {
+            shade: 0.3
+        });
+    }
 };
 
 /**
@@ -33,6 +42,7 @@ function layer_alert(message, callBack) {
 function isPhone(value) {
     return /^(1[345789][0-9])[0-9]{8}$/.test(value);
 }
-function isNum(value){
+
+function isNum(value) {
     return /^[0-9\.]+$/.test(value);
 }

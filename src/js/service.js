@@ -16,14 +16,8 @@ var verifyModel = {
 }
 
 var Serv = {
-    //ServiceUrl: "http://114.116.54.157:8000/api/v1/",
-    ServiceUrl: "http://localhost:8000/api/v1/",
-    //ServiceUrl: "http://192.168.3.8:8500/api/v1/",    
-    //ServiceUrl:"http://192.168.0.253/api/v1/",
-    // ServiceUrl:"http://114.116.54.157/ecenter/api/v1/", //api访问地址
-    // ServiceUrl:"http://localhost/api/v1/",
-    // ServiceUrl:"http://ecenter.logistics.com/api/v1/",
-    // ServiceUrl:"http://www.lui.com/json/", //数据地址
+    ServiceUrl: "http://114.116.54.157:8000/api/v1/",
+    // ServiceUrl: "http://localhost:8000/api/v1/",
     UCenterUrl: "",
     // Code: "JDWL",//站点名称
     Token: "", //用户的Token
