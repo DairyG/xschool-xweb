@@ -9,7 +9,7 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom) {
     var options = {
         text: 'dptName',
         key: 'id',
-        parentKey: 'pId',
+        parentKey: 'pid',
         nameDOM: $('#' + nameDom),
         menuContentDOM: $('#' + menuContent),
         zTreeDOM: $('#' + zTreeDom),
@@ -95,8 +95,10 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom) {
     return {
         reload: function (data) {
             zTreeObj = $.fn.zTree.init(options.zTreeDOM, setting, data);
-            // setCheck();
-            zTreeObj.expandAll(true);
+            var nodes = zTreeObj.getNodes();
+            if (nodes.length > 0) {
+                zTreeObj.expandNode(nodes[0], true);
+            }
         },
         showZTree: function () {
             showZTree();
