@@ -25,12 +25,10 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
 
     //保存面试记录
     layform.on('submit(btnSave)', function (laydate) {
-        var ids = $("input[name='sels']").val();
-        console.log(ids);
-        return false;
+        var intIds = $.parseJSON($("input[name='sels']").val()).user.ids;
         laydate.field.id = 0;
         laydate.field.resumeId = id;
-        laydate.field.interviewerIds = "0,";
+        laydate.field.interviewerIds = intIds;
         laydate.field.appearance = $("#rate1").attr("tscore");
         laydate.field.express = $("#rate2").attr("tscore");
         laydate.field.speciality = $("#rate3").attr("tscore");
