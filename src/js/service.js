@@ -16,6 +16,7 @@ var verifyModel = {
 }
 
 var Serv = {
+    //ServiceUrl: "http://114.116.54.157:8000/api/v1/",
     ServiceUrl: "http://localhost:8000/api/v1/",
     //ServiceUrl: "http://192.168.3.8:8500/api/v1/",    
     //ServiceUrl:"http://192.168.0.253/api/v1/",
@@ -47,6 +48,7 @@ var Serv = {
     GetHeaders: function () {
         return {
             // "_CODE_": Serv.Code,
+            //"Access-Control-Allow-Origin": "*",
             "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
             "Authorization": Serv.GetToken()
         }
@@ -63,12 +65,15 @@ var Serv = {
     Send: function (url, type, args, callback) {
         jQuery.support.cors = true;
         $.ajax({
+            //xhrFields: {withCredentials: true},
+            crossDomain: true,
             dataType: "json",
             url: Serv.ServiceUrl + url,
             headers: {
-                "_CODE_": Serv.Code,
+                //"_CODE_": Serv.Code,
                 "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
-                "Authorization": Serv.GetToken()
+                "Authorization": Serv.GetToken(),
+                //"Access-Control-Allow-Origin":"*"
             },
             type: type,
             data: args,

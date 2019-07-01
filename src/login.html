@@ -204,12 +204,13 @@
 				data.field.grant_type = verifyModel.phone.grant_type;
 				Serv.Post('uc/account/signin', data.field, function (result) {
 					layer_load_lose();
-					console.log(result);
 
 					Serv.SetToken(result.token_type + " " + result.access_token);
 
 					var token = parseJwt(result.access_token);
 					console.log(token);
+
+					window.location.href = 'index.html';
 
 					// Serv.Get('user/init', null, function (response) {
 					// 	response.UserInfo = token;
@@ -261,9 +262,9 @@
 					$('input[name="verify_token"]').val(result.data);
 				} else {
 					layer_alert(result.message);
-					hasClick = false
 				}
 			});
+			hasClick = false;
 		}
 
 		//发送成功
