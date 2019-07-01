@@ -25,6 +25,9 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
 
     //保存面试记录
     layform.on('submit(btnSave)', function (laydate) {
+        var ids = $("input[name='sels']").val();
+        console.log(ids);
+        return false;
         laydate.field.id = 0;
         laydate.field.resumeId = id;
         laydate.field.interviewerIds = "0,";
@@ -35,7 +38,6 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
         laydate.field.logic = $("#rate5").attr("tscore");
         laydate.field.socre = $("#rate6").attr("tscore");
         laydate.field.interviewStatus = 2;
-        console.log(laydate.field);
         if (laydate.field.WorkerInFieldId == 0) {
             layer_alert("请选择面试方式！");
             return false;
@@ -69,7 +71,6 @@ function GetRecords() {
         datas = result;
         PushRecords();
     });
-    console.log(workerinType);
 }
 
 function PushRecords() {
