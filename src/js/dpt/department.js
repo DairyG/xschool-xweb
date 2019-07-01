@@ -1,4 +1,3 @@
-
 var zTreeObj;
 
 var setting = {
@@ -6,12 +5,15 @@ var setting = {
         dblClickExpand: false
     },
     data: {
-        key: { name: 'dptName', title: 'dptName' }
-        , simpleData: {
-            enable: true
-            , idKey: 'id'
-            , pIdKey: 'pid'
-            , rootPId: '0'
+        key: {
+            name: 'dptName',
+            title: 'dptName'
+        },
+        simpleData: {
+            enable: true,
+            idKey: 'id',
+            pIdKey: 'pid',
+            rootPId: '0'
         }
     },
     callback: {
@@ -45,22 +47,28 @@ $(document).ready(function () {
 var model = {
     id: '',
     companyId: '',
-    pId: '0'
-    , dptName: ''
-    , dptCode: ''
-    , dptPositions: ''
-    , positionsPhone: ''
-    , dptDeputy: ''
-    , deputyPhone: ''
-    , dptSecretary: ''
-    , secretaryPhone: ''
-    , dutiesDescription: ''
-    , dptStatus: ''
-    , levelMap: ''
+    pId: '0',
+    dptName: '',
+    dptCode: '',
+    dptPositions: '',
+    positionsPhone: '',
+    dptDeputy: '',
+    deputyPhone: '',
+    dptSecretary: '',
+    secretaryPhone: '',
+    dutiesDescription: '',
+    dptStatus: '',
+    levelMap: ''
 };
-var vm = new Vue({ el: '#dptForm', data: model });
+var vm = new Vue({
+    el: '#dptForm',
+    data: model
+});
+
 function GetSingle(Id) {
-    Serv.Post('uc/Department/GetSingle', { Id: Id }, function (response) {
+    Serv.Post('uc/Department/GetSingle', {
+        Id: Id
+    }, function (response) {
         model.id = response.id;
         model.companyId = response.companyId;
         model.pId = response.pid;
@@ -75,9 +83,12 @@ function GetSingle(Id) {
         model.dutiesDescription = response.dutiesDescription;
         model.dptStatus = response.dptStatus;
         model.levelMap = response.levelMap;
-        vm.$set({ data: model });
+        vm.$set({
+            data: model
+        });
     })
 }
+
 function ClearModel(dpt) {
     model.id = dpt.id;
     model.companyId = dpt.companyId;
@@ -92,8 +103,11 @@ function ClearModel(dpt) {
     model.secretaryPhone = dpt.secretaryPhone;
     model.dutiesDescription = dpt.dutiesDescription;
     model.dptStatus = dpt.dptStatus;
-    vm.$set({ data: model });
+    vm.$set({
+        data: model
+    });
 }
+
 function ClickAdd() {
     var dpt = {
         id: 0,
@@ -145,11 +159,9 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
         if ($("input[name='Id']").val() == "0") {
-            if(laydata.field.PId == 0)
-            {
+            if (laydata.field.PId == 0) {
                 laydata.field.LevelMap = "0,";
-            }
-            else{
+            } else {
                 laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.PId + ",";
             }
 
@@ -158,8 +170,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
                     layer_load_lose();
                     initTree();
-                }
-                else {
+                } else {
                     layer_alert(response.message);
                 }
             })
@@ -194,12 +205,13 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         if (node.isParent) {
             //判断后做操作
             layer_alert("该部门含有下级，无法删除！");
-        }
-        else {
+        } else {
             console.log(laydata.field.Id);
             //laydata.field.dptStatus = 0;
-            Serv.Get('uc/Department/Delete/' + laydata.field.Id,null, function (response) {
-                layer_alert(response.message, function () { window.location.reload() });
+            Serv.Get('uc/Department/Delete/' + laydata.field.Id, null, function (response) {
+                layer_alert(response.message, function () {
+                    window.location.reload()
+                });
             })
         }
     });
