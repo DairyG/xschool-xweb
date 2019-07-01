@@ -47,12 +47,12 @@
 								<div class="layui-input-inline input-item">
 									<label for="username">用户名</label>
 									<input type="text" name="username" maxlength="25" placeholder="账号"
-										class="layui-input">
+										value="15008251434" class="layui-input">
 								</div>
 								<div class="layui-input-inline input-item">
 									<label for="password">密码</label>
 									<input type="password" name="password" maxlength="25" placeholder="密码"
-										class="layui-input input-val">
+										value="psh5201314" class="layui-input input-val">
 								</div>
 								<div class="layui-input-inline input-item verify-box">
 									<label for="verify">验证码</label>
@@ -132,12 +132,6 @@
 				$('#verify').attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
 			});
 
-			function parseJwt(token) {
-				var base64Url = token.split('.')[1];
-				var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-				return JSON.parse(window.atob(base64));
-			};
-
 			form.on('submit(login)', function (data) {
 				layer_load();
 				var username = $.trim(data.field.username);
@@ -164,20 +158,7 @@
 					.toUpperCase();
 				Serv.Post('uc/account/signin', data.field, function (result) {
 					layer_load_lose();
-					console.log(result);
-
-					Serv.SetToken(result.token_type + " " + result.access_token);
-
-					var token = parseJwt(result.access_token);
-					console.log(token);
-
-					// Serv.Get('user/init', null, function (response) {
-					// 	response.UserInfo = token;
-					// 	var stringJson = JSON.stringify(response);
-					// 	localStorage.setItem("LOCAL_USER_DATA", stringJson);
-					// 	layer.closeAll();
-					// 	window.location.href = 'pages/index.html';
-					// });
+					setData(result);
 				});
 				return false;
 			});
@@ -204,14 +185,7 @@
 				data.field.grant_type = verifyModel.phone.grant_type;
 				Serv.Post('uc/account/signin', data.field, function (result) {
 					layer_load_lose();
-
-					Serv.SetToken(result.token_type + " " + result.access_token);
-
-					var token = parseJwt(result.access_token);
-					console.log(token);
-
-					window.location.href = 'index.html';
-
+					setData(result);
 					// Serv.Get('user/init', null, function (response) {
 					// 	response.UserInfo = token;
 					// 	var stringJson = JSON.stringify(response);
@@ -225,6 +199,21 @@
 
 		})
 
+		function parseJwt(token) {
+			var base64Url = token.split('.')[1];
+			var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+			return JSON.parse(window.atob(base64));
+		};
+
+		function setData(result) {
+			layer_load('登录成功，数据拉取中...');
+			Serv.SetToken(result.token_type + " " + result.access_token);
+
+			var token = parseJwt(result.access_token);
+			console.log(token);
+
+			window.location.href = 'index.html';
+		}
 
 		var sendAgainNo = 60;
 		var hasClick = false;
