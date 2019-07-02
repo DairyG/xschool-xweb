@@ -106,7 +106,7 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
     });
 
     //发送OFFER
-    layform.on('submit(btnNoPass)', function (laydate) {
+    layform.on('submit(btnOffer)', function (laydate) {
         var intIds = $.parseJSON($("input[name='sels']").val()).user.ids;
         var intNames = $.parseJSON($("input[name='sels']").val()).user.names;
         laydate.field.id = 0;

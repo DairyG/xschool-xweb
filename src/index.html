@@ -78,7 +78,7 @@
                             <dd><a>基本资料</a></dd>
                             <dd><a>修改密码</a></dd>
                             <hr>
-                            <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
+                            <dd id="logout" style="text-align: center;"><a>退出</a></dd>
                         </dl>
                     </li>
 
@@ -152,7 +152,7 @@
                                     <a lay-href="pages/recruit/resumeList.html">简历库</a>
                                 </dd>
                                 <dd data-name="Personnel">
-                                    <a lay-href="pages/招聘管理/OFFER记录.html">OFFER记录</a>
+                                    <a lay-href="pages/recruit/offerRecord.html">OFFER记录</a>
                                 </dd>
                             </dl>
                         </li>
@@ -241,8 +241,53 @@
                                         </dd>
                                     </dl>
                                 </dd>
+                            </dl>
+                        </li>
+
+                        <li class="layui-nav-item">
+                            <a href="javascript:;" lay-tips="绩效考核" lay-direction="2">
+                                <i class="layui-icon layui-icon-component"></i>
+                                <cite>绩效考核</cite>
+                                <span class="layui-nav-more"></span>
+                            </a>
+                            <dl class="layui-nav-child">
                                 <dd>
-                                    <a lay-href="pages/basicinfo/evaluation.html">考核项目</a>
+                                    <a lay-href="pages/绩效考核/人员考核模板.html">人员考核模板</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="pages/绩效考核/部门考核模板.html">部门考核模板</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="pages/绩效考核/人员考核管理.html">人员考核管理</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="pages/绩效考核/部门考核管理.html">部门考核管理</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="pages/kpi/evaluation.html">考核项目</a>
+                                </dd>
+                                <dd>
+                                    <a href="javascript:;">任务管理<span class="layui-nav-more"></span></a>
+                                    <dl class="layui-nav-child">
+                                        <dd>
+                                            <a lay-href="pages/任务管理/添加任务.html">添加任务</a>
+                                        </dd>
+                                        <dd>
+                                            <a lay-href="pages/任务管理/未完成的.html">未完成的</a>
+                                        </dd>
+                                        <dd>
+                                            <a lay-href="pages/任务管理/已完成的.html">已完成的</a>
+                                        </dd>
+                                        <dd>
+                                            <a lay-href="pages/任务管理/我执行的.html">我执行的</a>
+                                        </dd>
+                                        <dd>
+                                            <a lay-href="pages/任务管理/我发出的.html">我发出的</a>
+                                        </dd>
+                                        <dd>
+                                            <a lay-href="pages/任务管理/抄送我的.html">抄送我的</a>
+                                        </dd>
+                                    </dl>
                                 </dd>
                             </dl>
                         </li>
@@ -290,6 +335,10 @@
         }).extend({
             index: 'lib/index' //主入口模块
         }).use('index');
+
+        $('#logout').click(function () {
+            console.log(1);
+        });
     </script>
     <style id="LAY_layadmin_theme">
         .layui-side-menu,
