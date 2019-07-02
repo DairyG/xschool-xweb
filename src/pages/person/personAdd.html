@@ -173,8 +173,9 @@
 											<select name="degree" v-model="person.degree" required lay-verify="select"
 												placeholder="最高学历" lay-filter="degree">
 												<option value="">请选择</option>
-												<option v-if="basicEducation.length>0" v-for="item in basicEducation"
-													:value="item.name">{{item.name}}</option>
+												<option v-if="basicEducation&&basicEducation.length>0"
+													v-for="item in basicEducation" :value="item.name">{{item.name}}
+												</option>
 											</select>
 										</div>
 									</div>
@@ -224,7 +225,7 @@
 											<select name="recruitSource" v-model="person.recruitSource"
 												lay-filter="recruitSource">
 												<option value="">请选择</option>
-												<option v-if="basicRecruitment.length>0"
+												<option v-if="basicRecruitment&&basicRecruitment.length>0"
 													v-for="item in basicRecruitment" :value="item.name">{{item.name}}
 												</option>
 											</select>
@@ -252,8 +253,9 @@
 											<select name="arrivalTime" v-model="person.arrivalTime" required
 												lay-verify="select" placeholder="到岗时间" lay-filter="arrivalTime">
 												<option value="">请选择</option>
-												<option v-if="basicArrival.length>0" v-for="item in basicArrival"
-													:value="item.name">{{item.name}}</option>
+												<option v-if="basicArrival&&basicArrival.length>0"
+													v-for="item in basicArrival" :value="item.name">{{item.name}}
+												</option>
 											</select>
 										</div>
 									</div>
@@ -364,7 +366,7 @@
 											<select name="jobId" v-model="person.jobId" required lay-verify="select"
 												placeholder="所属职位" lay-filter="jobId">
 												<option value="0">请选择</option>
-												<option v-if="basicJob.length>0" v-for="item in basicJob"
+												<option v-if="basicJob&&basicJob.length>0" v-for="item in basicJob"
 													:value="item.id">{{item.name}}</option>
 											</select>
 										</div>

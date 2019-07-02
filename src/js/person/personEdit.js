@@ -150,6 +150,7 @@ var vm = new Vue({
                 //身份证
                 $('input[name="idCard"]').blur(function () {
                     var value = $.trim($(this).val());
+                    console.log(isCard(value))
                     if (value && isCard(value) == '') {
                         var birthday = getBirthdayFromIdCard(value);
                         var age = getAgeFromIdCard(value);
@@ -174,14 +175,14 @@ var vm = new Vue({
                             layer_alert('请选择身份证地址的省市区');
                             return false;
                         }
-                        if (idCardAreaArr.length != 3) {
-                            layer_alert('身份证地址必须选择省市区');
+                        if (idCardAreaArr.length != 3 && (idCardAreaCode != "710000" && idCardAreaCode != "810000" && idCardAreaCode != "820000")) {
+                            layer_alert('居住地址必须选择省市区');
                             return false;
                         }
 
                         _this.person.idCardProvince = idCardAreaArr[0];
-                        _this.person.idCardCity = idCardAreaArr[1];
-                        _this.person.idCardCounty = idCardAreaArr[2];
+                        _this.person.idCardCity = idCardAreaArr[1] ? idCardAreaArr[1] : '';
+                        _this.person.idCardCounty = idCardAreaArr[2] ? idCardAreaArr[2] : '';
                         _this.person.idCardArea = $('input[name="idCardArea"]').val();
                     }
 
@@ -197,14 +198,14 @@ var vm = new Vue({
                             layer_alert('请选择居住地址的省市区');
                             return false;
                         }
-                        if (liveAreaArr.length != 3) {
+                        if (liveAreaArr.length != 3 && (liveAreaCode != "710000" && liveAreaCode != "810000" && liveAreaCode != "820000")) {
                             layer_alert('居住地址必须选择省市区');
                             return false;
                         }
 
                         _this.person.liveProvince = liveAreaArr[0];
-                        _this.person.liveCity = liveAreaArr[1];
-                        _this.person.liveCounty = liveAreaArr[2];
+                        _this.person.liveCity = liveAreaArr[1] ? liveAreaArr[1] : '';
+                        _this.person.liveCounty = liveAreaArr[2] ? liveAreaArr[2] : '';
                         _this.person.liveArea = $('input[name="liveArea"]').val();
                     }
 

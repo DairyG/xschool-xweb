@@ -39,8 +39,12 @@
                     var array = value.split('/');
                     if (array.length > 0) {
                         var spans = $hidden.parent().find('span');
+                        spans.css('display', 'none').next().css('display', 'none');
                         $(array).each(function (i, item) {
-                            $(spans[i]).html(item);
+                            $(spans[i]).html(item).css('display', 'inline-block');
+                            if (array.length > 1) {
+                                $(spans[i]).next().css('display', 'inline-block');
+                            }
                         });
                     }
                 }

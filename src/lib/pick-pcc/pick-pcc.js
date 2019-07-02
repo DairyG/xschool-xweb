@@ -407,6 +407,7 @@ var areaJson={"data":[{"id":110000,"name":"北京市","pid":-1,"cities":[{"id":1
                         this.ele.find(".pick-province").removeClass("pressActive").css("background", "#fff");
                         this.ele.find("input[type=hidden].pick-area").val(this.ele.find(".pick-province").html());
                         $(".pick-area-hidden").val(this.ele.find(".pick-province").html());
+                        this.setBack(this);
                         return;
                     } else {
                         this.ele.find(".pick-list,.pick-city,.pick-county,i").show();

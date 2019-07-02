@@ -214,7 +214,7 @@ layui.use(['form'], function () {
                 return;
             }
             var code = $(obj).attr('data-areacode');
-            if (code.split(',').length != 3) {
+            if (code.split(',').length != 3 && (code != "710000" && code != "810000" && code != "820000")) {
                 return $(obj).attr("placeholder") + "必须选择省市区";
             }
         },
