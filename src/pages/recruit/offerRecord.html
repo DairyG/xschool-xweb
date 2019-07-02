@@ -39,18 +39,6 @@
 												<input type="text" name="title" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
 											</div>
 										</div>
-										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">状态<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<select>
-													<option></option>
-													<option>未面试</option>
-													<option>已面试</option>
-													<option>已通过</option>
-													<option>未通过</option>
-												</select>
-											</div>
-										</div>
 										<div class="layui-form-item layui-col-md2 margin-b-20">
 											<button class="layui-btn layui-btn-normal">搜索</button>
 										</div>	
@@ -122,21 +110,21 @@
 					element = layui.element;
 	
 				function search() {
-					InterviewStatus = 3
+
 				}
 	
 				//操作栏的回调函数
 				var onTools = function (layEvent, data) {
 					var value = data.id;
 					if (layEvent === 'info') {
-						window.location.href = '/pages/recruit/resumeDetails.html?id=' + value;
+						window.location.href = '/pages/recruit/offerDetails.html?id=' + value;
 					} else if (layEvent === "del") {
 						
 					}
 				};
 	
 				//分页初始化
-				var lstPager = Pager2(table, //lay-ui的table控件
+				var lstPager = Pager(table, //lay-ui的table控件
 					"简历列表", //列表名称
 					"lst", //绑定的列表Id
 					"", //绑定的工具条Id
