@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/pager.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<ul class="layui-tab-title">
+							<li class="layui-this">OFFER简历列表</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<form class="layui-form layui-form2 layui-search-form">
+									<div class="layui-row">
+										<div class="layui-form-item layui-col-md3 margin-b-20">
+											<label class="layui-form-label">姓名<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md3 margin-b-20">
+											<label class="layui-form-label">手机<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md4 margin-b-20">
+											<label class="layui-form-label">状态<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<select>
+													<option></option>
+													<option>未面试</option>
+													<option>已面试</option>
+													<option>已通过</option>
+													<option>未通过</option>
+												</select>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md2 margin-b-20">
+											<button class="layui-btn layui-btn-normal">搜索</button>
+										</div>	
+									</div>
+								</form>
+								<table id="lst" lay-filter="lst"></table>
+								<script type="text/html" id="toolbar">
+									<button class="layui-btn  layui-btn-xs" lay-event="info">查看</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-normal">入职</button>
+								</script>
+								<script type="text/html" id="bar">
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+		</div>
+		<script type="text/javascript">
+			var data_col = [
+				[{
+						type: 'numbers',
+						title: '序号'
+					},
+					{
+						field: 'userName',
+						title: '姓名',
+						width: 80
+					},
+					{
+						field: 'age',
+						title: '年龄'
+					},
+					{
+						field: 'linkPhone',
+						title: '联系电话',
+						width: 180
+					},
+					
+					{
+						field: 'jobCandidates',
+						title: '应聘职位'
+					},
+					{
+						field: 'jobYears',
+						title: '工作年限'
+					},
+					{
+						field: 'expectSalary',
+						title: '期望薪资'
+					},
+					{
+						field: 'arrivalTime',
+						title: '到岗时间',
+					},
+					{
+						title: '操作',
+						toolbar: '#toolbar',
+						width: 170
+					}
+				]
+			];
+	
+			layui.use(['table', 'element'], function () {
+				var table = layui.table,
+					element = layui.element;
+	
+				function search() {
+					InterviewStatus = 3
+				}
+	
+				//操作栏的回调函数
+				var onTools = function (layEvent, data) {
+					var value = data.id;
+					if (layEvent === 'info') {
+						window.location.href = '/pages/recruit/resumeDetails.html?id=' + value;
+					} else if (layEvent === "del") {
+						
+					}
+				};
+	
+				//分页初始化
+				var lstPager = Pager2(table, //lay-ui的table控件
+					"简历列表", //列表名称
+					"lst", //绑定的列表Id
+					"", //绑定的工具条Id
+					data_col, //表头的显示行
+					"gc/resume/GetListByInterviewStatus", //action url 只能post提交
+					search, //获取查询条件的函数
+					null, //如果在显示之前需要对数据进行整理需要实现，否则传null
+					null, //有选择行才能有的操作，实现该方法,否则传null
+					onTools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+					null,
+					'full-100'
+				);
+			});
+		</script>
+	</body>
+</html>
