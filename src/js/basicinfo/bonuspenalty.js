@@ -79,7 +79,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 		return items;
 	};
 	//分页初始化
-	lstPager = Pager(table,//lay-ui的table控件
+	lstPager = Pager2(table,//lay-ui的table控件
 		"奖惩类别",//列表名称
 		"lst",//绑定的列表Id
 		'toolbar',//绑定的工具条Id

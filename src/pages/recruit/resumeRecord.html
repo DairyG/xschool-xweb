@@ -52,13 +52,13 @@
 										<div class="layui-form-item layui-col-md12 ">
 											<label class="layui-form-label">面试内容<span class="text-red"> *</span></label>
 											<div class="layui-input-block">
-												<textarea class="layui-textarea" name="Content" v-model="content"></textarea>
+												<textarea class="layui-textarea" name="content" v-model="content"></textarea>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md12 ">
 											<label class="layui-form-label">面试意见<span class="text-red"> *</span></label>
 											<div class="layui-input-block">
-												<textarea class="layui-textarea" name="Opinion" v-model="opinion"></textarea>
+												<textarea class="layui-textarea" name="opinion" v-model="opinion"></textarea>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md6 ">
@@ -101,8 +101,8 @@
 									<div class="layui-row">
 										<div class="layui-form-item">
 											<div class="layui-input-block text-right">
-												<button type="reset" class="layui-btn">面试未通过</button>
-												<button type="reset" class="layui-btn">发送OFFER</button>
+												<button type="reset" class="layui-btn" lay-submit lay-filter="btnNoPass">面试未通过</button>
+												<button type="reset" class="layui-btn" lay-submit lay-filter="btnOffer">发送OFFER</button>
 												<button type="reset" class="layui-btn" lay-submit lay-filter="btnSave">保存</button>
 												<button type="reset" class="layui-btn layui-btn-primary">返回</button>
 											</div>

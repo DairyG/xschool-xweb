@@ -26,9 +26,11 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
     //保存面试记录
     layform.on('submit(btnSave)', function (laydate) {
         var intIds = $.parseJSON($("input[name='sels']").val()).user.ids;
+        var intNames = $.parseJSON($("input[name='sels']").val()).user.names;
         laydate.field.id = 0;
         laydate.field.resumeId = id;
         laydate.field.interviewerIds = intIds;
+        laydate.field.interviewerNames = intNames;
         laydate.field.appearance = $("#rate1").attr("tscore");
         laydate.field.express = $("#rate2").attr("tscore");
         laydate.field.speciality = $("#rate3").attr("tscore");
@@ -36,20 +38,105 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
         laydate.field.logic = $("#rate5").attr("tscore");
         laydate.field.socre = $("#rate6").attr("tscore");
         laydate.field.interviewStatus = 2;
-        if (laydate.field.WorkerInFieldId == 0) {
+        laydate.field.resumeTime = getFormatDate();
+        if (laydate.field.workerInFieldId == 0) {
             layer_alert("请选择面试方式！");
             return false;
         }
-        if ($.trim(laydate.field.Content) == "") {
+        if ($.trim(laydate.field.content) == "") {
             layer_alert("请输入面试内容！");
             return false;
         }
-        if ($.trim(laydate.field.Opinion) == "") {
+        if ($.trim(laydate.field.opinion) == "") {
             layer_alert("请输入面试意见！");
             return false;
         }
+        datas.unshift(laydate.field);
         Serv.Post('gc/ResumeRecord/Add', { model: laydate.field }, function (result) {
             if (result.code == "00") {
+                PushRecords();
+                layer_alert("成功！");
+            }
+            else {
+                layer_alert(result.message);
+            }
+        });
+        return false;
+    });
+
+    //面试未通过
+    layform.on('submit(btnNoPass)', function (laydate) {
+        var intIds = $.parseJSON($("input[name='sels']").val()).user.ids;
+        var intNames = $.parseJSON($("input[name='sels']").val()).user.names;
+        laydate.field.id = 0;
+        laydate.field.resumeId = id;
+        laydate.field.interviewerIds = intIds;
+        laydate.field.interviewerNames = intNames;
+        laydate.field.appearance = $("#rate1").attr("tscore");
+        laydate.field.express = $("#rate2").attr("tscore");
+        laydate.field.speciality = $("#rate3").attr("tscore");
+        laydate.field.affinity = $("#rate4").attr("tscore");
+        laydate.field.logic = $("#rate5").attr("tscore");
+        laydate.field.socre = $("#rate6").attr("tscore");
+        laydate.field.interviewStatus = 4;
+        laydate.field.resumeTime = getFormatDate();
+        if (laydate.field.workerInFieldId == 0) {
+            layer_alert("请选择面试方式！");
+            return false;
+        }
+        if ($.trim(laydate.field.content) == "") {
+            layer_alert("请输入面试内容！");
+            return false;
+        }
+        if ($.trim(laydate.field.opinion) == "") {
+            layer_alert("请输入面试意见！");
+            return false;
+        }
+        datas.unshift(laydate.field);
+        Serv.Post('gc/ResumeRecord/Add', { model: laydate.field }, function (result) {
+            if (result.code == "00") {
+                PushRecords();
+                layer_alert("成功！");
+            }
+            else {
+                layer_alert(result.message);
+            }
+        });
+        return false;
+    });
+
+    //发送OFFER
+    layform.on('submit(btnNoPass)', function (laydate) {
+        var intIds = $.parseJSON($("input[name='sels']").val()).user.ids;
+        var intNames = $.parseJSON($("input[name='sels']").val()).user.names;
+        laydate.field.id = 0;
+        laydate.field.resumeId = id;
+        laydate.field.interviewerIds = intIds;
+        laydate.field.interviewerNames = intNames;
+        laydate.field.appearance = $("#rate1").attr("tscore");
+        laydate.field.express = $("#rate2").attr("tscore");
+        laydate.field.speciality = $("#rate3").attr("tscore");
+        laydate.field.affinity = $("#rate4").attr("tscore");
+        laydate.field.logic = $("#rate5").attr("tscore");
+        laydate.field.socre = $("#rate6").attr("tscore");
+        laydate.field.interviewStatus = 3;
+        laydate.field.resumeTime = getFormatDate();
+        if (laydate.field.workerInFieldId == 0) {
+            layer_alert("请选择面试方式！");
+            return false;
+        }
+        if ($.trim(laydate.field.content) == "") {
+            layer_alert("请输入面试内容！");
+            return false;
+        }
+        if ($.trim(laydate.field.opinion) == "") {
+            layer_alert("请输入面试意见！");
+            return false;
+        }
+        datas.unshift(laydate.field);
+        Serv.Post('gc/ResumeRecord/Add', { model: laydate.field }, function (result) {
+            if (result.code == "00") {
+                PushRecords();
                 layer_alert("成功！");
             }
             else {
@@ -89,7 +176,7 @@ function PushRecords() {
         divHtml += '<tr>';
         divHtml += '<td>' + item.resumeTime.FormatDate() + '</td>';
         divHtml += '<td>' + typenames[0].name + '</td>';
-        divHtml += '<td>' + item.interviewerIds + '</td>';
+        divHtml += '<td>' + item.interviewerNames + '</td>';
         divHtml += '</tr>';
         divHtml += '<tr>';
         divHtml += '<td class="table_label">仪容仪表</td>';
@@ -159,7 +246,7 @@ function GetWorkerIn() {
     var htmlsel = "";
     if (workerinType && workerinType.length > 0) {
         htmlsel += '<div class="layui-block margin-b-10">';
-        htmlsel += '<select name="WorkerInFieldId" lay-filter="selParent">';
+        htmlsel += '<select name="workerInFieldId" lay-filter="selParent">';
         htmlsel += '<option value="0">==请选择面试方式==</option>';
         for (var i = 0; i < workerinType.length; i++) {
             htmlsel += '<option value="' + workerinType[i].id + '">' + workerinType[i].name + '</option>';
@@ -172,7 +259,7 @@ function GetWorkerIn() {
     }
     else {
         htmlsel += '<div class="layui-block margin-b-10">';
-        htmlsel += '<select name="WorkerInFieldId" lay-filter="selParent">';
+        htmlsel += '<select name="workerInFieldId" lay-filter="selParent">';
         htmlsel += '<option value="0">==请选择面试方式==</option>';
         htmlsel += '</select>';
         $("#divsel").append(
@@ -180,4 +267,16 @@ function GetWorkerIn() {
         );
         layui.form.render('select');
     }
+}
+
+
+function getFormatDate(){
+    var nowDate = new Date();
+    var year = nowDate.getFullYear();
+    var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+    var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+    var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+    var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+    var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+    return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
 }
