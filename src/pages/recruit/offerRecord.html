@@ -27,18 +27,20 @@
 							<div class="layui-tab-item layui-show">
 								<form class="layui-form layui-form2 layui-search-form">
 									<div class="layui-row">
-										<div class="layui-form-item layui-col-md3 margin-b-20">
-											<label class="layui-form-label">姓名<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md3 margin-b-20">
-											<label class="layui-form-label">手机<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
-											</div>
-										</div>
+											<div class="layui-form-item layui-col-md3 margin-b-20">
+													<label class="layui-form-label"><span class="text-red"></span>姓名</label>
+													<div class="layui-input-block">
+														<input type="text" name="searchName"
+															placeholder="请输入姓名" autocomplete="off" class="layui-input">
+													</div>
+												</div>
+												<div class="layui-form-item layui-col-md3 margin-b-20">
+													<label class="layui-form-label"><span class="text-red"></span>手机</label>
+													<div class="layui-input-block">
+														<input type="text" name="searchPhone"
+															placeholder="请输入手机" autocomplete="off" class="layui-input">
+													</div>
+												</div>
 										<div class="layui-form-item layui-col-md2 margin-b-20">
 											<button class="layui-btn layui-btn-normal">搜索</button>
 										</div>	
@@ -109,8 +111,8 @@
 				var table = layui.table,
 					element = layui.element;
 	
-				function search() {
-
+				var search = function() {
+					return {Name : $("input[name='searchName']").val(),Phone : $("input[name='searchPhone']").val(),State:3};
 				}
 	
 				//操作栏的回调函数
@@ -124,12 +126,12 @@
 				};
 	
 				//分页初始化
-				var lstPager = Pager(table, //lay-ui的table控件
+				var lstPager = Pager2(table, //lay-ui的table控件
 					"简历列表", //列表名称
 					"lst", //绑定的列表Id
 					"", //绑定的工具条Id
 					data_col, //表头的显示行
-					"gc/resume/GetListByInterviewStatus", //action url 只能post提交
+					"gc/resume/get", //action url 只能post提交
 					search, //获取查询条件的函数
 					null, //如果在显示之前需要对数据进行整理需要实现，否则传null
 					null, //有选择行才能有的操作，实现该方法,否则传null

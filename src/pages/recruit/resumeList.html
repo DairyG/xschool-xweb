@@ -29,27 +29,28 @@
 							<form class="layui-form layui-form2 layui-search-form">
 								<div class="layui-row">
 									<div class="layui-form-item layui-col-md3 margin-b-20">
-										<label class="layui-form-label"><span class="text-red"> *</span>姓名</label>
+										<label class="layui-form-label"><span class="text-red"></span>姓名</label>
 										<div class="layui-input-block">
-											<input type="text" name="searchName" required lay-verify="required"
+											<input type="text" name="searchName"
 												placeholder="请输入姓名" autocomplete="off" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md3 margin-b-20">
-										<label class="layui-form-label"><span class="text-red"> *</span>手机</label>
+										<label class="layui-form-label"><span class="text-red"></span>手机</label>
 										<div class="layui-input-block">
-											<input type="text" name="searchPhone" required lay-verify="required"
+											<input type="text" name="searchPhone"
 												placeholder="请输入手机" autocomplete="off" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md4 margin-b-20">
-										<label class="layui-form-label"><span class="text-red"> *</span>面试状态</label>
+										<label class="layui-form-label"><span class="text-red"></span>面试状态</label>
 										<div class="layui-input-block">
-											<select>
-												<option></option>
-												<option>未面试</option>
-												<option>已面试</option>
-												<option>未通过</option>
+											<select id="selIntState">
+												<option value="0"></option>
+												<option value="1">未面试</option>
+												<option value="2">面试中</option>
+												<option value="3">已通过</option>
+												<option value="4">未通过</option>
 											</select>
 										</div>
 									</div>
@@ -425,7 +426,7 @@
 				element = layui.element;
 			layform = layui.form;
 			var search = function() {
-				return {Name : $("input[name='searchName']").val(),Phone : $("input[name='searchPhone']").val()};
+				return {Name : $("input[name='searchName']").val(),Phone : $("input[name='searchPhone']").val(),State:$("#selIntState").val()};
 			}
 
 			//操作栏的回调函数
