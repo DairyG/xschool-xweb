@@ -1,0 +1,65 @@
+<form class="layui-form layui-search-form">
+	<div class="layui-row margin-t-10">
+		<div class="search_item">
+			<span>考核项名称</span><input type="text" name="title" autocomplete="off" class="layui-input">
+		</div>
+		<div class="search_item">
+			<span>考核分类</span>
+			<select>
+				<option></option>
+				<option>人事考核</option>
+				<option>销售考核</option>
+			</select>
+		</div>
+		<div class="search_item">
+			<button class="layui-btn layui-btn-normal">搜索</button>
+		</div>
+	</div>
+</form>
+<table id="assess_lst" lay-filter="assess_lst"></table>
+<script type="text/javascript">
+	$(function () {
+		var type = $('#popup_content').data('type');
+		layui.form.render();
+		layui.table.render({
+			elem: '#assess_lst',
+			cols: [
+				[{
+						type: type,
+						'title': '序号'
+					},
+					{
+						field: 'title',
+						'title': '考核项'
+					},
+					{
+						field: 'cate',
+						'title': '所属分类'
+					},
+					{
+						field: 'sort',
+						'title': '显示顺序'
+					},
+				]
+			],
+			data: [{
+					'title': '工资预算',
+					cate: '人事考核',
+					sort: 10
+				},
+				{
+					'title': '报表统计',
+					cate: '人事考核',
+					sort: 10
+				},
+				{
+					'title': '销售指标',
+					cate: '销售考核',
+					sort: 10
+				}
+			],
+			height: '270',
+			page: true
+		});
+	});
+</script>

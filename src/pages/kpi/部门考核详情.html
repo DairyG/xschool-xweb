@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card-body layui-tab bgwhite">
+				<ul class="layui-tab-title">
+					<li class="layui-this">销售部——2019年5月——考核详情</li>
+					<li>任务情况</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show">
+						<table class="layui-table" id="lst"></table>
+						<ul class="layui-timeline">
+							<li class="layui-timeline-item">
+								<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title">自我评价</h3>
+									<p class="text-85"><a href="../人事管理/员工信息.html">张三</a> 2019-5-1 10:40</p>
+									<div>
+										哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈
+									</div>
+								</div>
+							</li>
+							<li class="layui-timeline-item">
+								<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title">初审意见</h3>
+									<p class="text-85"><a href="../人事管理/员工信息.html">张三</a> 2019-5-1 10:40</p>
+									<div>
+										哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈
+									</div>
+								</div>
+							</li>
+							<li class="layui-timeline-item">
+								<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title">终审意见</h3>
+									<p class="text-85"><a href="../人事管理/员工信息.html">张三</a> 2019-5-1 10:40</p>
+									<div>
+										哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div class="layui-row text-right">
+							<button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="formDemo">确认</button>
+							<span class="layui-btn " onclick="history.back(-1)">返回</span>
+						</div>
+					</div>
+					<div class="layui-tab-item">
+						<table class="layui-table" id="lst2"></table>	
+						<div class="layui-row text-right">
+							<span class="layui-btn " onclick="history.back(-1)">返回</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var datas = [
+				{item:'销售指标',start:'10',tips:'',score1:'9',score2:'9',score3:'9'},
+				{item:'报表统计',start:'10',tips:'',score1:'9',score2:'9',score3:'9'},
+				{item:'招聘指标',start:'10',tips:'',score1:'9',score2:'9',score3:'9'}
+			];
+			var datas2 = [
+				{title:'<a href="../任务管理/任务详情.html" class="text-add">销售任务</a>',date1:'2019-1-1 10:59:10',date2:'2019-1-1 10:59:10',date3:'2019-1-1 10:59:10',info:'<font class="text-span">已完成</font>',kh:'销售指标'},
+				{title:'<a href="../任务管理/任务详情.html" class="text-add">报表统计任务</a>',date1:'2019-1-1 10:59:10',date2:'2019-1-1 10:59:10',date3:'',info:'<font class="text-del">未完成</font>',kh:'报表考核'},
+				{title:'<a href="../任务管理/任务详情.html" class="text-add">访客任务</a>',date1:'2019-1-1 10:59:10',date2:'2019-1-1 10:59:10',date3:'',info:'<font class="text-del">未完成</font>',kh:''},
+				{title:'<a href="../任务管理/任务详情.html" class="text-add">推广任务</a>',date1:'2019-1-1 10:59:10',date2:'2019-1-1 10:59:10',date3:'',info:'<font class="text-del">未完成</font>',kh:''}
+			];
+			layui.use(['table','form','element'], function() {
+				var table = layui.table
+					form = layui.form;
+				table.render({
+					elem:'#lst',
+					data:datas,
+					cols:[[
+						{type:'numbers',title:"序号"},
+						{field:'item',title:"考核项目"},
+						{field:'tips',title:"说明",totalRowText:'考核人：人事李'},
+						{field:'start',title:"权重(分值)",totalRowText:'总计'},
+						{field:'score1',title:"自评分",totalRow:true},
+						{field:'score2',title:"初审分",totalRow:true},
+						{field:'score3',title:"终审分",totalRow:true},
+					]],
+					height:'full-180',
+					totalRow:true
+				});
+				table.render({
+					elem:'#lst2',
+					data:datas2,
+					cols:[[
+						{type:'numbers',title:"序号"},
+						{field:'kh',title:"考核项目"},
+						{field:'title',title:"任务名称"},
+						{field:'date1',title:"开始时间"},
+						{field:'date2',title:"截止时间"},
+						{field:'date3',title:"完成时间"},
+						{field:'info',title:"完成情况"},
+					]],
+					height:'full-180'
+				});
+			});
+		</script>
+	</body>
+</html>

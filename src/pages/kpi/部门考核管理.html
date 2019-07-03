@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
+	</head>
+
+	<body class="bgf2f2f2">
+
+		<div class="childrenBody layui-row layui-col-space20" style="background:none;">
+			<div class="layui-col-md3 layui-col-sm3">
+				<div class="bgwhite"> 
+					<ul id="ztree" class="ztree"></ul>
+				</div>
+			</div>
+			<div class="layui-col-md9 layui-col-sm9">
+				<div class="layui-card-body bgwhite">
+					<div class="layui-tab">
+						 <ul class="layui-tab-title">
+							<li class="layui-this">月度考核</li>
+							<li>季度考核</li>
+							<li>半年考核</li>
+							<li>年度考核</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<table class="layui-table" id="lst1" lay-filter="lst1"></table>
+							</div>
+							<div class="layui-tab-item">
+								<table class="layui-table" id="lst2" lay-filter="lst2"></table>
+							</div>
+							<div class="layui-tab-item">
+								<table class="layui-table" id="lst3" lay-filter="lst3"></table>
+							</div>
+							<div class="layui-tab-item">
+								<table class="layui-table" id="lst4" lay-filter="lst4"></table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/html" id="toolbar">
+			<div style="width:200px">
+				<select>
+					<option>2016年</option>
+					<option>2017年</option>
+					<option>2018年</option>
+					<option selected>2019年</option>
+				</select>
+			</div>
+		</script>
+		<script>
+			var zTreeObj;
+			var setting = {
+				view: {
+				    dblClickExpand: false
+				},
+				callback: {
+				    onClick: function (e, treeId, treeNode) {
+				        var tree = $.fn.zTree.getZTreeObj(treeId);
+				        tree.expandNode(treeNode);
+				
+						tnode=treeNode;
+						console.log('tnode',tnode);
+				        currentid=treeNode.id;
+				    },
+				    onAsyncSuccess: function (event, treeId, treeNode, msg) {
+				        var nodes = zTree.getNodes();
+				        var node=nodes.length>0?nodes[0]:null;
+				        console.log(node);
+				        if(node!=null){
+				            zTree.expandNode(node, true, false, false);
+				        }
+				        
+				    }
+				}
+			}; // zTree 的参数配置，后面详解
+			var zNodes = [ // zTree 的数据属性，此处使用标准json格式
+				{
+					name: "四川某某公司",
+					open: true,
+					children: [{
+							name: "销售部",
+							children: [{
+								name: "销售1部",
+								children: [{
+									name: "销售1组"
+								}]
+							}]
+						},
+						{
+							name: "市场部"
+						},
+						{
+							name: "策划部",
+							children: [{
+								name: "策划1部"
+		
+							}]
+						}
+					]
+				}
+		
+			];
+			$(document).ready(function() {
+				zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
+			})
+			var datas1 = [
+				{bm:'销售部',m1:'90',m2:'89',m3:'91',m4:'78',m5:'82',m6:'',m7:'',m8:'',m9:'',m10:'',m11:'',m12:'',pj:'87'},
+				{bm:'市场部',m1:'90',m2:'89',m3:'91',m4:'78',m5:'82',m6:'',m7:'',m8:'',m9:'',m10:'',m11:'',m12:'',pj:'87'},
+				{bm:'人事部',m1:'90',m2:'89',m3:'91',m4:'78',m5:'82',m6:'',m7:'',m8:'',m9:'',m10:'',m11:'',m12:'',pj:'87'}
+			];
+			var datas2 = [];
+			var datas3 = [];
+			var datas4 = [];
+			
+			layui.use([ 'table', 'element'], function() {
+				var table = layui.table,
+					element = layui.element;
+				table.render({
+					elem:'#lst1',
+					toolbar:'#toolbar',
+					cols:[[
+						{'field':'bm','title':'部门',minWidth:'80'},
+						{'field':'m1','title':'一月',templet:function(d){if(d.m1 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m1+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m2','title':'二月',templet:function(d){if(d.m2 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m2+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m3','title':'三月',templet:function(d){if(d.m3 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m3+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m4','title':'四月',templet:function(d){if(d.m4 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m4+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m5','title':'五月',templet:function(d){if(d.m5 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m5+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m6','title':'六月',templet:function(d){if(d.m6 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m6+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m7','title':'七月',templet:function(d){if(d.m7 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m7+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m8','title':'八月',templet:function(d){if(d.m8 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m8+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m9','title':'九月',templet:function(d){if(d.m9 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m9+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m10','title':'十月',templet:function(d){if(d.m10 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m10+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m11','title':'十一月',minWidth:'80',templet:function(d){if(d.m11 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m11+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'m12','title':'十二月',minWidth:'80',templet:function(d){if(d.m12 != ''){ return '<a href="部门考核详情.html" class="text-add">'+d.m12+'</a>' } else { return '<a href="部门考核.html" class="text-add">考核</a>' } }},
+						{'field':'pj','title':'平均数',minWidth:'80'}
+					]],
+					data:datas1
+				});
+				table.render({
+					elem:'#lst2',
+					toolbar:'#toolbar',
+					cols:[[
+						{'field':'bm','title':'部门'},
+						{'field':'m1','title':'第一季度'},
+						{'field':'m2','title':'第二季度'},
+						{'field':'m3','title':'第三季度'},
+						{'field':'m4','title':'第四季度'}
+					]],
+					data:datas2
+				});
+				table.render({
+					elem:'#lst3',
+					totalRow:true,
+					toolbar:'#toolbar',
+					cols:[[
+						{'field':'bm','title':'部门'},
+						{'field':'m1','title':'上半年'},
+						{'field':'m2','title':'下半年'},
+					]],
+					data:datas3
+				});
+				table.render({
+					elem:'#lst4',
+					totalRow:true,
+					toolbar:'#toolbar',
+					cols:[[
+						{'field':'bm','title':'部门'},
+						{'field':'m1','title':'2019年'},
+					]],
+					data:datas4
+				});
+			});
+		</script>
+	</body>
+</html>
