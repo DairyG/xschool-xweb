@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/vue.min.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../lib/vue.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody" id="dom">
+			<div class="layui-card-header" style="padding: 5px 10px 8px 10px;">
+				<div class="layui-btn-group">
+					<a href="summaryadd.html?t=0" class="layui-btn" v-bind:class="[t == 0 ? '' : 'layui-btn-primary']">日报</a>
+					<a href="summaryadd.html?t=1" class="layui-btn" v-bind:class="[t == 1 ? '' : 'layui-btn-primary']">周报</a>
+					<a href="summaryadd.html?t=2" class="layui-btn" v-bind:class="[t == 2 ? '' : 'layui-btn-primary']">月报</a>
+					<a href="summaryadd.html?t=3" class="layui-btn" v-bind:class="[t == 3 ? '' : 'layui-btn-primary']">季度报</a>
+					<a href="summaryadd.html?t=4" class="layui-btn" v-bind:class="[t == 4 ? '' : 'layui-btn-primary']">半年报</a>
+					<a href="summaryadd.html?t=5" class="layui-btn" v-bind:class="[t == 5 ? '' : 'layui-btn-primary']">年报</a>
+				</div>
+			</div>
+			<!-- 导入上一周、月的计划时 当前时间按选择的为准，不按当前时间 -->
+			<div class="layui-card-body bgwhite">
+				<form class="layui-form layui-form2">
+					<div class="layui-row">
+						<div class="layui-form-item margin-b-20" v-bind:class="[t == 0 || t == 2 || t == 5 ? 'layui-col-md12' : 'layui-col-md6']">
+							<label class="layui-form-label">日期</label>
+							<div class="layui-input-block">
+								<input type="text" class="layui-input" readonly id="date"/>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 1">
+							<label class="layui-form-label">周数</label>
+							<div class="layui-input-block">
+								<select>
+									<option>第一周</option>
+									<option>第二周</option>
+									<option>第三周</option>
+									<option>第四周</option>
+									<option>第五周</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 3">
+							<label class="layui-form-label">季度</label>
+							<div class="layui-input-block">
+								<select>
+									<option>一季度</option>
+									<option>二季度</option>
+									<option>三季度</option>
+									<option>四季度</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 4">
+							<label class="layui-form-label">半年度</label>
+							<div class="layui-input-block">
+								<select>
+									<option>上半年</option>
+									<option>下半年</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20" >
+							<label class="layui-form-label">导入</label>
+							<div class="layui-input-block">
+								<button class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">{{labels.import_str}}</button>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">{{labels.l1}}</label>
+							<div class="layui-input-block">
+								<textarea id="editor1"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">{{labels.l2}}</label>
+							<div class="layui-input-block">
+								<textarea id="editor2"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20" v-if="t > 0">
+							<label class="layui-form-label">{{labels.l3}}</label>
+							<div class="layui-input-block">
+								<textarea id="editor3"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">{{labels.l4}}</label>
+							<div class="layui-input-block">
+								<textarea id="editor4"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">{{labels.l5}}</label>
+							<div class="layui-input-block">
+								<textarea id="editor5"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">附件</label>
+							<div class="layui-input-block">
+								<button class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">上传附件</button>
+							</div>
+						</div>
+					</div>
+					<div class="layui-row">
+						<div class="layui-form-item">
+							<div class="layui-input-block text-right">
+								<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确认</button>
+								<span class="layui-btn" onclick="history.back(-1)">返回</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var labels = [
+				{l1:'已完成工作',l2:'未完成工作',l3:'',l4:'需协调和帮助',l5:'备注',import_str:'导入日程'},
+				{l1:'本周完成工作',l2:'本周工作总结',l3:'下周工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上周计划'},
+				{l1:'本月完成工作',l2:'本月工作总结',l3:'下月工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上月计划'},
+				{l1:'本季度完成工作',l2:'本季度工作总结',l3:'下季度工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上季度计划'},
+				{l1:'半年完成工作',l2:'半年工作总结',l3:'下半年工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上半年计划'},
+				{l1:'本年完成工作',l2:'年度工作总结',l3:'明年工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上一年计划'},
+			];
+			var vm = new Vue({
+				el:'#dom',
+				data:{
+					labels:'',
+					t:0,
+				},
+				created() {
+					this.t = GetPara('t');
+					this.t = this.t ? this.t : 0;
+					this.labels = labels[this.t];
+				},
+				mounted() {
+					var that = this;
+					layui.use(['form','layedit','laydate'],function(){
+						var form = layui.form,
+							layedit = layui.layedit,
+							laydate = layui.laydate;
+						layedit.build('editor1',{height:180});
+						layedit.build('editor2',{height:180});
+						if(that.t > 0){
+							layedit.build('editor3',{height:180});
+						}
+						layedit.build('editor4',{height:180});
+						layedit.build('editor5',{height:180});
+						that.t = parseInt(that.t);
+						switch(that.t){
+							case 0:
+								laydate.render({
+									elem:'#date',
+									value:'2019-05-01'
+								});
+								break;
+							case 1:
+							case 2:
+								laydate.render({
+									elem:'#date',
+									value:'2019-05',
+									type:'month'
+								});
+								break;
+							case 3:
+							case 4:
+							case 5:
+								laydate.render({
+									elem:'#date',
+									value:'2019',
+									type:'year'
+								});
+								break;
+						}
+					});
+				}
+			})
+		</script>
+	</body>
+</html>

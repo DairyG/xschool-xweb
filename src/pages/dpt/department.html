@@ -16,6 +16,11 @@
 	<script type="text/javascript" src="../../js/service.js"></script>
 	<script type="text/javascript" src="../../js/verify.js"></script>
 	<script type="text/javascript" src="../../lib/vue.js"></script>
+	<style type="text/css">
+		.linePop .layui-form-item .layui-form-checkbox[lay-skin=primary] {
+			margin-bottom: 8px;
+		}
+	</style>
 </head>
 
 <body class="bgf2f2f2">
@@ -108,11 +113,35 @@
 									name="DutiesDescription"></textarea>
 							</div>
 						</div>
-						<div id="showJobs">
-							
+
+						<div class="layui-form-item layui-col-md12 layui-col-sm12" id="firstJobDiv" style="display:none;">
+							<label class="layui-form-label">职位</label>
+							<div class="layui-input-block">
+								<ul class="dpt_pos_ul">
+									<div id="showJobs">
+
+									</div>
+									<li class="add_li">
+										<span class="set_btn" title="添加职位" name="set_btn"><i
+												class="layui-icon layui-icon-add-1 add"></i></span>
+									</li>
+								</ul>
+							</div>
 						</div>
+
+						<div class="layui-form-item layui-col-md12 layui-col-sm12" id="firstAddJob">
+							<label class="layui-form-label">职位</label>
+							<div class="layui-input-block">
+								<ul class="dpt_pos_ul">
+									<li class="add_li no_bg">
+										<span class="set_btn" title="添加职位" name="set_btn"><i
+												class="layui-icon layui-icon-add-1 add"></i></span>
+									</li>
+								</ul>
+							</div>
+						</div>
+
 						<div class="layui-row text-right">
-							<span class="layui-btn layui-btn-normal" id="set_btn">添加领导职位</span>
 							<button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptInfo">确认</button>
 							<button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptAdd">确认并继续添加</button>
 							<span class="layui-btn" onclick="history.back(-1)">返回</span>

@@ -409,7 +409,7 @@
 				title: '到岗时间',
 			},
 			{
-				field: '面试中',
+				field: 'StatusName',
 				title: '状态',
 				width: 120
 			},
@@ -451,7 +451,14 @@
 					});
 				}
 			};
-
+			//数据整理回调函数
+			var parseData = function (items) {
+				$.each(items, function (i, item) {
+					console.log(item);
+					item.StatusName = ["", "未面试", "面试中","已通过","未通过"][item.interviewStatus];
+				});
+				return items;
+			};
 			//分页初始化
 			var lstPager = Pager2(table, //lay-ui的table控件
 				"简历列表", //列表名称
@@ -460,7 +467,7 @@
 				data_col, //表头的显示行
 				"gc/resume/get", //action url 只能post提交
 				search, //获取查询条件的函数
-				null, //如果在显示之前需要对数据进行整理需要实现，否则传null
+				parseData, //如果在显示之前需要对数据进行整理需要实现，否则传null
 				null, //有选择行才能有的操作，实现该方法,否则传null
 				onTools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
 				null,
@@ -476,7 +483,7 @@
 					data_col, //表头的显示行
 					"gc/resume/get", //action url 只能post提交
 					search, //获取查询条件的函数
-					null, //如果在显示之前需要对数据进行整理需要实现，否则传null
+					parseData, //如果在显示之前需要对数据进行整理需要实现，否则传null
 					null, //有选择行才能有的操作，实现该方法,否则传null
 					onTools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
 					null,

@@ -134,8 +134,8 @@ $(function () {
         $("#dptForm input").prop("disabled", false);
         $("#dptForm button").prop("disabled", false);
         $("#dptForm textarea").prop("disabled", false);
-        $("#set_btn").css("display", "none");
-        $("#showJobs").css("display", "none");
+        $("#firstAddJob").css("display", "none");
+        $("#firstJobDiv").css("display", "none");
     });
     $("a[lay-filter='btnEdit']").click(function () {
         var zTree = $.fn.zTree.getZTreeObj('ztree');
@@ -152,8 +152,8 @@ $(function () {
         $("#dptForm button").prop("disabled", false);
         $("#dptForm textarea").prop("disabled", false);
         $("#dptForm input[name='Id']").val($("input[name='NodeId']").val());
-        $("#set_btn").css("display", '');
-        $("#showJobs").css("display", "");
+        $("#firstAddJob").css("display", '');
+        $("#firstJobDiv").css("display", "");
     });
 });
 var layform;
@@ -245,7 +245,7 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
     }, false);
 });
 
-$('#set_btn').click(function () {
+$('.set_btn').click(function () {
     layer_linePop = layer.open({
         type: 1,
         title: '设置领导职位',
@@ -262,18 +262,8 @@ $('#set_btn').click(function () {
             if (dptId > 0) {
                 Serv.Post("uc/Department/AddDptJobBinding", { Id: 0, CompanyId: 1, DptId: dptId, JobId: jobId }, function (response) {
                     if (response.code == "00") {
-                        DptJobs.push({jobId:jobId,jobName :jobName});
+                        DptJobs.push({jobId:jobId,jobName :jobName,employees:[]});
                         PushJobHtml();
-                        // var btnIndex = $("#showJobs").children("div").length;
-                        // var showHtml = "";
-                        // showHtml += '<div class="layui-form-item layui-col-md12 layui-col-sm12">';
-                        // showHtml += '<label class="layui-form-label">职位' + (btnIndex + 1) + ' </label>';
-                        // showHtml += '<div class="layui-input-inline">';
-                        // showHtml += '<input type="tel" class="layui-input layui-disabled" id="' + jobId + '" value="' + jobName + '" readonly />';
-                        // showHtml += '</div>';
-                        // showHtml += '<a class="layui-btn layui-btn-danger" index="'+btnIndex+'" jobId="' + jobId + '" onclick="deleteBtn(this)">删除</a>';
-                        // showHtml += '</div>';
-                        // $("#showJobs").append(showHtml);
                         layer.close(index);
                     } else {
                         layer_alert(response.message);
@@ -288,8 +278,9 @@ $('#set_btn').click(function () {
 
 function deleteBtn(btn) {
     var jobId = $(btn).attr("jobId");
+    var empId = $(btn).attr("epId");
     var dptId = $("input[name='Id']").val();
-    Serv.Post("uc/Department/DeleteDptJobBinding", { companyid: 1, dptId: dptId, jobId: jobId }, function (response) {
+    Serv.Post("uc/Department/DeleteDptJobBinding", { companyid: 1, dptId: dptId, jobId: jobId,employeeId:empId}, function (response) {
         if (response.code == "00") {
             //$(btn).parent().remove();
             DptJobs.splice($(btn).attr("index"),1);
@@ -306,13 +297,27 @@ function PushJobHtml() {
     $("#showJobs").empty();
     var showHtml = "";
     for (var i = 1; i <= DptJobs.length; i++) {
-        showHtml += '<div class="layui-form-item layui-col-md12 layui-col-sm12">';
-        showHtml += '<label class="layui-form-label">职位' + i + ' </label>';
-        showHtml += '<div class="layui-input-inline">';
-        showHtml += '<input type="tel" class="layui-input layui-disabled" id="' + DptJobs[i - 1].jobId + '" value="' + DptJobs[i - 1].jobName + '" readonly />';
-        showHtml += '</div>';
-        showHtml += '<a class="layui-btn layui-btn-danger" index="'+(i - 1)+'" jobId="' + DptJobs[i - 1].jobId + '" onclick="deleteBtn(this)">删除</a>';
-        showHtml += '</div>';
+        showHtml += '<li>';
+        showHtml += '<p class="p1">' + DptJobs[i - 1].jobName + '</p>';
+        var Employees = DptJobs[i - 1].employees;
+        var epmId = 0;
+        if(Employees.length > 0){
+            epmId = Employees[0].id;
+            showHtml += '<p class="p2">'+Employees[0].name+'</p>';
+            showHtml += '<p class="p3">'+Employees[0].linkPhone+'</p>';
+        };
+        showHtml += '<i class="layui-icon layui-icon-close-fill del" index="'+(i - 1)+'" epId="'+ epmId +'" jobId="' + DptJobs[i - 1].jobId + '" onclick="deleteBtn(this)"></i>';
+        showHtml += '</li>';
+        showHtml += '<li class="add_li">';
+        showHtml += '</li>';
+    }
+    if(DptJobs.length > 0){
+        $("#firstAddJob").css("display","none");
+        $("#firstJobDiv").css("display","");
+    }
+    else{
+        $("#firstAddJob").css("display","");
+        $("#firstJobDiv").css("display","none");
     }
     $("#showJobs").append(showHtml);
 }
