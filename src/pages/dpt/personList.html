@@ -43,12 +43,18 @@
 				},
 				{
 					field: 'dptName',
-					title: '部门'
+					title: '部门',
+					templet:function(d){
+						return $.map(d.bindings,function(item){return item.dptName}).join('|');
+					}
 				},
 				{
 					field: 'jobName',
 					title: '职位',
-					width: 80
+					width: 80,
+					templet:function(d){
+						return $.map(d.bindings,function(item){return item.jobName}).join('|');
+					}
 				},
 				{
 					field: 'userName',

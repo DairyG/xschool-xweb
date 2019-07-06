@@ -1,5 +1,7 @@
 var zTreeObj;
 var DptJobs;
+var currentid=0;
+
 var setting = {
     view: {
         dblClickExpand: false
@@ -18,17 +20,26 @@ var setting = {
     },
     callback: {
         onClick: function (e, treeId, treeNode) {
-            var tree = $.fn.zTree.getZTreeObj(treeId);
-            tree.expandNode(treeNode);
-            tnode = treeNode;
-            currentid = treeNode.id;
-            $('input[name="NodeId"]').val(currentid);
-            $("#dptForm input").prop("disabled", true);
-            $("#dptForm button").prop("disabled", true);
-            $("#dptForm textarea").prop("disabled", true);
-            $('#dptForm input[name="NodeId"]').val(currentid);
-            GetSingle(currentid);
-            layform.render('radio');
+            //商家
+            if(treeNode.level==0){
+                currentid=0;
+                $('input[name="NodeId"]').val(0);
+                ClickAdd();
+            }
+            //不是商家
+            else if(treeNode.pid<0||treeNode.pid>0){
+                var tree = $.fn.zTree.getZTreeObj(treeId);
+                tree.expandNode(treeNode);
+                tnode = treeNode;
+                currentid = treeNode.id;
+                $('input[name="NodeId"]').val(currentid);
+                $("#dptForm input").prop("disabled", true);
+                $("#dptForm button").prop("disabled", true);
+                $("#dptForm textarea").prop("disabled", true);
+                $('#dptForm input[name="NodeId"]').val(currentid);
+                GetSingle(currentid);
+                layform.render('radio');
+            }
         },
         onAsyncSuccess: function (event, treeId, treeNode, msg) {
             var nodes = zTree.getNodes();
@@ -44,6 +55,7 @@ var setting = {
 $(document).ready(function () {
     //zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
 })
+
 var model = {
     id: '',
     companyId: '',
@@ -163,25 +175,49 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
         laydate = layui.laydate;
     layform = layui.form;
 
+    var companys = window.globCache.getCompany();
+    var dpts = window.globCache.getDepartment();
+
+    var array = $.map(companys,function(item){return {id:item.id*-1,dptName:item.companyName,companyId:item.id,pid:0,open:true};});
+    var dptArray = $.map(dpts,function(item){
+        if(item.pid==0){
+            item.pid=item.companyId*-1;
+            return item;
+        }
+        return item;
+    });
+    $.each(dptArray,function(index,item){
+        array.push(item);
+    });
+
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, array);
     function initTree() {
-        Serv.Get('uc/department/GetByCompany/' + 1, {}, function (response) {
-            zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
-        })
+        // Serv.Get('uc/department/GetByCompany/' + 1, {}, function (response) {
+        //     zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
+        // })
     }
-    initTree();
+    //initTree();
 
     table.render({
         elem: '#lst'
     });
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
-        if ($("input[name='Id']").val() == "0") {
-            if (laydata.field.PId == 0) {
+        console.log(laydata);
+        if (laydata.field.Id == "0" || laydata.field.Id=="") {
+            if (parseInt(laydata.field.PId) < 0) {
                 laydata.field.LevelMap = "0,";
-            } else {
+            } else if(parseInt(laydata.field.PId) >0 ) {
                 laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.PId + ",";
             }
-
+            var nodes = zTreeObj.getSelectedNodes();
+            if(nodes.length==0){
+                layer_alert('请选择要添加部门的公司或者父级部门');
+                return
+            }
+            console.log(nodes);
+            laydata.field.CompanyId=nodes[0].companyId;
+            console.log('after update',laydata);
             Serv.Post('uc/Department/add', laydata.field, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
@@ -192,7 +228,6 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
                 }
             })
         } else {
-            console.log(laydata.field);
             Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, initTree());
             })
@@ -201,16 +236,17 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
     });
     layform.on('submit(dptAdd)', function (laydata) {
         layer_load();
+        console.log(laydata);
         if ($("input[name='Id']").val() == "0") {
             Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, ClickAdd());
-                initTree();
+                //initTree();
             })
         } else {
             Serv.Post('uc/Department/edit', laydata.field, function (response) {
                 layer_alert(response.message, ClickAdd());
                 $("input[name='Id']").val("0");
-                initTree();
+                //initTree();
             })
         }
         return false;
@@ -232,6 +268,7 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
             })
         }
     });
+
     Serv.Post("uc/Job/Get", { page: 1, limit: 50, companyId: 1 }, function (response) {
         if (response.totalCount > 0) {
             var jobs = response.items;
@@ -260,11 +297,13 @@ $('.set_btn').click(function () {
             var jobName = $("input[name='pos[]']:checked").attr("title");
             var dptId = $("input[name='Id']").val();
             if (dptId > 0) {
+
                 Serv.Post("uc/Department/AddDptJobBinding", { Id: 0, CompanyId: 1, DptId: dptId, JobId: jobId }, function (response) {
                     if (response.code == "00") {
                         DptJobs.push({jobId:jobId,jobName :jobName,employees:[]});
                         PushJobHtml();
                         layer.close(index);
+                        layer_alert(response.message);
                     } else {
                         layer_alert(response.message);
                     }

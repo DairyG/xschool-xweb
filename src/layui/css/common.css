@@ -189,6 +189,14 @@ table .layui-table-edit {height:38px;line-height: 38px;}
 .process_add_form .process_box .process_add_btn_item_end {text-align: center;height: 40px;padding:15px 0 25px 0;background: url(../../img/process_end.png) no-repeat center bottom;}
 .process_add_form .process_box label {}
 .process_add_form .process_box label input {display: none !important;}
+.process_add_form .process_box .shenpi_card .layui-form-radio>i:hover,
+.process_add_form .process_box .shenpi_card .layui-form-radio>i {color: #fff;}
+.process_add_form .process_box .layui-card-header .fr{    display: inline-block;
+    float: right;
+    line-height: 37px;}
+.process_add_form .process_box .layui-card-header .layui-icon-close-fill {    position: absolute;
+    right: 5px;
+    top: 5px;}
 
 .add_item label {white-space: pre-line;cursor:pointer;}
 .add_item span {}
@@ -277,3 +285,8 @@ table .layui-table-edit {height:38px;line-height: 38px;}
 .dpt_pos_ul li.no_bg  {background:none; line-height: 38px;}
 .dpt_pos_ul li.add_li span {border:1px solid #01AAED;padding: 5px;border-radius: 50%;color: #01AAED;background: #fff;} 
 .dpt_pos_ul li .del { position: absolute;color: #fff;top: 0;right: 4px;}
+
+#calendar {max-width: 100%;margin: 0 auto;min-height: 600px;}
+.cpr {cursor:pointer}
+.table-info  {}
+.table-info td {padding:5px 10px;}

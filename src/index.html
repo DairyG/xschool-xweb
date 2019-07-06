@@ -10,7 +10,10 @@
     <title></title>
     <link rel="stylesheet" href="layui/css/layui.css" />
     <link rel="stylesheet" href="layui/css/admin.css" />
+    <script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="layui/layui.js"></script>
+    <script type="text/javascript" src="js/service.js"></script>
+
 </head>
 <style type="text/css">
     .layui-layout-admin .layui-body {
@@ -382,5 +385,14 @@
         }
     </style>
 </body>
+
+<script type="text/javascript" src="js/cache.js"></script>
+<script>
+    $(function(){
+        //async init data
+        Serv.Get('uc/company/query', {}, window.globCache.setCompany);
+        Serv.Get('uc/department/query', {},window.globCache.setDepartment);
+    });
+</script>
 
 </html>

@@ -13,6 +13,11 @@
 						<input lay-ignore type="radio" name="sel_type" value="position" id="sel_type2" onclick="change_sel_type(this,'position')" >
 						职位
 					</label>
+					<label>
+						<i class="layui-icon fontsize-20 layui-icon-circle text-span"></i>
+						<input lay-ignore type="radio" name="sel_type" value="dpt_position" id="sel_type3" onclick="change_sel_type(this,'dpt_position')" >
+						部门岗位
+					</label>
 				</div>
 				<div class="search_box">
 					<input type="text" class="layui-input" placeholder="用户名称"/>
@@ -30,16 +35,18 @@
 	</div>
 	<div class="layui-col-md6 border-l-1 margin-t-20">
 		<div class="bgwhite padding-10">
-			<input type="hidden" id="company_ids" value="," />
-			<input type="hidden" id="company_names" value="," />
-			<input type="hidden" id="department_ids" value="," />
-			<input type="hidden" id="department_names" value="," />
-			<input type="hidden" id="user_ids" value="," />
-			<input type="hidden" id="user_names" value="," />
-			<input type="hidden" id="position_ids" value="," />
-			<input type="hidden" id="position_names" value="," />
 			<ul class="selected_box" id="selected_box">
-				
+				<input type="hidden" id="sel_type" value="org" />
+				<input type="hidden" id="company_ids" value="," />
+				<input type="hidden" id="company_names" value="," />
+				<input type="hidden" id="department_ids" value="," />
+				<input type="hidden" id="department_names" value="," />
+				<input type="hidden" id="user_ids" value="," />
+				<input type="hidden" id="user_names" value="," />
+				<input type="hidden" id="position_ids" value="," />
+				<input type="hidden" id="position_names" value="," />
+				<input type="hidden" id="dpt_position_ids" value="," />
+				<input type="hidden" id="dpt_position_names" value="," />
 			</ul>
 		</div>
 	</div>
@@ -48,67 +55,47 @@
 	var has_user = $('#popup_content').data('has_user');
 	var has_department = $('#popup_content').data('has_department');
 	var has_company =$('#popup_content').data('has_company');
+	var has_position =$('#popup_content').data('has_position');
+	var has_dpt_position =$('#popup_content').data('has_dpt_position');
+	
 	var sel_type = 'org';
 	var allow_num = $('#popup_content').data('num');
 	var user_company = {id:1,pid:0}//默认当前用户的公司信息 实际另行获取
 	
-	var company_arr = [
-		{id:1,pid:0,name:'四季香江'},
-		{id:2,pid:1,name:'咨询公司'},
-		{id:3,pid:1,name:'建筑公司'},
-		{id:4,pid:1,name:'设计公司'},
-	];
-	var position_arr = [
-		{id:1,name:'总经理',company_id:1},
-		{id:2,name:'总监',company_id:1},
-		{id:3,name:'主管',company_id:1},
-		{id:4,name:'经理',company_id:1},
-	];
-	var department_arr = [
-		{id:1,pid:0,company_id:1,name:'销售中心'},
-		{id:2,pid:0,company_id:1,name:'行政中心'},
-		{id:3,pid:0,company_id:1,name:'市场部'},
-		{id:4,pid:1,company_id:1,name:'销售一部'},
-		{id:5,pid:1,company_id:1,name:'销售二部'},
-		{id:6,pid:1,company_id:1,name:'销售三部'},
-		{id:7,pid:2,company_id:1,name:'人事部'},
-		{id:8,pid:2,company_id:1,name:'财务部'},
-		
-		{id:9,pid:0,company_id:2,name:'销售中心'},
-		{id:10,pid:0,company_id:2,name:'行政中心'},
-		{id:11,pid:0,company_id:2,name:'市场部'},
-		{id:12,pid:9,company_id:2,name:'销售一部'},
-		{id:13,pid:9,company_id:2,name:'销售二部'},
-		{id:14,pid:9,company_id:2,name:'销售三部'},
-		{id:15,pid:10,company_id:2,name:'人事部'},
-		{id:16,pid:10,company_id:2,name:'财务部'},
-	];
-	var user_arr = [
-		{id:1,department_id:1,company_id:1,name:'张三',position_id:1},
-		{id:2,department_id:2,company_id:1,name:'李四',position_id:2},
-		{id:3,department_id:1,company_id:1,name:'王五',position_id:3},
-		{id:4,department_id:2,company_id:1,name:'赵六',position_id:4},
-		
-		{id:5,department_id:9,company_id:2,name:'张三',position_id:1},
-		{id:6,department_id:10,company_id:2,name:'李四',position_id:2},
-		{id:7,department_id:9,company_id:2,name:'王五',position_id:3},
-		{id:8,department_id:10,company_id:2,name:'赵六',position_id:4},
-	];
+	var company_arr = [];
+	var position_arr = [];
+	var department_arr = [];
 	
+	var user_arr = [];
+	var dpt_position_arr = [];
+
 	$(function(){
-		if(has_company){
-			show_items('company',user_company.id);
-			//$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'company\','+user_company.id+',\''+company_arr[0].name+'\')">'+company_arr[0].name+'</a>&gt;</span>') ;
-		} else {
-			show_items('department',user_company.id);
-			$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'department\','+user_company.id+')">'+company_arr[0].name+'</a>&gt;</span>') ;
+		if(!has_position){
+			$("#sel_type2").parents('label').remove();
 		}
+		if(!has_dpt_position){
+			$("#sel_type3").parents('label').remove();
+		}
+		if($(".radio_box").find('label').length == 1){
+			$(".radio_box").html('');
+		}
+
+		if (company_arr.length <= 0) {
+			Serv.Post("uc/Company/Get", {
+				page: 1,
+				limit: 50
+			}, function (result) {
+				company_arr = result.items;
+			}, false);
+		}
+
+		show_items('company',0);
 	});
 	
 	//处理导航栏
 	function location_sel(obj,type,company_id,department_id,company_name){
 		$(obj).parent('span').nextAll().remove();
-		if(department_id > 0 || has_company){
+		if($(obj).parent('span').index() == 1){
 			$(obj).parent('span').remove();
 		}
 		show_items(type,company_id,department_id,company_name);
@@ -126,6 +113,11 @@
 				var input_checked = $(input).prop('checked');
 				if(input_checked != checked){
 					if(checked){
+						if(allow_num > 0 && $("#selected_box li").length >= allow_num){
+							layer.msg('最多选择'+allow_num+'项');
+							$(obj).prop('checked',false);
+							return false;
+						}
 						var html = build_selectd_html(type,value,text);
 						$("#selected_box").append(html);
 						add_remove_value(type,value,text);
@@ -146,14 +138,19 @@
 		var text = $(obj).data('text');
 		
 		if(checked){
+			if(allow_num > 0 && $("#selected_box li").length >= allow_num){
+				layer.msg('最多选择'+allow_num+'项');
+				$(obj).prop('checked',false);
+				return false;
+			}
 			var html = build_selectd_html(type,value,text);
-			if(type == 'position'){
-				$("#selected_box").html(html);
-				add_remove_value(type,value,text);
-			} else {
+			// if(type == 'position'){
+			// 	$("#selected_box").html(html);
+			// 	add_remove_value(type,value,text);
+			// } else {
 				$("#selected_box").append(html);
 				add_remove_value(type,value,text);
-			}
+			// }
 		} else {
 			user_sel_remove(type,value,text);
 		}
@@ -172,15 +169,15 @@
 	 */
 	function add_remove_value(type,id,name,is_add = true){
 		if(is_add){
-			if(type == 'position'){
-				ids = ','+id+',';
-				names = ','+name+',';
-			} else {
+			// if(type == 'position'){
+			// 	ids = ','+id+',';
+			// 	names = ','+name+',';
+			// } else {
 				var ids = $("#"+type+"_ids").val();
 				var names = $("#"+type+"_names").val();
 				ids += id+',';
 				names += name+',';
-			}
+			// }
 			$("#"+type+"_ids").val(ids);
 			$("#"+type+"_names").val(names);
 		} else {
@@ -222,48 +219,51 @@
 			case 'company':
 				//此处加载公司列表
 				for(var i = 0;i < company_arr.length;i++){
-					// if(company_arr[i].pid == company_id){
-						html += build_check_html(company_arr[i].id,company_arr[i].name,type,company_id);
-					// }
+					html += build_check_html(company_arr[i].id,company_arr[i].companyName,type,company_id);
 					if(company_arr[i].id == company_id){
-						if(has_company){
-							$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'company\','+company_id+',0,\''+company_arr[i].name+'\')">全部</a>&gt;</span>');
-						} else {
-							$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\','+company_id+')">'+company_arr[i].name+'</a>&gt;</span>');
-						}
+						$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'company\','+company_id+',0,\''+company_arr[i].companyName+'\')">全部</a>&gt;</span>');
 					}
 				}
 				
 				break;
 			case 'department':
 				//此处加载部门列表
+				Serv.Get("uc/Department/GetByCompany/" + company_id, null, function (result) {
+					department_arr = result;
+				}, false);
 				for(var i = 0;i < department_arr.length;i++){
 					if(department_arr[i].company_id == company_id && department_arr[i].pid == department_id){
-						html += build_check_html(department_arr[i].id,department_arr[i].name,type,company_id);
+						html += build_check_html(department_arr[i].id,department_arr[i].dptName,type,company_id);
 					}
 					if(department_arr[i].id == department_id){
-						$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\','+company_id+','+department_id+')">'+department_arr[i].name+'</a>&gt;</span>');
+						$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\','+company_id+','+department_id+')">'+department_arr[i].dptName+'</a>&gt;</span>');
 					}
 				}
-				if(has_company && department_id <= 0){
+				if(department_id <= 0){
 					$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\','+company_id+',0,\''+company_name+'\')">'+company_name+'</a>&gt;</span>');
 				} 
 				
 				//此处加载用户列表
-				if (has_user) {
+				if (has_user && sel_type != 'dpt_position') {
 					// 根据 公司ID 和 部门ID获取用户列表
-					// 部门ID为0时获取该公司下所有的用户
 					// 部门ID大于0时获取当前部门和所有子部门的用户
+					Serv.Post("uc/Employee/Get", {
+						page: 1,
+						limit: 50,
+						CompanyId: company_id,
+						DptId: department_id
+					}, function (result) {
+						user_arr = result.items;
+					}, false);
+
 					for(var i = 0;i < user_arr.length;i++){
-						if(department_id == 0){
-							if(user_arr[i].company_id == company_id){
-								html += build_check_html(user_arr[i].id,user_arr[i].name,'user',company_id);
-							}
-						} else {
-							if(user_arr[i].company_id == company_id && user_arr[i].department_id == department_id){
-								html += build_check_html(user_arr[i].id,user_arr[i].name,'user',company_id);
-							}
-						}
+						html += build_check_html(user_arr[i].id,user_arr[i].userName,'user',company_id);
+					}
+				}
+				if(sel_type == 'dpt_position'){
+					for(var i = 0;i < dpt_position_arr.length;i++){
+						//1_1
+						html += build_check_html(dpt_position_arr[i].id,dpt_position_arr[i].name,'dpt_position',company_id);
 					}
 				}
 				break;
@@ -298,7 +298,7 @@
 		switch (type){
 			case 'company':
 				icon = '<i class="icon_group1"></i>';
-				if(has_company && sel_type != 'position'){
+				if(has_company && sel_type == 'org'){
 					var ids = $("#company_ids").val();
 					if(ids.indexOf(','+id+',') >= 0){
 						checked = " checked='checked' ";
@@ -313,7 +313,7 @@
 			break;
 			case 'department':
 				icon = '<i class="icon_group2"></i>';
-				if(has_department){
+				if(has_department && sel_type == 'org'){
 					var ids = $("#department_ids").val();
 					if(ids.indexOf(','+id+',') >= 0){
 						checked = " checked='checked' ";
@@ -336,6 +336,13 @@
 				}
 				checkbox = '<input type="radio" name="position" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
 			break;
+			case 'dpt_position':
+				var ids = $("#dpt_position_ids").val();
+				if(ids.indexOf(','+id+',') >= 0){
+					checked = " checked='checked' ";
+				}
+				checkbox = '<input type="checkbox" name="dpt_position" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
+			break;
 		}
 		
 		return '<li>'+checkbox+icon+text+'</li>';
@@ -349,10 +356,9 @@
 		$("#selected_box li").each(function(){
 			$(this).find('i').click();
 		});
+		$(".loaction_box").html('');
 		sel_type = this_type;
+		$('#sel_type').val(sel_type);
 		show_items('company',user_company.id);
 	}
-	$(".radio_box label").click(function(){
-		
-	})
 </script>
