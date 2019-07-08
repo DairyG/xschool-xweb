@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="../../layui/css/liucheng.css" />
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
 		<link type="text/css" rel="stylesheet" href="../../form/css/common.css" />
 		<link type="text/css" rel="stylesheet" href="../../form/css/jquery-ui-1.9.2.custom.css" />
 		<link type="text/css" rel="stylesheet" href="../../form/css/widgets.css" />
@@ -23,6 +24,7 @@
 		var imageNumber=10;
 		var LVL=4;
 		var isForTemplate=false;
+		
 	</script>
 	<body class="bgf2f2f2">
 		<div class="childrenBody">
@@ -41,7 +43,7 @@
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>流程名称</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required  lay-verify="required" placeholder="请输入流程名称" autocomplete="off" class="layui-input">
+											<input id="txtSubjectName" type="text" name="title" required  lay-verify="required" placeholder="请输入流程名称" autocomplete="off" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
@@ -55,10 +57,8 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>所属分组</label>
 										<div class="layui-input-block">
-											<select>
-												<option>请选择分组</option>
-												<option>用车申请</option>
-												<option>招聘申请</option>
+											<select id="select_SubjectTypeId">
+												
 											</select>
 										</div>
 									</div>
@@ -79,7 +79,7 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">流程描述</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required  lay-verify="required" placeholder="请输入流程描述" autocomplete="off" class="layui-input">
+											<input id="txtRemark" type="text" name="title" required  lay-verify="required" placeholder="请输入流程描述" autocomplete="off" class="layui-input">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
@@ -151,8 +151,7 @@
 										<div class="formButtons hide" id="formButtons">
 											<table style="margin:auto;font-size:1.0em">
 												<tr>
-													<td style="border:none;"><a class="btn left" id="preview" target="_blank" href="javascript:;">预览</a></td>
-													<td style="border:none;"><a class="btn blue left" id="saveForm" href="#">保存</a></td>
+													<td style="border:none;"><a class="btn left" id="preview" target="_blank" href="javascript:;">预览</a></td>										
 												</tr>
 											</table>
 										</div>
@@ -529,6 +528,13 @@
 													<div class="layui-card-body">
 														<div class="show_div">
 															<span class="text-85">请选择审批人</span>
+															<input type="hidden" name="sels" value="{'sel_type':1,
+																'company':{ 'ids':'1,2,3', 'names':'a,b,c' },
+																'department':{ 'ids':'1,2,3', 'names':'a,b,c' },
+																'user':{ 'ids':'1,2,3', 'names':'a,b,c' },
+																'position':{ 'ids':'1,2,3', 'names':'a,b,c' },
+																'dpt_position':{ 'ids':'1,2,3', 'names':'a,b,c' },
+															}" />
 														</div>
 														<label class="add_icon text-85">
 															<i class="layui-icon layui-icon-right fr fontsize-18"></i>
@@ -578,7 +584,7 @@
 									</div>
 								</div>
 								<div class="layui-row text-right">
-									<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确认</button>
+									<a class="layui-btn layui-btn-danger" href="javascript:void(0)" onclick="save()" >确认</a>
 									<span class="layui-btn" onclick="history.back(-1)">返回</span>
 								</div>
 							</form>
@@ -722,6 +728,9 @@
 				var table = layui.table,
 					element = layui.element;
 					form = layui.form;
+					
+					loadSubjectTypes();
+	
 			});
 			function add_group(){
 				layer_linePop = layer.open({
@@ -779,6 +788,78 @@
 			}
 			function closePop(){
 				layer.close(layer_linePop);
+			}
+			//绑定流程组别
+			function loadSubjectTypes()
+			{
+
+				Serv.Get('SubjectType/GetSubjectTypeList',null,function(data){
+					$("#select_SubjectTypeId").empty();
+						$.each(data,function(index,item){
+						
+							if(index==0)
+							{
+								$("#select_SubjectTypeId").append("<option value=''>请选择分组</option>");
+							}
+                        var opt=$("<option value="+item.id+">"+item.subjectTypeName+"</option>")
+                        $("#select_SubjectTypeId").append(opt);
+					   });
+					   form.render('select');
+				},false);
+				/*$.ajax({
+					url:"https://localhost:44329/api/v1/SubjectType/GetSubjectTypeList",
+					success:function(data)
+					{			
+						$("#select_SubjectTypeId").empty();
+						$.each(data,function(index,item){
+						
+							if(index==0)
+							{
+								$("#select_SubjectTypeId").append("<option value=''>请选择分组</option>");
+							}
+                        var opt=$("<option value="+item.id+">"+item.subjectTypeName+"</option>")
+                        $("#select_SubjectTypeId").append(opt);
+					   });
+					   form.render('select');
+					}
+				})*/
+
+	
+
+			}
+			function save()
+			{
+				var data=[];
+				var SubjectName=$("#txtSubjectName").val();
+				var Remark=$("#txtRemark").val();
+				var FlowTypeId=$("input[name='type']:checked").val();
+				var PassInfo=$("input[name='PassInfo'][type='checkbox']").is(':checked');
+				var IcoUrl="";
+				var SubjectTypeId=$("#select_SubjectTypeId").val();
+				var FormContent=F;
+				var FormAttribute=M;
+				var subjectRuleRangeList= [
+					{
+					"businessType": 1,//1流程管理可见者，2流程管理节点人员（此处必须是1）
+					"companyId": 0,//公司id
+					"depId": 0,//部门id
+					"userId": 0,//用户id
+					"jobDepId": 0,//部门岗位id
+					"jobId": 0//职位id
+						},
+						{
+					"businessType": 1,
+					"companyId": 0,
+					"depId": 0,
+					"userId": 0,
+					"jobDepId": 0,
+					"jobId": 0
+						}	
+					];
+
+
+
+				return false;
 			}
 		</script>
 	</body>
