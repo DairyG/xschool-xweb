@@ -1,65 +1,113 @@
-<form class="layui-form layui-search-form">
+<form class="layui-form layui-search-form" autocomplete="off">
 	<div class="layui-row margin-t-10">
 		<div class="search_item">
-			<span>考核项名称</span><input type="text" name="title" autocomplete="off" class="layui-input">
+			<span>考核项名称</span><input type="text" name="name" class="layui-input">
 		</div>
 		<div class="search_item">
 			<span>考核分类</span>
-			<select>
-				<option></option>
-				<option>人事考核</option>
-				<option>销售考核</option>
+			<select id="evaluationType" name="evaluationType">
+				<option value="">请选择</option>
 			</select>
 		</div>
 		<div class="search_item">
-			<button class="layui-btn layui-btn-normal">搜索</button>
+			<button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
 		</div>
 	</div>
 </form>
 <table id="assess_lst" lay-filter="assess_lst"></table>
 <script type="text/javascript">
-	$(function () {
-		var type = $('#popup_content').data('type');
-		layui.form.render();
-		layui.table.render({
+	var type = $('#popup_content').data('type');
+	var parameter = {
+		etId: '',
+		name: ''
+	};
+	var data_col = [
+		[{
+				type: type
+			},
+			{
+				field: 'id',
+				hide: true
+			},
+			{
+				field: 'name',
+				title: '考核项'
+			},
+			{
+				field: 'evaluationTypeName',
+				title: '所属分类'
+			},
+			{
+				field: 'index',
+				title: '显示顺序'
+			},
+		]
+	];
+
+	layui.use(['table', 'form'], function () {
+		var table = layui.table
+		form = layui.form;
+
+		// form.render('select');
+
+		var tbl = table.render({
 			elem: '#assess_lst',
-			cols: [
-				[{
-						type: type,
-						'title': '序号'
-					},
-					{
-						field: 'title',
-						'title': '考核项'
-					},
-					{
-						field: 'cate',
-						'title': '所属分类'
-					},
-					{
-						field: 'sort',
-						'title': '显示顺序'
-					},
-				]
-			],
-			data: [{
-					'title': '工资预算',
-					cate: '人事考核',
-					sort: 10
-				},
-				{
-					'title': '报表统计',
-					cate: '人事考核',
-					sort: 10
-				},
-				{
-					'title': '销售指标',
-					cate: '销售考核',
-					sort: 10
-				}
-			],
+			url: Serv.GetUrl('gc/evaluation/getlist'),
+			method: "POST",
+			where: parameter,
+			headers: Serv.GetHeaders('gc/evaluation/getlist'),
+			page: true, //开启分页
+			even: true,
 			height: '270',
-			page: true
+			cols: data_col,
+			parseData: function (res) { //res 即为原始返回的数据
+				if (res && res["items"].length > 0) {
+					return {
+						"code": 0,
+						"msg": "",
+						"count": res["totalCount"],
+						"data": res["items"]
+					};
+				} else {
+					return {
+						"code": 404,
+						"msg": "未找到相关数据",
+						"count": 0,
+						"data": []
+					}
+				}
+			}
 		});
+
+		form.on('submit(search)', function (laydata) {
+			parameter.etId = laydata.field.evaluationType;
+			parameter.name = $.trim(laydata.field.name);
+			tbl.reload({
+				where: parameter,
+				page: {
+					curr: 1
+				}
+			});
+
+			return false;
+		});
+
+		getEvaluationType();
+
+
+		function getEvaluationType() {
+			Serv.Get('gc/evaluationtype/get', {}, function (result) {
+				if (result) {
+					$('#evaluationType').empty().append('<option value="">请选择</option>');
+					$.each(result, function (i, item) {
+						$('#evaluationType').append('<option value="' + item.id + '">' + item
+							.name +
+							'</option>');
+					});
+
+					form.render('select');
+				}
+			});
+		}
 	});
 </script>

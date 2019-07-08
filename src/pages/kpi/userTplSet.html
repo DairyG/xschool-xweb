@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="../../layui/layui.js"></script>
 	<script type="text/javascript" src="../../js/common.js"></script>
 	<script type="text/javascript" src="../../js/service.js"></script>
+	<script type="text/javascript" src="../../js/pager.js"></script>
 </head>
 
 <body class="bgf2f2f2">
@@ -24,7 +25,7 @@
 							<div class="layui-input">
 								<span id="kpiObject"></span>
 								<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"
-									onclick="user_popup($('#kpiObject'),true)">选择考核对象</span>
+									onclick="user_popup2($('#kpiObject'),'user,department,company,dpt_position')">选择考核对象</span>
 							</div>
 						</div>
 					</div>
@@ -123,16 +124,15 @@
 									<tr>
 										<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span>
 										</td>
-										<td><input type="text" class="layui-input" value="工资预算" readonly
-												onclick="assess_popup(this)" /></td>
+										<td><input type="text" class="layui-input evaluationPopup" value="工资预算"
+												readonly /></td>
 										<td><input type="text" class="layui-input" value="10" /></td>
 										<td><input type="text" class="layui-input" /></td>
 									</tr>
 									<tr>
 										<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span>
 										</td>
-										<td><input type="text" class="layui-input" readonly
-												onclick="assess_popup(this)" /></td>
+										<td><input type="text" class="layui-input evaluationPopup" readonly /></td>
 										<td><input type="text" class="layui-input" /></td>
 										<td><input type="text" class="layui-input" /></td>
 									</tr>

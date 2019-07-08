@@ -6,7 +6,7 @@ layui.use(['table', 'form'], function () {
         var value = obj.value;
         var elem = obj.elem;
         if (value == 3) {
-            user_popup(null, false, true, false, 1, false, (res) => {
+            user_popup2(null, 'department', 1, false, (res) => {
                 var id = res.department.ids.LTrim(',').RTrim(',');
                 var val = res.department.names.LTrim(',').RTrim(',');
                 var sel_last = $(elem).find('option:last');
@@ -23,4 +23,19 @@ layui.use(['table', 'form'], function () {
             });
         }
     });
+
+
+    $('.evaluationPopup').on('click', function () {
+        assess_popup($(this), 'checkbox', function () {
+            var checkStatus = table.checkStatus('assess_lst'),
+                data = checkStatus.data;
+            setEvaluationData(data);
+        })
+    });
+
+
+    function setEvaluationData(data) {
+        console.log(data);
+    }
+
 });
