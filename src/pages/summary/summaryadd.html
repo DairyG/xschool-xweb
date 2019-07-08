@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="../../layui/css/common.css" />
 		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/wangEditor/wangEditor.min.js"></script>
 		<script type="text/javascript" src="../../js/vue.min.js"></script>
 		<script type="text/javascript" src="../../js/common.js"></script>
 		<script type="text/javascript" src="../../lib/vue.js"></script>
@@ -27,7 +28,11 @@
 			<div class="layui-card-body bgwhite">
 				<form class="layui-form layui-form2">
 					<div class="layui-row">
-						<div class="layui-form-item margin-b-20" v-bind:class="[t == 0 || t == 2 || t == 5 ? 'layui-col-md12' : 'layui-col-md6']">
+						<input type="hidden" name="CompanyId" v-model="companyId" value="1" />
+						<input type="hidden" name="DptId" v-model="dptId" value="1" />
+						<input type="hidden" name="EmployeeId" v-model="employeeId" value="1" />
+						<input type="hidden" name="Type" v-model="type" />
+ 						<div class="layui-form-item margin-b-20" v-bind:class="[t == 0 || t == 2 || t == 5 ? 'layui-col-md12' : 'layui-col-md6']">
 							<label class="layui-form-label">日期</label>
 							<div class="layui-input-block">
 								<input type="text" class="layui-input" readonly id="date"/>
@@ -37,11 +42,11 @@
 							<label class="layui-form-label">周数</label>
 							<div class="layui-input-block">
 								<select>
-									<option>第一周</option>
-									<option>第二周</option>
-									<option>第三周</option>
-									<option>第四周</option>
-									<option>第五周</option>
+									<option value="1">第一周</option>
+									<option value="2">第二周</option>
+									<option value="3">第三周</option>
+									<option value="4">第四周</option>
+									<option value="5">第五周</option>
 								</select>
 							</div>
 						</div>
@@ -49,10 +54,10 @@
 							<label class="layui-form-label">季度</label>
 							<div class="layui-input-block">
 								<select>
-									<option>一季度</option>
-									<option>二季度</option>
-									<option>三季度</option>
-									<option>四季度</option>
+									<option value="6">一季度</option>
+									<option value="7">二季度</option>
+									<option value="8">三季度</option>
+									<option value="9">四季度</option>
 								</select>
 							</div>
 						</div>
@@ -60,8 +65,8 @@
 							<label class="layui-form-label">半年度</label>
 							<div class="layui-input-block">
 								<select>
-									<option>上半年</option>
-									<option>下半年</option>
+									<option value="10">上半年</option>
+									<option value="11">下半年</option>
 								</select>
 							</div>
 						</div>
@@ -74,31 +79,41 @@
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">{{labels.l1}}</label>
 							<div class="layui-input-block">
-								<textarea id="editor1"></textarea>
+								<!-- <textarea id="editor1"></textarea> -->
+								<input type="hidden" name="Finish" v-model="finish">
+                                <div class="layui-input-block" id="E_Finish"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">{{labels.l2}}</label>
 							<div class="layui-input-block">
-								<textarea id="editor2"></textarea>
+								<!-- <textarea id="editor2"></textarea> -->
+								<input type="hidden" name="Content" v-model="content">
+                                <div class="layui-input-block" id="E_Content"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20" v-if="t > 0">
 							<label class="layui-form-label">{{labels.l3}}</label>
 							<div class="layui-input-block">
-								<textarea id="editor3"></textarea>
+								<!-- <textarea id="editor3"></textarea> -->
+								<input type="hidden" name="Plan" v-model="plan">
+                                <div class="layui-input-block" id="E_Plan"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">{{labels.l4}}</label>
 							<div class="layui-input-block">
-								<textarea id="editor4"></textarea>
+								<!-- <textarea id="editor4"></textarea> -->
+								<input type="hidden" name="Help" v-model="help">
+                                <div class="layui-input-block" id="E_Help"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">{{labels.l5}}</label>
 							<div class="layui-input-block">
-								<textarea id="editor5"></textarea>
+								<!-- <textarea id="editor5"></textarea> -->
+								<input type="hidden" name="Description" v-model="description">
+                                <div class="layui-input-block" id="E_Description"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
@@ -145,13 +160,37 @@
 						var form = layui.form,
 							layedit = layui.layedit,
 							laydate = layui.laydate;
-						layedit.build('editor1',{height:180});
-						layedit.build('editor2',{height:180});
+
+						var E = window.wangEditor
+            			var eFinish = new E('#E_Finish');
+						eFinish.customConfig.onchange = function (html) {
+							$('input[name="Finish"]').val(html);
+						};
+						eFinish.create();
+						
+						var eContent = new E('#E_Content');
+						eContent.customConfig.onchange = function (html) {
+							$('input[name="Content"]').val(html);
+						};
+						eContent.create();
+						
 						if(that.t > 0){
-							layedit.build('editor3',{height:180});
+							var ePlan = new E('#E_Plan');
+							ePlan.customConfig.onchange = function (html) {
+								$('input[name="Plan"]').val(html);
+							};
+							ePlan.create();
 						}
-						layedit.build('editor4',{height:180});
-						layedit.build('editor5',{height:180});
+						var eHelp = new E('#E_Help');
+						eHelp.customConfig.onchange = function (html) {
+							$('input[name="Help"]').val(html);
+						};
+						eHelp.create();
+						var eDescription = new E('#E_Description');
+						eDescription.customConfig.onchange = function (html) {
+							$('input[name="Description"]').val(html);
+						};
+						eDescription.create();
 						that.t = parseInt(that.t);
 						switch(that.t){
 							case 0:
