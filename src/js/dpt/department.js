@@ -220,6 +220,9 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
             console.log('after update',laydata);
             Serv.Post('uc/Department/add', laydata.field, function (response) {
                 if (response.code == "00") {
+                    laydata.field.id=response.data;
+                    dpts.push(laydata.field);
+                    window.globCache.setDepartment(dpts);
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
                     layer_load_lose();
                     initTree();
@@ -229,6 +232,13 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
             })
         } else {
             Serv.Post('uc/Department/edit', laydata.field, function (response) {
+                var array = $.grep(dpts,function(i,n){
+                    if(n.id==laydata.field.id){
+                        return laydata.field;
+                    }
+                    return n;
+                });
+                window.globCache.setDepartment(array);
                 layer_alert(response.message, initTree());
             })
         }
