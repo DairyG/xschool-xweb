@@ -10,10 +10,7 @@
     <title></title>
     <link rel="stylesheet" href="layui/css/layui.css" />
     <link rel="stylesheet" href="layui/css/admin.css" />
-    <script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="layui/layui.js"></script>
-    <script type="text/javascript" src="js/service.js"></script>
-
 </head>
 <style type="text/css">
     .layui-layout-admin .layui-body {
@@ -315,21 +312,6 @@
 									</dd>
 								</dl>
 							</li>
-							 <li data-name="Personnel" class="layui-nav-item">
-                            <a href="javascript:;" lay-tips="流程管理" lay-direction="2">
-                                <i class="layui-icon layui-icon-component"></i>
-                                <cite>流程管理</cite>
-                                <span class="layui-nav-more"></span>
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd data-name="Personnel">
-                                    <a lay-href="pages/workflow/createWorkFlow.html">创建流程</a>
-                                </dd>
-                                <dd data-name="Personnel">
-                                    <a lay-href="pages/person/personAdd.html">流程列表</a>
-                                </dd>
-                            </dl>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -400,14 +382,5 @@
         }
     </style>
 </body>
-
-<script type="text/javascript" src="js/cache.js"></script>
-<script>
-    $(function(){
-        //async init data
-        Serv.Get('uc/company/query', {}, window.globCache.setCompany);
-        Serv.Get('uc/department/query', {},window.globCache.setDepartment);
-    });
-</script>
 
 </html>
