@@ -14,7 +14,7 @@
 	</head>
 	<body class="bgf2f2f2">
 		<div class="childrenBody" id="dom">
-			<div class="layui-card-header" style="padding: 5px 10px 8px 10px;">
+			<div class="layui-card-header" style="padding: 5px 10px 8px 10px;" v-if="!is_edit">
 				<div class="layui-btn-group">
 					<a href="summaryadd.html?t=0" class="layui-btn" v-bind:class="[t == 0 ? '' : 'layui-btn-primary']">日报</a>
 					<a href="summaryadd.html?t=1" class="layui-btn" v-bind:class="[t == 1 ? '' : 'layui-btn-primary']">周报</a>
@@ -33,7 +33,7 @@
 						<input type="hidden" name="dptId" value="1" />
 						<input type="hidden" name="employeeId" value="1" />
 						<input type="hidden" name="type" />
-						<input type="hidden" name="employeeId" value="1" />
+						<input type="hidden" name="isRead" />
  						<div class="layui-form-item margin-b-20" v-bind:class="[t == 0 || t == 2 || t == 5 ? 'layui-col-md12' : 'layui-col-md6']">
 							<label class="layui-form-label">日期</label>
 							<div class="layui-input-block">
@@ -129,7 +129,7 @@
 						<div class="layui-form-item">
 							<div class="layui-input-block text-right">
 								<button class="layui-btn layui-btn-danger" lay-submit lay-filter="sumAdd">确认</button>
-								<span class="layui-btn" onclick="history.back(-1)">返回</span>
+								<span class="layui-btn" onclick="history.back(-1)"  v-if="!is_edit">返回</span>
 							</div>
 						</div>
 					</div>
@@ -150,12 +150,20 @@
 				data:{
 					labels:'',
 					t:0,
+					is_edit:false
 				},
 				created() {
 					this.t = GetPara('t');
 					this.t = this.t ? this.t : 0;
 					this.labels = labels[this.t];
 					$("input[name='type']").val(this.t);
+
+					this.is_edit = GetPara('is_edit');
+					this.is_edit = this.is_edit ? true : false;
+					
+					var sid = GetPara('sid');
+					$("input[name='id']").val(sid);
+					
 				},
 				mounted() {
 					var that = this;
@@ -219,6 +227,41 @@
 									type:'year'
 								});
 								break;
+						}
+						console.log($("input[name='id']").val());
+						if($("input[name='id']").val()>0){
+							var sid = $("input[name='id']").val();
+							Serv.Get('gc/Summary/GetSingle/'+sid,{},function(response){
+								$("input[name='companyId']").val(response.companyId);
+								$("input[name='dptId']").val(response.dptId);
+								$("input[name='employeeId']").val(response.employeeId);
+								$("input[name='type']").val(response.type);
+								$("input[name='summaryDate']").val(response.summaryDate);
+								$("input[name='isRead']").val(response.isRead);
+
+								$('input[name="finish"]').val(response.finish);
+								$('input[name="content"]').val(response.content);
+								$('input[name="plan"]').val(response.plan);
+								$('input[name="help"]').val(response.help);
+								$('input[name="description"]').val(response.description);
+
+								eFinish.txt.html(response.finish);
+								eContent.txt.html(response.content);
+								ePlan.txt.html(response.plan);
+								eHelp.txt.html(response.help);
+								eDescription.txt.html(response.description);
+
+								if(this.t == 1){
+									$("select[name='selIndex1']").val(response.type);
+								}
+								else if(this.t == 3){
+									$("select[name='selIndex3']").val(response.type);
+								}
+								else if(this.t == 4){
+									$("select[name='selIndex4']").val(response.type);
+								}
+								form.render('select');
+							});
 						}
 						form.on('submit(sumAdd)',function(laydate){
 							var ti = $("input[name='type']").val();

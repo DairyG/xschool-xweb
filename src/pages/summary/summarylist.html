@@ -27,6 +27,8 @@
 				<table class="layui-table" id="lst" lay-filter="lst"></table>
 				<script type="text/html" id="bar">
 					<a class="layui-btn layui-btn-xs " href="javascript:;" lay-event="info">查看</a>
+					<a class="layui-btn layui-btn-xs layui-btn-warm " href="javascript:;" lay-event="edit">编辑</a>
+					<a class="layui-btn layui-btn-xs layui-btn-danger" href="javascript:;" lay-event="del">删除</a>
 				</script>
 				<script type="text/html" id="toolbar">
 				</script>
@@ -175,7 +177,7 @@
 						});
 						
 						table.on('tool(lst)',function(obj){
-							if(obj.event = 'info'){
+							if(obj.event == 'info'){
 								layer_linePop = layer.open({
 									type: 2,
 									title:'总结详情',
@@ -186,6 +188,30 @@
 									anim: 2,
 									move:false,
 									content: 'summarydetail.html?id=' + obj.data.id
+								});
+							}else if(obj.event == 'edit'){
+								layer_linePop = layer.open({
+									type: 2,
+									title:'总结修改',
+									scrollbar: false,
+									skin:'layui-layer-rim',
+									closeBtn: 1,
+									area: ['100%', '100%'],
+									anim: 2,
+									move:false,
+									content: 'summaryadd.html?is_edit=1&t='+that.t+'&sid=' + obj.data.id
+								});
+							}else if(obj.event == 'del'){
+								layer_confirm("删除后将无法恢复，确认吗？",function(){
+									Serv.Post('gc/Summary/Delete',{id:obj.data.id},function(response){
+										if(response.code == "00"){
+											layer_alert(response.message);
+											window.location.reload();
+										}
+										else{
+											layer_alert(response.message);
+										}
+									})
 								});
 							}
 						});

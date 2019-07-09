@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="js/num.js"></script>
 	<script type="text/javascript" src="js/service.js"></script>
 	<script type="text/javascript" src="js/layer.com.js"></script>
+	<script type="text/javascript" src="js/cache.js"></script>
 	<style>
 		body {
 			background: #f2f2f2;
@@ -210,8 +211,8 @@
 			Serv.SetToken(result.token_type + " " + result.access_token);
 
 			var token = parseJwt(result.access_token);
-			console.log(token);
-
+			//console.log(token);
+			window.globCache.setUserToken(token);
 			window.location.href = 'index.html';
 		}
 
