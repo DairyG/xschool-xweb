@@ -864,3 +864,104 @@ function assess_popup(obj, type = 'checkbox', callBack) {
 		content: $('#popup_content')
 	});
 }
+
+/**
+ * 解析用户选择项
+ */
+
+ function formart_sels(data){
+	if(data == ""){
+		return [];
+	}
+	data = JSON.parse(data);
+	console.log(data);
+	var businessType = data.sel_type;
+	var c = data.company.ids;
+		c = c.RTrim(',').LTrim(',');
+		console.log(c);
+	var d = data.department.ids;
+		d = d.RTrim(',').LTrim(',');
+		console.log(d);
+	var u = data.user.ids;
+		u = u.RTrim(',').LTrim(',');
+		console.log(u);
+	var p = data.position.ids;
+		p = p.RTrim(',').LTrim(',');
+		console.log(p);
+	var dp = data.dpt_position.ids;
+		dp = dp.RTrim(',').LTrim(',');
+		console.log(dp);
+	var res = [],data;
+	if(c != ''){
+		c = c.split(',');
+		for(var i = 0;i < c.length;i++){
+			data = {
+				businessType:businessType,
+				companyId:c[i],
+				depId:0,
+				userId:0,
+				jobDepId:0,
+				jobId:0
+			}
+			res.push(data);
+		}
+	}
+	if(d != ''){
+		d = d.split(',');
+		for(var i = 0;i < d.length;i++){
+			data = {
+				businessType:businessType,
+				companyId:0,
+				depId:d[i],
+				userId:0,
+				jobDepId:0,
+				jobId:0
+			}
+			res.push(data);
+		}
+	}
+	if(u != ''){
+		u = u.split(',');
+		for(var i = 0;i < u.length;i++){
+			data = {
+				businessType:businessType,
+				companyId:0,
+				depId:0,
+				userId:u[i],
+				jobDepId:0,
+				jobId:0
+			}
+			res.push(data);
+		}
+	}
+	if(p != ''){
+		p = p.split(',');
+		for(var i = 0;i < p.length;i++){
+			data = {
+				businessType:businessType,
+				companyId:0,
+				depId:0,
+				userId:0,
+				jobDepId:0,
+				jobId:p[i]
+			}
+			res.push(data);
+		}
+	}
+	if(dp != ''){
+		dp = dp.split(',');
+		for(var i = 0;i < dp.length;i++){
+			var r = dp[i].split('|');
+			data = {
+				businessType:businessType,
+				companyId:0,
+				depId:0,
+				userId:0,
+				jobDepId:r[0],
+				jobId:r[1]
+			}
+			res.push(data);
+		}
+	}	
+	return 	res;			
+ }
