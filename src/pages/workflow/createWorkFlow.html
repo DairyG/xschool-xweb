@@ -65,7 +65,7 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>可见范围</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" required  lay-verify="required" placeholder="请选择可见范围" autocomplete="off" class="layui-input" onclick="user_popup2(this,'user,company,dpt_position,position,department')"/>
+											<input type="text" name="title" id="RangeList" required  lay-verify="required" placeholder="请选择可见范围" autocomplete="off" class="layui-input" onclick="user_popup2(this,'user,company,dpt_position,position,department')"/>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
@@ -521,20 +521,14 @@
 													<div class="layui-card-header">
 														审批人
 														<div class="fr">
-															<input name="type" type="radio" title="或签" checked />
-															<input name="type" type="radio" title="会签" />
+															<input name="type_0" type="radio" value="false" title="或签" checked />
+															<input name="type_0" type="radio" value="true" title="会签" />
 														</div>
+														<input type="hidden" name="PassType" value="1" />
 													</div>
 													<div class="layui-card-body">
 														<div class="show_div">
-															<span class="text-85">请选择审批人</span>
-															<input type="hidden" name="sels" value="{'sel_type':1,
-																'company':{ 'ids':'1,2,3', 'names':'a,b,c' },
-																'department':{ 'ids':'1,2,3', 'names':'a,b,c' },
-																'user':{ 'ids':'1,2,3', 'names':'a,b,c' },
-																'position':{ 'ids':'1,2,3', 'names':'a,b,c' },
-																'dpt_position':{ 'ids':'1,2,3', 'names':'a,b,c' },
-															}" />
+															<span class="text-85">请选择审批人</span>															
 														</div>
 														<label class="add_icon text-85">
 															<i class="layui-icon layui-icon-right fr fontsize-18"></i>
@@ -551,7 +545,10 @@
 											</li>
 											<li>
 												<div class="layui-card cahosong_card">
-													<div class="layui-card-header">抄送人<i class="layui-icon layui-icon-close-fill fr fontsize-18" onclick="close_item(this)"></i></div>
+													<div class="layui-card-header">
+														抄送人<i class="layui-icon layui-icon-close-fill fr fontsize-18" onclick="close_item(this)"></i>
+														<input type="hidden" name="PassType" value="2" />
+													</div>
 													<div class="layui-card-body">
 														<!-- 一个人时显示 人名称 多个人时显示人数+会签（例 4人会签） -->
 														<div class="show_div"><span class="text-85">请选择抄送人</span></div>
@@ -570,10 +567,12 @@
 											</li>
 											<li>
 												<div class="layui-card fupan_card">
-													<div class="layui-card-header">复盘人</div>
+													<div class="layui-card-header">复盘人
+														<input type="hidden" name="PassType" value="3" />
+													</div>
 													<div class="layui-card-body text-center">
-														<input type="checkbox" title="发起人必填" lay-skin="primary" />
-														<input type="checkbox" title="部门经理必填" lay-skin="primary"/>
+														<input type="checkbox" name="UserId" value="1" title="发起人必填" lay-skin="primary" />
+														<input type="checkbox" name="DepId" value="1" title="部门经理必填" lay-skin="primary"/>
 													</div>
 												</div>
 												<div class="process_add_btn_item process_add_btn_item_end">
@@ -644,9 +643,10 @@
 			<div class="layui-card shenpi_card">
 				<div class="layui-card-header">审批人
 					<div class="fr">
-						<input name="type" type="radio" title="或签" checked />
-						<input name="type" type="radio" title="会签" />
+						<input name="type" type="radio_{{d.index}}" value="false" title="或签" checked />
+						<input name="type" type="radio_{{d.index}}" value="true" title="会签" />
 					</div>
+					<input type="hidden" name="PassType" value="1" />
 					<i class="layui-icon layui-icon-close-fill fr fontsize-18" onclick="close_item(this)"></i>
 				</div>
 				<div class="layui-card-body">
@@ -666,7 +666,10 @@
 		</script>
 		<script type="text/html" id="chaosong_html">
 			<div class="layui-card cahosong_card">
-				<div class="layui-card-header">抄送人<i class="layui-icon layui-icon-close-fill fr fontsize-18" onclick="close_item(this)"></i></div>
+				<div class="layui-card-header">
+					抄送人<i class="layui-icon layui-icon-close-fill fr fontsize-18" onclick="close_item(this)"></i>
+					<input type="hidden" name="PassType" value="2" />
+				</div>
 				<div class="layui-card-body">
 					<div class="show_div"><span class="text-85">请选择抄送人</span></div>
 					<label class="add_icon text-85">
@@ -793,7 +796,7 @@
 			function loadSubjectTypes()
 			{
 
-				Serv.Get('SubjectType/GetSubjectTypeList',null,function(data){
+				Serv.Get('lc/SubjectType/GetSubjectTypeList',null,function(data){
 					$("#select_SubjectTypeId").empty();
 						$.each(data,function(index,item){
 						
@@ -806,30 +809,11 @@
 					   });
 					   form.render('select');
 				},false);
-				/*$.ajax({
-					url:"https://localhost:44329/api/v1/SubjectType/GetSubjectTypeList",
-					success:function(data)
-					{			
-						$("#select_SubjectTypeId").empty();
-						$.each(data,function(index,item){
-						
-							if(index==0)
-							{
-								$("#select_SubjectTypeId").append("<option value=''>请选择分组</option>");
-							}
-                        var opt=$("<option value="+item.id+">"+item.subjectTypeName+"</option>")
-                        $("#select_SubjectTypeId").append(opt);
-					   });
-					   form.render('select');
-					}
-				})*/
-
-	
-
+				
 			}
 			function save()
 			{
-				var data=[];
+				
 				var SubjectName=$("#txtSubjectName").val();
 				var Remark=$("#txtRemark").val();
 				var FlowTypeId=$("input[name='type']:checked").val();
@@ -838,27 +822,70 @@
 				var SubjectTypeId=$("#select_SubjectTypeId").val();
 				var FormContent=F;
 				var FormAttribute=M;
-				var subjectRuleRangeList= [
-					{
-					"businessType": 1,//1流程管理可见者，2流程管理节点人员（此处必须是1）
-					"companyId": 0,//公司id
-					"depId": 0,//部门id
-					"userId": 0,//用户id
-					"jobDepId": 0,//部门岗位id
-					"jobId": 0//职位id
-						},
-						{
-					"businessType": 1,
-					"companyId": 0,
-					"depId": 0,
-					"userId": 0,
-					"jobDepId": 0,
-					"jobId": 0
-						}	
-					];
+				var RangeList = $('#RangeList').siblings('input').val();
+				console.log(RangeList);
+				var subjectRuleRangeList = formart_sels(RangeList);
+				var subjectStepFlowList = [];
+				$('.process_box li').each(function(i,obj){
+					//节点类型
+					var PassType = $(obj).find('input[name="PassType"]').val();
+						PassType = parseInt(PassType);
+						var d = {
+							"passNo": i,
+							"passName": "string",
+							"isEnd": false,
+							"isCountersign": false,
+							"passType": 1,
+							"subjectRulePassList": []
+						};
+					var UserId = 0,DepId = 0;
+					switch(PassType){
+						case 1://审批
+							d.passName = '审批人';
+							d.isCountersign = $(obj).find('.layui-card-header input[type="radio"]:checked').val();							
+							break;
+						case 2://抄送
+							d.passName = '抄送人';
+							break;
+						case 3://复盘
 
-
-
+							if($(obj).find('#UserId').prop('checked')){
+								UserId = $(obj).find('#UserId').val();
+								d.isEnd = true;
+							}
+							if($(obj).find('#DepId').prop('checked')){
+								DepId = $(obj).find('#DepId').val();
+								d.isEnd = true;
+							}
+							
+							d.passName = '复盘人';
+							break;	
+					}
+					d.passType = PassType;
+					var RulePassList = $(obj).find('.show_div input[name="sels"]').val();
+					d.subjectRulePassList = formart_sels(RulePassList);
+					var prev_index = subjectStepFlowList.length;
+						prev_index = prev_index - 1;
+					if(UserId != 0 || DepId != 0){
+						subjectStepFlowList.push(d);
+					} else {
+						subjectStepFlowList[prev_index].isEnd = true;
+					}
+				});
+				var data={
+					"SubjectName":SubjectName,
+					"Remark":Remark,
+					"FlowTypeId":FlowTypeId,
+					"PassInfo":PassInfo,
+					"IcoUrl":IcoUrl,
+					"SubjectTypeId":SubjectTypeId,
+					"FormContent":FormContent,
+					"FormAttribute":FormAttribute,
+					"RangeList":RangeList,
+					"subjectRuleRangeList":subjectRuleRangeList,
+					"subjectStepFlowList":subjectStepFlowList,
+				};
+				console.log(data);
 				return false;
 			}
 		</script>
