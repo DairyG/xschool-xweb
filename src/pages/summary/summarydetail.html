@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+        <script type="text/javascript" src="../../js/common.js"></script>
+        <script type="text/javascript" src="../../js/service.js"></script>
+        <script type="text/javascript" src="../../lib/vue.js"></script>
+	</head>
+	<body class="bgwhite daily_timeline_info">
+		<div class="daily_timeline">
+			<ul class="ul">
+				<li>
+					<div class="right">
+						<div class="title text-85">
+							<span class="text-add">张三</span> 创建于<label id="lblAddtime"></label>
+							<div class="btns fr">
+								<button class="layui-btn layui-btn-xs layui-btn-primary" onclick="edit_daily()">编辑</button>
+								<button class="layui-btn layui-btn-xs layui-btn-primary" onclick="reply_daily()">评价</button>
+								<button class="layui-btn layui-btn-xs layui-btn-primary">删除</button>
+							</div>
+						</div>
+						<div class="text">
+							<div class="overlay">
+								<div class="content">
+									<p class="title text-span">已完成工作：</p>
+									<div class="edit_content" id="divFinish">
+										
+									</div>
+									<p class="title text-del">未完成工作：</p>
+									<div class="edit_content" id="divPlan">
+										
+									</div>
+									<p class="title  text-edit">需协调任务：</p>
+									<div class="edit_content" id="divHelp">
+										
+									</div>
+									<p class="title  text-add">备注：</p>
+									<div class="edit_content" id="divDescription">
+										
+									</div>
+									<div class="file padding-t-10">
+										<a href="javascript:;" class="text-add"><i class="layui-icon layui-icon-link fontsize-14"></i> 2019050153465.rar</a>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="more">
+								<span class="more_btn text-add" data-status="0"><font>查看全文</font> <i class="layui-icon layui-icon-down"></i></span>
+							</div> -->
+							<div class="reply">
+								<ul>
+									<li>
+										<p class="text-85"><span class="text-add">张三</span> 创建于2019-5-1 10:40</p>
+										<div class="edit_content">哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈</div>
+									</li>
+									<li>
+										<p class="text-85"><span class="text-add">张三</span> 创建于2019-5-1 10:40</p>
+										<div class="edit_content">哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="linePop linePop1">
+			<div class="layui-row">
+				<textarea id="c_editor2"></textarea>
+			</div>
+			<div class="layui-row padding-l-10 padding-t-10">
+				<button type="button" class="layui-btn layui-btn-sm layui-btn-normal">上传附件</button>
+			</div>
+		</div>
+		<div class="linePop linePop2">
+			<div class="layui-row">
+				<textarea id="c_editor3"></textarea>
+			</div>
+			<div class="layui-row padding-l-10 padding-t-10">
+				<button type="button" class="layui-btn layui-btn-sm layui-btn-normal">上传附件</button>
+				<button type="button" class="layui-btn layui-btn-sm ">导入日程</button>
+			</div>
+		</div>
+		<div class="linePop linePop3">
+			<div>
+				<textarea id="c_editor1"></textarea>
+			</div>
+		</div>
+		<script>
+			var edit_tool = ["strong","italic","underline","del","|","left","center","right","|","link","unlink","face"];
+			layui.use(['table','laydate','layedit'], function() {
+				var table = layui.table,
+					laydate = layui.laydate,
+					layedit = layui.layedit;
+				laydate.render({
+					elem:'#date',
+					value: '2019-05-01'
+				});
+				layedit.build('c_editor1',{
+					tool: edit_tool
+				});
+				layedit.build('c_editor2',{
+					tool: edit_tool
+				});
+				layedit.build('c_editor3',{
+					tool: edit_tool
+                });
+                var id = GetPara('id');
+				//关闭弹窗
+				$(".closePop").click(function(){
+					layer.closeAll()
+                })
+                console.log(id);
+                Serv.Get('gc/Summary/GetSingle/'+id,{},function(response){
+                    $("#lblAddtime").html(response.addTime);
+                    $("#divFinish").html(response.finish);
+                    $("#divPlan").html(response.plan);
+                    $("#divHelp").html(response.help);
+                    $("#divDescription").html(response.description);
+                } );
+			});
+			function closePop(){
+				layer.close(layer_linePop);
+			}
+			
+			function edit_daily(){
+				layer.open({
+					type: 1,
+					title:'编辑总结-2019-05-01',
+					closeBtn: 1,
+					btn:['确定','取消'],
+					skin: 'layui-layer-rim',
+					area: '750px',
+					content: $('.linePop1')
+				});
+			}
+			function add_daily(){
+				window.location.href = '写总结.html?t=0';
+			}
+			function reply_daily(){
+				layer.open({
+					type: 1,
+					title:'评价',
+					closeBtn: 1,
+					btn:['确定','取消'],
+					skin: 'layui-layer-rim',
+					area: '750px',
+					content: $('.linePop3')
+				});
+			}
+			$('.daily_timeline li .content').each(function(i,obj){
+				var h = $(obj).height();
+				if(h > 200){
+					$(obj).parents('.text').find('.more').show();
+				}
+			});
+			$('.more_btn').mousedown(function(){
+				var status = $(this).data('status');
+				if(status == 0){
+					$(this).parent().siblings('.overlay').css('maxHeight','unset');
+					$(this).find('font').html('收起');
+					$(this).find('i').removeClass('layui-icon-down').addClass('layui-icon-up');
+					$(this).data('status',1);
+				} else {
+					$(this).parent().siblings('.overlay').css('maxHeight','200px');
+					$(this).find('font').html('查看全文');
+					$(this).find('i').removeClass('layui-icon-up').addClass('layui-icon-down');
+					$(this).data('status',0);
+				}
+			});
+			
+		</script>
+	</body>
+</html>
