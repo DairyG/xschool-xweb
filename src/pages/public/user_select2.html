@@ -85,6 +85,11 @@
 				var input_checked = $(input).prop('checked');
 				if (input_checked != checked) {
 					if (checked) {
+						if (allow_num > 0 && $("#selected_box li").length >= allow_num) {
+							layer.msg('最多选择' + allow_num + '项');
+							$(obj).prop('checked', false);
+							return false;
+						}
 						var html = build_selectd_html(type, value, text);
 						$("#selected_box").append(html);
 						add_remove_value(type, value, text);

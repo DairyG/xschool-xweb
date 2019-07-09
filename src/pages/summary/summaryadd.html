@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script type="text/javascript" src="../../lib/wangEditor/wangEditor.min.js"></script>
-		<script type="text/javascript" src="../../js/vue.min.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
 		<script type="text/javascript" src="../../js/common.js"></script>
 		<script type="text/javascript" src="../../lib/vue.js"></script>
 	</head>
@@ -28,20 +28,22 @@
 			<div class="layui-card-body bgwhite">
 				<form class="layui-form layui-form2">
 					<div class="layui-row">
-						<input type="hidden" name="CompanyId" v-model="companyId" value="1" />
-						<input type="hidden" name="DptId" v-model="dptId" value="1" />
-						<input type="hidden" name="EmployeeId" v-model="employeeId" value="1" />
-						<input type="hidden" name="Type" v-model="type" />
+						<input type="hidden" name="id" value="0" />
+						<input type="hidden" name="companyId" value="1" />
+						<input type="hidden" name="dptId" value="1" />
+						<input type="hidden" name="employeeId" value="1" />
+						<input type="hidden" name="type" />
+						<input type="hidden" name="employeeId" value="1" />
  						<div class="layui-form-item margin-b-20" v-bind:class="[t == 0 || t == 2 || t == 5 ? 'layui-col-md12' : 'layui-col-md6']">
 							<label class="layui-form-label">日期</label>
 							<div class="layui-input-block">
-								<input type="text" class="layui-input" readonly id="date"/>
+								<input type="text" class="layui-input" readonly id="date" name="summaryDate" />
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 1">
 							<label class="layui-form-label">周数</label>
 							<div class="layui-input-block">
-								<select>
+								<select name="selIndex1">
 									<option value="1">第一周</option>
 									<option value="2">第二周</option>
 									<option value="3">第三周</option>
@@ -53,7 +55,7 @@
 						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 3">
 							<label class="layui-form-label">季度</label>
 							<div class="layui-input-block">
-								<select>
+								<select name="selIndex3">
 									<option value="6">一季度</option>
 									<option value="7">二季度</option>
 									<option value="8">三季度</option>
@@ -64,7 +66,7 @@
 						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 4">
 							<label class="layui-form-label">半年度</label>
 							<div class="layui-input-block">
-								<select>
+								<select name="selIndex4">
 									<option value="10">上半年</option>
 									<option value="11">下半年</option>
 								</select>
@@ -80,40 +82,40 @@
 							<label class="layui-form-label">{{labels.l1}}</label>
 							<div class="layui-input-block">
 								<!-- <textarea id="editor1"></textarea> -->
-								<input type="hidden" name="Finish" v-model="finish">
-                                <div class="layui-input-block" id="E_Finish"></div>
+								<input type="hidden" name="finish">
+								<div id="E_Finish"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">{{labels.l2}}</label>
 							<div class="layui-input-block">
 								<!-- <textarea id="editor2"></textarea> -->
-								<input type="hidden" name="Content" v-model="content">
-                                <div class="layui-input-block" id="E_Content"></div>
+								<input type="hidden" name="content">
+                                <div id="E_Content"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20" v-if="t > 0">
 							<label class="layui-form-label">{{labels.l3}}</label>
 							<div class="layui-input-block">
 								<!-- <textarea id="editor3"></textarea> -->
-								<input type="hidden" name="Plan" v-model="plan">
-                                <div class="layui-input-block" id="E_Plan"></div>
+								<input type="hidden" name="plan">
+                                <div id="E_Plan"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">{{labels.l4}}</label>
 							<div class="layui-input-block">
 								<!-- <textarea id="editor4"></textarea> -->
-								<input type="hidden" name="Help" v-model="help">
-                                <div class="layui-input-block" id="E_Help"></div>
+								<input type="hidden" name="help">
+                                <div id="E_Help"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
 							<label class="layui-form-label">{{labels.l5}}</label>
 							<div class="layui-input-block">
 								<!-- <textarea id="editor5"></textarea> -->
-								<input type="hidden" name="Description" v-model="description">
-                                <div class="layui-input-block" id="E_Description"></div>
+								<input type="hidden" name="description">
+                                <div id="E_Description"></div>
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md12 margin-b-20">
@@ -126,7 +128,7 @@
 					<div class="layui-row">
 						<div class="layui-form-item">
 							<div class="layui-input-block text-right">
-								<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确认</button>
+								<button class="layui-btn layui-btn-danger" lay-submit lay-filter="sumAdd">确认</button>
 								<span class="layui-btn" onclick="history.back(-1)">返回</span>
 							</div>
 						</div>
@@ -153,6 +155,7 @@
 					this.t = GetPara('t');
 					this.t = this.t ? this.t : 0;
 					this.labels = labels[this.t];
+					$("input[name='type']").val(this.t);
 				},
 				mounted() {
 					var that = this;
@@ -164,31 +167,31 @@
 						var E = window.wangEditor
             			var eFinish = new E('#E_Finish');
 						eFinish.customConfig.onchange = function (html) {
-							$('input[name="Finish"]').val(html);
+							$('input[name="finish"]').val(html);
 						};
 						eFinish.create();
 						
 						var eContent = new E('#E_Content');
 						eContent.customConfig.onchange = function (html) {
-							$('input[name="Content"]').val(html);
+							$('input[name="content"]').val(html);
 						};
 						eContent.create();
 						
 						if(that.t > 0){
 							var ePlan = new E('#E_Plan');
 							ePlan.customConfig.onchange = function (html) {
-								$('input[name="Plan"]').val(html);
+								$('input[name="plan"]').val(html);
 							};
 							ePlan.create();
 						}
 						var eHelp = new E('#E_Help');
 						eHelp.customConfig.onchange = function (html) {
-							$('input[name="Help"]').val(html);
+							$('input[name="help"]').val(html);
 						};
 						eHelp.create();
 						var eDescription = new E('#E_Description');
 						eDescription.customConfig.onchange = function (html) {
-							$('input[name="Description"]').val(html);
+							$('input[name="description"]').val(html);
 						};
 						eDescription.create();
 						that.t = parseInt(that.t);
@@ -217,6 +220,35 @@
 								});
 								break;
 						}
+						form.on('submit(sumAdd)',function(laydate){
+							var ti = $("input[name='type']").val();
+							if(ti == 1){
+								laydate.field.index = $("select[name='selIndex1']").val();
+							}
+							else if(ti == 3){
+								laydate.field.index = $("select[name='selIndex3']").val();
+							}
+							else if(ti == 4){
+								laydate.field.index = $("select[name='selIndex4']").val();
+							}
+							else{
+								laydate.field.index = 1;
+							}
+							laydate.field.fileUrl = "";
+							Serv.Post('gc/Summary/Add',{model:laydate.field},function(response){
+								if(response.code == "00"){
+									layer_confirm('添加成功，是否继续添加？',function(){
+										window.location.reload();
+									},function(){
+										$("input[name='id']").val(response.data);
+									});
+								}
+								else{
+									layer_alert(response.message);
+								}
+							});
+							return false;
+						});
 					});
 				}
 			})
