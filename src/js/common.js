@@ -871,12 +871,14 @@ function assess_popup(obj, type = 'checkbox', callBack) {
  * 解析用户选择项
  */
 
- function formart_sels(data){
+ function formart_sels(data,businessType){
 	if(data == ""){
 		return [];
 	}
+	
+	var dataType_arr = {'org':1,'position':2,'dpt_position':3};
 	data = JSON.parse(data);
-	var businessType = data.sel_type;
+	var dataType = data.sel_type;
 	var c = data.company.ids;
 		c = c.RTrim(',').LTrim(',');
 	var d = data.department.ids;
@@ -893,6 +895,7 @@ function assess_popup(obj, type = 'checkbox', callBack) {
 		for(var i = 0;i < c.length;i++){
 			data = {
 				businessType:businessType,
+				dataType:dataType_arr[dataType],
 				companyId:c[i],
 				depId:0,
 				userId:0,
@@ -907,6 +910,7 @@ function assess_popup(obj, type = 'checkbox', callBack) {
 		for(var i = 0;i < d.length;i++){
 			data = {
 				businessType:businessType,
+				dataType:dataType_arr[dataType],
 				companyId:0,
 				depId:d[i],
 				userId:0,
@@ -921,6 +925,7 @@ function assess_popup(obj, type = 'checkbox', callBack) {
 		for(var i = 0;i < u.length;i++){
 			data = {
 				businessType:businessType,
+				dataType:dataType_arr[dataType],
 				companyId:0,
 				depId:0,
 				userId:u[i],
@@ -935,6 +940,7 @@ function assess_popup(obj, type = 'checkbox', callBack) {
 		for(var i = 0;i < p.length;i++){
 			data = {
 				businessType:businessType,
+				dataType:dataType_arr[dataType],
 				companyId:0,
 				depId:0,
 				userId:0,
@@ -950,6 +956,7 @@ function assess_popup(obj, type = 'checkbox', callBack) {
 			var r = dp[i].split('|');
 			data = {
 				businessType:businessType,
+				dataType:dataType_arr[dataType],
 				companyId:0,
 				depId:0,
 				userId:0,

@@ -49,8 +49,8 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>流程类型</label>
 										<div class="layui-input-block">
-											<input type="radio" name="type" title="事务流程" lay-skin="primary" checked />
-											<input type="radio" name="type" title="费用流程" lay-skin="primary" />
+											<input type="radio" name="FlowTypeId" title="事务流程" lay-skin="primary" checked />
+											<input type="radio" name="FlowTypeId" title="费用流程" lay-skin="primary" />
 
 										</div>
 									</div>
@@ -85,7 +85,7 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">审批意见</label>
 										<div class="layui-input-block">
-											<input type="checkbox" title="必填" lay-skin="primary" />
+											<input type="checkbox" title="必填" lay-skin="primary" name="PassInfo" value='1' />
 										</div>
 									</div>
 								</div>
@@ -727,6 +727,7 @@
 		
 		<script type="text/javascript">
 			var layer_linePop,form;
+			
 			layui.use(['table','element','form'], function() {
 				var table = layui.table,
 					element = layui.element;
@@ -814,14 +815,14 @@
 			{
 				var SubjectName=$("#txtSubjectName").val();
 				var Remark=$("#txtRemark").val();
-				var FlowTypeId=$("input[name='type']:checked").val();
-				var PassInfo=$("input[name='PassInfo'][type='checkbox']").is(':checked');
+				var FlowTypeId=1;//$("input[name='FlowTypeId']:checked").val();
+				var PassInfo = $("input[name='PassInfo']").prop('checked');
 				var IcoUrl="";
 				var SubjectTypeId=$("#select_SubjectTypeId").val();
-				var FormContent=F;
-				var FormAttribute=M;
+				var FormContent = JSON.stringify(F);
+				var FormAttribute = JSON.stringify(M);
 				var RangeList = $('#RangeList').siblings('input').val();
-				var subjectRuleRangeList = RangeList ? formart_sels(RangeList) : [];
+				var subjectRuleRangeList = RangeList ? formart_sels(RangeList,1) : [];
 				var subjectStepFlowList = [];
 				$('.process_box li').each(function(i,obj){
 					//节点类型
@@ -839,7 +840,8 @@
 					switch(PassType){
 						case 1://审批
 							d.passName = '审批人';
-							d.isCountersign = $(obj).find('.layui-card-header input[type="radio"]:checked').val();							
+							d.isCountersign = $(obj).find('.layui-card-header input[type="radio"]:checked').val();
+							d.isCountersign = d.isCountersign == 'true' ? true : false;						
 							break;
 						case 2://抄送
 							d.passName = '抄送人';
@@ -859,8 +861,18 @@
 					}
 					d.passType = PassType;
 					var RulePassList = $(obj).find('.show_div input[name="sels"]').val();
-					d.subjectRulePassList = RulePassList ? formart_sels(RulePassList) : [];
+					d.subjectRulePassList = RulePassList ? formart_sels(RulePassList,2) : [];
 					if(PassType == 3){//复盘节点 - 并且至少选择了一项
+						var s = {
+							businessType:2,
+							dataType:0,
+							companyId:0,
+							depId:parseInt(DepId),
+							userId:parseInt(UserId),
+							jobDepId:0,
+							jobId:0
+						}
+						d.subjectRulePassList.push(s);
 						if(UserId > 0 || DepId > 0){
 							subjectStepFlowList.push(d);
 						} else {
@@ -875,13 +887,12 @@
 				var data={
 					"SubjectName":SubjectName,
 					"Remark":Remark,
-					"FlowTypeId":FlowTypeId,
+					"FlowTypeId":parseInt(FlowTypeId),
 					"PassInfo":PassInfo,
 					"IcoUrl":IcoUrl,
 					"SubjectTypeId":SubjectTypeId,
 					"FormContent":FormContent,
 					"FormAttribute":FormAttribute,
-					"RangeList":RangeList,
 					"subjectRuleRangeList":subjectRuleRangeList,
 					"subjectStepFlowList":subjectStepFlowList,
 				};
@@ -913,7 +924,7 @@
 				}
 				var flag = false;
 				for(var i = 0;i < subjectStepFlowList.length;i++){
-					if(subjectStepFlowList[i].subjectRulePassList.length == 0){
+					if(subjectStepFlowList[i].subjectRulePassList.length == 0 && subjectStepFlowList[i].passType != 3){
 						var li = i+2;
 						layer.msg('节点'+li+'：'+subjectStepFlowList[i].passName+'请选择人员');
 						flag = true;
@@ -924,7 +935,11 @@
 					return false;
 				}
 				console.log(data);
-				return false;
+			
+				Serv.Post('lc/Subject/Add',data,function(resultData){
+					console.log(resultData);
+
+				},true)
 			}
 			
 		</script>
