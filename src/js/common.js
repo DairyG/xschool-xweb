@@ -401,6 +401,7 @@ function user_popup2(obj = null, allow_sels, num = 0, is_close_other = false, ca
 	$('#popup_content').load("../../pages/public/user_select3.html", null, function () {
 		if (typeof obj == 'object') {
 			var html = '';
+			sel_type = 'org';
 			if ($(obj).attr('type') == 'text') {
 				var arr = $(obj).siblings('input[name="sels"]').val();
 			} else {
@@ -408,8 +409,7 @@ function user_popup2(obj = null, allow_sels, num = 0, is_close_other = false, ca
 			}
 			if (arr) {
 				arr = JSON.parse(arr);
-				var sel_type = arr.sel_type;
-				$('#sel_type').val(sel_type);
+				sel_type = arr.sel_type;
 
 				arr.company.ids = arr.company.ids.RTrim(',').LTrim(',');
 				arr.company.ids = arr.company.ids ? arr.company.ids.split(',') : [];
@@ -477,10 +477,9 @@ function user_popup2(obj = null, allow_sels, num = 0, is_close_other = false, ca
 						}
 					});
 				}
-				
-			} else {
-				sel_type = 'org';
 			}
+			
+			$('#sel_type').val(sel_type);
 			$('.radio_box input').each(function () {
 				if ($(this).val() == sel_type) {
 					change_sel_type($(this),sel_type,false);
