@@ -874,23 +874,17 @@ function assess_popup(obj, type = 'checkbox', callBack) {
 		return [];
 	}
 	data = JSON.parse(data);
-	console.log(data);
 	var businessType = data.sel_type;
 	var c = data.company.ids;
 		c = c.RTrim(',').LTrim(',');
-		console.log(c);
 	var d = data.department.ids;
 		d = d.RTrim(',').LTrim(',');
-		console.log(d);
 	var u = data.user.ids;
 		u = u.RTrim(',').LTrim(',');
-		console.log(u);
 	var p = data.position.ids;
 		p = p.RTrim(',').LTrim(',');
-		console.log(p);
 	var dp = data.dpt_position.ids;
 		dp = dp.RTrim(',').LTrim(',');
-		console.log(dp);
 	var res = [],data;
 	if(c != ''){
 		c = c.split(',');

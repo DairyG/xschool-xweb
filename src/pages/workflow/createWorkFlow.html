@@ -31,8 +31,8 @@
 			<div class="layui-card-body bgwhite">
 				<div class="layui-tab" lay-filter="component-tabs-brief">
 					<ul class="layui-tab-title">
-						<li class="layui-this">基本信息</li>
-						<li>内容设计</li>
+						<li id="tab_index1" class="layui-this">基本信息</li>
+						<li id="tab_index2">内容设计</li>
 						<li>流程设计</li>
 						<span class="layui-btn fr" onclick="history.back(-1)">返回</span>
 					</ul>
@@ -40,7 +40,7 @@
 						<div class="layui-tab-item layui-show" tab-name="基本信息">
 							<form class="layui-form layui-form2">
 								<div class="layui-row">
-									<div class="layui-form-item layui-col-md12 margin-b-20">
+									<div class="layui-form-item layui-col-md12 margin-b-20 layui-form-item1">
 										<label class="layui-form-label"><span class="text-red"> *</span>流程名称</label>
 										<div class="layui-input-block">
 											<input id="txtSubjectName" type="text" name="title" required  lay-verify="required" placeholder="请输入流程名称" autocomplete="off" class="layui-input">
@@ -49,7 +49,7 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>流程类型</label>
 										<div class="layui-input-block">
-											<input type="radio" name="type" title="事务流程" lay-skin="primary" />
+											<input type="radio" name="type" title="事务流程" lay-skin="primary" checked />
 											<input type="radio" name="type" title="费用流程" lay-skin="primary" />
 
 										</div>
@@ -65,7 +65,7 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>可见范围</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" id="RangeList" required  lay-verify="required" placeholder="请选择可见范围" autocomplete="off" class="layui-input" onclick="user_popup2(this,'user,company,dpt_position,position,department')"/>
+											<input type="text" name="title" id="RangeList" required  lay-verify="required" placeholder="请选择可见范围" autocomplete="off" class="layui-input" onclick="user_popup2(this,'user,company,dpt_position,position,department')" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
@@ -90,7 +90,7 @@
 									</div>
 								</div>
 								<div class="layui-row text-right">
-									<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">下一步</button>
+									<a class="layui-btn layui-btn-danger" onclick="$('#tab_index2').click()">下一步</a>
 									<span class="layui-btn" onclick="history.back(-1)">返回</span>
 								</div>
 							</form>
@@ -516,7 +516,7 @@
 													</label>
 												</div>
 											</li>
-											<li>
+											<li class="li_0">
 												<div class="layui-card shenpi_card">
 													<div class="layui-card-header">
 														审批人
@@ -733,7 +733,6 @@
 					form = layui.form;
 					
 					loadSubjectTypes();
-	
 			});
 			function add_group(){
 				layer_linePop = layer.open({
@@ -813,7 +812,6 @@
 			}
 			function save()
 			{
-				
 				var SubjectName=$("#txtSubjectName").val();
 				var Remark=$("#txtRemark").val();
 				var FlowTypeId=$("input[name='type']:checked").val();
@@ -823,8 +821,7 @@
 				var FormContent=F;
 				var FormAttribute=M;
 				var RangeList = $('#RangeList').siblings('input').val();
-				console.log(RangeList);
-				var subjectRuleRangeList = formart_sels(RangeList);
+				var subjectRuleRangeList = RangeList ? formart_sels(RangeList) : [];
 				var subjectStepFlowList = [];
 				$('.process_box li').each(function(i,obj){
 					//节点类型
@@ -848,13 +845,12 @@
 							d.passName = '抄送人';
 							break;
 						case 3://复盘
-
-							if($(obj).find('#UserId').prop('checked')){
-								UserId = $(obj).find('#UserId').val();
+							if($(obj).find('input[name="UserId"]').prop('checked')){
+								UserId = $(obj).find('input[name="UserId"]').val();
 								d.isEnd = true;
 							}
-							if($(obj).find('#DepId').prop('checked')){
-								DepId = $(obj).find('#DepId').val();
+							if($(obj).find('input[name="DepId"]').prop('checked')){
+								DepId = $(obj).find('input[name="DepId"]').val();
 								d.isEnd = true;
 							}
 							
@@ -863,13 +859,17 @@
 					}
 					d.passType = PassType;
 					var RulePassList = $(obj).find('.show_div input[name="sels"]').val();
-					d.subjectRulePassList = formart_sels(RulePassList);
-					var prev_index = subjectStepFlowList.length;
-						prev_index = prev_index - 1;
-					if(UserId != 0 || DepId != 0){
+					d.subjectRulePassList = RulePassList ? formart_sels(RulePassList) : [];
+					if(PassType == 3){//复盘节点 - 并且至少选择了一项
+						if(UserId > 0 || DepId > 0){
+							subjectStepFlowList.push(d);
+						} else {
+							var prev_index = subjectStepFlowList.length;
+								prev_index = prev_index - 1;
+							subjectStepFlowList[prev_index].isEnd = true;
+						}
+					} else if(PassType > 0){
 						subjectStepFlowList.push(d);
-					} else {
-						subjectStepFlowList[prev_index].isEnd = true;
 					}
 				});
 				var data={
@@ -885,9 +885,48 @@
 					"subjectRuleRangeList":subjectRuleRangeList,
 					"subjectStepFlowList":subjectStepFlowList,
 				};
+				if(data.SubjectName.trim() == ""){
+					layer.msg('流程名称不能为空!');
+					$('#tab_index1').click();
+					$("#txtSubjectName").focus();
+					return false;
+				}
+				if(parseInt(data.FlowTypeId) <= 0 ){
+					layer.msg('请选择流程类型！');
+					$('#tab_index1').click();
+					return false;
+				}
+				if(data.subjectRuleRangeList.length <= 0){
+					layer.msg('请选择可见范围！');
+					$('#tab_index1').click();
+					return false;
+				}
+				if(parseInt(SubjectTypeId) <= 0 ){
+					layer.msg('请选择所属分组！');
+					$('#tab_index1').click();
+					return false;
+				}
+				if(FormContent.length <= 0 ){
+					layer.msg('表单项不能为空！');
+					$('#tab_index2').click();
+					return false;
+				}
+				var flag = false;
+				for(var i = 0;i < subjectStepFlowList.length;i++){
+					if(subjectStepFlowList[i].subjectRulePassList.length == 0){
+						var li = i+2;
+						layer.msg('节点'+li+'：'+subjectStepFlowList[i].passName+'请选择人员');
+						flag = true;
+						return false;
+					}
+				}
+				if(flag){
+					return false;
+				}
 				console.log(data);
 				return false;
 			}
+			
 		</script>
 	</body>
 </html>
