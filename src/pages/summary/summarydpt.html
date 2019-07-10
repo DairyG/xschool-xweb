@@ -1,369 +1,381 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<link rel="stylesheet" href="../../layui/css/layui.css" />
-		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
-		<link rel="stylesheet" href="../../layui/css/common.css" />
-		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
-		<script type="text/javascript" src="../../layui/layui.js"></script>
-		<script type="text/javascript" src="../../js/common.js"></script>
-        <script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
-        <script type="text/javascript" src="../../js/service.js"></script>
-        <script type="text/javascript" src="../../lib/vue.js"></script>
-	</head>
-	<body class="bgf2f2f2">
-		<div class="childrenBody" id="dom">
-			<div class="layui-row layui-col-space20">
-				<div class="layui-col-md3">
-					<ul id="ztree" class="ztree"></ul>
-				</div>
-				<div class="layui-col-md9">
-					<div class="layui-card-header" style="padding: 5px 10px 8px 10px;">
-						<div class="layui-btn-group">
-							<a href="summarydpt.html?t=0" class="layui-btn" v-bind:class="[t == 0 ? '' : 'layui-btn-primary']">日报</a>
-							<a href="summarydpt.html?t=1" class="layui-btn" v-bind:class="[t == 1 ? '' : 'layui-btn-primary']">周报</a>
-							<a href="summarydpt.html?t=2" class="layui-btn" v-bind:class="[t == 2 ? '' : 'layui-btn-primary']">月报</a>
-							<a href="summarydpt.html?t=3" class="layui-btn" v-bind:class="[t == 3 ? '' : 'layui-btn-primary']">季度报</a>
-							<a href="summarydpt.html?t=4" class="layui-btn" v-bind:class="[t == 4 ? '' : 'layui-btn-primary']">半年报</a>
-							<a href="summarydpt.html?t=5" class="layui-btn" v-bind:class="[t == 5 ? '' : 'layui-btn-primary']">年报</a>
-						</div>
-					</div>
-					<div class="layui-card-body">
-						<table class="layui-table" id="lst" lay-filter="lst"></table>
-						<script type="text/html" id="bar">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../lib/vue.js"></script>
+    <script type="text/javascript" src="../../js/ztree.search.left.js"></script>
+</head>
+
+<body class="bgf2f2f2">
+    <div class="childrenBody" id="dom">
+        <div class="layui-row layui-col-space20">
+            <div class="layui-col-md3">
+                <ul id="ztree" class="ztree"></ul>
+            </div>
+            <div class="layui-col-md9">
+                <div class="layui-card-header" style="padding: 5px 10px 8px 10px;">
+                    <div class="layui-btn-group">
+                        <a href="summarydpt.html?t=0" class="layui-btn"
+                            v-bind:class="[t == 0 ? '' : 'layui-btn-primary']">日报</a>
+                        <a href="summarydpt.html?t=1" class="layui-btn"
+                            v-bind:class="[t == 1 ? '' : 'layui-btn-primary']">周报</a>
+                        <a href="summarydpt.html?t=2" class="layui-btn"
+                            v-bind:class="[t == 2 ? '' : 'layui-btn-primary']">月报</a>
+                        <a href="summarydpt.html?t=3" class="layui-btn"
+                            v-bind:class="[t == 3 ? '' : 'layui-btn-primary']">季度报</a>
+                        <a href="summarydpt.html?t=4" class="layui-btn"
+                            v-bind:class="[t == 4 ? '' : 'layui-btn-primary']">半年报</a>
+                        <a href="summarydpt.html?t=5" class="layui-btn"
+                            v-bind:class="[t == 5 ? '' : 'layui-btn-primary']">年报</a>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" id="lst" lay-filter="lst"></table>
+                    <script type="text/html" id="bar">
 							<a class="layui-btn layui-btn-xs " href="javascript:;" lay-event="info">查看</a>
 						</script>
-						<script type="text/html" id="toolbar">
-							<a class="layui-btn layui-btn-sm" href="javascript:;" onClick="updateRead()">标为已读</a>
+                    <script type="text/html" id="toolbar">
+							<a class="layui-btn layui-btn-sm" href="javascript:;" id="btnRead" lay-event="read">标为已读</a>
 						</script>
-					</div>
-				</div>
-			</div>
-		</div>
-		<script>
-			var layer_linePop;
-			// var cols0 = [[
-			// 	{type:'checkbox'},
-			// 	{type:'numbers',title:'序号'},
-			// 	{field:'mc',title:'姓名'},
-			// 	{field:'bm',title:'部门'},
-			// 	{field:'l1',title:'已完成工作'},
-			// 	{field:'l2',title:'未完成工作'},
-			// 	{field:'l3',title:'需协调和帮助'},
-			// 	{field:'state',title:'已读/未读'},
-			// 	{field:'date1',title:'所属日期'},
-			// 	{field:'date2',title:'上报日期'},
-			// 	{toolbar:'#bar',title:'操作'}
-			// ]];
-			// var cols1 = [[
-			// 	{type:'checkbox'},
-			// 	{type:'numbers',title:'序号'},
-			// 	{field:'mc',title:'姓名'},
-			// 	{field:'bm',title:'部门'},
-			// 	{field:'l1',title:'本周完成工作'},
-			// 	{field:'l2',title:'本周工作总结'},
-			// 	{field:'l4',title:'下周工作计划'},
-			// 	{field:'l3',title:'需协调和帮助'},
-			// 	{field:'state',title:'已读/未读'},
-			// 	{field:'date1',title:'所属周'},
-			// 	{field:'date2',title:'上报日期'},
-			// 	{toolbar:'#bar',title:'操作'}
-			// ]];
-			// var cols2 = [[
-			// 	{type:'checkbox'},
-			// 	{type:'numbers',title:'序号'},
-			// 	{field:'mc',title:'姓名'},
-			// 	{field:'bm',title:'部门'},
-			// 	{field:'l1',title:'本月完成工作'},
-			// 	{field:'l2',title:'本月工作总结'},
-			// 	{field:'l4',title:'下月工作计划'},
-			// 	{field:'l3',title:'需协调和帮助'},
-			// 	{field:'state',title:'已读/未读'},
-			// 	{field:'date1',title:'所属月份'},
-			// 	{field:'date2',title:'上报日期'},
-			// 	{toolbar:'#bar',title:'操作'}
-			// ]];
-			// var cols3 = [[
-			// 	{type:'checkbox'},
-			// 	{type:'numbers',title:'序号'},
-			// 	{field:'mc',title:'姓名'},
-			// 	{field:'bm',title:'部门'},
-			// 	{field:'l1',title:'本季度完成工作'},
-			// 	{field:'l2',title:'本季度工作总结'},
-			// 	{field:'l4',title:'下季度工作计划'},
-			// 	{field:'l3',title:'需协调和帮助'},
-			// 	{field:'state',title:'已读/未读'},
-			// 	{field:'date1',title:'所属月份'},
-			// 	{field:'date2',title:'上报日期'},
-			// 	{toolbar:'#bar',title:'操作'}
-			// ]];
-			// var cols4 = [[
-			// 	{type:'checkbox'},
-			// 	{type:'numbers',title:'序号'},
-			// 	{field:'mc',title:'姓名'},
-			// 	{field:'bm',title:'部门'},
-			// 	{field:'l1',title:'半年完成工作'},
-			// 	{field:'l2',title:'半年工作总结'},
-			// 	{field:'l4',title:'下半年工作计划'},
-			// 	{field:'l3',title:'需协调和帮助'},
-			// 	{field:'state',title:'已读/未读'},
-			// 	{field:'date1',title:'所属半年度'},
-			// 	{field:'date2',title:'上报日期'},
-			// 	{toolbar:'#bar',title:'操作'}
-			// ]];
-			// var cols5 = [[
-			// 	{type:'checkbox'},
-			// 	{type:'numbers',title:'序号'},
-			// 	{field:'mc',title:'姓名'},
-			// 	{field:'bm',title:'部门'},
-			// 	{field:'l1',title:'年度完成工作'},
-			// 	{field:'l2',title:'年度工作总结'},
-			// 	{field:'l4',title:'下一年工作计划'},
-			// 	{field:'l3',title:'需协调和帮助'},
-			// 	{field:'state',title:'已读/未读'},
-			// 	{field:'date1',title:'所属年'},
-			// 	{field:'date2',title:'上报日期'},
-			// 	{toolbar:'#bar',title:'操作'}
-            // ]];
-            
-            var cols0 = [[
-                {type:'checkbox'},
-                {type:'numbers',title:'序号'},
-                {field:'employeeName',title:'姓名'},
-                {field:'dptId',title:'部门'},
-                {field:'finish',title:'已完成工作'},
-				{field:'plan',title:'未完成工作'},
-                {field:'help',title:'需协调和帮助'},
-                {field:'readState',title:'已读/未读'},
-				{field:'summaryDate',title:'所属日期'},
-				{field:'addTime',title:'上报日期'},
-				{toolbar:'#bar',title:'操作'}
-			]];
-			var cols1 = [[
-                {type:'checkbox'},
-                {type:'numbers',title:'序号'},
-                {field:'employeeName',title:'姓名'},
-                {field:'dptId',title:'部门'},
-				{field:'finish',title:'本周完成工作'},
-				{field:'content',title:'本周工作总结'},
-				{field:'plan',title:'下周工作计划'},
-                {field:'help',title:'需协调和帮助'},
-                {field:'readState',title:'已读/未读'},
-				{field:'dateSummary',title:'所属周'},
-				{field:'addTime',title:'上报日期'},
-				{toolbar:'#bar',title:'操作'}
-			]];
-			var cols2 = [[
-                {type:'checkbox'},
-                {type:'numbers',title:'序号'},
-                {field:'employeeName',title:'姓名'},
-                {field:'dptId',title:'部门'},
-				{field:'finish',title:'本月完成工作'},
-				{field:'content',title:'本月工作总结'},
-				{field:'plan',title:'下月工作计划'},
-                {field:'help',title:'需协调和帮助'},
-                {field:'readState',title:'已读/未读'},
-				{field:'summaryDate',title:'所属月份'},
-				{field:'addTime',title:'上报日期'},
-				{toolbar:'#bar',title:'操作'}
-			]];
-			var cols3 = [[
-                {type:'checkbox'},
-                {type:'numbers',title:'序号'},
-                {field:'employeeName',title:'姓名'},
-                {field:'dptId',title:'部门'},
-				{field:'finish',title:'本季度完成工作'},
-				{field:'content',title:'本季度工作总结'},
-				{field:'plan',title:'下季度工作计划'},
-                {field:'help',title:'需协调和帮助'},
-                {field:'readState',title:'已读/未读'},
-				{field:'dateSummary',title:'所属季度'},
-				{field:'addTime',title:'上报日期'},
-				{toolbar:'#bar',title:'操作'}
-			]];
-			var cols4 = [[
-                {type:'checkbox'},
-                {type:'numbers',title:'序号'},
-                {field:'employeeName',title:'姓名'},
-                {field:'dptId',title:'部门'},
-				{field:'finish',title:'半年完成工作'},
-				{field:'content',title:'半年工作总结'},
-				{field:'plan',title:'下半年工作计划'},
-				{field:'help',title:'需协调和帮助'},
-                {field:'readState',title:'已读/未读'},
-				{field:'dateSummary',title:'所属半年度'},
-				{field:'addTime',title:'上报日期'},
-				{toolbar:'#bar',title:'操作'}
-			]];
-			var cols5 = [[
-                {type:'checkbox'},
-                {type:'numbers',title:'序号'},
-                {field:'employeeName',title:'姓名'},
-                {field:'dptId',title:'部门'},
-				{field:'finish',title:'年度完成工作'},
-				{field:'content',title:'年度工作总结'},
-				{field:'plan',title:'下一年工作计划'},
-                {field:'help',title:'需协调和帮助'},
-                {field:'readState',title:'已读/未读'},
-				{field:'summaryDate',title:'所属年'},
-				{field:'addTime',title:'上报日期'},
-				{toolbar:'#bar',title:'操作'}
-			]];
-			
-			layui.use(['table'], function() {
-				var table = layui.table;
-				//关闭弹窗
-				$(".closePop").click(function(){
-					layer.closeAll()
-				})
-				//执行一个 table 实例
-				
-			});
-			var vm = new Vue({
-				el:'#dom',
-				data:{
-					labels:'',
-					t:0,
-				},
-				created() {
-					this.t = GetPara('t');
-					this.t = this.t ? this.t : 0;
-				},
-				mounted() {
-					var that = this;
-					layui.use(['table','laydate','form'],function(){
-						var laydate = layui.laydate,
-							table = layui.table,
-							form = layui.form;
-						laydate.render({
-							elem:'#date1'
-						});
-						var cols = cols0;
-						var datas = [];
-						switch(that.t){
-							case '0': 
-								cols = cols0;
-								Serv.Get("gc/Summary/Get/0",{},function(response){
-                                    datas = response;
-                                },false);
-								break;
-							case '1': 
-								cols = cols1;
-								Serv.Get("gc/Summary/Get/1",{},function(response){
-                                    datas = response;
-                                },false);
-								break;
-							case '2': 
-								cols = cols2;
-								Serv.Get("gc/Summary/Get/2",{},function(response){
-                                    datas = response;
-                                },false);
-								break;
-							case '3': 
-								cols = cols3;
-								Serv.Get("gc/Summary/Get/3",{},function(response){
-                                    datas = response;
-                                },false);
-								break;
-							case '4': 
-								cols = cols4;
-								Serv.Get("gc/Summary/Get/4",{},function(response){
-                                    datas = response;
-                                },false);
-								break;
-							case '5': 
-								cols = cols5;
-								Serv.Get("gc/Summary/Get/5",{},function(response){
-                                    datas = response;
-                                },false);
-								break;
-						}
-						table.render({
-							elem:'#lst',
-							cols:cols,
-							data:datas,
-							height:'full-180',
-							toolbar:'#toolbar'
-						});
-						
-						table.on('tool(lst)',function(obj){
-							if(obj.event = 'info'){
-								layer_linePop = layer.open({
-									type: 2,
-									title:'总结详情',
-									scrollbar: false,
-									skin:'layui-layer-rim',
-									closeBtn: 1,
-									area: ['100%', '100%'],
-									anim: 2,
-									move:false,
-									content: 'summarydetail.html?id=' + obj.data.id
-								});
-							}
-						});
-					});
-				}
-			});
-			var zTreeObj;
-			var setting = {
-				view: {
-				    dblClickExpand: false
-				},
-				callback: {
-				    onClick: function (e, treeId, treeNode) {
-				        var tree = $.fn.zTree.getZTreeObj(treeId);
-				        tree.expandNode(treeNode);
-				
-						tnode=treeNode;
-						console.log('tnode',tnode);
-				        currentid=treeNode.id;
-				    },
-				    onAsyncSuccess: function (event, treeId, treeNode, msg) {
-				        var nodes = zTree.getNodes();
-				        var node=nodes.length>0?nodes[0]:null;
-				        console.log(node);
-				        if(node!=null){
-				            zTree.expandNode(node, true, false, false);
-				        }
-				        
-				    }
-				}
-			}; // zTree 的参数配置，后面详解
-			var zNodes = [ // zTree 的数据属性，此处使用标准json格式
-				{
-					name: "四川某某公司",
-					open: true,
-					children: [{
-							name: "销售部",
-							children: [{
-								name: "销售1部",
-								children: [{
-									name: "销售1组"
-								}]
-							}]
-						},
-						{
-							name: "市场部"
-						},
-						{
-							name: "策划部",
-							children: [{
-								name: "策划1部"
-					
-							}]
-						}
-					]
-				}
-					
-			];
-			$(document).ready(function() {
-				zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var layer_linePop;
+        // var cols0 = [[
+        // 	{type:'checkbox'},
+        // 	{type:'numbers',title:'序号'},
+        // 	{field:'mc',title:'姓名'},
+        // 	{field:'bm',title:'部门'},
+        // 	{field:'l1',title:'已完成工作'},
+        // 	{field:'l2',title:'未完成工作'},
+        // 	{field:'l3',title:'需协调和帮助'},
+        // 	{field:'state',title:'已读/未读'},
+        // 	{field:'date1',title:'所属日期'},
+        // 	{field:'date2',title:'上报日期'},
+        // 	{toolbar:'#bar',title:'操作'}
+        // ]];
+        // var cols1 = [[
+        // 	{type:'checkbox'},
+        // 	{type:'numbers',title:'序号'},
+        // 	{field:'mc',title:'姓名'},
+        // 	{field:'bm',title:'部门'},
+        // 	{field:'l1',title:'本周完成工作'},
+        // 	{field:'l2',title:'本周工作总结'},
+        // 	{field:'l4',title:'下周工作计划'},
+        // 	{field:'l3',title:'需协调和帮助'},
+        // 	{field:'state',title:'已读/未读'},
+        // 	{field:'date1',title:'所属周'},
+        // 	{field:'date2',title:'上报日期'},
+        // 	{toolbar:'#bar',title:'操作'}
+        // ]];
+        // var cols2 = [[
+        // 	{type:'checkbox'},
+        // 	{type:'numbers',title:'序号'},
+        // 	{field:'mc',title:'姓名'},
+        // 	{field:'bm',title:'部门'},
+        // 	{field:'l1',title:'本月完成工作'},
+        // 	{field:'l2',title:'本月工作总结'},
+        // 	{field:'l4',title:'下月工作计划'},
+        // 	{field:'l3',title:'需协调和帮助'},
+        // 	{field:'state',title:'已读/未读'},
+        // 	{field:'date1',title:'所属月份'},
+        // 	{field:'date2',title:'上报日期'},
+        // 	{toolbar:'#bar',title:'操作'}
+        // ]];
+        // var cols3 = [[
+        // 	{type:'checkbox'},
+        // 	{type:'numbers',title:'序号'},
+        // 	{field:'mc',title:'姓名'},
+        // 	{field:'bm',title:'部门'},
+        // 	{field:'l1',title:'本季度完成工作'},
+        // 	{field:'l2',title:'本季度工作总结'},
+        // 	{field:'l4',title:'下季度工作计划'},
+        // 	{field:'l3',title:'需协调和帮助'},
+        // 	{field:'state',title:'已读/未读'},
+        // 	{field:'date1',title:'所属月份'},
+        // 	{field:'date2',title:'上报日期'},
+        // 	{toolbar:'#bar',title:'操作'}
+        // ]];
+        // var cols4 = [[
+        // 	{type:'checkbox'},
+        // 	{type:'numbers',title:'序号'},
+        // 	{field:'mc',title:'姓名'},
+        // 	{field:'bm',title:'部门'},
+        // 	{field:'l1',title:'半年完成工作'},
+        // 	{field:'l2',title:'半年工作总结'},
+        // 	{field:'l4',title:'下半年工作计划'},
+        // 	{field:'l3',title:'需协调和帮助'},
+        // 	{field:'state',title:'已读/未读'},
+        // 	{field:'date1',title:'所属半年度'},
+        // 	{field:'date2',title:'上报日期'},
+        // 	{toolbar:'#bar',title:'操作'}
+        // ]];
+        // var cols5 = [[
+        // 	{type:'checkbox'},
+        // 	{type:'numbers',title:'序号'},
+        // 	{field:'mc',title:'姓名'},
+        // 	{field:'bm',title:'部门'},
+        // 	{field:'l1',title:'年度完成工作'},
+        // 	{field:'l2',title:'年度工作总结'},
+        // 	{field:'l4',title:'下一年工作计划'},
+        // 	{field:'l3',title:'需协调和帮助'},
+        // 	{field:'state',title:'已读/未读'},
+        // 	{field:'date1',title:'所属年'},
+        // 	{field:'date2',title:'上报日期'},
+        // 	{toolbar:'#bar',title:'操作'}
+        // ]];
+
+        var cols0 = [[
+            { type: 'checkbox' },
+            { type: 'numbers', title: '序号' },
+            { field: 'employeeName', title: '姓名' },
+            { field: 'dptId', title: '部门' },
+            { field: 'finish', title: '已完成工作' },
+            { field: 'plan', title: '未完成工作' },
+            { field: 'help', title: '需协调和帮助' },
+            { field: 'readState', title: '已读/未读' },
+            { field: 'summaryDate', title: '所属日期' },
+            { field: 'addTime', title: '上报日期' },
+            { toolbar: '#bar', title: '操作' }
+        ]];
+        var cols1 = [[
+            { type: 'checkbox' },
+            { type: 'numbers', title: '序号' },
+            { field: 'employeeName', title: '姓名' },
+            { field: 'dptId', title: '部门' },
+            { field: 'finish', title: '本周完成工作' },
+            { field: 'content', title: '本周工作总结' },
+            { field: 'plan', title: '下周工作计划' },
+            { field: 'help', title: '需协调和帮助' },
+            { field: 'readState', title: '已读/未读' },
+            { field: 'dateSummary', title: '所属周' },
+            { field: 'addTime', title: '上报日期' },
+            { toolbar: '#bar', title: '操作' }
+        ]];
+        var cols2 = [[
+            { type: 'checkbox' },
+            { type: 'numbers', title: '序号' },
+            { field: 'employeeName', title: '姓名' },
+            { field: 'dptId', title: '部门' },
+            { field: 'finish', title: '本月完成工作' },
+            { field: 'content', title: '本月工作总结' },
+            { field: 'plan', title: '下月工作计划' },
+            { field: 'help', title: '需协调和帮助' },
+            { field: 'readState', title: '已读/未读' },
+            { field: 'summaryDate', title: '所属月份' },
+            { field: 'addTime', title: '上报日期' },
+            { toolbar: '#bar', title: '操作' }
+        ]];
+        var cols3 = [[
+            { type: 'checkbox' },
+            { type: 'numbers', title: '序号' },
+            { field: 'employeeName', title: '姓名' },
+            { field: 'dptId', title: '部门' },
+            { field: 'finish', title: '本季度完成工作' },
+            { field: 'content', title: '本季度工作总结' },
+            { field: 'plan', title: '下季度工作计划' },
+            { field: 'help', title: '需协调和帮助' },
+            { field: 'readState', title: '已读/未读' },
+            { field: 'dateSummary', title: '所属季度' },
+            { field: 'addTime', title: '上报日期' },
+            { toolbar: '#bar', title: '操作' }
+        ]];
+        var cols4 = [[
+            { type: 'checkbox' },
+            { type: 'numbers', title: '序号' },
+            { field: 'employeeName', title: '姓名' },
+            { field: 'dptId', title: '部门' },
+            { field: 'finish', title: '半年完成工作' },
+            { field: 'content', title: '半年工作总结' },
+            { field: 'plan', title: '下半年工作计划' },
+            { field: 'help', title: '需协调和帮助' },
+            { field: 'readState', title: '已读/未读' },
+            { field: 'dateSummary', title: '所属半年度' },
+            { field: 'addTime', title: '上报日期' },
+            { toolbar: '#bar', title: '操作' }
+        ]];
+        var cols5 = [[
+            { type: 'checkbox' },
+            { type: 'numbers', title: '序号' },
+            { field: 'employeeName', title: '姓名' },
+            { field: 'dptId', title: '部门' },
+            { field: 'finish', title: '年度完成工作' },
+            { field: 'content', title: '年度工作总结' },
+            { field: 'plan', title: '下一年工作计划' },
+            { field: 'help', title: '需协调和帮助' },
+            { field: 'readState', title: '已读/未读' },
+            { field: 'summaryDate', title: '所属年' },
+            { field: 'addTime', title: '上报日期' },
+            { toolbar: '#bar', title: '操作' }
+        ]];
+        var parameter = {
+            companyId: '',
+            dptId: '',
+            type: ''
+        };
+
+        layui.use(['table'], function () {
+            var table = layui.table;
+            //关闭弹窗
+            $(".closePop").click(function () {
+                layer.closeAll()
             })
-            function updateRead(){
-                
+            //执行一个 table 实例
+
+        });
+        var vm = new Vue({
+            el: '#dom',
+            data: {
+                labels: '',
+                t: 0,
+            },
+            created() {
+                this.t = GetPara('t');
+                this.t = this.t ? this.t : 0;
+                parameter.type = this.t;
+            },
+            mounted() {
+                var that = this;
+                layui.use(['table', 'laydate', 'form'], function () {
+                    var laydate = layui.laydate,
+                        table = layui.table,
+                        form = layui.form;
+                    var dptZTree = new ZTreeRadio('ztree', {}, function (event, treeId, treeNode) {
+                        parameter.companyId = treeNode.companyId;
+                        if (treeNode.id > 0) {
+                            parameter.dptId = treeNode.id;
+                        }
+                        Serv.Post("gc/Summary/Get", { serch: parameter }, function (response) {
+                            datas = response;
+                        }, false);
+                        table.render({
+                            elem: '#lst',
+                            cols: cols,
+                            data: datas,
+                            height: 'full-180',
+                            toolbar: '#toolbar'
+                        });
+                    });
+                    dptZTree.reload();
+                    var dptZTreeObj = dptZTree.obj();
+                    var nodes = dptZTreeObj.getNodes();
+                    if (nodes.length > 0) {
+                        parameter.companyId = nodes[0].companyId;
+                        dptZTreeObj.selectNode(nodes[0]);
+                    }
+
+                    laydate.render({
+                        elem: '#date1'
+                    });
+                    var cols = cols0;
+                    var datas = [];
+                    var initData = function () {
+                        switch (that.t) {
+                            case '0':
+                                cols = cols0;
+                                Serv.Post("gc/Summary/Get", { serch: parameter }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '1':
+                                cols = cols1;
+                                Serv.Post("gc/Summary/Get", { serch: parameter }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '2':
+                                cols = cols2;
+                                Serv.Post("gc/Summary/Get", { serch: parameter }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '3':
+                                cols = cols3;
+                                Serv.Post("gc/Summary/Get", { serch: parameter }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '4':
+                                cols = cols4;
+                                Serv.Post("gc/Summary/Get", { serch: parameter }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '5':
+                                cols = cols5;
+                                Serv.Post("gc/Summary/Get", { serch: parameter }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                        }
+                    };
+
+                    var intTab = function () {
+                        table.render({
+                            elem: '#lst',
+                            cols: cols,
+                            data: datas,
+                            height: 'full-180',
+                            toolbar: '#toolbar',
+                            page: true
+                        });
+                    }
+                    initData();
+                    intTab();
+
+                    table.on('tool(lst)', function (obj) {
+                        if (obj.event = 'info') {
+                            layer_linePop = layer.open({
+                                type: 2,
+                                title: '总结详情',
+                                scrollbar: false,
+                                skin: 'layui-layer-rim',
+                                closeBtn: 1,
+                                area: ['100%', '100%'],
+                                anim: 2,
+                                move: false,
+                                content: 'summarydetail.html?id=' + obj.data.id
+                            });
+                        }
+                    });
+                    table.on('toolbar(lst)', function (obj) {
+                        if (obj.event = 'read') {
+                            var checkStatus = table.checkStatus('lst'); //idTest 即为基础参数 id 对应的值
+                            if (checkStatus.length <= 0 || !checkStatus || checkStatus.data.length <= 0) {
+                                layer_alert("请选择总结！");
+                            }
+                            else {
+                                var arr = [];
+                                $.each(checkStatus.data, function (i, item) {
+                                    arr.push(item.id);
+                                });
+                                Serv.Post('gc/Summary/UpdateReads', { ids: arr }, function () {
+                                    initData();
+                                    intTab();
+                                });
+                            }
+                        }
+                    });
+
+                });
             }
-		</script>
-	</body>
+        });
+
+
+    </script>
+</body>
+
 </html>
