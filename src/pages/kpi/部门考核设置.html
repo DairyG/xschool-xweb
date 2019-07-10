@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card-header">考核设置</div>
+			<div class="layui-card-body bgwhite">
+				<form class="layui-form layui-form2" >
+					<div class="layui-row">
+						<div class="layui-form-item layui-col-md6 margin-b-20">
+							<label class="layui-form-label"><span class="text-red"> *</span>考核对象</label>
+							<div class="layui-input-block">
+								<div class="layui-input">
+									<div class="layui-form-mid"></div>
+									<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" onclick="user_popup($(this).siblings('.layui-form-mid'),false,true,false)">选择考核对象</span>
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20">
+							<label class="layui-form-label"><span class="text-red"> *</span>所属考核方案</label>
+							<div class="layui-input-block">
+								<select>
+									<option>月度考核方案</option>
+									<option>季度考核方案</option>、
+									<option>半年考核方案</option>
+									<option>年度考核方案</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20" >
+							<label class="layui-form-label">考核人设置</label>
+							<div class="layui-input-block">
+								<table class="layui-table">
+									<thead>
+										<tr>
+											<th>被考核人</th>
+											<th>初审人</th>
+											<th>终审人</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>部门负责人</td>
+											<td>
+												<select lay-filter="sel">
+													<option value="-2">上级部门负责人</option>
+													<option value="-3">其他</option>
+												</select>
+											</td>
+											<td>
+												<select lay-filter="sel">
+													<option value="-2">上级部门负责人</option>
+													<option value="-3">其他</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												说明：考核对象如有部门负责人时，请设置部门负责人的考核人，如不设置默认为自己考核
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20" >
+							<label class="layui-form-label">考核内容</label>
+							<div class="layui-input-block">
+								<table class="layui-table">
+									<thead>
+										<tr>
+											<th width="60">序号</th>
+											<th>考核项目</th>
+											<th>权重(分值)</th>
+											<th>说明</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
+											<td><input type="text" class="layui-input" value="招聘指标" readonly onclick="assess_popup(this)"/></td>
+											<td><input type="text" class="layui-input" value="10"/></td>
+											<td><input type="text" class="layui-input" /></td>
+										</tr>
+										<tr>
+											<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
+											<td><input type="text" class="layui-input" value="考情统计" readonly onclick="assess_popup(this)" /></td>
+											<td><input type="text" class="layui-input" value="10" /></td>
+											<td><input type="text" class="layui-input" /></td>
+										</tr>
+										<tr>
+											<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
+											<td><input type="text" class="layui-input" value="工资预算" readonly onclick="assess_popup(this)" /></td>
+											<td><input type="text" class="layui-input" value="10" /></td>
+											<td><input type="text" class="layui-input" /></td>
+										</tr>
+										<tr>
+											<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
+											<td><input type="text" class="layui-input" readonly onclick="assess_popup(this)" /></td>
+											<td><input type="text" class="layui-input" /></td>
+											<td><input type="text" class="layui-input" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>	
+					<div class="layui-row text-right">
+						<button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="formDemo">确认</button>
+						<span class="layui-btn " onclick="history.back(-1)">返回</span>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			layui.use(['table','form'], function() {
+				var table = layui.table
+					form = layui.form;
+				
+				form.on('select(sel)',function(obj){
+					var value = obj.value;
+					var elem = obj.elem;
+					if(value == -3){
+						user_popup(null,false,true,false,1,false,(res)=>{
+							var id = res.department.ids.LTrim(',').RTrim(',');
+							var val = res.department.names.LTrim(',').RTrim(',');
+							var sel_last = $(elem).find('option:last');
+							var sel_last_val = parseInt(sel_last.attr('value'));
+							$(sel_last).find('option').removeAttr('selected');
+							if(sel_last_val > 0){
+								$(sel_last).attr('value',id);
+								$(sel_last).prop('selected',true);
+								$(sel_last).html(val);
+							} else {
+								$(sel_last).after('<option value="'+id+'" selected >'+val+'</option>');
+							}
+							form.render('select');
+						});
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

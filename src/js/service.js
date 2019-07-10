@@ -76,22 +76,23 @@ var Serv = {
                 callback(data);
             },
             error: function (data) {
-                layer.closeAll();
-                if (data.status == 400) {
-                    var json = JSON.parse(data.responseText);
-                    if (json.error == 'invalid_client') {
-                        layer.alert('用户未授权', {
-                            icon: 2,
-                            title: '登陆提示'
-                        });
-                    } else {
-                        layer.alert(json.error_description, {
-                            icon: 2,
-                            title: '登陆提示'
-                        });
-                    }
-                }
-                console.log("err:", data);
+                console.log(data);
+                // layer.closeAll();
+                // if (data.status == 400) {
+                //     var json = JSON.parse(data.responseText);
+                //     if (json.error == 'invalid_client') {
+                //         layer.alert('用户未授权', {
+                //             icon: 2,
+                //             title: '登陆提示'
+                //         });
+                //     } else {
+                //         layer.alert(json.error_description, {
+                //             icon: 2,
+                //             title: '登陆提示'
+                //         });
+                //     }
+                // }
+                // console.log("err:", data);
             }
         });
     },

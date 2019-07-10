@@ -129,12 +129,10 @@ var vm = new Vue({
                 form.on('submit(basicInfo)', function (laydata) {
                     layer_load();
 
-                    laydata.field.idCardProvince = '';
-                    laydata.field.idCardCity = '';
-                    laydata.field.idCardCounty = '';
                     _this.person.idCardProvince = '';
                     _this.person.idCardCity = '';
                     _this.person.idCardCounty = '';
+                    _this.person.idCardArea = '';
                     //身份证地址
                     if ($.trim(_this.person.idCardAddress)) {
                         var idCardAreaCode = $('input[name="idCardArea"]').attr('data-areacode');
@@ -143,25 +141,21 @@ var vm = new Vue({
                             layer_alert('请选择身份证地址的省市区');
                             return false;
                         }
-                        if (idCardAreaArr.length != 3) {
-                            layer_alert('身份证地址必须选择省市区');
+                        if (idCardAreaArr.length != 3 && (idCardAreaCode != "710000" && idCardAreaCode != "810000" && idCardAreaCode != "820000")) {
+                            layer_alert('居住地址必须选择省市区');
                             return false;
                         }
 
-                        laydata.field.idCardProvince = idCardAreaArr[0];
-                        laydata.field.idCardCity = idCardAreaArr[1];
-                        laydata.field.idCardCounty = idCardAreaArr[2];
                         _this.person.idCardProvince = idCardAreaArr[0];
-                        _this.person.idCardCity = idCardAreaArr[1];
-                        _this.person.idCardCounty = idCardAreaArr[2];
+                        _this.person.idCardCity = idCardAreaArr[1] ? idCardAreaArr[1] : '';
+                        _this.person.idCardCounty = idCardAreaArr[2] ? idCardAreaArr[2] : '';
+                        _this.person.idCardArea = $('input[name="idCardArea"]').val();
                     }
 
-                    laydata.field.liveProvince = '';
-                    laydata.field.liveCity = '';
-                    laydata.field.liveCounty = '';
                     _this.person.liveProvince = '';
                     _this.person.liveCity = '';
                     _this.person.liveCounty = '';
+                    _this.person.liveArea = '';
                     //居住地址
                     if ($.trim(_this.person.liveAddress)) {
                         var liveAreaCode = $('input[name="liveArea"]').attr('data-areacode');
@@ -170,20 +164,17 @@ var vm = new Vue({
                             layer_alert('请选择居住地址的省市区');
                             return false;
                         }
-                        if (liveAreaArr.length != 3) {
+                        if (liveAreaArr.length != 3 && (liveAreaCode != "710000" && liveAreaCode != "810000" && liveAreaCode != "820000")) {
                             layer_alert('居住地址必须选择省市区');
                             return false;
                         }
 
-                        laydata.field.liveProvince = liveAreaArr[0];
-                        laydata.field.liveCity = liveAreaArr[1];
-                        laydata.field.liveCounty = liveAreaArr[2];
-
                         _this.person.liveProvince = liveAreaArr[0];
-                        _this.person.liveCity = liveAreaArr[1];
-                        _this.person.liveCounty = liveAreaArr[2];
+                        _this.person.liveCity = liveAreaArr[1] ? liveAreaArr[1] : '';
+                        _this.person.liveCounty = liveAreaArr[2] ? liveAreaArr[2] : '';
+                        _this.person.liveArea = $('input[name="liveArea"]').val();
                     }
-
+                    
                     //家庭成员
                     var hasFamily = _this.validateFamily($('#familyPanel').find('div.layui-table-body'), true);
                     if (!hasFamily) {

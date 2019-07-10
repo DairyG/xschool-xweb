@@ -34,20 +34,26 @@
 	var has_company = $('#popup_content').data('has_company');
 	var has_def = $('#popup_content').data('has_def');
 	var allow_num = $('#popup_content').data('num');
-	var user_company = { id: 1, pid: 0 }//默认当前用户的公司信息 实际另行获取
+	var user_company = {
+		id: 1,
+		pid: 0
+	} //默认当前用户的公司信息 实际另行获取
 
 	var company_arr = [];
 	var department_arr = [];
 	var user_arr = [];
 
 	$(function () {
-		if (has_def) { }
+		if (has_def) {}
 		if (company_arr.length <= 0) {
-			Serv.Post("uc/Company/Get", { page: 1, limit: 50 }, function (result) {
+			Serv.Post("uc/Company/Get", {
+				page: 1,
+				limit: 50
+			}, function (result) {
 				company_arr = result.items;
 			}, false);
 		}
-		
+
 		show_items('company', company_arr[0].id);
 		// if (has_company) {
 		// 	show_items('company', user_company.id);
@@ -79,6 +85,11 @@
 				var input_checked = $(input).prop('checked');
 				if (input_checked != checked) {
 					if (checked) {
+						if (allow_num > 0 && $("#selected_box li").length >= allow_num) {
+							layer.msg('最多选择' + allow_num + '项');
+							$(obj).prop('checked', false);
+							return false;
+						}
 						var html = build_selectd_html(type, value, text);
 						$("#selected_box").append(html);
 						add_remove_value(type, value, text);
@@ -145,7 +156,9 @@
 	function build_selectd_html(type, value, text) {
 		var class_name = type + '_' + value;
 		if ($("#selected_box").find("." + class_name).length == 0) {
-			var html = '<li class="' + type + '_' + value + ' " >' + text + '<i class="layui-icon layui-icon-close-fill fr" onclick="user_sel_remove(\'' + type + '\',' + value + ',\'' + text + '\')"></i></li>'
+			var html = '<li class="' + type + '_' + value + ' " >' + text +
+				'<i class="layui-icon layui-icon-close-fill fr" onclick="user_sel_remove(\'' + type + '\',' + value +
+				',\'' + text + '\')"></i></li>'
 			return html;
 		}
 		return "";
@@ -157,7 +170,8 @@
 	 * @param string p_type （公司 company, 部门 department 员工 user）
 	 */
 	function show_items(type, company_id = 1, department_id = 0, company_name) {
-		var arr = [], html = "";
+		var arr = [],
+			html = "";
 		$("#checkAll").prop('checked', false);
 		switch (type) {
 			case 'company':
@@ -168,9 +182,13 @@
 					// }
 					if (company_arr[i].id == company_id) {
 						if (has_company) {
-							$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'company\',' + company_id + ',0,\'' + company_arr[i].companyName + '\')">全部</a>&gt;</span>');
+							$(".loaction_box").append(
+								'<span><a href="javascript:;" onclick="location_sel(this,\'company\',' + company_id +
+								',0,\'' + company_arr[i].companyName + '\')">全部</a>&gt;</span>');
 						} else {
-							$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\',' + company_id + ')">' + company_arr[i].companyName + '</a>&gt;</span>');
+							$(".loaction_box").append(
+								'<span><a href="javascript:;" onclick="location_sel(this,\'department\',' +
+								company_id + ')">' + company_arr[i].companyName + '</a>&gt;</span>');
 						}
 					}
 				}
@@ -186,17 +204,24 @@
 						html += build_check_html(department_arr[i].id, department_arr[i].dptName, type, company_id);
 					}
 					if (department_arr[i].id == department_id) {
-						$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\',' + company_id + ',' + department_id + ')">' + department_arr[i].dptName + '</a>&gt;</span>');
+						$(".loaction_box").append(
+							'<span><a href="javascript:;" onclick="location_sel(this,\'department\',' + company_id +
+							',' + department_id + ')">' + department_arr[i].dptName + '</a>&gt;</span>');
 					}
 				}
 				if (has_company && department_id <= 0) {
-					$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\',' + company_id + ',0,\'' + company_name + '\')">' + company_name + '</a>&gt;</span>');
+					$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\',' +
+						company_id + ',0,\'' + company_name + '\')">' + company_name + '</a>&gt;</span>');
 				}
-				if(department_id != 0)
-				{
-					
+				if (department_id != 0) {
+
 					//此处加载用户列表
-					Serv.Post("uc/Employee/Get", {page:1,limit:50,CompanyId:company_id,DptId:department_id}, function (result) {
+					Serv.Post("uc/Employee/Get", {
+						page: 1,
+						limit: 50,
+						CompanyId: company_id,
+						DptId: department_id
+					}, function (result) {
 						user_arr = result.items;
 					}, false);
 					if (has_user) {
@@ -216,11 +241,11 @@
 				}
 
 				break;
-			/* case 'user':
-				for(var i = 0;i < user_arr.length;i++){
-					html += build_check_html(user_arr[i].id,user_arr[i].name,type);
-				}
-				break; */
+				/* case 'user':
+					for(var i = 0;i < user_arr.length;i++){
+						html += build_check_html(user_arr[i].id,user_arr[i].name,type);
+					}
+					break; */
 		}
 		$("#select_ul").html(html);
 
@@ -234,7 +259,10 @@
 	 * @param  company_id 当前公司id
 	 */
 	function build_check_html(id, text, type, company_id) {
-		var icon = "", html = "", checkbox = "", checked = "";
+		var icon = "",
+			html = "",
+			checkbox = "",
+			checked = "";
 		switch (type) {
 			case 'company':
 				icon = '<i class="icon_group1"></i>';
@@ -243,7 +271,8 @@
 					if (ids.indexOf(',' + id + ',') >= 0) {
 						checked = " checked='checked' ";
 					}
-					checkbox = '<input type="checkbox" onclick="selected(this)" data-id="' + id + '" data-text="' + text + '" data-type="' + type + '" ' + checked + ' />';
+					checkbox = '<input type="checkbox" onclick="selected(this)" data-id="' + id + '" data-text="' + text +
+						'" data-type="' + type + '" ' + checked + ' />';
 				}
 				text = '<span onclick="show_items(\'department\',' + id + ',0,\'' + text + '\')">' + text + '</span>';
 				break;
@@ -254,21 +283,22 @@
 					if (ids.indexOf(',' + id + ',') >= 0) {
 						checked = " checked='checked' ";
 					}
-					checkbox = '<input type="checkbox" onclick="selected(this)" data-id="' + id + '" data-text="' + text + '" data-type="' + type + '" ' + checked + ' />';
+					checkbox = '<input type="checkbox" onclick="selected(this)" data-id="' + id + '" data-text="' + text +
+						'" data-type="' + type + '" ' + checked + ' />';
 				}
 				text = '<span onclick="show_items(\'department\',' + company_id + ',' + id + ')">' + text + '</span>';
-				
+
 				break;
 			case 'user':
 				var ids = $("#user_ids").val();
 				if (ids.indexOf(',' + id + ',') >= 0) {
 					checked = " checked='checked' ";
 				}
-				checkbox = '<input type="checkbox" onclick="selected(this)" data-id="' + id + '" data-text="' + text + '" data-type="' + type + '" ' + checked + ' />';
+				checkbox = '<input type="checkbox" onclick="selected(this)" data-id="' + id + '" data-text="' + text +
+					'" data-type="' + type + '" ' + checked + ' />';
 				break;
 		}
 
 		return '<li>' + checkbox + icon + text + '</li>';
 	}
-
 </script>

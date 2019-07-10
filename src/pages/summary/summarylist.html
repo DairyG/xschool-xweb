@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+        <script type="text/javascript" src="../../js/common.js"></script>
+        <script type="text/javascript" src="../../js/service.js"></script>
+        <script type="text/javascript" src="../../lib/vue.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody" id="dom">
+			<div class="layui-card-header" style="padding: 5px 10px 8px 10px;">
+				<div class="layui-btn-group">
+					<a href="summarylist.html?t=0" class="layui-btn" v-bind:class="[t == 0 ? '' : 'layui-btn-primary']">日报</a>
+					<a href="summarylist.html?t=1" class="layui-btn" v-bind:class="[t == 1 ? '' : 'layui-btn-primary']">周报</a>
+					<a href="summarylist.html?t=2" class="layui-btn" v-bind:class="[t == 2 ? '' : 'layui-btn-primary']">月报</a>
+					<a href="summarylist.html?t=3" class="layui-btn" v-bind:class="[t == 3 ? '' : 'layui-btn-primary']">季度报</a>
+					<a href="summarylist.html?t=4" class="layui-btn" v-bind:class="[t == 4 ? '' : 'layui-btn-primary']">半年报</a>
+					<a href="summarylist.html?t=5" class="layui-btn" v-bind:class="[t == 5 ? '' : 'layui-btn-primary']">年报</a>
+				</div>
+			</div>
+			<div class="layui-card-body">
+				<table class="layui-table" id="lst" lay-filter="lst"></table>
+				<script type="text/html" id="bar">
+					<a class="layui-btn layui-btn-xs " href="javascript:;" lay-event="info">查看</a>
+					<a class="layui-btn layui-btn-xs layui-btn-warm " href="javascript:;" lay-event="edit">编辑</a>
+					<a class="layui-btn layui-btn-xs layui-btn-danger" href="javascript:;" lay-event="del">删除</a>
+				</script>
+				<script type="text/html" id="toolbar">
+				</script>
+			</div>
+		</div>
+		<script>
+			var layer_linePop;
+			var cols0 = [[
+				{type:'numbers',title:'序号'},
+				{field:'finish',title:'已完成工作'},
+				{field:'plan',title:'未完成工作'},
+                {field:'help',title:'需协调和帮助'},
+                {field:'readState',title:'已读/未读'},
+				{field:'summaryDate',title:'所属日期'},
+				{field:'addTime',title:'上报日期'},
+				{toolbar:'#bar',title:'操作'}
+			]];
+			var cols1 = [[
+				{type:'numbers',title:'序号'},
+				{field:'finish',title:'本周完成工作'},
+				{field:'content',title:'本周工作总结'},
+				{field:'plan',title:'下周工作计划'},
+                {field:'help',title:'需协调和帮助'},
+                {field:'readState',title:'已读/未读'},
+				{field:'dateSummary',title:'所属周'},
+				{field:'addTime',title:'上报日期'},
+				{toolbar:'#bar',title:'操作'}
+			]];
+			var cols2 = [[
+				{type:'numbers',title:'序号'},
+				{field:'finish',title:'本月完成工作'},
+				{field:'content',title:'本月工作总结'},
+				{field:'plan',title:'下月工作计划'},
+				{field:'help',title:'需协调和帮助'},
+				{field:'summaryDate',title:'所属月份'},
+				{field:'addTime',title:'上报日期'},
+				{toolbar:'#bar',title:'操作'}
+			]];
+			var cols3 = [[
+				{type:'numbers',title:'序号'},
+				{field:'finish',title:'本季度完成工作'},
+				{field:'content',title:'本季度工作总结'},
+				{field:'plan',title:'下季度工作计划'},
+                {field:'help',title:'需协调和帮助'},
+                {field:'readState',title:'已读/未读'},
+				{field:'dateSummary',title:'所属季度'},
+				{field:'addTime',title:'上报日期'},
+				{toolbar:'#bar',title:'操作'}
+			]];
+			var cols4 = [[
+				{type:'numbers',title:'序号'},
+				{field:'finish',title:'半年完成工作'},
+				{field:'content',title:'半年工作总结'},
+				{field:'plan',title:'下半年工作计划'},
+				{field:'help',title:'需协调和帮助'},
+                {field:'readState',title:'已读/未读'},
+				{field:'dateSummary',title:'所属半年度'},
+				{field:'addTime',title:'上报日期'},
+				{toolbar:'#bar',title:'操作'}
+			]];
+			var cols5 = [[
+				{type:'numbers',title:'序号'},
+				{field:'finish',title:'年度完成工作'},
+				{field:'content',title:'年度工作总结'},
+				{field:'plan',title:'下一年工作计划'},
+				{field:'help',title:'需协调和帮助'},
+				{field:'summaryDate',title:'所属年'},
+				{field:'addTime',title:'上报日期'},
+				{toolbar:'#bar',title:'操作'}
+			]];
+			
+			layui.use(['table'], function() {
+				var table = layui.table;
+				//关闭弹窗
+				$(".closePop").click(function(){
+					layer.closeAll()
+				})
+				//执行一个 table 实例
+				
+			});
+			var vm = new Vue({
+				el:'#dom',
+				data:{
+					labels:'',
+					t:0,
+				},
+				created() {
+					this.t = GetPara('t');
+					this.t = this.t ? this.t : 0;
+				},
+				mounted() {
+					var that = this;
+					layui.use(['table','laydate','form'],function(){
+						var laydate = layui.laydate,
+							table = layui.table,
+							form = layui.form;
+						laydate.render({
+							elem:'#date1'
+						});
+						var cols = cols0;
+						var datas = [];
+						switch(that.t){
+							case '0': 
+								cols = cols0;
+                                Serv.Get("gc/Summary/Get/0",{},function(response){
+                                    datas = response;
+                                },false);
+								break;
+							case '1': 
+								cols = cols1;
+                                Serv.Get("gc/Summary/Get/1",{},function(response){
+                                    datas = response;
+                                },false);
+								break;
+							case '2': 
+								cols = cols2;
+                                Serv.Get("gc/Summary/Get/2",{},function(response){
+                                    datas = response;
+                                },false);
+								break;
+							case '3': 
+								cols = cols3;
+                                Serv.Get("gc/Summary/Get/3",{},function(response){
+                                    datas = response;
+                                },false);
+								break;
+							case '4': 
+								cols = cols4;
+                                Serv.Get("gc/Summary/Get/4",{},function(response){
+                                    datas = response;
+                                },false);
+								break;
+							case '5': 
+								cols = cols5;
+                                Serv.Get("gc/Summary/Get/5",{},function(response){
+                                    datas = response;
+                                },false);
+								break;
+						}
+						table.render({
+							elem:'#lst',
+							cols:cols,
+							data:datas,
+							height:'full-180',
+							toolbar:'#toolbar'
+						});
+						
+						table.on('tool(lst)',function(obj){
+							if(obj.event == 'info'){
+								layer_linePop = layer.open({
+									type: 2,
+									title:'总结详情',
+									scrollbar: false,
+									skin:'layui-layer-rim',
+									closeBtn: 1,
+									area: ['100%', '100%'],
+									anim: 2,
+									move:false,
+									content: 'summarydetail.html?id=' + obj.data.id
+								});
+							}else if(obj.event == 'edit'){
+								layer_linePop = layer.open({
+									type: 2,
+									title:'总结修改',
+									scrollbar: false,
+									skin:'layui-layer-rim',
+									closeBtn: 1,
+									area: ['100%', '100%'],
+									anim: 2,
+									move:false,
+									content: 'summaryadd.html?is_edit=1&t='+that.t+'&sid=' + obj.data.id
+								});
+							}else if(obj.event == 'del'){
+								layer_confirm("删除后将无法恢复，确认吗？",function(){
+									Serv.Post('gc/Summary/Delete',{id:obj.data.id},function(response){
+										if(response.code == "00"){
+											layer_alert(response.message);
+											window.location.reload();
+										}
+										else{
+											layer_alert(response.message);
+										}
+									})
+								});
+							}
+						});
+					});
+				}
+			})
+		</script>
+	</body>
+</html>

@@ -44,6 +44,7 @@
 							<script type="text/html" id="toolbar">
 								<button class="layui-btn layui-btn-xs" lay-event="view">查看</button>
 								<button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</button>
+								<button class="layui-btn  layui-btn-xs layui-btn-warm" lay-event="position">职位设置</button>
 								<button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="openAccount">开通账户</button>
 								<button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
 							</script>
@@ -55,7 +56,42 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="linePop position">
+		<div class="layui-card-body">
+			<form class="layui-form layui-form2" >
+				<table class="layui-table">
+					<thead>
+						<tr>
+							<th></th>
+							<th>部门</th>
+							<th>职位</th>
+						</tr>
+					</thead>
+					<tr>
+						<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
+						<td>
+							<input type="text" class="layui-input" readonly onclick="user_popup2(this,'department',1)"/>
+						</td>
+						<td>
+							<select>
+								<option>职位一</option>
+								<option>职位二</option>
+								<option>职位三</option>
+								<option>职位四</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<div class="layui-row text-right padding-r-50">
+					<button class="layui-btn" lay-submit="" lay-filter="formDemo">确认</button>
+					<span class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
+				</div>
+			</form>
+		</div>
+	</div>
 	<script type="text/javascript">
+		
 		var data_col = [
 			[{
 					field: 'id',
@@ -63,12 +99,18 @@
 				},
 				{
 					field: 'dptName',
-					title: '部门'
+					title: '部门',
+					templet:function(d){
+						return $.map(d.bindings,function(item){return item.dptName}).join('|');
+					}
 				},
 				{
 					field: 'jobName',
 					title: '职位',
-					width: 80
+					width: 80,
+					templet:function(d){
+						return $.map(d.bindings,function(item){return item.jobName}).join('|');
+					}
 				},
 				{
 					field: 'userName',
@@ -179,6 +221,16 @@
 								layer_alert(result.message);
 							}
 						});
+					});
+				}else if(layEvent=='position'){
+					layer_linePop = layer.open({
+						type: 1,
+						title:'职位设置',
+						String: false,
+						closeBtn: 1,
+						skin: 'layui-layer-rim',
+						area: ['750px','450px'],
+						content: $('.position')
 					});
 				}
 			};

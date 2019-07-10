@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../lib/wangEditor/wangEditor.min.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../lib/vue.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody" id="dom">
+			<div class="layui-card-header" style="padding: 5px 10px 8px 10px;" v-if="!is_edit">
+				<div class="layui-btn-group">
+					<a href="summaryadd.html?t=0" class="layui-btn" v-bind:class="[t == 0 ? '' : 'layui-btn-primary']">日报</a>
+					<a href="summaryadd.html?t=1" class="layui-btn" v-bind:class="[t == 1 ? '' : 'layui-btn-primary']">周报</a>
+					<a href="summaryadd.html?t=2" class="layui-btn" v-bind:class="[t == 2 ? '' : 'layui-btn-primary']">月报</a>
+					<a href="summaryadd.html?t=3" class="layui-btn" v-bind:class="[t == 3 ? '' : 'layui-btn-primary']">季度报</a>
+					<a href="summaryadd.html?t=4" class="layui-btn" v-bind:class="[t == 4 ? '' : 'layui-btn-primary']">半年报</a>
+					<a href="summaryadd.html?t=5" class="layui-btn" v-bind:class="[t == 5 ? '' : 'layui-btn-primary']">年报</a>
+				</div>
+			</div>
+			<!-- 导入上一周、月的计划时 当前时间按选择的为准，不按当前时间 -->
+			<div class="layui-card-body bgwhite">
+				<form class="layui-form layui-form2">
+					<div class="layui-row">
+						<input type="hidden" name="id" value="0" />
+						<input type="hidden" name="companyId" value="1" />
+						<input type="hidden" name="dptId" value="1" />
+						<input type="hidden" name="employeeId" value="1" />
+						<input type="hidden" name="type" />
+						<input type="hidden" name="isRead" value="1" />
+						<input type="hidden" name="employeeName" value="未知" />
+ 						<div class="layui-form-item margin-b-20" v-bind:class="[t == 0 || t == 2 || t == 5 ? 'layui-col-md12' : 'layui-col-md6']">
+							<label class="layui-form-label">日期</label>
+							<div class="layui-input-block">
+								<input type="text" class="layui-input" readonly id="date" name="summaryDate" />
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 1">
+							<label class="layui-form-label">周数</label>
+							<div class="layui-input-block">
+								<select name="selIndex1">
+									<option value="1">第一周</option>
+									<option value="2">第二周</option>
+									<option value="3">第三周</option>
+									<option value="4">第四周</option>
+									<option value="5">第五周</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 3">
+							<label class="layui-form-label">季度</label>
+							<div class="layui-input-block">
+								<select name="selIndex3">
+									<option value="6">一季度</option>
+									<option value="7">二季度</option>
+									<option value="8">三季度</option>
+									<option value="9">四季度</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20" v-if="t == 4">
+							<label class="layui-form-label">半年度</label>
+							<div class="layui-input-block">
+								<select name="selIndex4">
+									<option value="10">上半年</option>
+									<option value="11">下半年</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 margin-b-20" >
+							<label class="layui-form-label">导入</label>
+							<div class="layui-input-block">
+								<button class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">{{labels.import_str}}</button>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">{{labels.l1}}</label>
+							<div class="layui-input-block">
+								<!-- <textarea id="editor1"></textarea> -->
+								<input type="hidden" name="finish">
+								<div id="E_Finish"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">{{labels.l2}}</label>
+							<div class="layui-input-block">
+								<!-- <textarea id="editor2"></textarea> -->
+								<input type="hidden" name="content">
+                                <div id="E_Content"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20" v-if="t > 0">
+							<label class="layui-form-label">{{labels.l3}}</label>
+							<div class="layui-input-block">
+								<!-- <textarea id="editor3"></textarea> -->
+								<input type="hidden" name="plan">
+                                <div id="E_Plan"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">{{labels.l4}}</label>
+							<div class="layui-input-block">
+								<!-- <textarea id="editor4"></textarea> -->
+								<input type="hidden" name="help">
+                                <div id="E_Help"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">{{labels.l5}}</label>
+							<div class="layui-input-block">
+								<!-- <textarea id="editor5"></textarea> -->
+								<input type="hidden" name="description">
+                                <div id="E_Description"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label">附件</label>
+							<div class="layui-input-block">
+								<button class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">上传附件</button>
+							</div>
+						</div>
+					</div>
+					<div class="layui-row">
+						<div class="layui-form-item">
+							<div class="layui-input-block text-right">
+								<button class="layui-btn layui-btn-danger" lay-submit lay-filter="sumAdd">确认</button>
+								<span class="layui-btn" onclick="history.back(-1)"  v-if="!is_edit">返回</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var labels = [
+				{l1:'已完成工作',l2:'未完成工作',l3:'',l4:'需协调和帮助',l5:'备注',import_str:'导入日程'},
+				{l1:'本周完成工作',l2:'本周工作总结',l3:'下周工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上周计划'},
+				{l1:'本月完成工作',l2:'本月工作总结',l3:'下月工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上月计划'},
+				{l1:'本季度完成工作',l2:'本季度工作总结',l3:'下季度工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上季度计划'},
+				{l1:'半年完成工作',l2:'半年工作总结',l3:'下半年工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上半年计划'},
+				{l1:'本年完成工作',l2:'年度工作总结',l3:'明年工作计划',l4:'需协调和帮助',l5:'备注',import_str:'导入上一年计划'},
+			];
+			var vm = new Vue({
+				el:'#dom',
+				data:{
+					labels:'',
+					t:0,
+					is_edit:false
+				},
+				created() {
+					this.t = GetPara('t');
+					this.t = this.t ? this.t : 0;
+					this.labels = labels[this.t];
+					$("input[name='type']").val(this.t);
+
+					this.is_edit = GetPara('is_edit');
+					this.is_edit = this.is_edit ? true : false;
+					
+					var sid = GetPara('sid');
+					if(sid > 0){
+						$("input[name='id']").val(sid);
+					}
+				},
+				mounted() {
+					var that = this;
+					layui.use(['form','layedit','laydate'],function(){
+						var form = layui.form,
+							layedit = layui.layedit,
+							laydate = layui.laydate;
+
+						var E = window.wangEditor
+            			var eFinish = new E('#E_Finish');
+						eFinish.customConfig.onchange = function (html) {
+							$('input[name="finish"]').val(html);
+						};
+						eFinish.create();
+						
+						var eContent = new E('#E_Content');
+						eContent.customConfig.onchange = function (html) {
+							$('input[name="content"]').val(html);
+						};
+						eContent.create();
+						
+						if(that.t > 0){
+							var ePlan = new E('#E_Plan');
+							ePlan.customConfig.onchange = function (html) {
+								$('input[name="plan"]').val(html);
+							};
+							ePlan.create();
+						}
+						var eHelp = new E('#E_Help');
+						eHelp.customConfig.onchange = function (html) {
+							$('input[name="help"]').val(html);
+						};
+						eHelp.create();
+						var eDescription = new E('#E_Description');
+						eDescription.customConfig.onchange = function (html) {
+							$('input[name="description"]').val(html);
+						};
+						eDescription.create();
+						that.t = parseInt(that.t);
+						switch(that.t){
+							case 0:
+								laydate.render({
+									elem:'#date',
+									value:'2019-05-01'
+								});
+								break;
+							case 1:
+							case 2:
+								laydate.render({
+									elem:'#date',
+									value:'2019-05',
+									type:'month'
+								});
+								break;
+							case 3:
+							case 4:
+							case 5:
+								laydate.render({
+									elem:'#date',
+									value:'2019',
+									type:'year'
+								});
+								break;
+						}
+						if($("input[name='id']").val()>0){
+							var sid = $("input[name='id']").val();
+							Serv.Get('gc/Summary/GetSingle/'+sid,{},function(response){
+								$("input[name='companyId']").val(response.companyId);
+								$("input[name='dptId']").val(response.dptId);
+								$("input[name='employeeId']").val(response.employeeId);
+								$("input[name='type']").val(response.type);
+								$("input[name='summaryDate']").val(response.summaryDate);
+								$("input[name='isRead']").val(response.isRead);
+
+								$('input[name="finish"]').val(response.finish);
+								$('input[name="content"]').val(response.content);
+								$('input[name="plan"]').val(response.plan);
+								$('input[name="help"]').val(response.help);
+								$('input[name="description"]').val(response.description);
+
+								eFinish.txt.html(response.finish);
+								eContent.txt.html(response.content);
+								ePlan.txt.html(response.plan);
+								eHelp.txt.html(response.help);
+								eDescription.txt.html(response.description);
+								
+								if(that.t == 1){
+									$("select[name='selIndex1']").val(response.index);
+								}
+								else if(that.t == 3){
+									$("select[name='selIndex3']").val(response.index);
+								}
+								else if(that.t == 4){
+									$("select[name='selIndex4']").val(response.index);
+								}
+								form.render('select');
+							});
+						}
+						form.on('submit(sumAdd)',function(laydate){
+							var ti = $("input[name='type']").val();
+							if(ti == 1){
+								laydate.field.index = $("select[name='selIndex1']").val();
+							}
+							else if(ti == 3){
+								laydate.field.index = $("select[name='selIndex3']").val();
+							}
+							else if(ti == 4){
+								laydate.field.index = $("select[name='selIndex4']").val();
+							}
+							else{
+								laydate.field.index = 1;
+							}
+							laydate.field.fileUrl = "";
+							Serv.Post('gc/Summary/Add',{model:laydate.field},function(response){
+								if(response.code == "00"){
+									layer_confirm('成功，是否继续添加？',function(){
+										window.location.reload();
+									},function(){
+										$("input[name='id']").val(response.data);
+									});
+								}
+								else{
+									layer_alert(response.message);
+								}
+							});
+							return false;
+						});
+					});
+				}
+			})
+		</script>
+	</body>
+</html>

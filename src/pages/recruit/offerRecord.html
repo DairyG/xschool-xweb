@@ -27,30 +27,20 @@
 							<div class="layui-tab-item layui-show">
 								<form class="layui-form layui-form2 layui-search-form">
 									<div class="layui-row">
-										<div class="layui-form-item layui-col-md3 margin-b-20">
-											<label class="layui-form-label">姓名<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md3 margin-b-20">
-											<label class="layui-form-label">手机<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<input type="text" name="title" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-										<div class="layui-form-item layui-col-md4 margin-b-20">
-											<label class="layui-form-label">状态<span class="text-red"> *</span></label>
-											<div class="layui-input-block">
-												<select>
-													<option></option>
-													<option>未面试</option>
-													<option>已面试</option>
-													<option>已通过</option>
-													<option>未通过</option>
-												</select>
-											</div>
-										</div>
+											<div class="layui-form-item layui-col-md3 margin-b-20">
+													<label class="layui-form-label"><span class="text-red"></span>姓名</label>
+													<div class="layui-input-block">
+														<input type="text" name="searchName"
+															placeholder="请输入姓名" autocomplete="off" class="layui-input">
+													</div>
+												</div>
+												<div class="layui-form-item layui-col-md3 margin-b-20">
+													<label class="layui-form-label"><span class="text-red"></span>手机</label>
+													<div class="layui-input-block">
+														<input type="text" name="searchPhone"
+															placeholder="请输入手机" autocomplete="off" class="layui-input">
+													</div>
+												</div>
 										<div class="layui-form-item layui-col-md2 margin-b-20">
 											<button class="layui-btn layui-btn-normal">搜索</button>
 										</div>	
@@ -59,7 +49,7 @@
 								<table id="lst" lay-filter="lst"></table>
 								<script type="text/html" id="toolbar">
 									<button class="layui-btn  layui-btn-xs" lay-event="info">查看</button>
-									<button class="layui-btn  layui-btn-xs layui-btn-normal">入职</button>
+									<button class="layui-btn  layui-btn-xs layui-btn-normal" lay-event="addPerson">入职</button>
 								</script>
 								<script type="text/html" id="bar">
 								</script>
@@ -121,17 +111,32 @@
 				var table = layui.table,
 					element = layui.element;
 	
-				function search() {
-					InterviewStatus = 3
+				var search = function() {
+					return {Name : $("input[name='searchName']").val(),Phone : $("input[name='searchPhone']").val(),State:3};
 				}
 	
 				//操作栏的回调函数
 				var onTools = function (layEvent, data) {
 					var value = data.id;
 					if (layEvent === 'info') {
-						window.location.href = '/pages/recruit/resumeDetails.html?id=' + value;
-					} else if (layEvent === "del") {
-						
+						window.location.href = '/pages/recruit/offerDetails.html?id=' + value;
+					} else if (layEvent === "addPerson") {
+						Serv.Get("gc/Resume/getInfo/" + value,{},function(response){
+							//console.log(response);
+							if(response){
+								response.id = 0;
+								response.status = 0;
+								Serv.Post('uc/employee/edit?operation=1', response, function (result) {
+								layer_load_lose();
+								if (result.succeed) {
+									response.id = result.data;
+									window.location.href = "/pages/person/personAdd.html?id=" + result.data;
+								} else {
+									layer_alert(result.message);
+								}
+							});
+							}
+						});
 					}
 				};
 	
@@ -141,7 +146,7 @@
 					"lst", //绑定的列表Id
 					"", //绑定的工具条Id
 					data_col, //表头的显示行
-					"gc/resume/GetListByInterviewStatus", //action url 只能post提交
+					"gc/resume/get", //action url 只能post提交
 					search, //获取查询条件的函数
 					null, //如果在显示之前需要对数据进行整理需要实现，否则传null
 					null, //有选择行才能有的操作，实现该方法,否则传null
