@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
 	<script type="text/javascript" src="../../js/service.js"></script>
 	<script type="text/javascript" src="../../js/common.js"></script>
+	<script type="text/javascript" src="../../js/cache.js"></script>
 	<script type="text/javascript" src="../../js/pager.js"></script>
 	<script type="text/javascript" src="../../js/ztree.search.left.js"></script>
 </head>
@@ -44,16 +45,20 @@
 				{
 					field: 'dptName',
 					title: '部门',
-					templet:function(d){
-						return $.map(d.bindings,function(item){return item.dptName}).join('|');
+					templet: function (d) {
+						return $.map(d.bindings, function (item) {
+							return item.dptName
+						}).join('|');
 					}
 				},
 				{
 					field: 'jobName',
 					title: '职位',
 					width: 80,
-					templet:function(d){
-						return $.map(d.bindings,function(item){return item.jobName}).join('|');
+					templet: function (d) {
+						return $.map(d.bindings, function (item) {
+							return item.jobName
+						}).join('|');
 					}
 				},
 				{
@@ -115,23 +120,31 @@
 		];
 
 		var parameter = {
-			companyId: 1,
+			companyId: '',
 			dptId: ''
 		};
 
-		var lstPager, dptZTreeObj;
+		var lstPager;
 		layui.use(['table'], function () {
 			var table = layui.table;
 
-			dptZTreeObj = new ZTreeRadio('dptTree', {}, function (event, treeId, treeNode) {
-				parameter.dptId = treeNode.id;
+			var dptZTree = new ZTreeRadio('dptTree', {}, function (event, treeId, treeNode) {
+				parameter.companyId = treeNode.companyId;
+				if (treeNode.id > 0) {
+					parameter.dptId = treeNode.id;
+				}
 				lstPager.refresh();
 			});
-
-			getDpt(parameter.companyId);
+			dptZTree.reload();
+			var dptZTreeObj = dptZTree.obj();
+			var nodes = dptZTreeObj.getNodes();
+			if (nodes.length > 0) {
+				parameter.companyId = nodes[0].companyId;
+				dptZTreeObj.selectNode(nodes[0]);
+			}
 
 			function search() {
-				console.log(parameter);
+				// console.log(parameter);
 				return parameter;
 			}
 			//分页初始化
@@ -149,16 +162,6 @@
 				'full-100'
 			);
 		});
-
-		var zTreeObj;
-
-
-		//获取部门
-		function getDpt(cId) {
-			Serv.Get('uc/department/GetByCompany/' + cId, {}, function (result) {
-				dptZTreeObj.reload(result);
-			})
-		}
 	</script>
 </body>
 

@@ -56,10 +56,10 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="linePop position">
 		<div class="layui-card-body">
-			<form class="layui-form layui-form2" >
+			<form class="layui-form layui-form2">
 				<table class="layui-table">
 					<thead>
 						<tr>
@@ -71,7 +71,8 @@
 					<tr>
 						<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
 						<td>
-							<input type="text" class="layui-input" readonly onclick="user_popup2(this,'department',1)"/>
+							<input type="text" class="layui-input" readonly
+								onclick="user_popup2(this,'department',1)" />
 						</td>
 						<td>
 							<select>
@@ -91,7 +92,6 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		
 		var data_col = [
 			[{
 					field: 'id',
@@ -100,16 +100,20 @@
 				{
 					field: 'dptName',
 					title: '部门',
-					templet:function(d){
-						return $.map(d.bindings,function(item){return item.dptName}).join('|');
+					templet: function (d) {
+						return $.map(d.bindings, function (item) {
+							return item.dptName
+						}).join('|');
 					}
 				},
 				{
 					field: 'jobName',
 					title: '职位',
 					width: 80,
-					templet:function(d){
-						return $.map(d.bindings,function(item){return item.jobName}).join('|');
+					templet: function (d) {
+						return $.map(d.bindings, function (item) {
+							return item.jobName
+						}).join('|');
 					}
 				},
 				{
@@ -222,14 +226,14 @@
 							}
 						});
 					});
-				}else if(layEvent=='position'){
+				} else if (layEvent == 'position') {
 					layer_linePop = layer.open({
 						type: 1,
-						title:'职位设置',
+						title: '职位设置',
 						String: false,
 						closeBtn: 1,
 						skin: 'layui-layer-rim',
-						area: ['750px','450px'],
+						area: ['750px', '450px'],
 						content: $('.position')
 					});
 				}
@@ -250,7 +254,6 @@
 				'full-100'
 			);
 		});
-	
 	</script>
 </body>
 

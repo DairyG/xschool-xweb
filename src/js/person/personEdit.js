@@ -333,13 +333,13 @@ var vm = new Vue({
                 if (result) {
                     _this.hasSubmit = true;
 
-                    _this.basicArrival = result.workerInField;
-                    _this.basicEducation = result.education;
-                    _this.basicProperties = result.properties;
-                    _this.basicRelations = result.socialRelations;
-                    _this.basicRecruitment = result.recruitmentSource;
-
-                    // console.log(_this.basicEducation);
+                    _this.$nextTick(function () {
+                        _this.basicArrival = result.workerInField;
+                        _this.basicEducation = result.education;
+                        _this.basicProperties = result.properties;
+                        _this.basicRelations = result.socialRelations;
+                        _this.basicRecruitment = result.recruitmentSource;
+                    });
 
                     if (id.IsNum()) {
                         _this.getPerson(id, table);
