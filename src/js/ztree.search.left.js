@@ -37,18 +37,42 @@ function ZTreeRadio(zTreeDom, options, callBack) {
                 if (node != null) {
                     zTree.expandNode(node, true, false, false);
                 }
-
             }
         }
     };
     return {
         reload: function (data) {
-            console.log(options.zTreeDOM);
-            zTreeObj = $.fn.zTree.init(options.zTreeDOM, setting, data);
+            var companys = window.globCache.getCompany();
+            var dpts = window.globCache.getDepartment();
+            var array = $.map(companys, function (item) {
+                return {
+                    id: item.id * -1,
+                    dptName: item.companyName,
+                    companyId: item.id,
+                    pid: 0,
+                    open: true
+                };
+            });
+            var dptArray = $.map(dpts, function (item) {
+                if (item.pid == 0) {
+                    item.pid = item.companyId * -1;
+                    return item;
+                }
+                return item;
+            });
+            $.each(dptArray, function (index, item) {
+                array.push(item);
+            });
+
+            // console.log(options.zTreeDOM);
+            zTreeObj = $.fn.zTree.init(options.zTreeDOM, setting, array);
             var nodes = zTreeObj.getNodes();
             if (nodes.length > 0) {
                 zTreeObj.expandNode(nodes[0], true);
             }
+        },
+        obj: function () {
+            return zTreeObj;
         }
     }
 }
