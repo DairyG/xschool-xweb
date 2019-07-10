@@ -54,9 +54,16 @@
 			var data_col = [[
 				{type: 'numbers', title: '序号'},
 				{field: 'title', title: '标题'},
-				{field: 'date', title: '发布日期'},
-				{field: 'link_num', title: '浏览次数'},
-				{field: 'is_force', title: '强制阅读'},
+				{ field: 'createDate', title: '发布日期' },
+				{ field: 'readCount', title: '浏览次数' },
+				{
+					field: 'isNeedRead', title: '强制阅读', formatter: function (item) {
+						if (item == 1)
+							return "是";
+						else
+							return "否";
+					}
+				},
 				{field: 'people', title: '查看人'},
 				{title:'操作',toolbar:'#toolbar',width:180,fixed:'right'}
 			]];
