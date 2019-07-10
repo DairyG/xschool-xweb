@@ -47,7 +47,7 @@ layui.use(['table', 'element', 'laydate'], function () {
     lstPager = Pager2(table,//lay-ui的table控件
         $("input[name='title']").val(),//列表名称
         "lst",//绑定的列表Id
-        'toolbar',//绑定的工具条Id
+        'bar',//绑定的工具条Id
         data_col,//表头的显示行
         "gc/note/GetNotePage",//action url 只能post提交
         search,
@@ -61,7 +61,7 @@ layui.use(['table', 'element', 'laydate'], function () {
     table.on('tool(lst)', function (obj) {
         var layEvent = obj.event;
         if (layEvent == "info") {
-            window.location.href = "公告详情.html";
+            window.location.href = "/pages/note/noteDetail.html?id=1";
         }
     });
     table.on('toolbar(lst)', function (obj) {
