@@ -40,7 +40,7 @@
 	<div class="layui-col-md6 border-l-1 margin-t-20">
 		<div class="bgwhite padding-10">
 			<ul class="selected_box" id="selected_box">
-				<input type="hidden" id="sel_type" value="org" />
+				<input type="hidden" id="sel_type" value="" />
 				<input type="hidden" id="company_ids" value="," />
 				<input type="hidden" id="company_names" value="," />
 				<input type="hidden" id="department_ids" value="," />
@@ -62,7 +62,7 @@
 	var has_position = $('#popup_content').data('has_position');
 	var has_dpt_position = $('#popup_content').data('has_dpt_position');
 
-	var sel_type = 'org';
+	var sel_type = '';
 	var allow_num = $('#popup_content').data('num');
 	var user_company = {
 		id: 1,
@@ -95,8 +95,7 @@
 				company_arr = result.items;
 			}, false);
 		}
-
-		show_items('company', 0);
+		//show_items('company', 0);
 	});
 
 	//处理导航栏
@@ -372,17 +371,20 @@
 		return '<li>' + checkbox + icon + text + '</li>';
 	}
 
-	function change_sel_type(obj, this_type) {
+	function change_sel_type(obj, this_type,is_clear = true) {
 		var p_label = $(obj).parent('label');
 		$(p_label).find('i').addClass('layui-icon-radio').removeClass('layui-icon-circle');
 		$(p_label).siblings('label').find('i').removeClass('layui-icon-radio').addClass('layui-icon-circle');
 		//每次点击切换时都执行一次清除操作
-		$("#selected_box li").each(function () {
-			$(this).find('i').click();
-		});
+		if(is_clear){
+			$("#selected_box li").each(function () {
+				$(this).find('i').click();
+			});
+		}
 		$(".loaction_box").html('');
 		sel_type = this_type;
 		$('#sel_type').val(sel_type);
 		show_items('company', user_company.id);
 	}
+	
 </script>

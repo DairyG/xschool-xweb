@@ -477,12 +477,15 @@ function user_popup2(obj = null, allow_sels, num = 0, is_close_other = false, ca
 						}
 					});
 				}
-				$('.radio_box input').each(function () {
-					if ($(this).val() == sel_type) {
-						$(this).click();
-					}
-				});
+				
+			} else {
+				sel_type = 'org';
 			}
+			$('.radio_box input').each(function () {
+				if ($(this).val() == sel_type) {
+					change_sel_type($(this),sel_type,false);
+				}
+			});
 		}
 	});
 
