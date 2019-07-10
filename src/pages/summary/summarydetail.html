@@ -19,7 +19,7 @@
 				<li>
 					<div class="right">
 						<div class="title text-85">
-							<span class="text-add">张三</span> 创建于<label id="lblAddtime"></label>
+							<span class="text-add" id="employeeName"></span> 创建于<label id="lblAddtime"></label>
 							<div class="btns fr">
 								<!-- <button class="layui-btn layui-btn-xs layui-btn-primary" onclick="edit_daily()">编辑</button> -->
 								<button class="layui-btn layui-btn-xs layui-btn-primary" onclick="reply_daily()">评价</button>
@@ -129,7 +129,8 @@
 					})
 				}
                 Serv.Get('gc/Summary/GetSingle/'+sid,{},function(response){
-                    $("#lblAddtime").html(response.addTime);
+					$("#lblAddtime").html(response.addTime.FormatDate(true));
+					$("#employeeName").html(response.employeeName);
                     $("#divFinish").html(response.finish);
                     $("#divPlan").html(response.plan);
                     $("#divHelp").html(response.help);
@@ -139,7 +140,7 @@
 					var htmlDeply = "";
 					$.each(response,function(i,item){
 						htmlDeply += '<li>';
-						htmlDeply += '<p class="text-85"><span class="text-add">'+item.employeeName+'</span> 创建于'+item.addTime+'</p>';
+						htmlDeply += '<p class="text-85"><span class="text-add">'+item.employeeName+'</span> 创建于'+item.addTime.FormatDate(true)+'</p>';
 						htmlDeply += '<div class="edit_content">'+item.reply+'</div>';
 						htmlDeply += '</li>';
 					})

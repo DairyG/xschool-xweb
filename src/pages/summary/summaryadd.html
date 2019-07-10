@@ -33,7 +33,8 @@
 						<input type="hidden" name="dptId" value="1" />
 						<input type="hidden" name="employeeId" value="1" />
 						<input type="hidden" name="type" />
-						<input type="hidden" name="isRead" />
+						<input type="hidden" name="isRead" value="1" />
+						<input type="hidden" name="employeeName" value="未知" />
  						<div class="layui-form-item margin-b-20" v-bind:class="[t == 0 || t == 2 || t == 5 ? 'layui-col-md12' : 'layui-col-md6']">
 							<label class="layui-form-label">日期</label>
 							<div class="layui-input-block">
@@ -162,8 +163,9 @@
 					this.is_edit = this.is_edit ? true : false;
 					
 					var sid = GetPara('sid');
-					$("input[name='id']").val(sid);
-					
+					if(sid > 0){
+						$("input[name='id']").val(sid);
+					}
 				},
 				mounted() {
 					var that = this;
@@ -228,7 +230,6 @@
 								});
 								break;
 						}
-						console.log($("input[name='id']").val());
 						if($("input[name='id']").val()>0){
 							var sid = $("input[name='id']").val();
 							Serv.Get('gc/Summary/GetSingle/'+sid,{},function(response){
@@ -250,15 +251,15 @@
 								ePlan.txt.html(response.plan);
 								eHelp.txt.html(response.help);
 								eDescription.txt.html(response.description);
-
-								if(this.t == 1){
-									$("select[name='selIndex1']").val(response.type);
+								
+								if(that.t == 1){
+									$("select[name='selIndex1']").val(response.index);
 								}
-								else if(this.t == 3){
-									$("select[name='selIndex3']").val(response.type);
+								else if(that.t == 3){
+									$("select[name='selIndex3']").val(response.index);
 								}
-								else if(this.t == 4){
-									$("select[name='selIndex4']").val(response.type);
+								else if(that.t == 4){
+									$("select[name='selIndex4']").val(response.index);
 								}
 								form.render('select');
 							});
@@ -280,7 +281,7 @@
 							laydate.field.fileUrl = "";
 							Serv.Post('gc/Summary/Add',{model:laydate.field},function(response){
 								if(response.code == "00"){
-									layer_confirm('添加成功，是否继续添加？',function(){
+									layer_confirm('成功，是否继续添加？',function(){
 										window.location.reload();
 									},function(){
 										$("input[name='id']").val(response.data);
