@@ -61,7 +61,19 @@ layui.use(['table', 'element', 'laydate'], function () {
     table.on('tool(lst)', function (obj) {
         var layEvent = obj.event;
         if (layEvent == "info") {
-            window.location.href = "/pages/note/noteDetail.html?id=1";
+            window.location.href = "/pages/note/noteDetail.html?id="+obj.data.id;
+		}
+		if (layEvent == "del") {
+			layer_load();
+            Serv.Get("gc/note/DeleteNote?id=" + obj.data.id, {}, function (result) {
+                layer_load_lose();
+                if (result.succeed) {
+					lstPager.refresh();
+                }
+                else {
+                    layer_alter("未获取到相应数据！");
+                }
+            })
         }
     });
     table.on('toolbar(lst)', function (obj) {

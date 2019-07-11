@@ -14,6 +14,7 @@
 		<script type="text/javascript" src="../../js/note/noteManage.js"></script>
 		<script type="text/javascript" src="../../js/pager.js"></script>
 		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
 	</head>
 	<body class="bgf2f2f2">
 		<div class="childrenBody">
@@ -52,12 +53,12 @@
 		</div>
 		<script type="text/javascript">
 			var data_col = [[
-				{type: 'numbers', title: '序号'},
+				{type: 'id', title: '序号', templet: function (item) { return item.id; }},
 				{field: 'title', title: '标题'},
 				{ field: 'createDate', title: '发布日期' },
 				{ field: 'readCount', title: '浏览次数' },
 				{
-					field: 'isNeedRead', title: '强制阅读', formatter: function (item) {
+					field: 'isNeedRead', title: '强制阅读', templet: function (item) {
 						if (item == 1)
 							return "是";
 						else
@@ -67,12 +68,6 @@
 				{field: 'people', title: '查看人'},
 				{title:'操作',toolbar:'#toolbar',width:180,fixed:'right'}
 			]];
-			var datas = [
-				{'title':'端午放假通知',date:'2019-5-25',link_num:10,is_force:'是',people:''},
-				{'title':'端午放假通知',date:'2019-5-25',link_num:10,is_force:'否',people:''},
-				{'title':'端午放假通知',date:'2019-5-25',link_num:10,is_force:'否',people:''},
-				{'title':'端午放假通知',date:'2019-5-25',link_num:10,is_force:'否',people:''},
-			];
 		</script>
 	</body>
 </html>

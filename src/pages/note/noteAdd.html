@@ -26,6 +26,7 @@
 							<form class="layui-form layui-form2" lay-filter="frm">
 								<div class="layui-row">
 									<div class="layui-form-item layui-col-md12 margin-b-20">
+											<input type="hidden" name="id" v-model="id" value="0">
 										<label class="layui-form-label">标题<span class="text-red"> *</span></label>
 										<div class="layui-input-block">
 											<input type="text" name="Title" required lay-verify="required"
@@ -35,8 +36,8 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">是否强制阅读</label>
 										<div class="layui-input-block">
-											<input type="radio" name="IsNeedRead" value="否" title="否" checked>
-											<input type="radio" name="IsNeedRead" value="是" title="是">
+											<input type="radio" name="IsNeedRead" value="0" title="否" checked>
+											<input type="radio" name="IsNeedRead" value="1" title="是">
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
@@ -65,8 +66,9 @@
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">公告附件<span class="text-red"> *</span></label>
 										<div class="layui-input-block">
-											<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
-													class="layui-icon">&#xe67c;</i>上传附件</span>
+											<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" id="test1">
+												<i class="layui-icon">&#xe67c;</i>上传附件
+											</span>
 										</div>
 									</div>
 									<div class="layui-row">
