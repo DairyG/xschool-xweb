@@ -88,6 +88,7 @@ function Pager2(table, title, tblId, toobarId, colData, action, searchFunc, pars
         cols: colData,
         parseData: function (res) { //res 即为原始返回的数据
             res = res.data;
+            
             if (res && res["items"].length > 0) {
                 if (parseFunc) {
                     res["items"] = parseFunc(res["items"]);

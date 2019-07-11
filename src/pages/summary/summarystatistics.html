@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../lib/vue.js"></script>
+    <script type="text/javascript" src="../../js/pager.js"></script>
+</head>
+
+<body class="bgf2f2f2">
+    <div class="childrenBody" id="dom">
+        <div class="layui-card-header" style="padding: 5px 10px 8px 10px;">
+            <div class="layui-btn-group">
+                <a href="summarystatistics.html?t=0" class="layui-btn"
+                    v-bind:class="[t == 0 ? '' : 'layui-btn-primary']">日报</a>
+                <a href="summarystatistics.html?t=1" class="layui-btn"
+                    v-bind:class="[t == 1 ? '' : 'layui-btn-primary']">周报</a>
+                <a href="summarystatistics.html?t=2" class="layui-btn"
+                    v-bind:class="[t == 2 ? '' : 'layui-btn-primary']">月报</a>
+                <a href="summarystatistics.html?t=3" class="layui-btn"
+                    v-bind:class="[t == 3 ? '' : 'layui-btn-primary']">季度报</a>
+                <a href="summarystatistics.html?t=4" class="layui-btn"
+                    v-bind:class="[t == 4 ? '' : 'layui-btn-primary']">半年报</a>
+                <a href="summarystatistics.html?t=5" class="layui-btn"
+                    v-bind:class="[t == 5 ? '' : 'layui-btn-primary']">年报</a>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <form class="layui-form layui-form2 layui-search-form">
+                <div class="layui-row">
+                    <div class="layui-form-item layui-col-md3 margin-b-20">
+                        <label class="layui-form-label">部门</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" placeholder="请选择部门" autocomplete="off" class="layui-input"
+                                readonly onclick="user_popup2(this,'department')">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md3 margin-b-20">
+                        <label class="layui-form-label">日期</label>
+                        <div class="layui-input-block">
+                            <input type="text" autocomplete="off" class="layui-input" id="date1" readonly />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md3 margin-b-20">
+                        <label class="layui-form-label">人员</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" placeholder="请输入人员名称" autocomplete="off"
+                                class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md2 margin-b-20">
+                        <button class="layui-btn layui-btn-normal">搜索</button>
+                    </div>
+                </div>
+            </form>
+            <table id="lst" lay-filter="lst"></table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var col0 = [[
+            { type: 'numbers', title: '序号' },
+            { field: 'userName', title: '名称' },
+            { field: 'd1', title: '1', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '2', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd3', title: '3', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd4', title: '4', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd5', title: '5', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd6', title: '6', templet: function (d) { if (d.d6) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd7', title: '7', templet: function (d) { if (d.d7) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd8', title: '8', templet: function (d) { if (d.d8) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd9', title: '9', templet: function (d) { if (d.d9) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd10', title: '10', templet: function (d) { if (d.d10) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd11', title: '11', templet: function (d) { if (d.d11) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd12', title: '12', templet: function (d) { if (d.d12) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd13', title: '13', templet: function (d) { if (d.d13) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd14', title: '14', templet: function (d) { if (d.d14) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd15', title: '15', templet: function (d) { if (d.d15) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd16', title: '16', templet: function (d) { if (d.d16) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.id+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd17', title: '17', templet: function (d) { if (d.d17) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd18', title: '18', templet: function (d) { if (d.d18) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd19', title: '19', templet: function (d) { if (d.d19) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd20', title: '20', templet: function (d) { if (d.d20) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd21', title: '21', templet: function (d) { if (d.d21) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd22', title: '22', templet: function (d) { if (d.d22) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd23', title: '23', templet: function (d) { if (d.d23) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd24', title: '24', templet: function (d) { if (d.d24) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd25', title: '25', templet: function (d) { if (d.d25) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd26', title: '26', templet: function (d) { if (d.d26) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd27', title: '27', templet: function (d) { if (d.d27) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd28', title: '28', templet: function (d) { if (d.d28) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd29', title: '29', templet: function (d) { if (d.d29) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd30', title: '30', templet: function (d) { if (d.d30) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd31', title: '31', templet: function (d) { if (d.d31) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'total', title: '合计' }
+        ]];
+        var col1 = [[
+            { type: 'numbers', title: '序号' },
+            { field: 'userName', title: '名称' },
+            { field: 'd1', title: '第一周', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd1+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '第二周', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd2+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd3', title: '第三周', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd3+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd4', title: '第四周', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd4+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd5', title: '第五周', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd5+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } }
+        ]];
+        var col2 = [[
+            { type: 'numbers', title: '序号' },
+            { field: 'userName', title: '名称' },
+            { field: 'd1', title: '一月', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '二月', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd3', title: '三月', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd4', title: '四月', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd5', title: '五月', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd6', title: '六月', templet: function (d) { if (d.d6) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd7', title: '七月', templet: function (d) { if (d.d7) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd8', title: '八月', templet: function (d) { if (d.d8) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd9', title: '九月', templet: function (d) { if (d.d9) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd10', title: '十月', templet: function (d) { if (d.d10) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd11', title: '十一月', templet: function (d) { if (d.d11) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd12', title: '十二月', templet: function (d) { if (d.d12) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+        ]];
+        var col3 = [[
+            { type: 'numbers', title: '序号' },
+            { field: 'userName', title: '名称' },
+            { field: 'd1', title: '一季度', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '二季度', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd3', title: '三季度', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd4', title: '四季度', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+        ]];
+        var col4 = [[
+            { type: 'numbers', title: '序号' },
+            { field: 'userName', title: '名称' },
+            { field: 'd1', title: '上半年', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '下半年', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+        ]];
+        var col5 = [[
+            { type: 'numbers', title: '序号' },
+            { field: 'userName', title: '名称' },
+            { field: 'd1', title: '年', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+        ]];
+        var vm = new Vue({
+            el: '#dom',
+            data: {
+                labels: '',
+                t: 0,
+            },
+            created() {
+                this.t = GetPara('t');
+                this.t = this.t ? this.t : '0';
+            },
+            methods: {
+
+            },
+
+            mounted() {
+                var that = this;
+                var parameter = {
+                    companyId: 1,
+                    linkPhone: '',
+                    userName: ''
+                };
+                var parametersummary = {
+                    companyId: '',
+                    dptId: '',
+                    type: that.t,
+                    summaryDate: ''
+                };
+                layui.use(['table', 'laydate', 'form'], function () {
+                    var laydate = layui.laydate,
+                        table = layui.table,
+                        form = layui.form;
+                    laydate.render({
+                        elem: '#date1'
+                    });
+                    var cols = col0;
+                    switch (that.t) {
+                        case '0': cols = col0; break;
+                        case '1': cols = col1; break;
+                        case '2': cols = col2; break;
+                        case '3': cols = col3; break;
+                        case '4': cols = col4; break;
+                        case '5': cols = col5; break;
+                    }
+                    var datas = [];
+                    var initData = function () {
+                        var mydate = new Date();
+                        var year = mydate.getFullYear();
+                        var month = mydate.getMonth() + 1;
+                        if (month < 10) {
+                            month = "0" + month;
+                        }
+                        switch (that.t) {
+                            case '0':
+                                cols = col0;
+                                parametersummary.summaryDate = year + "-" + month;
+                                Serv.Post("gc/Summary/Get", { serch: parametersummary }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '1':
+                                cols = col1;
+                                parametersummary.summaryDate = year + "-" + month;
+                                Serv.Post("gc/Summary/Get", { serch: parametersummary }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '2':
+                                cols = col2;
+                                parametersummary.summaryDate = year;
+                                Serv.Post("gc/Summary/Get", { serch: parametersummary }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '3':
+                                cols = col3;
+                                parametersummary.summaryDate = year;
+                                Serv.Post("gc/Summary/Get", { serch: parametersummary }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '4':
+                                cols = col4;
+                                parametersummary.summaryDate = year;
+                                Serv.Post("gc/Summary/Get", { serch: parametersummary }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                            case '5':
+                                cols = col5;
+                                parametersummary.summaryDate = year;
+                                Serv.Post("gc/Summary/Get", { serch: parametersummary }, function (response) {
+                                    datas = response;
+                                }, false);
+                                break;
+                        }
+                    };
+                    initData();
+                    function search() {
+                        return parameter;
+                    }
+                    //数据整理回调函数
+                    var parseData = function (items) {
+                        $.each(items, function (i, item) {
+                            switch (that.t) {
+                                case '0':
+                                    for (var i = 0; i < datas.length; i++) {
+                                        item.total = 0;
+                                        var summaryDate = datas[i].summaryDate;
+                                        summaryDate = summaryDate.split('-');
+                                        summaryDate = summaryDate[2];
+                                        summaryDate = parseInt(summaryDate);
+                                        var k = 'd' + summaryDate;
+                                        if (datas[i].employeeId == item.id) {
+                                            item[k] = '1';
+                                            item.total = parseInt(item.total) + 1;
+                                        }
+                                    }
+                                    break;
+                                case '1':
+                                    for (var i = 0; i < datas.length; i++) {
+                                        var k = 'd' + datas[i].index;
+                                        if (datas[i].employeeId == item.id) {
+                                            //var sk = 'sid' + k;
+                                            //item.append(sk,datas[i].id);
+                                            item[k] = '1';    
+                                            item.sid = datas[i].id;
+                                        }
+                                    }
+                                    break;
+                                case '2':
+                                    for (var i = 0; i < datas.length; i++) {
+                                        var summaryDate = datas[i].summaryDate;
+                                        summaryDate = summaryDate.split('-');
+                                        summaryDate = summaryDate[1];
+                                        summaryDate = parseInt(summaryDate);
+                                        var k = 'd' + summaryDate;
+                                        if (datas[i].employeeId == item.id) {
+                                            item[k] = '1';
+                                            item.sid = datas[i].id;
+                                        }
+                                    }
+                                    break;
+                                case '3':
+                                    for (var i = 0; i < datas.length; i++) {
+                                        var k = "";
+                                        if (datas[i].index > 5) {
+                                            k = 'd' + parseInt(datas[i].index - 5);
+                                        }
+                                        if (datas[i].employeeId == item.id) {
+                                            item.sid = datas[i].id;
+                                            item[k] = '1';
+                                        }
+                                    }
+                                    break;
+                                case '4':
+                                    for (var i = 0; i < datas.length; i++) {
+                                        var k = "";
+                                        if (datas[i].index > 9) {
+                                            k = 'd' + parseInt(datas[i].index - 9);
+                                        }
+                                        if (k != "" && datas[i].employeeId == item.id) {
+                                            item.sid = datas[i].id;
+                                            item[k] = '1';
+                                        }
+                                    }
+                                    break;
+                                case '5':
+                                    for (var i = 0; i < datas.length; i++) {
+                                        if (datas[i].employeeId == item.id) {
+                                            item.sid = datas[i].id;
+                                            item.d1 = '1';
+                                        }
+                                    }
+                                    break;
+                            }
+                        });
+                        return items;
+                    };
+                    var lstPager = Pager(table, //lay-ui的table控件
+                        '员工列表', //列表名称
+                        'lst', //绑定的列表Id
+                        '', //绑定的工具条Id
+                        cols, //表头的显示行
+                        'uc/employee/get', //action url 只能post提交
+                        search, //获取查询条件的函数
+                        parseData, //如果在显示之前需要对数据进行整理需要实现，否则传null
+                        null, //有选择行才能有的操作，实现该方法,否则传null
+                        null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+                        null,
+                        'full-100'
+                    );
+
+                });
+            }
+        });
+        function show_info(sid) {
+            layer_linePop = layer.open({
+                type: 2,
+                title: '总结详情',
+                scrollbar: false,
+                skin: 'layui-layer-rim',
+                closeBtn: 1,
+                area: ['100%', '100%'],
+                anim: 2,
+                move: false,
+                content: 'summarydetail.html?id='+sid
+            });
+        }
+    </script>
+</body>
+
+</html>
