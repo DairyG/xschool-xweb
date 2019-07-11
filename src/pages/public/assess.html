@@ -16,14 +16,15 @@
 </form>
 <table id="assess_lst" lay-filter="assess_lst"></table>
 <script type="text/javascript">
-	var type = $('#popup_content').data('type');
+	var typeCb = $('#popup_content').data('type');
+
 	var parameter = {
 		etId: '',
 		name: ''
 	};
 	var data_col = [
 		[{
-				type: type
+				type: typeCb
 			},
 			{
 				field: 'id',

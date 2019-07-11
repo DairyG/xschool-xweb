@@ -482,7 +482,7 @@ function user_popup2(obj = null, allow_sels, num = 0, is_close_other = false, ca
 		$('#sel_type').val(sel_type);
 		$('.radio_box input').each(function () {
 			if ($(this).val() == sel_type) {
-				change_sel_type($(this),sel_type,false);
+				change_sel_type($(this), sel_type, false);
 			}
 		});
 	});
@@ -847,9 +847,14 @@ function sel_remove(obj) {
 /**
  * 考核项选择框
  */
-function assess_popup(obj, type = 'checkbox', callBack) {
+function assess_popup(obj, type = 'checkbox', callback) {
+	var table;
+	layui.use(['table'], function () {
+		table = layui.table;
+	});
 	$('body').append('<div id="popup_content" data-type=' + type + '></div>');
 	$('#popup_content').load("../../pages/public/assess.html");
+
 	layer.open({
 		type: 1,
 		title: '选择考核项',
@@ -857,7 +862,11 @@ function assess_popup(obj, type = 'checkbox', callBack) {
 		closeBtn: 1,
 		btn: ['确认', '取消'],
 		yes: function (index) {
-			callBack && callBack();
+			var checkStatus = table.checkStatus('assess_lst'),
+				data = checkStatus.data;
+			if (typeof callback === 'function') {
+				callback(data);
+			}
 			layer.close(index);
 		},
 		skin: 'layui-layer-rim',
@@ -870,100 +879,105 @@ function assess_popup(obj, type = 'checkbox', callBack) {
  * 解析用户选择项
  */
 
- function formart_sels(data,businessType){
-	if(data == ""){
+function formart_sels(data, businessType) {
+	if (data == "") {
 		return [];
 	}
-	
-	var dataType_arr = {'org':1,'position':2,'dpt_position':3};
+
+	var dataType_arr = {
+		'org': 1,
+		'position': 2,
+		'dpt_position': 3
+	};
 	data = JSON.parse(data);
 	var dataType = data.sel_type;
 	var c = data.company.ids;
-		c = c.RTrim(',').LTrim(',');
+	c = c.RTrim(',').LTrim(',');
 	var d = data.department.ids;
-		d = d.RTrim(',').LTrim(',');
+	d = d.RTrim(',').LTrim(',');
 	var u = data.user.ids;
-		u = u.RTrim(',').LTrim(',');
+	u = u.RTrim(',').LTrim(',');
 	var p = data.position.ids;
-		p = p.RTrim(',').LTrim(',');
+	p = p.RTrim(',').LTrim(',');
 	var dp = data.dpt_position.ids;
-		dp = dp.RTrim(',').LTrim(',');
-	var res = [],data;
-	if(c != ''){
+	dp = dp.RTrim(',').LTrim(',');
+	var res = [],
+		data;
+	if (c != '') {
 		c = c.split(',');
-		for(var i = 0;i < c.length;i++){
+		for (var i = 0; i < c.length; i++) {
 			data = {
-				businessType:businessType,
-				dataType:dataType_arr[dataType],
-				companyId:c[i],
-				depId:0,
-				userId:0,
-				jobDepId:0,
-				jobId:0
+				businessType: businessType,
+				dataType: dataType_arr[dataType],
+				companyId: c[i],
+				depId: 0,
+				userId: 0,
+				jobDepId: 0,
+				jobId: 0
 			}
 			res.push(data);
 		}
 	}
-	if(d != ''){
+	if (d != '') {
 		d = d.split(',');
-		for(var i = 0;i < d.length;i++){
+		for (var i = 0; i < d.length; i++) {
 			data = {
-				businessType:businessType,
-				dataType:dataType_arr[dataType],
-				companyId:0,
-				depId:d[i],
-				userId:0,
-				jobDepId:0,
-				jobId:0
+				businessType: businessType,
+				dataType: dataType_arr[dataType],
+				companyId: 0,
+				depId: d[i],
+				userId: 0,
+				jobDepId: 0,
+				jobId: 0
 			}
 			res.push(data);
 		}
 	}
-	if(u != ''){
+	if (u != '') {
 		u = u.split(',');
-		for(var i = 0;i < u.length;i++){
+		for (var i = 0; i < u.length; i++) {
 			data = {
-				businessType:businessType,
-				dataType:dataType_arr[dataType],
-				companyId:0,
-				depId:0,
-				userId:u[i],
-				jobDepId:0,
-				jobId:0
+				businessType: businessType,
+				dataType: dataType_arr[dataType],
+				companyId: 0,
+				depId: 0,
+				userId: u[i],
+				jobDepId: 0,
+				jobId: 0
 			}
 			res.push(data);
 		}
 	}
-	if(p != ''){
+	if (p != '') {
 		p = p.split(',');
-		for(var i = 0;i < p.length;i++){
+		for (var i = 0; i < p.length; i++) {
 			data = {
-				businessType:businessType,
-				dataType:dataType_arr[dataType],
-				companyId:0,
-				depId:0,
-				userId:0,
-				jobDepId:0,
-				jobId:p[i]
+				businessType: businessType,
+				dataType: dataType_arr[dataType],
+				companyId: 0,
+				depId: 0,
+				userId: 0,
+				jobDepId: 0,
+				jobId: p[i]
 			}
 			res.push(data);
 		}
 	}
-	if(dp != ''){
+	if (dp != '') {
 		dp = dp.split(',');
-		for(var i = 0;i < dp.length;i++){
+		for (var i = 0; i < dp.length; i++) {
 			var r = dp[i].split('|');
 			data = {
-				businessType:businessType,
-				dataType:dataType_arr[dataType],
-				companyId:0,
-				depId:0,
-				userId:0,
-				jobDepId:r[0],
-				jobId:r[1]
+				businessType: businessType,
+				dataType: dataType_arr[dataType],
+				companyId: 0,
+				depId: 0,
+				userId: 0,
+				jobDepId: r[0],
+				jobId: r[1]
 			}
 			res.push(data);
 		}
-	}	
-	return 	res;			
- }
+	}
+	return res;
+}
