@@ -643,8 +643,8 @@
 			<div class="layui-card shenpi_card">
 				<div class="layui-card-header">审批人
 					<div class="fr">
-						<input name="type" type="radio_{{d.index}}" value="false" title="或签" checked />
-						<input name="type" type="radio_{{d.index}}" value="true" title="会签" />
+						<input name="type_{{d.index}}" type="radio" value="false" title="或签" checked />
+						<input name="type_{{d.index}}" type="radio" value="true" title="会签" />
 					</div>
 					<input type="hidden" name="PassType" value="1" />
 					<i class="layui-icon layui-icon-close-fill fr fontsize-18" onclick="close_item(this)"></i>
@@ -726,14 +726,15 @@
 		<script type="text/javascript" src="../../form/js/formbuilder.js"></script>
 		
 		<script type="text/javascript">
-			var layer_linePop,form;
+			var layer_linePop,form,laytpl;
 			
-			layui.use(['table','element','form'], function() {
+			layui.use(['table','element','form','laytpl'], function() {
 				var table = layui.table,
 					element = layui.element;
 					form = layui.form;
+				laytpl = layui.laytpl;
 					
-					loadSubjectTypes();
+				loadSubjectTypes();
 			});
 			function add_group(){
 				layer_linePop = layer.open({
@@ -769,11 +770,14 @@
 				});
 			}
 			function add_item(type){
-				var html = $("#"+type+"_html").html();
+				var tpl_html = $("#"+type+"_html").html();
+				var index = $('#process_box li').length;
 				var p_li = $("input[name='add_item_point']:checked").parents('li');
-				$(p_li).after('<li>'+html+'</li>');
-				closePop();
-				form.render('radio');
+				laytpl(tpl_html).render({index:index+1}, function(html){
+					$(p_li).after('<li>'+html+'</li>');
+					closePop();
+					form.render();
+				});
 			}
 			function on_select(obj){
 				var to_obj = $(obj).closest('.layui-card-body').find('.show_div');
