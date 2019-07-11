@@ -101,7 +101,7 @@
 	//处理导航栏
 	function location_sel(obj, type, company_id, department_id, company_name) {
 		$(obj).parent('span').nextAll().remove();
-		if ($(obj).parent('span').index() == 1) {
+		if ($(obj).parent('span').index() == 1 || parseInt(department_id) > 0) {
 			$(obj).parent('span').remove();
 		}
 		show_items(type, company_id, department_id, company_name);
