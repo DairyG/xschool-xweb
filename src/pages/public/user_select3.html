@@ -242,7 +242,7 @@
 					department_arr = result;
 				}, false);
 				for (var i = 0; i < department_arr.length; i++) {
-					if (department_arr[i].company_id == company_id && department_arr[i].pid == department_id) {
+					if (department_arr[i].companyId == company_id && department_arr[i].pid == department_id) {
 						html += build_check_html(department_arr[i].id, department_arr[i].dptName, type, company_id);
 					}
 					if (department_arr[i].id == department_id) {
