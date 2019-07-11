@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<link rel="stylesheet" href="../../layui/css/liucheng.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+						<div class="layui-tab-content">
+							<div class="margin-b-20">
+								<span class="fontsize-18">审批管理</span>
+								<button class="layui-btn layui-btn-sm" onclick="add_group()">新建分组</button>
+								<button class="layui-btn layui-btn-sm" onclick="javascript:window.location.href='createWorkFlow.html';">创建审批</button>
+							</div>
+							<div class="process_box">
+								<div class="process_item ">
+									<div class="process_title bgf2f2f2 padding-10">
+										<span class="fontsize-16">用车申请</span>
+										<span>(1)</span>
+										<a href="javascript:void(0);" onclick="DeleteSubjectType(19)" class="fr text-del padding-l-10"><i class="layui-icon layui-icon-delete"></i>删除</a>
+										<a href="javascript:;" class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+									</div>
+									<div class="process_content layui-row">
+										<div class="layui-col-md4 process_img">
+											<img src="../../img/car.png">
+											<div class="process_img_info">
+												<p>用车申请</p>
+												<p class="fontsize-12 text-85">适用于因公使用车辆的申请</p>
+												<p class="fontsize-12 text-85">2019.05.30 14:06:26 更新</p>
+											</div>
+										</div>
+										<div class="layui-col-md5 border-l-1 padding-l-15">
+											<p>可见范围</p>
+											<p class="fontsize-12 text-85" id="rec_box">全部可见 <a href="javascript:;" onclick="user_popup($('#rec_box'))">修改</a></p>
+										</div>
+										<div class="layui-col-md3">
+											<div class="opt_box text-right">
+												<a>编辑</a>
+												<a>停用</a>
+												<a href="javascript:;" onclick="process_move()">移动到</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="linePop linePop1">
+			<div class="layui-card-body padding-r-50">
+				<form class="layui-form layui-form2" >
+					<div class="layui-row">
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label"><span class="text-red"> *</span>分组名称</label>
+							<div class="layui-input-block">
+								<input id="txtSubjectTypeName" type="text" name="title" required  lay-verify="required" placeholder="请输入分组名称" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>	
+					<div class="layui-row text-right">
+						<a class="layui-btn" lay-submit="" href="javascript:void(0)" onclick="saveSubjectType()" lay-filter="formDemo">确认</a>
+					
+						<span class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="linePop linePop2">
+			<div class="layui-card-body padding-r-50">
+				<form class="layui-form layui-form2" >
+					<div class="layui-row">
+						<div class="layui-form-item layui-col-md12 margin-b-20">
+							<label class="layui-form-label"><span class="text-red"> *</span>分组</label>
+							<div class="layui-input-block">
+								<select id=select_SubjectTypeId>
+									
+								</select>
+							</div>
+						</div>
+					</div>	
+					<div class="layui-row text-right">
+						<button class="layui-btn" lay-submit="" lay-filter="formDemo">确认</button>
+						<span class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var layer_linePop,form;
+			layui.use(['table','form'], function() {
+				var table = layui.table;
+				form = layui.form;
+			});
+			function add_group(){
+				layer_linePop = layer.open({
+					type: 1,
+					title:'添加分组',
+					String: false,
+					closeBtn: 1,
+					skin: 'layui-layer-rim',
+					area: '750px',
+					content: $('.linePop1')
+				});
+			}
+			function process_move(){
+					//弹出层
+					layer_linePop = layer.open({
+					type: 1,
+					title:'移动分组',
+					String: false,
+					closeBtn: 1,
+					skin: 'layui-layer-rim',
+					area: ['750px','450px'],
+					content: $('.linePop2')
+				});
+			//数据加载
+			Serv.Get('lc/SubjectType/GetSubjectTypeList',null,function(data){
+					$("#select_SubjectTypeId").empty();
+						$.each(data,function(index,item){
+							if(index==0)
+							{
+								$("#select_SubjectTypeId").append("<option value=''>请选择分组</option>");
+							}
+                        var opt=$("<option value="+item.id+">"+item.subjectTypeName+"</option>")
+                        $("#select_SubjectTypeId").append(opt);
+					   });
+					   form.render('select');
+				},false);
+		
+			}
+			function closePop(){
+				layer.close(layer_linePop);
+			}
+			//删除流程组别
+			function DeleteSubjectType(id)
+			{
+				layer.confirm('您确定要删除？', {
+				btn: ['确定','取消'] //按钮
+				}, function(){
+				//删除
+				var data={Id:id};
+				Serv.Post('lc/SubjectType/DeleteSubjectType',data,function(resultData){
+					if(resultData.succeed)
+					{
+						layer.msg('成功。。', {icon:1});
+						closePop();
+					}else{
+						layer.msg('失败:'+resultData.message, {icon:2});
+					}
+				},true)
+				}, function(){
+				//取消
+				});
+
+			}
+			//添加流程组别
+			function saveSubjectType()
+			{
+				var data={SubjectTypeName:$("#txtSubjectTypeName").val()};
+				Serv.Post('lc/SubjectType/AddOrEdit',data,function(resultData){
+					if(resultData.succeed)
+					{
+						layer.msg('成功。。', {icon:1});
+						closePop();
+					}else{
+						layer.msg('失败:'+resultData.message, {icon:2});
+					}
+
+
+				},true)
+
+			}
+		</script>
+	</body>
+</html>

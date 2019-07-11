@@ -50,13 +50,14 @@ var Serv = {
     GetUrl: function (url) {
         return Serv.ServiceUrl + url;
     },
-    Get: function (url, args, callback,async) {
-        this.Send(url, "GET", args, callback,async);
+    Get: function (url, args, callback, async) {
+        this.Send(url, "GET", args, callback, async);
     },
-    Post: function (url, args, callback,async) {
-        this.Send(url, "POST", args, callback,async);
+    Post: function (url, args, callback, async) {
+        this.Send(url, "POST", args, callback, async);
     },
-    Send: function (url, type, args, callback,async = true) {
+    Send: function (url, type, args, callback, async) {
+		
         jQuery.support.cors = true;
         $.ajax({
             //xhrFields: {withCredentials: true},
@@ -71,7 +72,7 @@ var Serv = {
             },
             type: type,
             data: args,
-            async:async,
+            async: async != undefined ? async : true,
             success: function (data) {
                 callback(data);
             },
