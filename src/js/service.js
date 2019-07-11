@@ -57,6 +57,7 @@ var Serv = {
         this.Send(url, "POST", args, callback, async);
     },
     Send: function (url, type, args, callback, async) {
+		
         jQuery.support.cors = true;
         $.ajax({
             //xhrFields: {withCredentials: true},
@@ -71,7 +72,7 @@ var Serv = {
             },
             type: type,
             data: args,
-            async: !async ? true : false,
+            async: async != undefined ? async : true,
             success: function (data) {
                 callback(data);
             },
