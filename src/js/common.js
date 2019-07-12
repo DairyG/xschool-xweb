@@ -116,7 +116,7 @@ String.prototype.FormatDate = function (hasTime) {
  * 验证空值
  */
 String.prototype.isEmpty = function () {
-	if (this === null || this == undefined || this === '') {
+	if (this == null || this == undefined || this == '') {
 		return true;
 	}
 	return false;

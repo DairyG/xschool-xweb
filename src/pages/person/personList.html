@@ -71,8 +71,7 @@
 					<tr>
 						<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
 						<td>
-							<input type="text" class="layui-input" readonly
-								onclick="user_popup2(this,'department',1)" />
+							<input type="text" class="layui-input" readonly onclick="user_popup(this,'department',1)" />
 						</td>
 						<td>
 							<select>
@@ -176,6 +175,8 @@
 			userName: ''
 		};
 
+		var dataJob = [];
+
 		layui.use(['table', 'element', 'form'], function () {
 			var table = layui.table,
 				element = layui.element,
@@ -254,6 +255,29 @@
 				'full-100'
 			);
 		});
+
+		//获取职位
+		function getJob() {
+			var _this = this;
+			layer_load();
+			Serv.Post('uc/job/get', {
+				page: 1,
+				limit: 50,
+				companyId: cId
+			}, function (result) {
+				layer_load_lose();
+				if (result) {
+					_this.basicJob = result.items;
+
+					_this.$nextTick(function () {
+						layui.form.render('select');
+					});
+				} else {
+					_this.hasSubmit = false;
+					layer_alert(result.message);
+				}
+			});
+		}
 	</script>
 </body>
 

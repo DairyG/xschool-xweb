@@ -17,7 +17,7 @@
 	<div class="childrenBody">
 		<div class="layui-card-header">考核设置</div>
 		<div class="layui-card-body bgwhite">
-			<form class="layui-form layui-form2">
+			<form class="layui-form layui-form2" autocomplete="off">
 				<div class="layui-row">
 					<div class="layui-form-item layui-col-md6 margin-b-20">
 						<label class="layui-form-label"><span class="text-red"> *</span>考核对象</label>
@@ -111,37 +111,19 @@
 										<th>说明</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="kpiContentBody">
 									<tr>
-										<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span>
+										<td>
+											<span class="table-btn-jia kpiContentAdd">+</span>
+											<span class="table-btn-jian kpiContentDel">-</span>
 										</td>
-										<td><input type="text" class="layui-input evaluationPopup" value="招聘指标"
-												readonly /></td>
-										<td><input type="text" class="layui-input" value="10" /></td>
-										<td><input type="text" class="layui-input" /></td>
-									</tr>
-									<tr>
-										<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span>
+										<td><input type="text" name="evaluationName" class="layui-input evaluationPopup"
+												value="" placeholder="请选择考核项目" readonly />
 										</td>
-										<td><input type="text" class="layui-input evaluationPopup" value="考情统计"
-												readonly /></td>
-										<td><input type="text" class="layui-input" value="10" /></td>
-										<td><input type="text" class="layui-input" /></td>
-									</tr>
-									<tr>
-										<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span>
-										</td>
-										<td><input type="text" class="layui-input evaluationPopup" value="工资预算"
-												readonly /></td>
-										<td><input type="text" class="layui-input" value="10" /></td>
-										<td><input type="text" class="layui-input" /></td>
-									</tr>
-									<tr>
-										<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span>
-										</td>
-										<td><input type="text" class="layui-input evaluationPopup" readonly /></td>
-										<td><input type="text" class="layui-input" /></td>
-										<td><input type="text" class="layui-input" /></td>
+										<td><input type="text" name="weight" maxlength="5" class="layui-input" value=""
+												placeholder="请输入权重(分值)" /></td>
+										<td><input type="text" name="explain" maxlength="100" class="layui-input"
+												value="" placeholder="请输入说明" /></td>
 									</tr>
 								</tbody>
 							</table>
@@ -149,12 +131,51 @@
 					</div>
 				</div>
 				<div class="layui-row text-right">
-					<button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="formDemo">确认</button>
+					<input type="button" class="layui-btn layui-btn-danger" lay-submit lay-filter="submitKpi"
+						value="确认">
+					<!-- <button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="formDemo">确认</button> -->
 					<span class="layui-btn " onclick="history.back(-1)">返回</span>
 				</div>
 			</form>
 		</div>
 	</div>
+	<script id="kpiContentTpl" type="text/html">
+		{{#  
+			var jsonStr = function(value){
+			  return JSON.stringify(value);
+			}; 
+		  }}
+
+		{{#  if(d.length>0){ }}
+
+		{{#  layui.each(d, function(index, item){ }}
+		<tr data-id="{{= item.id}}">
+			<td>
+				<span class="table-btn-jia kpiContentAdd">+</span>
+				<span class="table-btn-jian kpiContentDel">-</span>
+			</td>
+			<td><input type="text" name="evaluationName" class="layui-input evaluationPopup" data-value="{{= jsonStr(item) }}"
+					value="{{= item.name }}" placeholder="请选择考核项目" readonly />
+			</td>
+			<td><input type="text" name="weight" maxlength="5" class="layui-input" value="" placeholder="请输入权重(分值)" /></td>
+			<td><input type="text" name="explain" maxlength="100" class="layui-input" value="" placeholder="请输入说明" /></td>
+		</tr>
+		{{#  }); }}
+
+		{{#  } else { }}
+		<tr>
+			<td>
+				<span class="table-btn-jia kpiContentAdd">+</span>
+				<span class="table-btn-jian kpiContentDel">-</span>
+			</td>
+			<td><input type="text" name="evaluationName" class="layui-input evaluationPopup" value="" placeholder="请选择考核项目"
+					readonly />
+			</td>
+			<td><input type="text" name="weight" maxlength="5" class="layui-input" value="" placeholder="请输入权重(分值)" /></td>
+			<td><input type="text" name="explain" maxlength="100" class="layui-input" value="" placeholder="请输入说明" /></td>
+		</tr>
+		{{#  } }}
+	</script>
 	<script type="text/javascript" src="../../js/kpi/userTplSet.js"></script>
 </body>
 
