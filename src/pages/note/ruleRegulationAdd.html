@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
+	</head>
+
+	<body class="bgf2f2f2">
+		<div class="childrenBody" style="background:none;">
+			<div class="layui-col-md12 layui-col-sm12" style="background: #fff;">
+				<div class="layui-card-body">
+					<div class="layui-tab layui-tab-brief" lay-filter="brief">
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<form class="layui-form layui-form2" lay-filter="frm">
+									<div class="layui-row">
+										<div class="layui-form-item layui-col-md12 margin-b-20">
+											<label class="layui-form-label">制度类别<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" id="treeIpt" class="layui-input" onclick="showMenu();" readonly>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 margin-b-20">
+											<label class="layui-form-label">制度标题<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<input type="text" name="title" required  lay-verify="required" placeholder="请输入制度标题" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 margin-b-20">
+											<label class="layui-form-label">查看人类型<span class="text-red"> *</span></label>
+											<div class="layui-input-block">
+												<span class="layui-btn layui-btn-normal" onclick="user_popup($('#rec_box'))"><i class="layui-icon layui-icon-add-1"></i>选择人员</span>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 margin-b-20">
+											<label class="layui-form-label">查看人<span class="text-red"> *</span></label>
+											<div class="layui-input-block" >
+												<div class="margin-t-10" id="rec_box">
+													
+												</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 margin-b-20">
+											<label class="layui-form-label">制度内容<span class="text-red"> *</span></label>
+											<div class="layui-input-block" >
+												<textarea class="layui-textarea" placeholder="请输入制度内容" id="editor1"></textarea>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 margin-b-20">
+											<label class="layui-form-label">制度附件<span class="text-red"> *</span></label>
+											<div class="layui-input-block" >
+												<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" ><i class="layui-icon">&#xe67c;</i>上传附件</span>
+											</div>
+										</div>
+										<div class="layui-row">
+											<div class="layui-form-item">
+												<div class="layui-input-block text-right">
+													<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确认</button>
+													<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确认并继续添加</button>
+													<span class="layui-btn" onclick="history.back(-1)">返回</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+		</div>
+		<script>
+			var rec_type;
+			
+			layui.use([ 'table', 'element', 'form','layedit'], function() {
+				var table = layui.table,
+					element = layui.element,
+					form = layui.form,
+					layedit = layui.layedit;
+					
+					layedit.build('editor1',{height: 360});
+					form.on('select(rec_type)', function(data){
+						rec_type = data.value;
+						$("#sel_item_box .sel_item").hide();
+						$("#rec_box").html('');
+						$("#sel_item_box select").val(-1);
+						form.render('select');
+						switch(rec_type){
+							case "user"://按人员
+								$("#sel_item_box #sel_user_item").show();
+								break;
+							case "department"://部门
+								$("#sel_item_box #sel_company_item,#sel_item_box #sel_department_item").show();
+								break;
+							case "company"://公司
+								$("#sel_item_box #sel_company_item").show();
+								break;
+							case "position"://职位
+								$("#sel_item_box #sel_company_item,#sel_item_box #sel_position_item").show();
+								break;
+							case "0":
+								break;
+						}
+					});
+					form.on('select(sel_company)', function(data){
+						var value = data.value;
+						var text = data.elem[data.elem.selectedIndex].text;
+						on_select('company',value,text);
+					});
+					form.on('select(sel_department)', function(data){
+						var value = data.value;
+						var text = data.elem[data.elem.selectedIndex].text;
+						on_select('department',value,text);
+					});
+					form.on('select(sel_position)', function(data){
+						var value = data.value;
+						var text = data.elem[data.elem.selectedIndex].text;
+						on_select('position',value,text);
+					});
+			});
+			
+			function on_select(this_type,value,text){
+				if(value > -1){
+					if(value == 0){
+						$("#rec_box").html('');
+					} else {
+						$("#rec_box input").each(function(i,obj){
+							if($(obj).val() == value || $(obj).val() == 0){
+								sel_remove(obj);
+							}
+						});
+					}
+					if(rec_type == this_type){
+						var html = build_sel_html(this_type,value,text);
+						$("#rec_box").append(html);
+					}
+				}
+				}
+				var setting = {
+						check: {
+							enable: true,
+							chkStyle: "radio",
+							radioType: "all"
+						},
+						view: {
+							dblClickExpand: false
+						},
+						data: {
+							key: {
+								name: 'ruleName',
+								title: 'ruleName'
+							},
+							simpleData: {
+								enable: true,
+								idKey: 'id',
+								pIdKey: 'parentId',
+								rootPId: '0'
+							},
+						},
+						callback: {
+							beforeClick: beforeClick,
+							onCheck: onCheck
+						}
+				};
+			
+			function beforeClick(treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				zTree.checkNode(treeNode, !treeNode.checked, null, true);
+				return false;
+			}
+			
+			function onCheck(e, treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+				nodes = zTree.getCheckedNodes(true),
+				v = "";
+				for (var i=0, l=nodes.length; i<l; i++) {
+					v += nodes[i].ruleName + ",";
+				}
+				if (v.length > 0 ) v = v.substring(0, v.length-1);
+				var cityObj = $("#treeIpt");
+				cityObj.attr("value", v);
+			}
+			
+			function showMenu() {
+				var cityObj = $("#treeIpt");
+				var cityOffset = $("#treeIpt").offset();
+				$("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px",width:cityObj.outerWidth() + "px"}).slideDown("fast");
+			
+				$("body").bind("mousedown", onBodyDown);
+			}
+			function hideMenu() {
+				$("#menuContent").fadeOut("fast");
+				$("body").unbind("mousedown", onBodyDown);
+			}
+			function onBodyDown(event) {
+				if (!(event.target.id == "menuBtn" || event.target.id == "treeIpt" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+					hideMenu();
+				}
+			}
+			
+			$(document).ready(function(){
+				Serv.Post('gc/note/GetRuleRegulationTypeList', {}, function (result) {
+						result.data[0].open = true;
+						zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, result.data);
+					})
+			});
+		</script>
+	</body>
+
+</html>
