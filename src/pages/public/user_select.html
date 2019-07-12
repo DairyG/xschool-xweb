@@ -1,162 +1,446 @@
-<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
-<script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
-<div class="layui-card">
-	<form class="layui-form layui-search-form">
-		<div class="layui-row margin-t-10">
-			<div class="search_item">
-				<span>公司</span>
-				<div class="fl">
-					<select>
-						<option></option>
-						<option>本公司</option>
-						<option>公司一</option>
-						<option>公司二</option>
-					</select>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/cache.js"></script>
+	</head>
+	<body>
+		<div id="popup_content" style="display: block;">
+			<div class="layui-row select_content">
+				<div class="layui-col-md6 layui-col-xs6">
+					<div class="bgwhite padding-10 padding-t-0">
+						<div class="layui-form">
+							<div class="radio_box" style="padding:3px 0;">
+								<label>
+									<i class="layui-icon fontsize-20 layui-icon-radio text-span"></i>
+									<input lay-ignore type="radio" name="sel_type" value="org" id="sel_type1" onclick="change_sel_type(this,'org')">
+									组织架构
+								</label>
+								<label>
+									<i class="layui-icon fontsize-20 layui-icon-circle text-span"></i>
+									<input lay-ignore type="radio" name="sel_type" value="position" id="sel_type2" onclick="change_sel_type(this,'position')" >
+									职位
+								</label>
+								<label>
+									<i class="layui-icon fontsize-20 layui-icon-circle text-span"></i>
+									<input lay-ignore type="radio" name="sel_type" value="dpt_position" id="sel_type3" onclick="change_sel_type(this,'dpt_position')" >
+									部门岗位
+								</label>
+							</div>
+							<div class="search_box">
+								<input type="text" class="layui-input" placeholder="用户名称"/>
+								<i class="layui-icon layui-icon-search"></i>
+							</div>
+							<input type="hidden" id="n_cid" />
+							<input type="hidden" id="n_cname" />
+							<input type="hidden" id="n_dptid" />
+							<input type="hidden" id="n_dptname" />
+						</div>
+						<div class="loaction_box">
+						</div>
+						<div class="select_box">
+							<p class="padding-l-10" style="padding-bottom: 5px;" id="checkAll_btn"><input id="checkAll" type="checkbox" onclick="checkAll(this)" />全选</p>
+							<ul id="select_ul" style="height:230px">
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md6 layui-col-xs6 border-l-1 margin-t-20">
+					<div class="bgwhite padding-10">
+						<ul class="selected_box" id="selected_box"></ul>
+					</div>
 				</div>
 			</div>
-			<div class="search_item" style="position: relative;">
-				<span>部门</span>
-				<input type="text" name="title" placeholder="请输入部门" autocomplete="off" class="layui-input" id="user_select_department" onclick="show_user_select_tree()" readonly />
-				<input type="hidden" id="department_id" />
-				<ul id="user_select_tree" class="ztree"></ul>
-			</div>
-			<div class="search_item">
-				<span>职位</span>
-				<div class="fl">
-					<select>
-						<option></option>
-						<option>经理</option>
-						<option>总监</option>
-						<option>主管</option>
-					</select>
-				</div>
-			</div>
-			<div class="search_item">
-				<span>姓名</span><input type="text" name="title" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-			</div>
-			<div class="search_item">
-				<button class="layui-btn layui-btn-normal">搜索</button>
-			</div>	
 		</div>
-	</form>
-	<table id="user_select_lst" lay-filter="user_select_lst"></table>
-	<script type="text/html" id="toolbar">
-		<button class="layui-btn  layui-btn-xs ">查看</button>
-		<button class="layui-btn  layui-btn-xs layui-btn-normal">编辑</button>
-		<button class="layui-btn  layui-btn-xs layui-btn-danger">删除</button>
-	</script>
-</div>
-<script type="text/javascript">
-	$(function(){
-		var data_col = [[
-			{type:'checkbox'},
-			{field: 'name', title: '名称'},
-			{field: 'lx', title: '职位'},
-			{field: 'jb', title: '部门'},
-		]];
-		var datas = [
-			{'id':1,'name':'经理','lx':'管理','jb':'M1'},
-			{'id':2,'name':'副经理','lx':'管理','jb':'M2'},
-			{'id':3,'name':'市场总监','lx':'管理','jb':'M3'},
-			{'id':4,'name':'经理','lx':'管理','jb':'M1'},
-			{'id':5,'name':'副经理','lx':'管理','jb':'M2'},
-			{'id':6,'name':'市场总监','lx':'管理','jb':'M3'},
-			{'id':7,'name':'经理','lx':'管理','jb':'M1'},
-			{'id':8,'name':'副经理','lx':'管理','jb':'M2'},
-			{'id':9,'name':'市场总监','lx':'管理','jb':'M3'}
-		];
-		layui.use([ 'table','form'], function() {
-			var table = layui.table,
-				form = layui.form;
-				table.render({
-					elem: '#user_select_lst',
-					data: datas,
-					cols: data_col,
-					limit:5,
-					page:true,
-					height:'280'
-				});
-				form.render('select');
-		});
-		var zTreeObj;
-		var setting = {
-			check: {
-				enable: true,
-				chkboxType: {"Y":"", "N":""}
-				/* chkStyle: "radio",
-				radioType: "all" */
-			},
-			view: {
-			    dblClickExpand: false
-			},
-			callback: {
-				onCheck: on_user_select_check,
-			    onClick: function (e, treeId, treeNode) {
-			        var tree = $.fn.zTree.getZTreeObj(treeId);
-			        tree.expandNode(treeNode);
+		<script type="text/javascript">
+			var layer;
+			layui.use(['layer'],function(){
+				layer = layui.layer;
+			});
+			var has_user = GetPara('has_user') == 'true' ? true : false;
+			var has_department = GetPara('has_department') == 'true' ? true : false;
+			var has_company = GetPara('has_company') == 'true' ? true : false;
+			var has_position = GetPara('has_position') == 'true' ? true : false;
+			var has_dpt_position = GetPara('has_dpt_position') == 'true' ? true : false;
+			var allow_num = GetPara('num');
+			var user_company = {id:1,pid:0};//默认当前用户的公司信息 实际另行获取
+			var default_sels = window.parent.sels;
+			if(default_sels != null){
+				var sels = default_sels;
+			} else {
+				var sels = {'sel_type':'org','user':[],'department':[],'company':[],'position':[],'dpt_position':[]};
+			}
+			var sel_type = sels.sel_type;
+			var company_arr = globCache.getCompany();
+			var position_arr = [];
+			var department_arr = globCache.getDepartment();
+			var user_arr = [];
+			var dpt_position_arr = [];
 			
-					tnode=treeNode;
-			        currentid=treeNode.id;
-			    }
-			}
-		};
-		var zNodes = [ // zTree 的数据属性，此处使用标准json格式
-			{
-				id:1,
-				name: "四川某某公司",
-				open: true,
-				children: [{
-						name: "销售部",
-						id:2,
-						children: [{
-							name: "销售1部",
-							id:3,
-							children: [{
-								name: "销售1组",
-								id:4,
-							}]
-						}]
-					},
-					{
-						name: "市场部",
-						id:5,
-					},
-					{
-						name: "销售部",
-						id:6,
-						children: [{
-							name: "销售1部",
-							id:7,
-						}]
+			$(function(){
+				if(!has_position){
+					$("#sel_type2").parents('label').remove();
+				}
+				if(!has_dpt_position){
+					$("#sel_type3").parents('label').remove();
+				}
+				if ($(".radio_box").find('label').length == 1) {
+					$(".radio_box").css({'height':'0px','overflow':'hidden'});
+				}
+
+				$('.radio_box input').each(function () {
+					if ($(this).val() == sel_type) {
+						change_sel_type($(this), sel_type, false);
 					}
-				]
+				});
+				set_default(sels);
+				//show_items('company',user_company.id);
+			});
+			
+			//处理导航栏
+			function location_sel(obj,type,company_id,department_id,company_name){
+				$(obj).parent('span').nextAll().remove();
+				if($(obj).parent('span').index() == 1|| parseInt(department_id) > 0){
+					$(obj).parent('span').remove();
+				}
+				show_items(type,company_id,department_id,company_name);
 			}
-		
-		];
-		zTreeObj = $.fn.zTree.init($("#user_select_tree"), setting, zNodes);
-	});
-	function show_user_select_tree() {
-		$("#user_select_tree").show();
-		$("body").bind("mousedown", onuser_select_BodyDown);
-	}
-	function hide_user_select_tree() {
-		$("#user_select_tree").hide();
-		$("body").unbind("mousedown", onuser_select_BodyDown);
-	}
-	function onuser_select_BodyDown(event) {
-		if (!(event.target.id == "user_select_department" || $(event.target).parents("#user_select_tree").length>0)) {
-			hide_user_select_tree();
-		}
-	}
-	function on_user_select_check(e, treeId, treeNode) {
-		var zTree = $.fn.zTree.getZTreeObj(treeId),
-		nodes = zTree.getCheckedNodes(true),
-		v = "",id = "";
-		for (var i=0, l=nodes.length; i<l; i++) {
-			v += (v == "" ) ? nodes[i].name : ','+nodes[i].name ;
-			id += (id == "" ) ? nodes[i].id : ','+nodes[i].id;
-		}
-		$("#user_select_department").val(v);
-		$("#department_id").val(id);
-	}
-</script>
+			
+			//全选处理
+			function checkAll(all_obj){
+				var checked = $(all_obj).prop('checked');
+				$("#select_ul li").each(function(i,obj){
+					var input = $(obj).find('input[type="checkbox"]');
+					if(input.length > 0){
+						var value = $(input).data('id');
+						var type = $(input).data('type');
+						var text = $(input).data('text');
+						var input_checked = $(input).prop('checked');
+						if(input_checked != checked){
+							if(checked){
+								if(allow_num > 0 && $("#selected_box li").length >= allow_num){
+									layer.msg('最多选择'+allow_num+'项');
+									$(obj).prop('checked',false);
+									return false;
+								}
+								var html = build_selectd_html(type,value,text);
+								$("#selected_box").append(html);
+								add_remove_value(type,value,text);
+							} else {
+								user_sel_remove(type,value,text);
+							}
+							$(input).prop('checked',checked);
+						}
+					}
+				});
+			}
+			
+			// 选择某一项的处理
+			function selected(obj){
+				var checked = $(obj).prop('checked');
+				var value = $(obj).data('id');
+				var type = $(obj).data('type');
+				var text = $(obj).data('text');
+				if(checked){
+					if(allow_num > 0 && $("#selected_box li").length >= allow_num){
+						layer.msg('最多选择'+allow_num+'项');
+						$(obj).prop('checked',false);
+						return false;
+					}
+					var html = build_selectd_html(type,value,text);
+						$("#selected_box").append(html);
+						add_remove_value(type,value,text);
+				} else {
+					user_sel_remove(type,value,text);
+				}
+			}
+			
+			//清除选中项
+			function user_sel_remove(type,id,text){
+				var class_name = type+'_'+id;
+				$("#selected_box").find("."+class_name).remove();
+				$("#select_ul li input[data-type='"+type+"'][data-id='"+id+"']").prop('checked',false);
+				add_remove_value(type,id,text,false);
+			}
+			
+			/**
+			 * 添加或清除存储的选中值
+			 */
+			function add_remove_value(type,id,name,is_add = true){
+				if(is_add){
+					var d;
+					var n_cid = $('#n_cid').val();
+					var n_cname = $('#n_cname').val();
+					var n_dptid = $('#n_dptid').val();
+					var n_dptname = $('#n_dptname').val();
+					
+					switch(type){
+						case 'user':
+							d = {id:id,name:name,dpt_id:n_dptid,dpt_name:n_dptname,compnay_id:n_cid,company_name:n_cname};
+							break;
+						case 'department':
+							d = {id:id,name:name,compnay_id:n_cid,company_name:n_cname};
+							break;
+						case 'company':
+							d = {id:id,name:name};
+							break;
+						case 'position':
+							d = {id:id,name:name,compnay_id:n_cid,company_name:n_cname};
+							break;
+						case 'dpt_position':
+							d = {id:id,name:name,dpt_id:n_dptid,dpt_name:n_dptname,compnay_id:n_cid,company_name:n_cname};
+							break;
+					}
+					sels[type].push(d);
+				} else {
+					for(var i = 0;i < sels[type].length; i++){
+						if(sels[type][i].id == id){
+							sels[type].splice(i,1);
+							return ;
+						}
+					}
+				}
+			}
+			
+			// 创建选中项的的html
+			function build_selectd_html(type,value,text){
+				var class_name = type+'_'+value;
+				if($("#selected_box").find("."+class_name).length == 0){
+					var html = '<li class="'+type+'_'+value+' " >'+text+'<i class="layui-icon layui-icon-close-fill fr" onclick="user_sel_remove(\''+type+'\','+value+',\''+text+'\')"></i></li>'
+					return html;
+				} 
+				return "";
+			}
+			
+			/**
+			 * 显示下级列表
+			 * @param int pid 上级id
+			 * @param string p_type （公司 company, 部门 department 员工 user）
+			 */
+			function show_items(type,company_id = 1,department_id = 0,company_name){
+				var arr = [],html = "";
+				$("#checkAll").prop('checked',false);
+				$("#checkAll_btn").show();
+			
+				if(sel_type != 'position'){
+					$("#checkAll_btn").show();
+				} else {
+					$("#checkAll_btn").hide();
+				}
+				switch(type){
+					case 'company':
+						//此处加载公司列表
+						for(var i = 0;i < company_arr.length;i++){
+							html += build_check_html(company_arr[i].id, company_arr[i].companyName, type, company_id);
+							if(company_arr[i].id == company_id){
+								$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'company\','+company_id+',0,\''+company_arr[i].companyName+'\')">全部</a>&gt;</span>');
+							}
+						}
+						break;
+					case 'department':
+						//此处加载部门列表
+						
+						for (var i = 0; i < department_arr.length; i++) {
+							if (department_arr[i].companyId == company_id && department_arr[i].pid == department_id) {
+								html += build_check_html(department_arr[i].id, department_arr[i].dptName, type, company_id);
+							}
+							if (department_arr[i].id == department_id) {
+								$(".loaction_box").append(
+									'<span><a href="javascript:;" onclick="location_sel(this,\'department\',' + company_id +
+									',' + department_id + ')">' + department_arr[i].dptName + '</a>&gt;</span>');
+								$("#n_dptid").val(department_id);
+								$("#n_dptname").val(department_arr[i].dptName);
+							}
+						}
+					
+						if(department_id <= 0){
+							$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'department\','+company_id+',0,\''+company_name+'\')">'+company_name+'</a>&gt;</span>');
+							$('.layui-form input[type="hidden"]').val('');
+							$('#n_cid').val(company_id);
+							$('#n_cname').val(company_name);
+						} 
+						//此处加载用户列表
+						if (has_user && sel_type != 'dpt_position') {
+							// 根据 公司ID 和 部门ID获取用户列表
+							// 部门ID为0时获取该公司下所有的用户
+							// 部门ID大于0时获取当前部门和所有子部门的用户
+							Serv.Post("uc/Employee/Get", {
+								page: 1,
+								limit: 50,
+								CompanyId: company_id,
+								DptId: department_id
+							}, function (result) {
+								user_arr = result.items;
+							}, false);
+							
+							for (var i = 0; i < user_arr.length; i++) {
+								html += build_check_html(user_arr[i].id, user_arr[i].userName, 'user', company_id);
+							}
+						}
+						if(sel_type == 'dpt_position'){
+							for(var i = 0;i < dpt_position_arr.length;i++){
+								if(department_id == 0){
+									if(dpt_position_arr[i].company_id == company_id){
+										html += build_check_html(dpt_position_arr[i].id,dpt_position_arr[i].name,'dpt_position',company_id);
+									}
+								} else {
+									if(dpt_position_arr[i].company_id == company_id && dpt_position_arr[i].department_id == department_id){
+										html += build_check_html(dpt_position_arr[i].id,dpt_position_arr[i].name,'dpt_position',company_id);
+									}
+								}
+							}
+						}
+						break;
+						case 'position':
+							//加载职位列表
+							for(var i = 0;i < position_arr.length;i++){
+								if(position_arr[i].company_id == company_id){
+									html += build_check_html(position_arr[i].id,position_arr[i].name,type);
+								}
+							}
+							$(".loaction_box").append('<span><a href="javascript:;" onclick="location_sel(this,\'position\','+company_id+',0,\''+company_name+'\')">'+company_name+'</a>&gt;</span>');
+							$('.layui-form input[type="hidden"]').val('');
+							$('#n_cid').val(company_id);
+							$('#n_cname').val(company_name);
+							
+						break;
+				}
+				$("#select_ul").html(html);
+				
+			}
+			
+			/**
+			 * 在选中值数组中查找对应值是否存在
+			 * @param string type
+			 * @param int id
+			 */
+			function sels_search(type,id){
+				var arr = sels[type];
+				for(var i = 0;i < arr.length; i++){
+					if(arr[i].id == id){
+						return true;
+					}
+				}
+				return false;
+			}
+			
+			/**
+			 * 创建下级列表的html
+			 * @param  id 当前对象ID
+			 * @param  text 当前对象名称
+			 * @param  type 当前对象类型
+			 * @param  company_id 当前公司id
+			 */
+			function build_check_html(id,text,type,company_id,department_id){
+				var icon = "",html = "",checkbox = "",checked = "";
+				var is_has = sels_search(type,id);
+				if(is_has){
+					checked = " checked='checked' ";
+				}
+				switch (type){
+					case 'company':
+						icon = '<i class="icon_group1"></i>';
+						if(has_company && sel_type == 'org'){
+							checkbox = '<input type="checkbox" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
+						}
+						if(sel_type == 'position'){
+							text = '<span onclick="show_items(\'position\','+id+',0,\''+text+'\')">'+text+'</span>';
+						} else {
+							text = '<span onclick="show_items(\'department\','+id+',0,\''+text+'\')">'+text+'</span>';
+						}
+					break;
+					case 'department':
+						icon = '<i class="icon_group2"></i>';
+						if(has_department && sel_type == 'org'){
+							checkbox = '<input type="checkbox" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
+						}
+						text = '<span onclick="show_items(\'department\','+company_id+','+id+')">'+text+'</span>';
+					break;
+					case 'user':
+						checkbox = '<input type="checkbox" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
+					break;
+					case 'position':
+						checkbox = '<input type="radio" name="position" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
+					break;
+					case 'dpt_position':
+						checkbox = '<input type="checkbox" name="dpt_position" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
+					break;
+				}
+				
+				return '<li>'+checkbox+icon+text+'</li>';
+			}
+			
+			function change_sel_type(obj,this_type,is_clear = true){
+				var p_label = $(obj).parent('label');
+				$(p_label).find('i').addClass('layui-icon-radio').removeClass('layui-icon-circle');
+				$(p_label).siblings('label').find('i').removeClass('layui-icon-radio').addClass('layui-icon-circle');
+				//每次点击切换时都执行一次清除操作
+				if(is_clear){
+					$("#selected_box li").each(function(){
+						$(this).find('i').click();
+					});
+				}
+				$(".loaction_box").html('');
+				sel_type = this_type;
+				$('#sel_type').val(sel_type);
+				show_items('company',user_company.id);
+			}
+			
+			/**
+			 * 设置默认选中值
+			 * @param Object data
+			 */
+			function set_default(data){
+				var html = '';
+				if (data.company.length > 0) {
+					for (var i = 0; i < data.company.length; i++) {
+						var item = data.company[i];
+						html += build_selectd_html('company',item.id, item.name);
+					}
+				}
+				if (data.department.length > 0) {
+					for (var i = 0; i < data.department.length; i++) {
+						var item = data.department[i];
+						html += build_selectd_html('department',item.id, item.name);
+					}
+				}
+				if (data.user.length > 0) {
+					for (var i = 0; i < data.user.length; i++) {
+						var item = data.user[i];
+						html += build_selectd_html('user',item.id, item.name);
+					}
+				}
+				if (data.position.length > 0) {
+					for (var i = 0; i < data.position.length; i++) {
+						var item = data.position[i];
+						html += build_selectd_html('position',item.id, item.name);
+					}
+				}
+				if (data.dpt_position.length > 0) {
+					for (var i = 0; i < data.dpt_position.length; i++) {
+						var item = data.dpt_position[i];
+						html += build_selectd_html('dpt_position',item.id, item.name);
+					}
+				}
+				$("#selected_box").append(html);
+				if (has_company) {
+					var ids = $("#company_ids").val();
+					$("#select_ul input[data-type='company']").each(function () {
+						var id = $(this).data('id');
+						if (sels_search('company',id)) {
+							$(this).prop('checked', true);
+						}
+					});
+				}
+			
+			}
+		</script>
+	</body>
+</html>

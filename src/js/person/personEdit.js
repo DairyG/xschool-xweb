@@ -113,9 +113,9 @@ var vm = new Vue({
                 });
 
                 //分管部门
-                $('#deptPopup').on('click', function () {
-                    user_popup($('#deptPopupPanel'), false, true, false);
-                });
+                // $('#deptPopup').on('click', function () {
+                //     user_popup($('#deptPopupPanel'), false, true, false);
+                // });
 
                 //出生日期
                 laydate.render({

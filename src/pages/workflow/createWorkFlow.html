@@ -65,7 +65,7 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>可见范围</label>
 										<div class="layui-input-block">
-											<input type="text" name="title" id="RangeList" required  lay-verify="required" placeholder="请选择可见范围" autocomplete="off" class="layui-input" onclick="user_popup2(this,'user,company,dpt_position,position,department')" readonly />
+											<input type="text" name="title" id="RangeList" required  lay-verify="required" placeholder="请选择可见范围" autocomplete="off" class="layui-input" onclick="user_popup(this,'user,company,dpt_position,position,department')" readonly />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
@@ -781,7 +781,7 @@
 			}
 			function on_select(obj){
 				var to_obj = $(obj).closest('.layui-card-body').find('.show_div');
-				user_popup2(to_obj,'user,company,dpt_position,position,department');
+				user_popup(to_obj,'user,company,dpt_position,position,department');
 			}
 			function done_select(type){
 				if(type == 'duty'){//部门负责人
@@ -827,6 +827,8 @@
 				var FormAttribute = JSON.stringify(M);
 				var RangeList = $('#RangeList').siblings('input').val();
 				var subjectRuleRangeList = RangeList ? formart_sels(RangeList,1) : [];
+				console.log(subjectRuleRangeList);
+				return false;
 				var subjectStepFlowList = [];
 				$('.process_box li').each(function(i,obj){
 					//节点类型

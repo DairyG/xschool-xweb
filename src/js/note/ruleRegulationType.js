@@ -17,32 +17,106 @@ var setting = {
         }
     }
 }
-var model = {
-    id: '',
-    parentId: '',
-    ruleName: ''
-};
-// var vm = new Vue({
-//     el: '#RuleNameForm',
-//     data: model
-// });
-
-function getSigle(id) {
-    Serv.Post('gc/note/GetRuleRegulationType', { id: id }, function (result) {
-        model.id = result.id,
-            model.parentId = result.parentId,
-            model.ruleName = result.ruleName
-    })
-}
 
 var layuiform;
 layui.use(['form', 'element', 'layer'], function () {
     var table = layui.table,
-        form = layui.form,
+        layform = layui.form,
         element = layui.element;
 
     Serv.Post('gc/note/GetRuleRegulationTypeList', {}, function (result) {
-        var 
+        result.data[0].open = true;
         zTreeObj = $.fn.zTree.init($("#ztree"), setting, result.data);
+    })
+    layform.on('submit(ruleSave)', function (laydata) {
+        layer_load();
+        if ($("input[name='RuleName']").val().lenth == 0) {
+            layer_alert("类别名称不能为空！");
+        }
+        //添加时父级id不为0
+        else if (laydata.field.id == 0) {
+            var zTree=$.fn.zTree.getZTreeObj('ztree');
+            if (laydata.field.ParentId>0) {
+                Serv.Post('gc/note/RuleRegulationTypeAdd', { ParentId: laydata.field.ParentId, RuleName: $("input[name='RuleName']").val() }, function (result) {
+                    window.location.reload()
+                })
+            }
+            else if (zTree != null) {
+                var nodes = zTree.getSelectedNodes();
+                if (nodes.length > 0) {
+                    Serv.Post('gc/note/RuleRegulationTypeAdd', { ParentId: nodes[0].id, RuleName: $("input[name='RuleName']").val() }, function (result) {
+                        window.location.reload()
+                    })
+                }
+                else{
+                    layer_alert("请选择要添加或者修改的左侧树节点,再点添加！");
+                }
+            }
+            else{
+                Serv.Post('gc/note/RuleRegulationTypeAdd', { ParentId: laydata.field.ParentId, RuleName: $("input[name='RuleName']").val() }, function (result) {
+                    window.location.reload()
+                })
+            }
+        }
+        //修改时id不为0
+        else if (laydata.field.id > 0) {
+            Serv.Post('gc/note/RuleRegulationTypeEdit', { Id: laydata.field.id, ParentId: laydata.field.ParentId, RuleName: $("input[name='RuleName']").val() }, function (result) {
+                window.location.reload()
+            })
+        }
+        else {
+            layer_alert("请刷新页面，重试！");
+        }
+        layer_load_lose();
+    })
+})
+
+$(function () {
+    $("a[lay-filter='add']").click(function () {
+        var zTree = $.fn.zTree.getZTreeObj('ztree');
+        if (zTree != null) {
+            nodes = zTree.getSelectedNodes();
+            if (nodes.length == 0) {
+                layer_alert('请选择要添加或者修改的左侧树节点');
+                return
+            }
+            $("input[name='RuleName']").val("");
+            $("input[name='id']").val(0);
+            $("input[name='ParentId']").val(nodes[0].id);
+        }
+        else {
+            $("input[name='RuleName']").val("");
+            $("input[name='id']").val(0);
+            $("input[name='ParentId']").val(0);
+        }
+    })
+    $("a[lay-filter='edit']").click(function () {
+        var zTree = $.fn.zTree.getZTreeObj('ztree');
+        nodes = zTree.getSelectedNodes();
+        if (nodes.length == 0) {
+            layer_alert('请选择要添加或者修改的左侧树节点');
+            return
+        }
+        $("input[name='id']").val(nodes[0].id);
+        $("input[name='ParentId']").val(nodes[0].parentId);
+        $("input[name='RuleName']").val(nodes[0].ruleName);
+    })
+    $("a[lay-filter='delete']").click(function () {
+        var zTree = $.fn.zTree.getZTreeObj('ztree');
+        nodes = zTree.getSelectedNodes();
+        if (nodes.length == 0) {
+            layer_alert('请选择要添加或者修改的左侧树节点');
+            return
+        }
+        if (nodes[0].isParent) {
+            layer_alert("含有下级的制度不允许删除！");
+        }
+        else {
+            layer_load();
+            Serv.Get('gc/note/RuleRegulationTypeDel?id=' + nodes[0].id, null, function (result) {
+                window.location.reload()
+            })
+            layer_load_lose();
+        }
     })
 })
