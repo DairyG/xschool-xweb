@@ -67,83 +67,84 @@
         var col0 = [[
             { type: 'numbers', title: '序号' },
             { field: 'userName', title: '名称' },
-            { field: 'd1', title: '1', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd2', title: '2', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd3', title: '3', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd4', title: '4', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd5', title: '5', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd6', title: '6', templet: function (d) { if (d.d6) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd7', title: '7', templet: function (d) { if (d.d7) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd8', title: '8', templet: function (d) { if (d.d8) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd9', title: '9', templet: function (d) { if (d.d9) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd10', title: '10', templet: function (d) { if (d.d10) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd11', title: '11', templet: function (d) { if (d.d11) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd12', title: '12', templet: function (d) { if (d.d12) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd13', title: '13', templet: function (d) { if (d.d13) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd14', title: '14', templet: function (d) { if (d.d14) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd15', title: '15', templet: function (d) { if (d.d15) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd16', title: '16', templet: function (d) { if (d.d16) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.id+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd17', title: '17', templet: function (d) { if (d.d17) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd18', title: '18', templet: function (d) { if (d.d18) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd19', title: '19', templet: function (d) { if (d.d19) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd20', title: '20', templet: function (d) { if (d.d20) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd21', title: '21', templet: function (d) { if (d.d21) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd22', title: '22', templet: function (d) { if (d.d22) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd23', title: '23', templet: function (d) { if (d.d23) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd24', title: '24', templet: function (d) { if (d.d24) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd25', title: '25', templet: function (d) { if (d.d25) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd26', title: '26', templet: function (d) { if (d.d26) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd27', title: '27', templet: function (d) { if (d.d27) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd28', title: '28', templet: function (d) { if (d.d28) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd29', title: '29', templet: function (d) { if (d.d29) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd30', title: '30', templet: function (d) { if (d.d30) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd31', title: '31', templet: function (d) { if (d.d31) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd1', title: '1', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d1\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '2', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d2\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd3', title: '3', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d3\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd4', title: '4', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d4\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd5', title: '5', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d5\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd6', title: '6', templet: function (d) { if (d.d6) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d6\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd7', title: '7', templet: function (d) { if (d.d7) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d7\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd8', title: '8', templet: function (d) { if (d.d8) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d8\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd9', title: '9', templet: function (d) { if (d.d9) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d9\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd10', title: '10', templet: function (d) { if (d.d10) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d10\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd11', title: '11', templet: function (d) { if (d.d11) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d11\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd12', title: '12', templet: function (d) { if (d.d12) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d12\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd13', title: '13', templet: function (d) { if (d.d13) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d13\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd14', title: '14', templet: function (d) { if (d.d14) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d14\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd15', title: '15', templet: function (d) { if (d.d15) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d15\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd16', title: '16', templet: function (d) { if (d.d16) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d16\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd17', title: '17', templet: function (d) { if (d.d17) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d17\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd18', title: '18', templet: function (d) { if (d.d18) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d18\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd19', title: '19', templet: function (d) { if (d.d19) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d19\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd20', title: '20', templet: function (d) { if (d.d20) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d20\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd21', title: '21', templet: function (d) { if (d.d21) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d21\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd22', title: '22', templet: function (d) { if (d.d22) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d22\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd23', title: '23', templet: function (d) { if (d.d23) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d23\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd24', title: '24', templet: function (d) { if (d.d24) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d24\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd25', title: '25', templet: function (d) { if (d.d25) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d25\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd26', title: '26', templet: function (d) { if (d.d26) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d26\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd27', title: '27', templet: function (d) { if (d.d27) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d27\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd28', title: '28', templet: function (d) { if (d.d28) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d28\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd29', title: '29', templet: function (d) { if (d.d29) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d29\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd30', title: '30', templet: function (d) { if (d.d30) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d30\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd31', title: '31', templet: function (d) { if (d.d31) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d31\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
             { field: 'total', title: '合计' }
         ]];
         var col1 = [[
             { type: 'numbers', title: '序号' },
             { field: 'userName', title: '名称' },
-            { field: 'd1', title: '第一周', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd1+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd2', title: '第二周', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd2+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd3', title: '第三周', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd3+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd4', title: '第四周', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd4+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd5', title: '第五周', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sidd5+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } }
+            { field: 'd1', title: '第一周', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d1\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '第二周', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d2\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd3', title: '第三周', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d3\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd4', title: '第四周', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d4\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd5', title: '第五周', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d5\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } }
         ]];
         var col2 = [[
             { type: 'numbers', title: '序号' },
             { field: 'userName', title: '名称' },
-            { field: 'd1', title: '一月', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd2', title: '二月', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd3', title: '三月', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd4', title: '四月', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd5', title: '五月', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd6', title: '六月', templet: function (d) { if (d.d6) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd7', title: '七月', templet: function (d) { if (d.d7) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd8', title: '八月', templet: function (d) { if (d.d8) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd9', title: '九月', templet: function (d) { if (d.d9) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd10', title: '十月', templet: function (d) { if (d.d10) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd11', title: '十一月', templet: function (d) { if (d.d11) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd12', title: '十二月', templet: function (d) { if (d.d12) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd1', title: '一月', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d1\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '二月', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d2\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd3', title: '三月', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d3\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd4', title: '四月', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d4\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd5', title: '五月', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d5\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd6', title: '六月', templet: function (d) { if (d.d6) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d6\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd7', title: '七月', templet: function (d) { if (d.d7) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d7\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd8', title: '八月', templet: function (d) { if (d.d8) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d8\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd9', title: '九月', templet: function (d) { if (d.d9) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d9\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd10', title: '十月', templet: function (d) { if (d.d10) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d10\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd11', title: '十一月', templet: function (d) { if (d.d11) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d11\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd12', title: '十二月', templet: function (d) { if (d.d12) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d12\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
         ]];
         var col3 = [[
             { type: 'numbers', title: '序号' },
             { field: 'userName', title: '名称' },
-            { field: 'd1', title: '一季度', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd2', title: '二季度', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd3', title: '三季度', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd4', title: '四季度', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd1', title: '一季度', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d1\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '二季度', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d2\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd3', title: '三季度', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d3\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd4', title: '四季度', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d4\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
         ]];
         var col4 = [[
             { type: 'numbers', title: '序号' },
             { field: 'userName', title: '名称' },
-            { field: 'd1', title: '上半年', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd2', title: '下半年', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd1', title: '上半年', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d1\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd2', title: '下半年', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d2\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
         ]];
         var col5 = [[
             { type: 'numbers', title: '序号' },
             { field: 'userName', title: '名称' },
-            { field: 'd1', title: '年', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info('+d.sid+')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
+            { field: 'd1', title: '年', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d1\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
         ]];
+        var arraySids = {};
         var vm = new Vue({
             el: '#dom',
             data: {
@@ -244,6 +245,7 @@
                     function search() {
                         return parameter;
                     }
+                    
                     //数据整理回调函数
                     var parseData = function (items) {
                         $.each(items, function (i, item) {
@@ -257,6 +259,7 @@
                                         summaryDate = parseInt(summaryDate);
                                         var k = 'd' + summaryDate;
                                         if (datas[i].employeeId == item.id) {
+                                            arraySids[k] = datas[i].id;
                                             item[k] = '1';
                                             item.total = parseInt(item.total) + 1;
                                         }
@@ -266,10 +269,8 @@
                                     for (var i = 0; i < datas.length; i++) {
                                         var k = 'd' + datas[i].index;
                                         if (datas[i].employeeId == item.id) {
-                                            //var sk = 'sid' + k;
-                                            //item.append(sk,datas[i].id);
+                                            arraySids[k] = datas[i].id;
                                             item[k] = '1';    
-                                            item.sid = datas[i].id;
                                         }
                                     }
                                     break;
@@ -281,8 +282,8 @@
                                         summaryDate = parseInt(summaryDate);
                                         var k = 'd' + summaryDate;
                                         if (datas[i].employeeId == item.id) {
+                                            arraySids[k] = datas[i].id;
                                             item[k] = '1';
-                                            item.sid = datas[i].id;
                                         }
                                     }
                                     break;
@@ -293,7 +294,7 @@
                                             k = 'd' + parseInt(datas[i].index - 5);
                                         }
                                         if (datas[i].employeeId == item.id) {
-                                            item.sid = datas[i].id;
+                                            arraySids[k] = datas[i].id;
                                             item[k] = '1';
                                         }
                                     }
@@ -305,7 +306,7 @@
                                             k = 'd' + parseInt(datas[i].index - 9);
                                         }
                                         if (k != "" && datas[i].employeeId == item.id) {
-                                            item.sid = datas[i].id;
+                                            arraySids[k] = datas[i].id;
                                             item[k] = '1';
                                         }
                                     }
@@ -313,7 +314,7 @@
                                 case '5':
                                     for (var i = 0; i < datas.length; i++) {
                                         if (datas[i].employeeId == item.id) {
-                                            item.sid = datas[i].id;
+                                            arraySids["d1"] = datas[i].id;
                                             item.d1 = '1';
                                         }
                                     }
@@ -349,7 +350,7 @@
                 area: ['100%', '100%'],
                 anim: 2,
                 move: false,
-                content: 'summarydetail.html?id='+sid
+                content: 'summarydetail.html?id='+arraySids[sid]
             });
         }
     </script>
