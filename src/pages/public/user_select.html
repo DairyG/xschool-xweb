@@ -60,6 +60,10 @@
 			</div>
 		</div>
 		<script type="text/javascript">
+			var layer;
+			layui.use(['layer'],function(){
+				layer = layui.layer;
+			});
 			var has_user = GetPara('has_user') == 'true' ? true : false;
 			var has_department = GetPara('has_department') == 'true' ? true : false;
 			var has_company = GetPara('has_company') == 'true' ? true : false;
