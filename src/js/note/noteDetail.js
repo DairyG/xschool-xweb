@@ -35,7 +35,7 @@ var vm = new Vue({
                 if (result.succeed) {
                     _this.noteDetail = result.data;
                     _this.noteDetail.title = result.data.title;
-                    _this.noteDetail.createDate = result.data.createDate;
+                    _this.noteDetail.createDate = result.data.createDate.FormatDate();
                     _this.noteDetail.publisherId = result.data.publisherId;
                     _this.noteDetail.content = decodeURIComponent(result.data.content);
                     $("#content").html(_this.noteDetail.content);

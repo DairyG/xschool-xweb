@@ -10,6 +10,7 @@
     <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../layui/layui.js"></script>
     <script type="text/javascript" src="../../js/pager.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript" src="../../js/service.js"></script>
 </head>
 
@@ -23,14 +24,14 @@
                             <form class="layui-form layui-form2 layui-search-form">
                                 <div class="layui-row">
                                     <div class="layui-form-item layui-col-md3 margin-b-20">
-                                        <label class="layui-form-label">标题<span class="text-red"> *</span></label>
+                                        <label class="layui-form-label">标题</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" required lay-verify="required"
-                                                placeholder="请输入标题" autocomplete="off" class="layui-input">
+                                            <input type="text" name="title" placeholder="请输入标题" autocomplete="off"
+                                                class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md4 margin-b-20">
-                                        <label class="layui-form-label">状态<span class="text-red"> *</span></label>
+                                        <label class="layui-form-label">状态</label>
                                         <div class="layui-input-block">
                                             <select>
                                                 <option></option>
@@ -40,7 +41,8 @@
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-col-md2 margin-b-20">
-                                        <button class="layui-btn layui-btn-normal">搜索</button>
+                                        <input type="button" class="layui-btn layui-btn-normal" lay-submit
+                                            lay-filter="search" value="搜索">
                                     </div>
                                 </div>
                             </form>
@@ -61,7 +63,11 @@
         var data_col = [[
             { type: 'id', title: '序号', templet: function (item) { return item.id; } },
             { field: 'title', title: '标题' },
-            { field: 'createDate', title: '发布日期' },
+            {
+                field: 'createDate', title: '发布日期', templet: function (item) {
+                    return item.createDate.FormatDate()
+                }
+            },
             { field: 'readCount', title: '浏览次数' },
             {
                 field: 'isNeedRead', title: '强制阅读', templet: function (item) {
@@ -74,17 +80,30 @@
             { field: 'people', title: '查看人' },
             { title: '操作', toolbar: '#toolbar', width: 180, fixed: 'right' }
         ]];
-        var search = function () {
-            return { "search": $("input[name='title']").attr('e-value') };
-        };
+        var parameter = {
+            Title: '',
+            IsRead:0
+        }
+
         layui.use(['table', 'element', 'laydate'], function () {
             var table = layui.table,
                 element = layui.element,
+                form = layui.form,
                 laydate = layui.laydate;
+
+            //基本信息
+            form.on('submit(search)', function (laydata) {
+                parameter.Title = laydata.field.title;
+                lstPager.refresh();
+            });
+
+            function search() {
+                return parameter;
+            }
 
             //分页初始化
             lstPager = Pager2(table,//lay-ui的table控件
-                $("input[name='title']").val(),//列表名称
+                '通知公告列表',//列表名称
                 "lst",//绑定的列表Id
                 'bar',//绑定的工具条Id
                 data_col,//表头的显示行
