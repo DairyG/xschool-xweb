@@ -607,6 +607,101 @@ function user_popup2(obj = null, allow_sels, num = 0, is_close_other = false, ca
 	});
 }
 
+function user_popup(obj = null,allow_sels,num = 0,is_close_other = false,callback){
+	if (is_close_other) {
+		layer.closeAll();
+	}
+	
+	var has_user = allow_sels.indexOf('user') > -1 ? true : false;
+	var has_department = allow_sels.indexOf('department') > -1 ? true : false;
+	var has_company = allow_sels.indexOf('company') > -1 ? true : false;
+	var has_position = allow_sels.indexOf('position') > -1 ? true : false;
+	var has_dpt_position = allow_sels.indexOf('dpt_position') > -1 ? true : false;
+	var sel_type = 'org';
+	window.sels = null;
+	if (typeof obj == 'object') {
+		if ($(obj).attr('type') == 'text') {
+			var arr = $(obj).siblings('input[name="sels"]').val();
+		} else {
+			var arr = $(obj).find('input[name="sels"]').val();
+		}
+		if (arr) {
+			sels = JSON.parse(arr);
+			sel_type = sels.sel_type;
+		}
+	} 
+	
+	var num = parseInt(num);
+	var url = '../../pages/public/user_select.html?num='+num+'&has_user='+has_user+'&has_department='+has_department+'&has_company='+has_company+'&has_position='+has_position+'&has_dpt_position='+has_dpt_position;
+	
+	layer.open({
+		type: 2,
+		title: '用户选择',
+		btn: ['确认', '取消'],
+		String: false,
+		closeBtn: 1,
+		skin: 'layui-layer-rim',
+		area: ['760px', '480px'],
+		content: url,
+		yes: function (index, layero) {
+			var win = window[layero.find('iframe')[0]['name']];//得到iframe页的窗口对象
+			var sels = win.sels;
+			if (typeof obj == 'object') {
+				var html = "";
+				var L1 = sels.user.length,
+					L2 = sels.department.length,
+					L3 = sels.company.length,
+					L4 = sels.position.length,
+					L5 = sels.dpt_position.length;
+				if ((L1 + L2 + L3 + L4 + L5) > 1) {
+					html = "等" + (L1 + L2 + L3 + L4 + L5) + '项';
+				}
+				if (L1 > 0) {
+					html = sels.user[0].name + html;
+				} else if (L2 > 0) {
+					html = sels.department[0].name + html;
+				} else if (L3 > 0) {
+					html = sels.company[0].name + html;
+				} else if (L4 > 0) {
+					html = sels.position[0].name + html;
+				} else if (L5 > 0) {
+					html = sels.dpt_position[0].name + html;
+				}
+
+				if ($(obj).attr('type') == 'text') {
+					$(obj).val(html);
+					var hide_ipt = $(obj).next('input[type="hidden"]');
+					if (hide_ipt.length > 0) {
+						hide_ipt.val(JSON.stringify(sels));
+					} else {
+						$(obj).after('<input type="hidden" name="sels" value=\'' + JSON.stringify(sels) + '\'>');
+					}
+				} else {
+					html += '&gt;&gt;';
+					$(obj).html(html);
+					var hide_ipt = $(obj).find('input[type="hidden"]');
+					if (hide_ipt.length > 0) {
+						hide_ipt.val(JSON.stringify(sels));
+					} else {
+						$(obj).append('<input type="hidden" name="sels" value=\'' + JSON.stringify(sels) + '\'>');
+					}
+				}
+			};
+
+			if (typeof callback === 'function') {
+				callback(sels);
+			}
+			layer.close(index);
+		},
+		btn2: function (index, layero) {
+			if (typeof callback === 'function') {
+				callback(null);
+			}
+			layer.close(index);
+		}
+	});
+}
+
 /**
  * 费用项选择弹出框
  */
