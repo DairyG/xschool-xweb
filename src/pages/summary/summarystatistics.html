@@ -64,42 +64,28 @@
         </div>
     </div>
     <script type="text/javascript">
-        var col0 = [[
-            { type: 'numbers', title: '序号' },
-            { field: 'userName', title: '名称' },
-            { field: 'd1', title: '1', templet: function (d) { if (d.d1) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d1\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd2', title: '2', templet: function (d) { if (d.d2) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d2\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd3', title: '3', templet: function (d) { if (d.d3) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d3\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd4', title: '4', templet: function (d) { if (d.d4) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d4\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd5', title: '5', templet: function (d) { if (d.d5) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d5\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd6', title: '6', templet: function (d) { if (d.d6) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d6\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd7', title: '7', templet: function (d) { if (d.d7) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d7\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd8', title: '8', templet: function (d) { if (d.d8) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d8\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd9', title: '9', templet: function (d) { if (d.d9) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d9\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd10', title: '10', templet: function (d) { if (d.d10) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d10\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd11', title: '11', templet: function (d) { if (d.d11) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d11\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd12', title: '12', templet: function (d) { if (d.d12) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d12\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd13', title: '13', templet: function (d) { if (d.d13) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d13\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd14', title: '14', templet: function (d) { if (d.d14) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d14\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd15', title: '15', templet: function (d) { if (d.d15) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d15\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd16', title: '16', templet: function (d) { if (d.d16) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d16\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd17', title: '17', templet: function (d) { if (d.d17) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d17\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd18', title: '18', templet: function (d) { if (d.d18) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d18\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd19', title: '19', templet: function (d) { if (d.d19) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d19\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd20', title: '20', templet: function (d) { if (d.d20) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d20\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd21', title: '21', templet: function (d) { if (d.d21) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d21\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd22', title: '22', templet: function (d) { if (d.d22) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d22\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd23', title: '23', templet: function (d) { if (d.d23) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d23\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd24', title: '24', templet: function (d) { if (d.d24) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d24\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd25', title: '25', templet: function (d) { if (d.d25) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d25\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd26', title: '26', templet: function (d) { if (d.d26) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d26\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd27', title: '27', templet: function (d) { if (d.d27) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d27\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd28', title: '28', templet: function (d) { if (d.d28) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d28\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd29', title: '29', templet: function (d) { if (d.d29) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d29\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd30', title: '30', templet: function (d) { if (d.d30) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d30\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'd31', title: '31', templet: function (d) { if (d.d31) { return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\'d31\')"></i>' } else { return '<i class="layui-icon layui-icon-close text-del"></i>' } } },
-            { field: 'total', title: '合计' }
-        ]];
+		var lastDay = getLastDay();
+		var col0 = [ 
+					{ type: 'numbers', title: '序号' },
+					{ field: 'userName', title: '名称' },
+				];
+		for(var i = 1;i <= lastDay;i++){
+			var k = 'd'+i;
+			var col_data =  { 
+				field: k, 
+				title: i,
+				templet: function (d) {
+					if (d[k]) { 
+						return '<i class="layui-icon layui-icon-ok text-span" onclick="show_info(\''+k+'\')"></i>'; 
+					} else { 
+						return '<i class="layui-icon layui-icon-close text-del"></i>'; 
+					} 
+				}
+			}
+			col0.push(col_data);
+		}
+		col0.push({ field: 'total', title: '合计' });
+        var col0 = [col0];
         var col1 = [[
             { type: 'numbers', title: '序号' },
             { field: 'userName', title: '名称' },
@@ -353,6 +339,13 @@
                 content: 'summarydetail.html?id='+arraySids[sid]
             });
         }
+		function getLastDay(){
+			var aDate = new Date();
+			var aYear = aDate.getFullYear();
+			var aMonth = aDate.getMonth()+1;
+			var new_date = new Date(aYear,aMonth,0);
+			return new_date.getDate();
+		}
     </script>
 </body>
 
