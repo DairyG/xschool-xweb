@@ -823,25 +823,19 @@ function formart_sels(data, businessType) {
 	};
 	data = JSON.parse(data);
 	var dataType = data.sel_type;
-	var c = data.company.ids;
-	c = c.RTrim(',').LTrim(',');
-	var d = data.department.ids;
-	d = d.RTrim(',').LTrim(',');
-	var u = data.user.ids;
-	u = u.RTrim(',').LTrim(',');
-	var p = data.position.ids;
-	p = p.RTrim(',').LTrim(',');
-	var dp = data.dpt_position.ids;
-	dp = dp.RTrim(',').LTrim(',');
+	var c = data.company;
+	var d = data.department;
+	var u = data.user;
+	var p = data.position;
+	var dp = data.dpt_position;
 	var res = [],
 		data;
 	if (c != '') {
-		c = c.split(',');
 		for (var i = 0; i < c.length; i++) {
 			data = {
 				businessType: businessType,
 				dataType: dataType_arr[dataType],
-				companyId: c[i],
+				companyId: c[i].id,
 				depId: 0,
 				userId: 0,
 				jobDepId: 0,
@@ -851,13 +845,12 @@ function formart_sels(data, businessType) {
 		}
 	}
 	if (d != '') {
-		d = d.split(',');
 		for (var i = 0; i < d.length; i++) {
 			data = {
 				businessType: businessType,
 				dataType: dataType_arr[dataType],
 				companyId: 0,
-				depId: d[i],
+				depId: d[i].id,
 				userId: 0,
 				jobDepId: 0,
 				jobId: 0
@@ -866,14 +859,13 @@ function formart_sels(data, businessType) {
 		}
 	}
 	if (u != '') {
-		u = u.split(',');
 		for (var i = 0; i < u.length; i++) {
 			data = {
 				businessType: businessType,
 				dataType: dataType_arr[dataType],
 				companyId: 0,
 				depId: 0,
-				userId: u[i],
+				userId: u[i].id,
 				jobDepId: 0,
 				jobId: 0
 			}
@@ -881,7 +873,6 @@ function formart_sels(data, businessType) {
 		}
 	}
 	if (p != '') {
-		p = p.split(',');
 		for (var i = 0; i < p.length; i++) {
 			data = {
 				businessType: businessType,
@@ -890,15 +881,14 @@ function formart_sels(data, businessType) {
 				depId: 0,
 				userId: 0,
 				jobDepId: 0,
-				jobId: p[i]
+				jobId: p[i].id
 			}
 			res.push(data);
 		}
 	}
 	if (dp != '') {
-		dp = dp.split(',');
 		for (var i = 0; i < dp.length; i++) {
-			var r = dp[i].split('|');
+			var r = dp[i].id.split('|');
 			data = {
 				businessType: businessType,
 				dataType: dataType_arr[dataType],
