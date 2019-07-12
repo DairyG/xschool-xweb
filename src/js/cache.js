@@ -1,6 +1,7 @@
 var COMPANY="COMPANY_CACHE";
 var DEPARTMENT="DEPARTMENT_CACHE";
-var USERTOKEN="USERTOKEN_CACHE"
+var USERTOKEN="USERTOKEN_CACHE";
+var EMPLOYEE="EMPLOYEE_CACHE"
 window.globCache={
     getCompany:function(){
         var value = window.globCache.get(COMPANY);
@@ -21,6 +22,13 @@ window.globCache={
     },
     getUserToken:function(){
         var value = window.globCache.get(USERTOKEN);
+        return JSON.parse(value);
+    },
+    setEmployee:function(value){
+        window.globCache.set(EMPLOYEE,JSON.stringify(value));
+    },
+    getEmployee:function(){
+        var value = window.globCache.get(EMPLOYEE);
         return JSON.parse(value);
     },
     get:function(key){

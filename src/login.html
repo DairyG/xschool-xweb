@@ -209,10 +209,13 @@
 		function setData(result) {
 			layer_load('登录成功，数据拉取中...');
 			Serv.SetToken(result.token_type + " " + result.access_token);
-
 			var token = parseJwt(result.access_token);
-			//console.log(token);
 			window.globCache.setUserToken(token);
+			Serv.Get('uc/Employee/GetEmployeeByUserId/'+token["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"],{},function(response){
+				if(response){
+					window.globCache.setEmployee(response);
+				}
+			},false);
 			window.location.href = 'index.html';
 		}
 
