@@ -87,8 +87,8 @@
 				if(!has_dpt_position){
 					$("#sel_type3").parents('label').remove();
 				}
-				if($(".radio_box").find('label').length == 1){
-					$(".radio_box").html('');
+				if ($(".radio_box").find('label').length == 1) {
+					$(".radio_box").css({'height':'0px','overflow':'hidden'});
 				}
 
 				$('.radio_box input').each(function () {
