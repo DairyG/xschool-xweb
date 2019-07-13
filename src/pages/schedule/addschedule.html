@@ -210,22 +210,38 @@
             });
             form.on('submit(formDemo)', function (laydate) {
                 var intIds1 = "";
+                var person1 = [];
                 if ($("#user_sel_box1 input").length > 0) {
                     var users1 = $.parseJSON($("#user_sel_box1").find("input[name='sels']").val()).user;
                     for (var i = 0; i < users1.length; i++) {
                         intIds1 += "," + users1[i].id;
+                        var model = {
+                            id : users1[i].id,
+                            name:users1[i].name
+                        };
+                        person1.push(model);
                     }
                     intIds1 += ",";
                 }
                 laydate.field.executors = intIds1;
+                laydate.field.executorsJson = JSON.stringify(person1);
+
                 var intIds2 = "";
+                var person2 = [];
                 if ($("#user_sel_box2 input").length > 0) {
                     var users2 = $.parseJSON($("#user_sel_box2").find("input[name='sels']").val()).user;
-                    for (var i = 0; i < intIds2.length; i++) {
-                        intIds2 += "," + intIds2[i].id;
+                    for (var i = 0; i < users2.length; i++) {
+                        intIds2 += "," + users2[i].id;
+                        var model = {
+                            id : users2[i].id,
+                            name:users2[i].name
+                        };
+                        person2.push(model);
                     }
                     intIds2 += ",";
                 }
+                laydate.field.scribbles = intIds2;
+                laydate.field.scribblesJson = JSON.stringify(person2);
 
                 laydate.field.kpiPlan = $("#selPlan").val();
                 laydate.field.kpiId = 0;

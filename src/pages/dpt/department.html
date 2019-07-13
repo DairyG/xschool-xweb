@@ -65,53 +65,11 @@
 									v-model="dptCode" class="layui-input">
 							</div>
 						</div>
-						<div class="layui-form-item layui-col-md12 layui-col-sm12" style="display: none;">
-							<label class="layui-form-label"><span class="text-red">*</span>部门正职 </label>
-							<div class="layui-input-block">
-								<input type="name" placeholder="部门正职" name="DptPositions" v-model="dptPositions"
-									class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-col-md12 layui-col-sm12" style="display: none;">
-							<label class="layui-form-label">正职电话</label>
-							<div class="layui-input-block">
-								<input type="tel2" placeholder="正职电话" name="PositionsPhone" v-model="positionsPhone"
-									required lay-verify="phoneHas" class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-col-md12 layui-col-sm12" style="display: none;">
-							<label class="layui-form-label">部门副职</label>
-							<div class="layui-input-block">
-								<input type="tel" placeholder="部门副职" class="layui-input" name="DptDeputy"
-									v-model="dptDeputy">
-							</div>
-						</div>
-						<div class="layui-form-item layui-col-md12 layui-col-sm12" style="display: none;">
-							<label class="layui-form-label">副职电话</label>
-							<div class="layui-input-block">
-								<input type="text" placeholder="副职电话" name="DeputyPhone" v-model="deputyPhone" required
-									lay-verify="phoneHas" class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-col-md12 layui-col-sm12" style="display: none;">
-							<label class="layui-form-label">部门秘书</label>
-							<div class="layui-input-block">
-								<input type="text" placeholder="部门秘书" name="DptSecretary" v-model="dptSecretary"
-									class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-col-md12 layui-col-sm12" style="display: none;">
-							<label class="layui-form-label">秘书电话</label>
-							<div class="layui-input-block">
-								<input type="text" placeholder="秘书电话" name="SecretaryPhone" v-model="secretaryPhone"
-									required lay-verify="phoneHas" class="layui-input">
-							</div>
-						</div>
 						<div class="layui-form-item layui-col-md12 layui-col-sm12">
 							<label class="layui-form-label">职责描述</label>
 							<div class="layui-input-block">
-								<textarea placeholder="职责描述" class="layui-textarea" v-model="dutiesDescription"
-									name="DutiesDescription"></textarea>
+								<textarea placeholder="职责描述" class="layui-textarea" v-model="description"
+									name="description"></textarea>
 							</div>
 						</div>
 

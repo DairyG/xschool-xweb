@@ -39,6 +39,25 @@
         var color_index = 0;
         var addData = {};
         var datas = [];
+        var init = function () {
+                Serv.Get('gc/Schedule/Get', {}, function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var model = {
+                        id:response[i].id,
+                        title: response[i].title,
+                        start: response[i].beginTime.FormatDate(true),
+                        end: response[i].endTime.FormatDate(true),
+                        state: 1,
+                        type: response[i].emergency,
+                        backgroundColor: color_arr[response[i].emergency],
+                        borderColor: color_arr[response[i].emergency],
+                        textColor: '#fff'
+                    };
+                    datas.push(model);   
+                }
+            },false);
+        };
+        init();
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -112,7 +131,7 @@
                     layer.closeAll('tips');
                 },
                 eventClick: function (arg) {
-
+                    console.log(arg);
                     layer.open({
                         type: 2,
                         title: '任务详情',
@@ -122,7 +141,7 @@
                         area: ['100%', '100%'],
                         anim: 2,
                         move: false,
-                        content: '../schedule/任务详情.html?is_pop=1',
+                        content: '../schedule/detailschedule.html?is_pop=1&id=' + arg.event.id,
                         btn: ['修改', '删除'],
                         yes: function (index) {
                             layer.close(index);
@@ -150,46 +169,9 @@
                         }
                     });
                 },
-                events: function () {
-                    Serv.Get('gc/Schedule/Get', {}, function (response) {
-                        for (var i = 0; i < response.length; i++) {
-                            var model = {
-                                title: response[i].title,
-                                start: response[i].beginTime.FormatDate(true),
-                                state: 1,
-                                type: response[i].emergency,
-                                backgroundColor: color_arr[response[i].emergency],
-                                borderColor: color_arr[response[i].emergency],
-                                textColor: '#fff'
-                            };
-                            datas.push(model);
-                        }
-                    },false);
-                    console.log(datas);
-                    return datas;
-                }
-                //events:init
+                events: datas
             });
             calendar.render();
-            // var init = function () {
-            //     Serv.Get('gc/Schedule/Get', {}, function (response) {
-            //         for (var i = 0; i < response.length; i++) {
-            //             var model = {
-            //                 title: response[i].title,
-            //                 start: response[i].beginTime.FormatDate(true),
-            //                 state: 1,
-            //                 type: response[i].emergency,
-            //                 backgroundColor: color_arr[response[i].emergency],
-            //                 borderColor: color_arr[response[i].emergency],
-            //                 textColor: '#fff'
-            //             };
-            //             datas.push(model);   
-            //         }
-            //         //calendar.render();
-            //     });
-            //     return datas;
-            // };
-            //init();
         });
     </script>
 </body>

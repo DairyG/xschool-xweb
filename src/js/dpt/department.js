@@ -62,13 +62,7 @@ var model = {
     pId: '0',
     dptName: '',
     dptCode: '',
-    dptPositions: '',
-    positionsPhone: '',
-    dptDeputy: '',
-    deputyPhone: '',
-    dptSecretary: '',
-    secretaryPhone: '',
-    dutiesDescription: '',
+    description: '',
     dptStatus: '',
     levelMap: ''
 };
@@ -86,13 +80,7 @@ function GetSingle(Id) {
         model.pId = response.pid;
         model.dptName = response.dptName;
         model.dptCode = response.dptCode;
-        model.dptPositions = response.dptPositions;
-        model.positionsPhone = response.positionsPhone;
-        model.dptDeputy = response.dptDeputy;
-        model.deputyPhone = response.deputyPhone;
-        model.dptSecretary = response.dptSecretary;
-        model.secretaryPhone = response.secretaryPhone;
-        model.dutiesDescription = response.dutiesDescription;
+        model.description = response.description;
         model.dptStatus = response.dptStatus;
         model.levelMap = response.levelMap;
         DptJobs = response.bindings;
@@ -109,13 +97,7 @@ function ClearModel(dpt) {
     model.pId = dpt.pId;
     model.dptName = dpt.dptName;
     model.dptCode = dpt.dptCode;
-    model.dptPositions = dpt.dptPositions;
-    model.positionsPhone = dpt.positionsPhone;
-    model.dptDeputy = dpt.dptDeputy;
-    model.deputyPhone = dpt.deputyPhone;
-    model.dptSecretary = dpt.dptSecretary;
-    model.secretaryPhone = dpt.secretaryPhone;
-    model.dutiesDescription = dpt.dutiesDescription;
+    model.description = dpt.description;
     model.dptStatus = dpt.dptStatus;
     vm.$set({
         data: model
@@ -129,13 +111,7 @@ function ClickAdd() {
         pId: $("input[name='NodeId']").val(),
         dptName: '',
         dptCode: '',
-        dptPositions: '',
-        positionsPhone: '',
-        dptDeputy: '',
-        deputyPhone: '',
-        dptSecretary: '',
-        secretaryPhone: '',
-        dutiesDescription: '',
+        description: '',
         dptStatus: 1
     };
     ClearModel(dpt);
@@ -203,9 +179,9 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
     });
     layform.on('submit(dptInfo)', function (laydata) {
         layer_load();
-        console.log(laydata);
+       
         if (laydata.field.Id == "0" || laydata.field.Id=="") {
-            if (parseInt(laydata.field.PId) < 0) {
+            if (parseInt(laydata.field.PId) <= 0) {
                 laydata.field.LevelMap = "0,";
             } else if(parseInt(laydata.field.PId) >0 ) {
                 laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.PId + ",";
@@ -215,12 +191,13 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
                 layer_alert('请选择要添加部门的公司或者父级部门');
                 return
             }
-            console.log(nodes);
             laydata.field.CompanyId=nodes[0].companyId;
-            console.log('after update',laydata);
             Serv.Post('uc/Department/add', laydata.field, function (response) {
                 if (response.code == "00") {
                     laydata.field.id=response.data;
+                    laydata.field.dptName = laydata.field.DptName;
+                    zTreeObj.addNodes(nodes[0],-1, laydata.field);
+
                     dpts.push(laydata.field);
                     window.globCache.setDepartment(dpts);
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());

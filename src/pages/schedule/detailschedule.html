@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+        <script type="text/javascript" src="../../js/common.js"></script>
+        <script type="text/javascript" src="../../js/service.js"></script>
+	</head>
+	<body class="bgf2f2f2 ">
+		<div class="childrenBody ">
+			<div class="layui-card-header fontsize-16">任务详情</div>
+			<div class="layui-card-body bgwhite">
+				<form class="layui-form layui-form2 layui-form-info" >
+					<div class="layui-row">
+						<div class="layui-form-item layui-col-md12 ">
+							<label class="layui-form-label">任务标题：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divTitle"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 ">
+							<label class="layui-form-label">考核方案：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divPlan"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 ">
+							<label class="layui-form-label">考核项目：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid">销售任务</div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 ">
+							<label class="layui-form-label">开始时间：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divBeginTime">2019-2-3 18:00:00 开始</div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 ">
+							<label class="layui-form-label">截止时间：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divEndTime">2019-2-3 18:00:00 截止</div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 ">
+							<label class="layui-form-label">提醒时间：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divRemindTimeName"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 ">
+							<label class="layui-form-label">提醒方式：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divRemindWayName"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 ">
+							<label class="layui-form-label">创建人：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divEmployeeName"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md6 ">
+							<label class="layui-form-label">紧急程度：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divEmergencyName"></div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 ">
+							<label class="layui-form-label">执行人：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divExecutor">
+									<!-- 已完成的人背景用蓝色 -->
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 ">
+							<label class="layui-form-label">抄送人：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid" id="divScribbles">
+									
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 ">
+							<label class="layui-form-label">任务内容：</label>
+							<div class="layui-input-block">
+								<div class="padding-l-15 margin-t-10" id="divContent">
+									 
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 ">
+							<label class="layui-form-label">附件：</label>
+							<div class="layui-input-block">
+								
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md12 ">
+							<label class="layui-form-label">回复：</label>
+							<div class="layui-input-block">
+								<div class="padding-l-15">
+									<textarea class="layui-textarea"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="layui-row text-right">
+						<button class="layui-btn layui-btn-normal" id="BtnReply">回复</button>
+						<button class="layui-btn layui-btn-dangers" id="BtnComplete">完成</button>
+						<span class="layui-btn " id="close_btn">返回</span>
+					</div>
+				</form>
+				<hr class="layui-bg-blue hrheight3" >
+				<div class="form-title">任务记录</div>
+				<div class="layui-tab">
+					<ul class="layui-tab-title">
+						<li class="layui-this">完成情况</li>
+						<li>回复</li>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show">
+							<table id="lst" lay-filter="lst" ></table>
+						</div>
+						<div class="layui-tab-item">
+							<table id="lst2" lay-filter="lst2" ></table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+            var layer_linePop,table;
+            var id = GetPara('id');
+            var init = function(){
+                Serv.Get('gc/Schedule/GetSingle/' + id,{},function(response){
+                    console.log(response);
+                    if(response){
+                        $("#divTitle").html(response.sche.title);
+                        $("#divBeginTime").html(response.sche.beginTime.FormatDate(true) + "开始");
+                        $("#divEndTime").html(response.sche.endTime.FormatDate(true) + "截止");
+                        $("#divEmployeeName").html(response.sche.employeeName);
+                        var Executors = $.parseJSON(response.sche.executorsJson);
+                        var htmlExc = "";
+                        for(var i = 0;i<Executors.length;i++){
+                            htmlExc += '<span class="layui-badge-plus layui-bg-blue " >'+ Executors[i].name +'</span>';
+                        } 
+                        $("#divExecutor").html(htmlExc);
+
+                        var Scribbles = $.parseJSON(response.sche.scribblesJson);
+                        var htmlScr = "";
+                        for(var i = 0;i<Scribbles.length;i++){
+                            htmlScr += '<span class="layui-badge-plus layui-bg-gray" >'+ Scribbles[i].name +'</span>';
+                        } 
+                        $("#divScribbles").html(htmlScr);
+                        $("#divContent").html(response.sche.content);
+                        $("#divPlan").html(response.plan);
+                        $("#divRemindTimeName").html(response.remindTimeName);
+                        $("#divRemindWayName").html(response.remindWayName);
+                        $("#divEmergencyName").html(response.emergencyName);
+                    }
+                });
+            };
+            init();
+			var cols = [[
+				{type:'numbers',title:'序号'},
+				{field:'umane',title:'用户名称'},
+				{field:'tips',title:'状态'},
+				{field:'date',title:'时间'},
+			]];
+			var cols2 = [[
+				{type:'numbers',title:'序号'},
+				{field:'umane',title:'用户名称'},
+				{field:'tips',title:'信息'},
+				{field:'date',title:'时间'},
+			]];
+			var datas = [
+				{'umane':'张三',tips:'已完成',date:'2019-1-1 19:28:12'},
+				{'umane':'王五',tips:'已完成',date:'2019-1-1 19:28:12'},
+			];
+			var datas2 = [
+				{'umane':'张三',tips:'怎么样了',date:'2019-1-1 19:28:12'},
+				{'umane':'王五',tips:'还差一点',date:'2019-1-1 19:28:12'},
+			];
+			layui.use(['table','laydate','layedit','element','form'], function() {
+				table = layui.table;
+                var laydate = layui.laydate,
+                    layform = layui.form,
+					layedit = layui.layedit;
+				
+				table.render({
+					elem: '#lst',
+					title: '用户表',
+					page: true,
+					even: true,
+					height: '360',
+					cols: cols,
+					data: datas,
+				});
+				table.render({
+					elem: '#lst2',
+					title: '用户表',
+					page: true,
+					even: true,
+					height: '360',
+					cols: cols2,
+					data: datas2,
+                });
+                
+			});
+            var is_pop = GetPara('is_pop');
+            
+			if(is_pop == 1){
+				$(".childrenBody").removeClass('childrenBody');
+				$(".layui-card-header").remove();
+			}
+			$('#close_btn').click(function(){
+				if(is_pop == 1){
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				} else {
+					history.back(-1);
+				}
+            });
+            //$("#BtnComplete")
+		</script>
+	</body>
+</html>
