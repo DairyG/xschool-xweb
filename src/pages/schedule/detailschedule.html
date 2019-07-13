@@ -229,13 +229,18 @@
             }
         });
         $("#BtnComplete").click(function () {
-            console.log(employ);
             var sc = {
                 id:0,
                 scheduleId : id,
                 employeeId : employ.id,
                 addTime : '2019-01-01 00:00:00'
             };
+            Serv.Post('gc/ScheduleComplete/Add',sc,function(response){
+                if(response.code == "00"){
+                    layer_alert("成功！");
+                    
+                }
+            })
             return false;
         });
     </script>
