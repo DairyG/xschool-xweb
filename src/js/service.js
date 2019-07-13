@@ -15,6 +15,15 @@ var verifyModel = {
     }
 }
 
+var userPopModel = {
+    sel_type: '',
+    user: [],
+    department: [],
+    company: [],
+    position: [],
+    dpt_position: []
+}
+
 var Serv = {
     //ServiceUrl: "http://114.116.54.157:8000/api/v1/",
     ServiceUrl: "http://localhost:8000/api/v1/",
@@ -57,7 +66,7 @@ var Serv = {
         this.Send(url, "POST", args, callback, async);
     },
     Send: function (url, type, args, callback, async) {
-		
+
         jQuery.support.cors = true;
         $.ajax({
             //xhrFields: {withCredentials: true},
@@ -72,7 +81,7 @@ var Serv = {
             },
             type: type,
             data: args,
-            async: async != undefined ? async : true,
+            async: async !=undefined ? async :true,
             success: function (data) {
                 callback(data);
             },

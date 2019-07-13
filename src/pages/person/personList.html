@@ -60,6 +60,7 @@
 	<div class="linePop" id="userJobPop">
 		<div class="layui-card-body">
 			<form class="layui-form layui-form2">
+				<input type="hidden" id="employeeId" name="employeeId">
 				<table class="layui-table">
 					<thead>
 						<tr>
@@ -77,7 +78,7 @@
 					</tbody>
 				</table>
 				<div class="layui-row text-right padding-r-50">
-					<button class="layui-btn" lay-submit lay-filter="formDemo">确认</button>
+					<input type="button" class="layui-btn" lay-submit lay-filter="userJobSubmit" value="确认">
 					<span class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
 				</div>
 			</form>
@@ -259,6 +260,7 @@
 						});
 					});
 				} else if (layEvent == 'userJob') {
+					$('#employeeId').val(value);
 					setUserJobPop(data.bindings);
 				}
 			};
@@ -286,22 +288,79 @@
 					layer_load_lose();
 					return false;
 				}
+				ujObj.append(getUserJobTpl());
+				form.render();
+				layer_load_lose();
 			});
 			ujObj.on('click', '.userJobDel', function () {
-
+				var length = ujObj.find('tr').length;
+				if (length <= 1) {
+					layer_alert('请勿删除');
+					return false;
+				}
+				var obj = $(this).parents('tr');
+				layer_confirm('确定删除吗？', function () {
+					obj.remove();
+				});
 			});
-
 			ujObj.on('click', '.deptPopup', function () {
 				var selObj = $(this).parents('tr').find('select[name="userJob"]');
+				var obj = $(this);
 				user_popup(this, 'department', 1, false, function (result) {
-					if (result.department.length > 0) {
-						getJob(result.department[0].compnay_id, selObj, '');
+					if (result != null && result.department.length > 0) {
+						var cName = result.department[0].company_name;
+						obj.val((cName.length > 9 ? (cName.substr(0, 9) + '...') : +cName) + ' - ' +
+							result.department[0].name);
+						getJob(result.department[0].company_id, selObj, '');
 					}
 				});
 			});
 
-			//打开职位设置窗口
-			function openUserJobPop() {
+
+			form.on('submit(userJobSubmit)', function (laydata) {
+				layer_load();
+				var hasResult = validateUserJob();
+				if (!hasResult) {
+					layer_load_lose();
+					return false;
+				}
+
+				var data = [];
+				ujObj.find('tr').each(function () {
+					var valJson = JSON.parse($(this).find('input[name="sels"]').val());
+					var jobVal = $.trim($(this).find('select[name="userJob"]').val());
+					data.push({
+						companyId: valJson.department[0].company_id,
+						dptId: valJson.department[0].id.toString(),
+						jobId: jobVal.toString()
+					});
+				});
+
+				if (data.length == 0) {
+					layer_alert('请设置相关职位');
+					return false;
+				}
+
+				Serv.Post('uc/employee/dptjobbinding', {
+					employeeId: laydata.field.employeeId,
+					bindings: data
+				}, function (result) {
+					layer_load_lose();
+					if (result.succeed) {
+						layer_alert(result.message, function () {
+							layer.closeAll();
+							lstPager.refresh();
+						});
+					} else {
+						layer_alert(result.message);
+					}
+				});
+
+				return false;
+			});
+
+			//打开 职位设置
+			function openUserJobPop(data) {
 				layer_load_lose();
 				layer.open({
 					type: 1,
@@ -312,50 +371,79 @@
 					area: ['750px', '450px'],
 					content: $('#userJobPop')
 				});
+
+				//获取职位
+				if (data.length > 0) {
+					$.each(data, function (i, item) {
+						getJob(item.companyId, $('.userJobSel' + item.jobId), item.jobId);
+					});
+				}
 			}
 			//设置值
 			function setUserJobPop(data) {
 				layer_load();
 				if (data.length > 0) {
 
+					var userSelVal = userPopModel;
+					userSelVal.sel_type = 'org'
+
 					var index = 0;
 					var htmls = '';
 					$.each(data, function (i, item) {
-						htmls += '<tr>';
-						htmls +=
-							'<td><span class="table-btn-jia userJobAdd">+</span><span class="table-btn-jian userJobDel">-</span></td>';
-						htmls +=
-							'<td><input type="text" name="userDept" placeholder="请选择" class="layui-input deptPopup" value="' +
-							item.dptName + '" readonly />' +
-							'<input type="hidden" name="sels" value="">' +
-							'</td>';
-						htmls += '<td><select name="userJob"><option value="">请选择</option></select></td>';
-						htmls += '</tr>';
+						userSelVal.department = [];
+						userSelVal.department.push({
+							id: item.dptId,
+							name: item.dptName,
+							company_id: item.companyId,
+							company_name: item.companyName
+						});
 
+						htmls += getUserJobTpl(item, userSelVal);
 						index++;
 					});
-					// console.log(data.length + '---' + index);
 					if (index == data.length) {
 						ujObj.html(htmls);
 						form.render();
-						openUserJobPop();
+						openUserJobPop(data);
 					}
 				} else {
-					var htmls =
+					ujObj.html(getUserJobTpl());
+					form.render();
+					openUserJobPop(data);
+				}
+			}
+			//获取 职位设置模板值
+			function getUserJobTpl(model, selVal) {
+				var htmls = '';
+				if (model) {
+					var cName = model.companyName;
+					htmls = '<tr>';
+					htmls +=
+						'<td><span class="table-btn-jia userJobAdd">+</span><span class="table-btn-jian userJobDel">-</span></td>';
+					htmls +=
+						'<td><input type="text" name="userDept" placeholder="请选择" class="layui-input deptPopup" value="' +
+						((cName != null && cName.length > 9) ? (cName.substr(0, 9) + '...') : +cName) + ' - ' +
+						model.dptName +
+						'" readonly />' +
+						'<input type="hidden" name="sels" value=\'' + JSON.stringify(selVal) + '\'>' +
+						'</td>';
+					htmls += '<td><select name="userJob" class="userJobSel' + model.jobId +
+						'"><option value="">请选择</option></select></td>';
+					htmls += '</tr>';
+				} else {
+					htmls =
 						'<tr>' +
 						'<td><span class="table-btn-jia userJobAdd">+</span><span class="table-btn-jian userJobDel">-</span></td>' +
 						'<td><input type="text" name="userDept" placeholder="请选择" class="layui-input deptPopup" readonly /></td>' +
 						'<td><select name="userJob"><option value="">请选择</option></select></td>' +
 						'</tr>';
-					ujObj.html(htmls);
-					form.render();
-					openUserJobPop();
 				}
+				return htmls;
 			}
-
-			//验证职位设置
+			//验证 职位设置
 			function validateUserJob() {
 				var hasResult = true;
+				var data = [];
 				ujObj.find('tr').each(function () {
 					var value = $(this).find('input[name="sels"]').val();
 					if (!value) {
@@ -380,11 +468,35 @@
 						hasResult = false;
 						return false;
 					}
+
+					data.push({
+						companyId: valJson.department[0].company_id.toString(),
+						dptId: valJson.department[0].id.toString(),
+						jobId: jobVal.toString()
+					});
 				});
+
+				for (var i = 0; i < data.length; i++) {
+					var flag = true;
+					for (var j = i + 1; j < data.length; j++) {
+						//第一个等同于第二个，splice方法删除第二个
+						if (JSON.stringify(data[i]) === JSON.stringify(data[j])) {
+							data.splice(j, 1);
+							j--;
+							flag = false;
+						}
+					}
+					if (!flag) {
+						layer_alert('您设置的部门和职位有重复，请检查');
+						hasResult = false;
+						return false;
+					}
+				}
+
 				return hasResult;
 			}
 
-			//获取职位
+			//获取 职位
 			function getJob(cId, obj, value) {
 				var _this = this;
 				layer_load();
@@ -407,10 +519,9 @@
 					}
 				});
 			}
-
 		});
 
-		//关闭职位设置窗口
+		//关闭 职位设置
 		function closePop() {
 			$('#userJobBody').empty();
 			layer.closeAll();

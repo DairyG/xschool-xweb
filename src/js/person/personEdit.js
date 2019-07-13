@@ -339,6 +339,7 @@ var vm = new Vue({
                         _this.basicProperties = result.properties;
                         _this.basicRelations = result.socialRelations;
                         _this.basicRecruitment = result.recruitmentSource;
+
                     });
 
                     if (id.IsNum()) {
