@@ -36,11 +36,11 @@
 											<div class="layui-form-item layui-col-md4 margin-b-20">
 												<label class="layui-form-label">标题<span class="text-red"> *</span></label>
 												<div class="layui-input-block">
-													<input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+													<input type="text" name="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
 												</div>
 											</div>
 											<div class="layui-form-item layui-col-md2 margin-b-20">
-												<button class="layui-btn layui-btn-normal">搜索</button>
+												<input type="button"  lay-submit class="layui-btn layui-btn-normal" lay-filter="search" value="搜索"/>
 											</div>
 										</div>
 									</form>
