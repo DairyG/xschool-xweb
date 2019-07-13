@@ -1,7 +1,9 @@
 var COMPANY="COMPANY_CACHE";
 var DEPARTMENT="DEPARTMENT_CACHE";
 var USERTOKEN="USERTOKEN_CACHE";
-var EMPLOYEE="EMPLOYEE_CACHE"
+var EMPLOYEE="EMPLOYEE_CACHE";
+var JOB="JOB_CACHE";
+
 window.globCache={
     getCompany:function(){
         var value = window.globCache.get(COMPANY);
@@ -16,6 +18,24 @@ window.globCache={
     },
     setDepartment:function(value){
         window.globCache.set(DEPARTMENT,JSON.stringify(value));
+    },
+    setJobs:function(value){
+        window.globCache.set(JOB,JSON.stringify(value))
+    },
+    getJobs:function(){
+        var value = window.globCache.get(JOB);
+        return JSON.parse(value);
+    },
+    getJobsByCompanyId:function(companyid){
+        var jos = window.globCache.getJobs(JOB);
+        var array = [];
+        for (let index = 0; index < jos.length; index++) {
+            const job = jos[index];
+            if(job.companyId==companyid){
+                array.push(job);
+            }
+        }
+        return array;
     },
     setUserToken:function(value){
         window.globCache.set(USERTOKEN,JSON.stringify(value));
