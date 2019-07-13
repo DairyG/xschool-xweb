@@ -38,7 +38,7 @@
 										<div class="layui-form-item layui-col-md6">
 											<label class="layui-form-label">选择面试人<span class="text-red"> *</span></label>
 											<div class="layui-input-block">
-												<span class="layui-btn layui-btn-normal" onclick="user_popup($('#user_sel_box'),true)"><i class="layui-icon layui-icon-add-1"></i>选择面试人</span>
+												<span class="layui-btn layui-btn-normal" onclick="user_popup($('#user_sel_box'),'user')"><i class="layui-icon layui-icon-add-1"></i>选择面试人</span>
 											</div>
 										</div>
 										<div class="layui-form-item layui-col-md12" >
@@ -104,7 +104,7 @@
 												<button type="reset" class="layui-btn" lay-submit lay-filter="btnNoPass">面试未通过</button>
 												<button type="reset" class="layui-btn" lay-submit lay-filter="btnOffer">发送OFFER</button>
 												<button type="reset" class="layui-btn" lay-submit lay-filter="btnSave">保存</button>
-												<button type="reset" class="layui-btn layui-btn-primary">返回</button>
+												<button type="reset" class="layui-btn layui-btn-primary" onclick="javascript:history.back(-1);">返回</button>
 											</div>
 										</div>
 									</div>

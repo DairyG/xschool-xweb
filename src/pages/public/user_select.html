@@ -198,7 +198,11 @@
 							d = {id:id,name:name,company_id:n_cid,company_name:n_cname};
 							break;
 						case 'dpt_position':
-							d = {id:id,name:name,dpt_id:n_dptid,dpt_name:n_dptname,company_id:n_cid,company_name:n_cname};
+							var job_id = id.split('_');
+								job_id = job_id[1];
+							var name = name.split('-');
+								name = name[0];
+							d = {id:id,name:name,job_id:job_id,dpt_id:n_dptid,dpt_name:n_dptname,company_id:n_cid,company_name:n_cname};
 							break;
 					}
 					sels[type].push(d);
@@ -310,7 +314,8 @@
 											var item = arr[i].bindings[j];
 											console.log(item);
 											var id = item.dptId + '_' + item.jobId;
-											html += build_check_html(id,item.jobName,'dpt_position',company_id);
+											var name = item.jobName + (item.employees.length > 0 ? '-'+item.employees[0].name : '');
+											html += build_check_html(id,name,'dpt_position',company_id);
 										}
 									}
 								}
