@@ -44,7 +44,7 @@
 							<script type="text/html" id="toolbar">
 								<button class="layui-btn layui-btn-xs" lay-event="view">查看</button>
 								<button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</button>
-								<button class="layui-btn  layui-btn-xs layui-btn-warm" lay-event="position">职位设置</button>
+								<button class="layui-btn  layui-btn-xs layui-btn-warm" lay-event="userJob">职位设置</button>
 								<button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="openAccount">开通账户</button>
 								<button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
 							</script>
@@ -57,7 +57,7 @@
 		</div>
 	</div>
 
-	<div class="linePop position">
+	<div class="linePop" id="userJobPop">
 		<div class="layui-card-body">
 			<form class="layui-form layui-form2">
 				<table class="layui-table">
@@ -68,28 +68,60 @@
 							<th>职位</th>
 						</tr>
 					</thead>
-					<tr>
-						<td><span class="table-btn-jia">+</span><span class="table-btn-jian">-</span></td>
-						<td>
-							<input type="text" class="layui-input" readonly onclick="user_popup(this,'department',1)" />
-						</td>
-						<td>
-							<select>
-								<option>职位一</option>
-								<option>职位二</option>
-								<option>职位三</option>
-								<option>职位四</option>
-							</select>
-						</td>
-					</tr>
+					<tbody id="userJobBody">
+						<!-- <tr>
+							<td><span class="table-btn-jia userJobAdd">+</span><span class="table-btn-jian userJobDel">-</span></td>
+							<td><input type="text" name="userDept" placeholder="请选择" class="layui-input deptPopup" readonly /></td>
+							<td><select name="userJob"><option value="">请选择</option></select></td>
+						</tr> -->
+					</tbody>
 				</table>
 				<div class="layui-row text-right padding-r-50">
-					<button class="layui-btn" lay-submit="" lay-filter="formDemo">确认</button>
+					<button class="layui-btn" lay-submit lay-filter="formDemo">确认</button>
 					<span class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
 				</div>
 			</form>
 		</div>
 	</div>
+
+	<script id="kpiContentTpl" type="text/html">
+		{{#  
+			var jsonStr = function(value){
+			  return JSON.stringify(value);
+			}; 
+		  }}
+
+		{{#  if(d.length>0){ }}
+
+		{{#  layui.each(d, function(index, item){ }}
+		<tr data-id="{{= item.id}}">
+			<td>
+				<span class="table-btn-jia kpiContentAdd">+</span>
+				<span class="table-btn-jian kpiContentDel">-</span>
+			</td>
+			<td><input type="text" name="evaluationName" class="layui-input evaluationPopup" data-value="{{= jsonStr(item) }}"
+					value="{{= item.name }}" placeholder="请选择考核项目" readonly />
+			</td>
+			<td><input type="text" name="weight" maxlength="5" class="layui-input" value="" placeholder="请输入权重(分值)" /></td>
+			<td><input type="text" name="explain" maxlength="100" class="layui-input" value="" placeholder="请输入说明" /></td>
+		</tr>
+		{{#  }); }}
+
+		{{#  } else { }}
+		<tr>
+			<td>
+				<span class="table-btn-jia kpiContentAdd">+</span>
+				<span class="table-btn-jian kpiContentDel">-</span>
+			</td>
+			<td><input type="text" name="evaluationName" class="layui-input evaluationPopup" value="" placeholder="请选择考核项目"
+					readonly />
+			</td>
+			<td><input type="text" name="weight" maxlength="5" class="layui-input" value="" placeholder="请输入权重(分值)" /></td>
+			<td><input type="text" name="explain" maxlength="100" class="layui-input" value="" placeholder="请输入说明" /></td>
+		</tr>
+		{{#  } }}
+	</script>
+
 	<script type="text/javascript">
 		var data_col = [
 			[{
@@ -193,7 +225,6 @@
 			function search() {
 				return parameter;
 			}
-
 			//操作栏的回调函数
 			var onTools = function (layEvent, data) {
 				var value = data.id;
@@ -227,19 +258,10 @@
 							}
 						});
 					});
-				} else if (layEvent == 'position') {
-					layer_linePop = layer.open({
-						type: 1,
-						title: '职位设置',
-						String: false,
-						closeBtn: 1,
-						skin: 'layui-layer-rim',
-						area: ['750px', '450px'],
-						content: $('.position')
-					});
+				} else if (layEvent == 'userJob') {
+					setUserJobPop(data.bindings);
 				}
 			};
-
 			//分页初始化
 			var lstPager = Pager(table, //lay-ui的table控件
 				'员工列表', //列表名称
@@ -254,29 +276,144 @@
 				null,
 				'full-100'
 			);
-		});
 
-		//获取职位
-		function getJob() {
-			var _this = this;
-			layer_load();
-			Serv.Post('uc/job/get', {
-				page: 1,
-				limit: 50,
-				companyId: cId
-			}, function (result) {
-				layer_load_lose();
-				if (result) {
-					_this.basicJob = result.items;
+			var ujObj = $('#userJobBody');
 
-					_this.$nextTick(function () {
-						layui.form.render('select');
-					});
-				} else {
-					_this.hasSubmit = false;
-					layer_alert(result.message);
+			ujObj.on('click', '.userJobAdd', function () {
+				layer_load();
+				var hasResult = validateUserJob();
+				if (!hasResult) {
+					layer_load_lose();
+					return false;
 				}
 			});
+			ujObj.on('click', '.userJobDel', function () {
+
+			});
+
+			ujObj.on('click', '.deptPopup', function () {
+				var selObj = $(this).parents('tr').find('select[name="userJob"]');
+				user_popup(this, 'department', 1, false, function (result) {
+					if (result.department.length > 0) {
+						getJob(result.department[0].compnay_id, selObj, '');
+					}
+				});
+			});
+
+			//打开职位设置窗口
+			function openUserJobPop() {
+				layer_load_lose();
+				layer.open({
+					type: 1,
+					title: '职位设置',
+					String: false,
+					closeBtn: 1,
+					skin: 'layui-layer-rim',
+					area: ['750px', '450px'],
+					content: $('#userJobPop')
+				});
+			}
+			//设置值
+			function setUserJobPop(data) {
+				layer_load();
+				if (data.length > 0) {
+
+					var index = 0;
+					var htmls = '';
+					$.each(data, function (i, item) {
+						htmls += '<tr>';
+						htmls +=
+							'<td><span class="table-btn-jia userJobAdd">+</span><span class="table-btn-jian userJobDel">-</span></td>';
+						htmls +=
+							'<td><input type="text" name="userDept" placeholder="请选择" class="layui-input deptPopup" value="' +
+							item.dptName + '" readonly />' +
+							'<input type="hidden" name="sels" value="">' +
+							'</td>';
+						htmls += '<td><select name="userJob"><option value="">请选择</option></select></td>';
+						htmls += '</tr>';
+
+						index++;
+					});
+					// console.log(data.length + '---' + index);
+					if (index == data.length) {
+						ujObj.html(htmls);
+						form.render();
+						openUserJobPop();
+					}
+				} else {
+					var htmls =
+						'<tr>' +
+						'<td><span class="table-btn-jia userJobAdd">+</span><span class="table-btn-jian userJobDel">-</span></td>' +
+						'<td><input type="text" name="userDept" placeholder="请选择" class="layui-input deptPopup" readonly /></td>' +
+						'<td><select name="userJob"><option value="">请选择</option></select></td>' +
+						'</tr>';
+					ujObj.html(htmls);
+					form.render();
+					openUserJobPop();
+				}
+			}
+
+			//验证职位设置
+			function validateUserJob() {
+				var hasResult = true;
+				ujObj.find('tr').each(function () {
+					var value = $(this).find('input[name="sels"]').val();
+					if (!value) {
+						layer_alert('请选择部门');
+						hasResult = false;
+						return false;
+					}
+					var valJson = JSON.parse(value);
+					if (valJson.department.length == 0) {
+						layer_alert('请选择部门');
+						hasResult = false;
+						return false;
+					}
+					if (valJson.department.length > 1) {
+						layer_alert('请勿选择多个部门');
+						hasResult = false;
+						return false;
+					}
+					var jobVal = $.trim($(this).find('select[name="userJob"]').val());
+					if (!jobVal) {
+						layer_alert('请选择[' + valJson.department[0].name + ']栏中的[职位]项');
+						hasResult = false;
+						return false;
+					}
+				});
+				return hasResult;
+			}
+
+			//获取职位
+			function getJob(cId, obj, value) {
+				var _this = this;
+				layer_load();
+				Serv.Post('uc/job/get', {
+					page: 1,
+					limit: 50,
+					companyId: cId
+				}, function (result) {
+					layer_load_lose();
+					if (result) {
+						obj.empty().append('<option value="">请选择</option>');
+						$.each(result.items, function (i, item) {
+							obj.append('<option value="' + item.id + '" ' + (item.id == value ?
+								'selected' : '') + '>' + item.name + '</option>');
+						});
+
+						layui.form.render('select');
+					} else {
+						layer_alert(result.message);
+					}
+				});
+			}
+
+		});
+
+		//关闭职位设置窗口
+		function closePop() {
+			$('#userJobBody').empty();
+			layer.closeAll();
 		}
 	</script>
 </body>
