@@ -215,6 +215,9 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
                     }
                     return n;
                 });
+                var nodes = zTreeObj.getSelectedNodes();
+                nodes[0].dptName = laydata.field.DptName;
+                zTreeObj.updateNode(nodes[0]);
                 window.globCache.setDepartment(array);
                 layer_alert(response.message, initTree());
             })
