@@ -210,10 +210,18 @@
 			}
 			
 			// 创建选中项的的html
-			function build_selectd_html(type,value,text){
+			function build_selectd_html(type,value,text,dpt_name,company_name){
+				if(dpt_name == undefined){
+					dpt_name = $('#n_dptname').val();
+				}
+				dpt_name = dpt_name && type != 'department'  ? '<span>'+dpt_name+'</span> - ' : '';
+				if(company_name == undefined){
+					company_name = $('#n_cname').val();
+				}
+				company_name = company_name && type != 'company' ? '<span>'+company_name+'</span> - ' : '';
 				var class_name = type+'_'+value;
 				if($("#selected_box").find("."+class_name).length == 0){
-					var html = '<li class="'+type+'_'+value+' " >'+text+'<i class="layui-icon layui-icon-close-fill fr" onclick="user_sel_remove(\''+type+'\','+value+',\''+text+'\')"></i></li>'
+					var html = '<li class="'+type+'_'+value+' overhide" >'+company_name+dpt_name+text+'<i class="layui-icon layui-icon-close-fill fr" onclick="user_sel_remove(\''+type+'\','+value+',\''+text+'\')"></i></li>'
 					return html;
 				} 
 				return "";
@@ -408,25 +416,25 @@
 				if (data.department.length > 0) {
 					for (var i = 0; i < data.department.length; i++) {
 						var item = data.department[i];
-						html += build_selectd_html('department',item.id, item.name);
+						html += build_selectd_html('department',item.id, item.name,'',item.company_name);
 					}
 				}
 				if (data.user.length > 0) {
 					for (var i = 0; i < data.user.length; i++) {
 						var item = data.user[i];
-						html += build_selectd_html('user',item.id, item.name);
+						html += build_selectd_html('user',item.id, item.name,item.dpt_name,item.company_name);
 					}
 				}
 				if (data.position.length > 0) {
 					for (var i = 0; i < data.position.length; i++) {
 						var item = data.position[i];
-						html += build_selectd_html('position',item.id, item.name);
+						html += build_selectd_html('position',item.id, item.name,'',item.company_name);
 					}
 				}
 				if (data.dpt_position.length > 0) {
 					for (var i = 0; i < data.dpt_position.length; i++) {
 						var item = data.dpt_position[i];
-						html += build_selectd_html('dpt_position',item.id, item.name);
+						html += build_selectd_html('dpt_position',item.id, item.name,item.dpt_name,item.company_name);
 					}
 				}
 				$("#selected_box").append(html);
