@@ -25,8 +25,15 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
 
     //保存面试记录
     layform.on('submit(btnSave)', function (laydate) {
-        var intIds = $.parseJSON($("input[name='sels']").val()).user.ids;
-        var intNames = $.parseJSON($("input[name='sels']").val()).user.names;
+        var users = $.parseJSON($("input[name='sels']").val()).user;
+        var intIds = "";
+        var intNames = "";
+        for(var i =0;i<users.length;i++){
+            intIds += "," + users[i].id;
+            intNames += "," + users[i].name;
+        }
+        intIds += ",";
+        intNames += ",";
         laydate.field.id = 0;
         laydate.field.resumeId = id;
         laydate.field.interviewerIds = intIds;
@@ -66,8 +73,15 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
 
     //面试未通过
     layform.on('submit(btnNoPass)', function (laydate) {
-        var intIds = $.parseJSON($("input[name='sels']").val()).user.ids;
-        var intNames = $.parseJSON($("input[name='sels']").val()).user.names;
+        var users = $.parseJSON($("input[name='sels']").val()).user;
+        var intIds = "";
+        var intNames = "";
+        for(var i =0;i<users.length;i++){
+            intIds += "," + users[i].id;
+            intNames += "," + users[i].name;
+        }
+        intIds += ",";
+        intNames += ",";
         laydate.field.id = 0;
         laydate.field.resumeId = id;
         laydate.field.interviewerIds = intIds;
@@ -107,8 +121,15 @@ layui.use(['table', 'element', 'laydate', 'form', 'rate'], function () {
 
     //发送OFFER
     layform.on('submit(btnOffer)', function (laydate) {
-        var intIds = $.parseJSON($("input[name='sels']").val()).user.ids;
-        var intNames = $.parseJSON($("input[name='sels']").val()).user.names;
+        var users = $.parseJSON($("input[name='sels']").val()).user;
+        var intIds = "";
+        var intNames = "";
+        for(var i =0;i<users.length;i++){
+            intIds += "," + users[i].id;
+            intNames += "," + users[i].name;
+        }
+        intIds += ",";
+        intNames += ",";
         laydate.field.id = 0;
         laydate.field.resumeId = id;
         laydate.field.interviewerIds = intIds;

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../lib/wangEditor/wangEditor.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+</head>
+
+<body class="bgf2f2f2 ">
+    <div class="childrenBody">
+        <div class="layui-card-header">添加任务</div>
+        <div class="layui-card-body bgwhite" id="add_content">
+            <form class="layui-form layui-form2">
+                <div class="layui-row">
+                    <input type="hidden" name="id" value="0" />
+                    <input type="hidden" name="allDay" />
+                    <input type="hidden" name="companyId" />
+                    <input type="hidden" name="dptId" />
+                    <input type="hidden" name="employeeId" />
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>执行人</label>
+                        <div class="layui-input-block">
+                            <div class="layui-input" id="user_sel_box1"
+                                onclick="user_popup($('#user_sel_box1'),'user')">
+                                <span class="layui-form-mid layui-word-aux">请选择执行人</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">抄送人</label>
+                        <div class="layui-input-block">
+                            <div class="layui-input" id="user_sel_box2"
+                                onclick="user_popup($('#user_sel_box2'),'user')">
+                                <span class="layui-form-mid layui-word-aux">请选择抄送人</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 先选择执行人 再选择考核方案  才会出现具体的考核项目 -->
+                    <!-- 选择了考核方案 则考核项目必选 -->
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">考核方案</label>
+                        <div class="layui-input-block">
+                            <select id="selPlan">
+                                <option value="0"></option>
+                                <option value="1">月度方案</option>
+                                <option value="2">季度方案</option>
+                                <option value="3">半年方案</option>
+                                <option value="4">年度方案</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">考核项目</label>
+                        <div class="layui-input-block">
+                            <div class="layui-input" onclick="assess_popup(this,'radio')">
+                                <span class="layui-form-mid layui-word-aux">请选择考核项目</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>开始时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input date" name="beginTime" readonly autocomplete="off"
+                                placeholder="请选择开始时间" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>截止时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input date" name="endTime" readonly autocomplete="off"
+                                placeholder="请选择截止时间" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">提醒时间</label>
+                        <div class="layui-input-block">
+                            <select id="selRemindTime">
+                                <option value="0">请选择</option>
+                                <option value="1">不提醒</option>
+                                <option value="2">提前15分钟</option>
+                                <option value="3">提前1小时</option>
+                                <option value="4">提前24时</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">提醒方式</label>
+                        <div class="layui-input-block">
+                            <select id="selRemindWay">
+                                <option value="0">请选择</option>
+                                <option value="1">全部</option>
+                                <option value="2">站内消息</option>
+                                <option value="3">手机短信</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">紧急程度</label>
+                        <div class="layui-input-block">
+                            <select id="selEmergency">
+                                <option value="1">一般</option>
+                                <option value="2">紧急</option>
+                                <option value="3">重要</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>重复</label>
+                        <div class="layui-input-block">
+                            <select lay-filter="repeat" id="selRepeat">
+                                <option value="1">不重复</option>
+                                <option value="2">按天</option>
+                                <option value="3">按周</option>
+                                <option value="4">按月</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- 任务重复时，下一个任务的开始时间必须在上一个任务结束时间后 -->
+                    <!-- 例如:任务时间为 7-1~8-31 的月重复任务 下一轮任务的时间应该是 9-1~10-30 -->
+                    <div class="layui-form-item layui-col-md6 margin-b-20" id="repeat_time" style="display: none;">
+                        <label class="layui-form-label"><span class="text-red"> *</span>重复结束时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input date" name="repeatEndTime" readonly autocomplete="off"
+                                placeholder="请选择截止时间" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>任务标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" name="title" autocomplete="off"
+                                placeholder="请输入任务标题">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">创建人</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" name="employeeName" autocomplete="off"
+                                placeholder="请输入任务标题" readonly value='管理员' />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>任务内容</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="content">
+                            <div id="E_Content"></div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                        <label class="layui-form-label">附件</label>
+                        <div class="layui-input-block">
+                            <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
+                                    class="layui-icon">&#xe67c;</i>上传附件</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row text-right">
+                    <button class="layui-btn layui-btn-danger" lay-submit lay-filter="formDemo">确认</button>
+                    <a class="layui-btn" id="close_btn">返回</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        layui.use(['table', 'laydate', 'layedit', 'form'], function () {
+            var table = layui.table
+            laydate = layui.laydate,
+                layedit = layui.layedit,
+                form = layui.form;
+            var E = window.wangEditor
+            var eContent = new E('#E_Content');
+            eContent.customConfig.onchange = function (html) {
+                $('input[name="content"]').val(html);
+            };
+            eContent.create();
+            var intnDate = function () {
+                var employ = window.globCache.getEmployee();
+                //console.log(employ);
+                if (employ) {
+                    $("input[name='companyId']").val(employ.companyId);
+                    $("input[name='dptId']").val(employ.dptId);
+                    $("input[name='employeeId']").val(employ.id);
+                    $("input[name='employeeName']").val(employ.employeeName);
+                }
+                // 2019-07-13 00:00:00
+                $("input[name='beginTime']").val(window.parent.addData.start.FormatDate(true));
+                $("input[name='endTime']").val(window.parent.addData.end.FormatDate(true));
+                $("input[name='allDay']").val(window.parent.addData.allDay);
+            };
+            intnDate();
+            lay('.date').each(function () {
+                laydate.render({
+                    elem: this,
+                    type: 'datetime'
+                });
+            });
+            form.on('select(repeat)', function (obj) {
+                if (obj.value > 0) {
+                    $("#repeat_time").show();
+                } else {
+                    $("#repeat_time").hide();
+                }
+            });
+            form.on('submit(formDemo)', function (laydate) {
+                var intIds1 = "";
+                if ($("#user_sel_box1 input").length > 0) {
+                    var users1 = $.parseJSON($("#user_sel_box1").find("input[name='sels']").val()).user;
+                    for (var i = 0; i < users1.length; i++) {
+                        intIds1 += "," + users1[i].id;
+                    }
+                    intIds1 += ",";
+                }
+                laydate.field.executors = intIds1;
+                var intIds2 = "";
+                if ($("#user_sel_box2 input").length > 0) {
+                    var users2 = $.parseJSON($("#user_sel_box2").find("input[name='sels']").val()).user;
+                    for (var i = 0; i < intIds2.length; i++) {
+                        intIds2 += "," + intIds2[i].id;
+                    }
+                    intIds2 += ",";
+                }
+
+                laydate.field.kpiPlan = $("#selPlan").val();
+                laydate.field.kpiId = 0;
+                laydate.field.remindTime = $("#selRemindTime").val();
+                laydate.field.remindWay = $("#selRemindWay").val();
+                laydate.field.emergency = $("#selEmergency").val();
+                laydate.field.repeat = $("#selRepeat").val();
+                laydate.field.addTime = '2019-01-01 00:00:00';
+                laydate.field.fileUrl = "";
+
+                if ($.trim(laydate.field.executors) == "") {
+                    layer_alert("请选择执行人！");
+                    return false;
+                }
+                if ($.trim(laydate.field.beginTime) == "") {
+                    layer_alert("请选择开始时间！");
+                    return false;
+                }
+                if ($.trim(laydate.field.endTime) == "") {
+                    layer_alert("请选择截止时间！");
+                    return false;
+                }
+                if (parseInt(laydate.field.repeat) <= 0) {
+                    layer_alert("请选择重复方式！");
+                    return false;
+                }
+                if (parseInt(laydate.field.repeat) > 1 && $.trim(laydate.field.repeatEndTime) == "") {
+                    layer_alert("请选择重复结束时间！");
+                    return false;
+                }
+                if ($.trim(laydate.field.title) == "") {
+                    layer_alert("请输入任务标题");
+                    return false;
+                }
+                if ($.trim(laydate.field.content) == "") {
+                    layer_alert("请输入任务内容");
+                    return false;
+                }
+                Serv.Post('gc/Schedule/Add',laydate.field,function(response){
+                    if(response.code == '00'){
+                        window.parent.addData.title = laydate.field.title;
+                        window.parent.addData.start = laydate.field.beginTime;
+                        window.parent.addData.end = laydate.field.endTime;
+                        window.parent.addData.colindex = laydate.field.emergency;
+                        //layer_alert("添加成功！");
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }
+                    else{
+                        layer_alert(response.message);
+                    }
+                });
+                return false;
+            });
+            //layedit.build('content');
+        });
+
+        var is_pop = GetPara('is_pop');
+        if (is_pop == 1) {
+            $(".childrenBody").removeClass('childrenBody');
+            $(".layui-card-header").remove();
+        }
+        $('#close_btn').click(function () {
+            if (is_pop == 1) {
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            } else {
+                history.back(-1);
+            }
+        });
+    </script>
+</body>
+
+</html>

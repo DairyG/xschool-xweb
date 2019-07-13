@@ -112,6 +112,19 @@ String.prototype.FormatDate = function (hasTime) {
 		return '';
 	}
 }
+
+/**
+ * 格式化日期对象
+ * @param Object date
+ * @param boolean 
+ */
+function FormatDate(date,hasTime){
+	if(hasTime){
+	    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+	}else{
+	    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+	}
+}
 /**
  * 验证空值
  */
