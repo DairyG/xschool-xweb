@@ -79,10 +79,13 @@
 			}
 			var sel_type = sels.sel_type;
 			var company_arr = globCache.getCompany();
-			var position_arr = [];
+			var position_arr = globCache.getJobs();
 			var department_arr = globCache.getDepartment();
 			var user_arr = [];
-			var dpt_position_arr = [];
+			if(window.parent.dpt_positions == undefined){
+				window.parent.dpt_positions = {};
+			}
+			var dpt_position_arr = window.parent.dpt_positions;
 			
 			$(function(){
 				if(!has_position){
@@ -183,19 +186,23 @@
 					
 					switch(type){
 						case 'user':
-							d = {id:id,name:name,dpt_id:n_dptid,dpt_name:n_dptname,compnay_id:n_cid,company_name:n_cname};
+							d = {id:id,name:name,dpt_id:n_dptid,dpt_name:n_dptname,company_id:n_cid,company_name:n_cname};
 							break;
 						case 'department':
-							d = {id:id,name:name,compnay_id:n_cid,company_name:n_cname};
+							d = {id:id,name:name,company_id:n_cid,company_name:n_cname};
 							break;
 						case 'company':
 							d = {id:id,name:name};
 							break;
 						case 'position':
-							d = {id:id,name:name,compnay_id:n_cid,company_name:n_cname};
+							d = {id:id,name:name,company_id:n_cid,company_name:n_cname};
 							break;
 						case 'dpt_position':
-							d = {id:id,name:name,dpt_id:n_dptid,dpt_name:n_dptname,compnay_id:n_cid,company_name:n_cname};
+							var job_id = id.split('_');
+								job_id = job_id[1];
+							var name = name.split('-');
+								name = name[0];
+							d = {id:id,name:name,job_id:job_id,dpt_id:n_dptid,dpt_name:n_dptname,company_id:n_cid,company_name:n_cname};
 							break;
 					}
 					sels[type].push(d);
@@ -254,7 +261,6 @@
 						break;
 					case 'department':
 						//此处加载部门列表
-						
 						for (var i = 0; i < department_arr.length; i++) {
 							if (department_arr[i].companyId == company_id && department_arr[i].pid == department_id) {
 								html += build_check_html(department_arr[i].id, department_arr[i].dptName, type, company_id);
@@ -293,14 +299,24 @@
 							}
 						}
 						if(sel_type == 'dpt_position'){
-							for(var i = 0;i < dpt_position_arr.length;i++){
-								if(department_id == 0){
-									if(dpt_position_arr[i].company_id == company_id){
-										html += build_check_html(dpt_position_arr[i].id,dpt_position_arr[i].name,'dpt_position',company_id);
-									}
-								} else {
-									if(dpt_position_arr[i].company_id == company_id && dpt_position_arr[i].department_id == department_id){
-										html += build_check_html(dpt_position_arr[i].id,dpt_position_arr[i].name,'dpt_position',company_id);
+							var arr = dpt_position_arr[company_id];
+							if(arr == undefined || arr.length <= 0){
+								Serv.Get('uc/Department/GetByCompany/'+company_id,null,function(res){
+									window.parent.dpt_positions[company_id] = res;
+									arr = res;
+								},false);
+							}
+							
+							for(var i = 0;i < arr.length;i++){
+								if(arr[i].id == department_id){
+									if(arr[i].bindings.length > 0){
+										for(var j = 0;j < arr[i].bindings.length;j++){
+											var item = arr[i].bindings[j];
+											console.log(item);
+											var id = item.dptId + '_' + item.jobId;
+											var name = item.jobName + (item.employees.length > 0 ? '-'+item.employees[0].name : '');
+											html += build_check_html(id,name,'dpt_position',company_id);
+										}
 									}
 								}
 							}
@@ -309,7 +325,7 @@
 						case 'position':
 							//加载职位列表
 							for(var i = 0;i < position_arr.length;i++){
-								if(position_arr[i].company_id == company_id){
+								if(position_arr[i].companyId == company_id){
 									html += build_check_html(position_arr[i].id,position_arr[i].name,type);
 								}
 							}
@@ -375,7 +391,7 @@
 						checkbox = '<input type="checkbox" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
 					break;
 					case 'position':
-						checkbox = '<input type="radio" name="position" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
+						checkbox = '<input type="checkbox" name="position" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
 					break;
 					case 'dpt_position':
 						checkbox = '<input type="checkbox" name="dpt_position" onclick="selected(this)" data-id="'+id+'" data-text="'+text+'" data-type="'+type+'" '+checked+' />';
