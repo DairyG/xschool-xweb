@@ -24,10 +24,6 @@ layui.use(['form', 'element', 'layer'], function () {
         layform = layui.form,
         element = layui.element;
 
-    Serv.Post('gc/note/GetRuleRegulationTypeList', {}, function (result) {
-        result.data[0].open = true;
-        zTreeObj = $.fn.zTree.init($("#ztree"), setting, result.data);
-    })
     layform.on('submit(ruleSave)', function (laydata) {
         layer_load();
         if ($("input[name='RuleName']").val().lenth == 0) {
@@ -72,6 +68,10 @@ layui.use(['form', 'element', 'layer'], function () {
 })
 
 $(function () {
+    Serv.Post('gc/note/GetRuleRegulationTypeList', {}, function (result) {
+        result.data[0].open = true;
+        zTreeObj = $.fn.zTree.init($("#ztree"), setting, result.data);
+    })
     $("a[lay-filter='add']").click(function () {
         var zTree = $.fn.zTree.getZTreeObj('ztree');
         if (zTree != null) {

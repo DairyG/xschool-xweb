@@ -77,7 +77,7 @@
 												<button class="layui-btn layui-btn-danger" lay-submit
 													lay-filter="noteAdd">确认</button>
 												<button class="layui-btn layui-btn-danger" lay-submit
-													lay-filter="submit">确认并继续添加</button>
+													lay-filter="noteAddAgain">确认并继续添加</button>
 												<span class="layui-btn" onclick="history.back(-1)">返回</span>
 											</div>
 										</div>
@@ -90,73 +90,74 @@
 			</div>
 		</div>
 	</div>
-	<script>
-	// 	var rec_type;
+	<!-- <script>
+		var rec_type;
 
-	// 	layui.use(['table', 'element', 'form', 'layedit'], function () {
-	// 		var table = layui.table,
-	// 			element = layui.element,
-	// 			form = layui.form,
-	// 			layedit = layui.layedit;
+		layui.use(['table', 'element', 'form', 'layedit'], function () {
+			var table = layui.table,
+				element = layui.element,
+				form = layui.form,
+				layedit = layui.layedit;
 
-	// 		layedit.build('editor1', { height: 360 });
-	// 		form.on('select(rec_type)', function (data) {
-	// 			rec_type = data.value;
-	// 			$("#sel_item_box .sel_item").hide();
-	// 			$("#rec_box").html('');
-	// 			$("#sel_item_box select").val(-1);
-	// 			form.render('select');
-	// 			switch (rec_type) {
-	// 				case "user"://按人员
-	// 					$("#sel_item_box #sel_user_item").show();
-	// 					break;
-	// 				case "department"://部门
-	// 					$("#sel_item_box #sel_company_item,#sel_item_box #sel_department_item").show();
-	// 					break;
-	// 				case "company"://公司
-	// 					$("#sel_item_box #sel_company_item").show();
-	// 					break;
-	// 				case "position"://职位
-	// 					$("#sel_item_box #sel_company_item,#sel_item_box #sel_position_item").show();
-	// 					break;
-	// 				case "0":
-	// 					break;
-	// 			}
-	// 		});
-	// 		form.on('select(sel_company)', function (data) {
-	// 			var value = data.value;
-	// 			var text = data.elem[data.elem.selectedIndex].text;
-	// 			on_select('company', value, text);
-	// 		});
-	// 		form.on('select(sel_department)', function (data) {
-	// 			var value = data.value;
-	// 			var text = data.elem[data.elem.selectedIndex].text;
-	// 			on_select('department', value, text);
-	// 		});
-	// 		form.on('select(sel_position)', function (data) {
-	// 			var value = data.value;
-	// 			var text = data.elem[data.elem.selectedIndex].text;
-	// 			on_select('position', value, text);
-	// 		});
+			layedit.build('editor1', { height: 360 });
+			form.on('select(rec_type)', function (data) {
+				rec_type = data.value;
+				$("#sel_item_box .sel_item").hide();
+				$("#rec_box").html('');
+				$("#sel_item_box select").val(-1);
+				form.render('select');
+				switch (rec_type) {
+					case "user"://按人员
+						$("#sel_item_box #sel_user_item").show();
+						break;
+					case "department"://部门
+						$("#sel_item_box #sel_company_item,#sel_item_box #sel_department_item").show();
+						break;
+					case "company"://公司
+						$("#sel_item_box #sel_company_item").show();
+						break;
+					case "position"://职位
+						$("#sel_item_box #sel_company_item,#sel_item_box #sel_position_item").show();
+						break;
+					case "0":
+						break;
+				}
+			});
+			form.on('select(sel_company)', function (data) {
+				var value = data.value;
+				var text = data.elem[data.elem.selectedIndex].text;
+				on_select('company', value, text);
+			});
+			form.on('select(sel_department)', function (data) {
+				var value = data.value;
+				var text = data.elem[data.elem.selectedIndex].text;
+				on_select('department', value, text);
+			});
+			form.on('select(sel_position)', function (data) {
+				var value = data.value;
+				var text = data.elem[data.elem.selectedIndex].text;
+				on_select('position', value, text);
+			});
 
-	// 	function on_select(this_type, value, text) {
-	// 		if (value > -1) {
-	// 			if (value == 0) {
-	// 				$("#rec_box").html('');
-	// 			} else {
-	// 				$("#rec_box input").each(function (i, obj) {
-	// 					if ($(obj).val() == value || $(obj).val() == 0) {
-	// 						sel_remove(obj);
-	// 					}
-	// 				});
-	// 			}
-	// 			if (rec_type == this_type) {
-	// 				var html = build_sel_html(this_type, value, text);
-	// 				$("#rec_box").append(html);
-	// 			}
-	// 		}
-	// 	}
-	 </script>
+		function on_select(this_type, value, text) {
+			if (value > -1) {
+				if (value == 0) {
+					$("#rec_box").html('');
+				} else {
+					$("#rec_box input").each(function (i, obj) {
+						if ($(obj).val() == value || $(obj).val() == 0) {
+							sel_remove(obj);
+						}
+					});
+				}
+				if (rec_type == this_type) {
+					var html = build_sel_html(this_type, value, text);
+					$("#rec_box").append(html);
+				}
+			}
+		}
+	})
+	 </script> -->
 	<script type="text/javascript" src="../../js/note/noteAdd.js"></script>
 </body>
 

@@ -53,6 +53,9 @@ layui.use(['table', 'element', 'laydate'], function () {
         if (layEvent == "info") {
             window.location.href = "/pages/note/noteDetail.html?id=" + obj.data.id;
         }
+        if (layEvent == "edit") {
+            window.location.href = "/pages/note/noteAdd.html?id=" + obj.data.id;
+        }
         if (layEvent == "del") {
             layer_load();
             Serv.Get("gc/note/DeleteNote?id=" + obj.data.id, {}, function (result) {
