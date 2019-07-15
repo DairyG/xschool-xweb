@@ -11,16 +11,16 @@ var vm = new Vue({
 
         trainingData: [], //成长记录
     },
-    mounted: function () {
+    mounted: function() {
         var _this = this;
         var id = GetPara('id');
         id = !id ? '' : id;
         _this.initLayui(id);
     },
     methods: {
-        initLayui: function (id) {
+        initLayui: function(id) {
             var _this = this;
-            layui.use(['element', 'form', 'table'], function () {
+            layui.use(['element', 'form', 'table'], function() {
                 var element = layui.element,
                     table = layui.table,
                     form = layui.form;
@@ -33,7 +33,7 @@ var vm = new Vue({
                 _this.getPerson(id, table);
 
                 //一些事件监听
-                element.on('tab(component-tabs)', function (data) {
+                element.on('tab(component-tabs)', function(data) {
                     var text = $(this).text();
                     if (text == '成长记录' && _this.hasInit.training) {
                         _this.getTraining(id);
@@ -42,10 +42,10 @@ var vm = new Vue({
             });
         },
         //获取员工
-        getPerson: function (value, table) {
+        getPerson: function(value, table) {
             var _this = this;
             layer_load();
-            Serv.Get('uc/employee/get/' + value, {}, function (result) {
+            Serv.Get('uc/employee/get/' + value, {}, function(result) {
                 layer_load_lose();
                 if (result) {
                     _this.person = result;
@@ -75,10 +75,10 @@ var vm = new Vue({
             });
         },
         //获取成长管理
-        getTraining: function (value) {
+        getTraining: function(value) {
             var _this = this;
             layer_load();
-            Serv.Get('gc/training/query/' + value, {}, function (result) {
+            Serv.Get('gc/training/query/' + value, {}, function(result) {
                 layer_load_lose();
                 if (result) {
                     _this.hasInit.training = false;
@@ -88,14 +88,14 @@ var vm = new Vue({
         },
 
         //替换地址/
-        replaceAdd: function (value) {
+        replaceAdd: function(value) {
             if (!value) {
                 return '';
             }
             return value.replace(/\//g, '');
         },
         //替换换行
-        replaceLine: function (value) {
+        replaceLine: function(value) {
             if (!value) {
                 return '';
             }
@@ -104,7 +104,7 @@ var vm = new Vue({
             return value;
         },
         //格式化时间
-        formatDate: function (value, hasTime) {
+        formatDate: function(value, hasTime) {
             if (!value) {
                 return '';
             }

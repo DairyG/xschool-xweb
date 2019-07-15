@@ -159,12 +159,12 @@
                                 </dd>
                             </dl>
                         </li>
-						<li data-name="component" class="layui-nav-item">
-						    <a href="javascript:;" lay-tips="日常办公" lay-direction="2">
-						        <i class="layui-icon layui-icon-component"></i>
-						        <cite>日常办公</cite>
-						        <span class="layui-nav-more"></span>
-						    </a>
+                        <li data-name="component" class="layui-nav-item">
+                            <a href="javascript:;" lay-tips="日常办公" lay-direction="2">
+                                <i class="layui-icon layui-icon-component"></i>
+                                <cite>日常办公</cite>
+                                <span class="layui-nav-more"></span>
+                            </a>
                             <dl class="layui-nav-child">
                                 <dd>
                                     <a lay-href="pages/note/noteList.html">公告通知</a>
@@ -179,7 +179,7 @@
                                     <a lay-href="pages/note/ruleRegulation.html">公司制度</a>
                                 </dd>
                             </dl>
-						</li>
+                        </li>
                         <li data-name="component" class="layui-nav-item">
                             <a href="javascript:;" lay-tips="权限管理" lay-direction="2">
                                 <i class="layui-icon layui-icon-component"></i>
@@ -304,27 +304,27 @@
                             </dl>
                         </li>
                         <li class="layui-nav-item">
-								<a href="javascript:;" lay-tips="工作汇报" lay-direction="2">
-									<i class="layui-icon layui-icon-component"></i>
-									<cite>工作汇报</cite>
-									<span class="layui-nav-more"></span>
-								</a>
-								<dl class="layui-nav-child">
-									<dd>
-										<a lay-href="pages/summary/summarylist.html?t=0">看总结</a>
-									</dd>
-									<dd>
-										<a lay-href="pages/summary/summaryadd.html">写总结</a>
-									</dd>
-									<dd>
-										<a lay-href="pages/summary/summarystatistics.html">部门统计</a>
-									</dd>
-									<dd>
-										<a lay-href="pages/summary/summarydpt.html">部门总结</a>
-									</dd>
-								</dl>
-							</li>
-							 <li data-name="Personnel" class="layui-nav-item">
+                            <a href="javascript:;" lay-tips="工作汇报" lay-direction="2">
+                                <i class="layui-icon layui-icon-component"></i>
+                                <cite>工作汇报</cite>
+                                <span class="layui-nav-more"></span>
+                            </a>
+                            <dl class="layui-nav-child">
+                                <dd>
+                                    <a lay-href="pages/summary/summarylist.html?t=0">看总结</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="pages/summary/summaryadd.html">写总结</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="pages/summary/summarystatistics.html">部门统计</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="pages/summary/summarydpt.html">部门总结</a>
+                                </dd>
+                            </dl>
+                        </li>
+                        <li data-name="Personnel" class="layui-nav-item">
                             <a href="javascript:;" lay-tips="流程管理" lay-direction="2">
                                 <i class="layui-icon layui-icon-component"></i>
                                 <cite>流程管理</cite>
@@ -409,11 +409,18 @@
 
 <script type="text/javascript" src="js/cache.js"></script>
 <script>
-    $(function(){
+    $(function () {
         //async init data
         Serv.Get('uc/company/query', {}, window.globCache.setCompany);
-        Serv.Get('uc/department/query', {},window.globCache.setDepartment);
-        Serv.Get('uc/job/query',{},window.globCache.setJobs);
+        Serv.Get('uc/department/query', {}, window.globCache.setDepartment);
+        Serv.Get('uc/job/query', {}, window.globCache.setJobs);
+        Serv.Get('gc/workerinfield/getdata?type=1,3,4,5,6', {}, function (result) {
+            window.globCache.setArrival(result.workerInField);
+            window.globCache.setEducation(result.education);
+            window.globCache.setProperties(result.properties);
+            window.globCache.setRelations(result.socialRelations);
+            window.globCache.setRecruitment(result.recruitmentSource);
+        });
     });
 </script>
 

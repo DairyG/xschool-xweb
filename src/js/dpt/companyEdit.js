@@ -42,31 +42,31 @@ new Vue({
     mounted() {
         let _this = this;
 
-        layui.use(['element', 'laydate', 'form'], function () {
+        layui.use(['element', 'laydate', 'form'], function() {
             var element = layui.element,
                 laydate = layui.laydate,
                 layform = layui.form;
 
             laydate.render({
                 elem: '#date1',
-                done: function (value) {
+                done: function(value) {
                     _this.company.registeredTime = value;
                 }
             });
 
             var E = window.wangEditor
             var eIntro = new E('#E_intro');
-            eIntro.customConfig.onchange = function (html) {
+            eIntro.customConfig.onchange = function(html) {
                 $('input[name="intro"]').val(html);
             };
             eIntro.create();
             var eCulture = new E('#E_culture');
-            eCulture.customConfig.onchange = function (html) {
+            eCulture.customConfig.onchange = function(html) {
                 $('input[name="culture"]').val(html);
             };
             eCulture.create();
             var eHistory = new E('#E_history');
-            eHistory.customConfig.onchange = function (html) {
+            eHistory.customConfig.onchange = function(html) {
                 $('input[name="history"]').val(html);
             };
             eHistory.create();
@@ -90,7 +90,7 @@ new Vue({
             //初始化
             function initData(value) {
                 layer_load();
-                Serv.Get('uc/company/get/' + value, {}, function (result) {
+                Serv.Get('uc/company/get/' + value, {}, function(result) {
                     layer_load_lose();
                     if (result) {
                         _this.hasReadonly = true;
@@ -131,9 +131,9 @@ new Vue({
             }
 
             //基本信息
-            layform.on('submit(basicInfo)', function (laydata) {
+            layform.on('submit(basicInfo)', function(laydata) {
                 layer_load();
-                Serv.Post('uc/company/edit', laydata.field, function (result) {
+                Serv.Post('uc/company/edit', laydata.field, function(result) {
                     if (result.succeed) {
                         _this.company.id = result.data;
                         _this.bankInfo.companyId = result.data;
@@ -148,7 +148,7 @@ new Vue({
                 return false;
             });
 
-            $('#addBlank').click(function () {
+            $('#addBlank').click(function() {
                 _this.bankInfo.id = 0;
                 _this.bankInfo.openBank = '';
                 _this.bankInfo.openBankName = '';
@@ -159,15 +159,15 @@ new Vue({
             });
 
             //开户信息
-            layform.on('submit(backInfo)', function (laydata) {
+            layform.on('submit(backInfo)', function(laydata) {
                 if (laydata.field.companyId <= 0) {
                     layer_alert('请先填写基本信息');
                     return false;
                 }
                 layer_load();
-                Serv.Post('uc/bank/edit', laydata.field, function (result) {
+                Serv.Post('uc/bank/edit', laydata.field, function(result) {
                     if (result.succeed) {
-                        layer_alert(result.message, function () {
+                        layer_alert(result.message, function() {
                             layer.closeAll();
                             _this.getBank();
                         });
@@ -181,7 +181,7 @@ new Vue({
 
     },
     methods: {
-        bankEdit: function (data) {
+        bankEdit: function(data) {
             var _this = this;
 
             _this.bankInfo.id = data.id;
@@ -192,13 +192,13 @@ new Vue({
             _this.bankInfo.remarks = data.remarks;
             _this.bankPop('修改');
         },
-        bankDel: function (value) {
+        bankDel: function(value) {
             var _this = this;
-            layer_confirm('确定删除吗？', function () {
+            layer_confirm('确定删除吗？', function() {
                 layer_load();
-                Serv.Get('uc/bank/delete/' + value, {}, function (result) {
+                Serv.Get('uc/bank/delete/' + value, {}, function(result) {
                     if (result.succeed) {
-                        layer_alert(result.message, function () {
+                        layer_alert(result.message, function() {
                             _this.getBank();
                         });
                     } else {
@@ -207,10 +207,10 @@ new Vue({
                 });
             });
         },
-        getBank: function () {
+        getBank: function() {
             var _this = this;
             layer_load();
-            Serv.Get('uc/bank/query/' + _this.company.id, {}, function (result) {
+            Serv.Get('uc/bank/query/' + _this.company.id, {}, function(result) {
                 layer_load_lose();
                 if (result) {
                     _this.bankData = result;
@@ -219,7 +219,7 @@ new Vue({
                 }
             });
         },
-        bankPop: function (operation) {
+        bankPop: function(operation) {
             var _this = this;
             if (_this.bankInfo.companyId <= 0) {
                 layer_alert('请先填写基本信息');

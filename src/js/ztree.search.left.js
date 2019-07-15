@@ -1,15 +1,15 @@
 /**
  * ZTree Radio
  * @param string zTreeDom zTree对象Id，如："treeDemo"
- * @param json options 参数设置，如：{"text":"name","key":"id","parentKey":"pId"}
+ * @param json option 参数设置，如：{"text":"name","key":"id","parentKey":"pId"}
  * @param function callBack 回调函数
  */
-function ZTreeRadio(zTreeDom, options, callBack) {
+function ZTreeRadio(zTreeDom, option, callBack) {
     var zTreeObj;
     var options = {
-        text: options.text ? options.text : 'dptName',
-        key: options.key ? options.key : 'id',
-        parentKey: options.parentKey ? options.parentKey : 'pid',
+        text: option.text ? option.text : 'dptName',
+        key: option.key ? option.key : 'id',
+        parentKey: option.parentKey ? option.parentKey : 'pid',
         zTreeDOM: $('#' + zTreeDom),
     };
 
@@ -31,7 +31,7 @@ function ZTreeRadio(zTreeDom, options, callBack) {
         },
         callback: {
             onClick: callBack,
-            onAsyncSuccess: function (event, treeId, treeNode, msg) {
+            onAsyncSuccess: function(event, treeId, treeNode, msg) {
                 var nodes = zTree.getNodes();
                 var node = nodes.length > 0 ? nodes[0] : null;
                 if (node != null) {
@@ -41,10 +41,10 @@ function ZTreeRadio(zTreeDom, options, callBack) {
         }
     };
     return {
-        reload: function (data) {
+        reload: function(data) {
             var companys = window.globCache.getCompany();
             var dpts = window.globCache.getDepartment();
-            var array = $.map(companys, function (item) {
+            var array = $.map(companys, function(item) {
                 return {
                     id: item.id * -1,
                     dptName: item.companyName,
@@ -53,14 +53,14 @@ function ZTreeRadio(zTreeDom, options, callBack) {
                     open: true
                 };
             });
-            var dptArray = $.map(dpts, function (item) {
+            var dptArray = $.map(dpts, function(item) {
                 if (item.pid == 0) {
                     item.pid = item.companyId * -1;
                     return item;
                 }
                 return item;
             });
-            $.each(dptArray, function (index, item) {
+            $.each(dptArray, function(index, item) {
                 array.push(item);
             });
 
@@ -71,7 +71,7 @@ function ZTreeRadio(zTreeDom, options, callBack) {
                 zTreeObj.expandNode(nodes[0], true);
             }
         },
-        obj: function () {
+        obj: function() {
             return zTreeObj;
         }
     }
