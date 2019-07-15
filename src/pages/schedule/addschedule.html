@@ -169,6 +169,7 @@
         </div>
     </div>
     <script>
+        var sid = GetPara('sid');
         layui.use(['table', 'laydate', 'layedit', 'form'], function () {
             var table = layui.table
             laydate = layui.laydate,
@@ -190,8 +191,12 @@
                     $("input[name='employeeName']").val(employ.employeeName);
                 }
                 // 2019-07-13 00:00:00
-                $("input[name='beginTime']").val(window.parent.addData.start.FormatDate(true));
-                $("input[name='endTime']").val(window.parent.addData.end.FormatDate(true));
+                if($.trim(window.parent.addData.start) != ""){
+                    $("input[name='beginTime']").val(window.parent.addData.start.FormatDate(true));
+                }
+                if($.trim(window.parent.addData.end) != ""){
+                    $("input[name='endTime']").val(window.parent.addData.end.FormatDate(true));
+                }
                 $("input[name='allDay']").val(window.parent.addData.allDay);
             };
             intnDate();
@@ -298,7 +303,29 @@
             });
             //layedit.build('content');
         });
-
+        
+        if(sid > 0){
+            Serv.Get('gc/Schedule/GetSingle/' + sid,{},function(response){
+                if(response){
+                    var executors = JSON.parse(response.sche.executorsJson);
+                    var names = "";
+                    var values = "";
+                    for(var i = 0 ; i < executors.length ; i++){
+                        if(i > 0){
+                            names += ",";
+                            values += ",";
+                        }
+                        names += executors[i].name;
+                        values += '{&quot;id&quot;:'+executors[i].id+',&quot;name&quot;:&quot;'+executors[i].name+'&quot;,&quot;dpt_id&quot;:&quot;1&quot;,&quot;dpt_name&quot;:&quot;&quot;,&quot;company_id&quot;:&quot;1&quot;,&quot;company_name&quot;:&quot;&quot;}';
+                    }
+                    var exeHtml = names;
+                    exeHtml += '<input type="hidden" name="sels" value="{&quot;sel_type&quot;:&quot;org&quot;,&quot;user&quot;:[';
+                    exeHtml += values;
+                    exeHtml += '],&quot;department&quot;:[],&quot;company&quot;:[],&quot;position&quot;:[],&quot;dpt_position&quot;:[]}">';
+                    $("#user_sel_box1").html(exeHtml);
+                }
+            });
+        }
         var is_pop = GetPara('is_pop');
         if (is_pop == 1) {
             $(".childrenBody").removeClass('childrenBody');

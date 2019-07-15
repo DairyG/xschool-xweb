@@ -26,17 +26,17 @@
             <div class="layui-col-md9">
                 <div class="layui-card-header" style="padding: 5px 10px 8px 10px;">
                     <div class="layui-btn-group">
-                        <a href="summarydpt.html?t=0" class="layui-btn"
+                        <a @click="change_tab(0)" class="layui-btn"
                             v-bind:class="[t == 0 ? '' : 'layui-btn-primary']">日报</a>
-                        <a href="summarydpt.html?t=1" class="layui-btn"
+                        <a @click="change_tab(1)" class="layui-btn"
                             v-bind:class="[t == 1 ? '' : 'layui-btn-primary']">周报</a>
-                        <a href="summarydpt.html?t=2" class="layui-btn"
+                        <a @click="change_tab(2)" class="layui-btn"
                             v-bind:class="[t == 2 ? '' : 'layui-btn-primary']">月报</a>
-                        <a href="summarydpt.html?t=3" class="layui-btn"
+                        <a @click="change_tab(3)" class="layui-btn"
                             v-bind:class="[t == 3 ? '' : 'layui-btn-primary']">季度报</a>
-                        <a href="summarydpt.html?t=4" class="layui-btn"
+                        <a @click="change_tab(4)" class="layui-btn"
                             v-bind:class="[t == 4 ? '' : 'layui-btn-primary']">半年报</a>
-                        <a href="summarydpt.html?t=5" class="layui-btn"
+                        <a @click="change_tab(5)" class="layui-btn"
                             v-bind:class="[t == 5 ? '' : 'layui-btn-primary']">年报</a>
                     </div>
                 </div>
@@ -163,6 +163,14 @@
                 this.t = this.t ? this.t : 0;
                 parameter.type = this.t;
             },
+            methods:{
+                change_tab: function(t){
+                    this.t = t.toString();
+                    parameter.type = t;
+                    initData();
+                    intTab();
+                }
+            },
             mounted() {
                 var that = this;
                 layui.use(['table', 'laydate', 'form'], function () {
@@ -198,7 +206,8 @@
                     });
                     var cols = cols0;
                     var datas = [];
-                    var initData = function () {
+                    window.initData = function () {
+                        
                         switch (that.t) {
                             case '0':
                                 cols = cols0;
@@ -239,7 +248,7 @@
                         }
                     };
 
-                    var intTab = function () {
+                    window.intTab = function () {
                         table.render({
                             elem: '#lst',
                             cols: cols,

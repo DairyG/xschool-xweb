@@ -107,7 +107,7 @@
                         <label class="layui-form-label">回复：</label>
                         <div class="layui-input-block">
                             <div class="padding-l-15">
-                                <textarea class="layui-textarea"></textarea>
+                                <textarea class="layui-textarea" id="reply"></textarea>
                             </div>
                         </div>
                     </div>
@@ -140,16 +140,19 @@
         var layer_linePop, table;
         var id = GetPara('id');
         var completes = [];
-        var datas = [
-            // { 'umane': '张三', tips: '已完成', date: '2019-1-1 19:28:12' },
-            // { 'umane': '王五', tips: '已完成', date: '2019-1-1 19:28:12' },
-        ];
         var initComp = function () {
             Serv.Get('gc/ScheduleComplete/Get/' + id, {}, function (response) {
                 completes = response;
             }, false);
         };
         initComp();
+        var cols = [[
+            { type: 'numbers', title: '序号' },
+            { field: 'uname', title: '用户名称' },
+            { field: 'tips', title: '状态' },
+            { field: 'date', title: '时间' },
+        ]];
+        var datas = [];
         var init = function () {
             Serv.Get('gc/Schedule/GetSingle/' + id, {}, function (response) {
                 if (response) {
@@ -193,33 +196,30 @@
                     $("#divRemindWayName").html(response.remindWayName);
                     $("#divEmergencyName").html(response.emergencyName);
                 }
-            });
+            }, false);
         };
         init();
-        
-        var cols = [[
-            { type: 'numbers', title: '序号' },
-            { field: 'umane', title: '用户名称' },
-            { field: 'tips', title: '状态' },
-            { field: 'date', title: '时间' },
-        ]];
+
         var cols2 = [[
             { type: 'numbers', title: '序号' },
-            { field: 'umane', title: '用户名称' },
-            { field: 'tips', title: '信息' },
-            { field: 'date', title: '时间' },
+            { field: 'employeeName', title: '用户名称' },
+            { field: 'reply', title: '信息' },
+            { field: 'addTime', title: '时间', templet: function (d) { return d.addTime.FormatDate(true) } },
         ]];
 
-        var datas2 = [
-            { 'umane': '张三', tips: '怎么样了', date: '2019-1-1 19:28:12' },
-            { 'umane': '王五', tips: '还差一点', date: '2019-1-1 19:28:12' },
-        ];
+        var datas2 = [];
+        var initReply = function () {
+            Serv.Get('gc/ScheduleReply/Get/' + id, {}, function (response) {
+                datas2 = response;
+            }, false);
+        };
+        initReply();
         layui.use(['table', 'laydate', 'layedit', 'element', 'form'], function () {
             table = layui.table;
             var laydate = layui.laydate,
                 layform = layui.form,
                 layedit = layui.layedit;
-            console.log(datas);
+
             table.render({
                 elem: '#lst',
                 title: '用户表',
@@ -238,7 +238,59 @@
                 cols: cols2,
                 data: datas2,
             });
+            $("#BtnComplete").click(function () {
+                var sc = {
+                    id: 0,
+                    scheduleId: id,
+                    employeeId: employ.id,
+                    addTime: GetTimeNow()
+                };
+                Serv.Post('gc/ScheduleComplete/Add', sc, function (response) {
+                    if (response.code == "00") {
+                        layer_alert("成功！");
+                    }
+                    else {
+                        layer_alert(response.message);
+                    }
+                })
+                return false;
+            });
+            $("#BtnReply").click(function () {
+                var rep = $("#reply").val();
 
+                if ($.trim(rep) == "") {
+                    layer_alert("请输入回复内容！");
+                    return false;
+                }
+                var sr = {
+                    id: 0,
+                    scheduleId: id,
+                    employeeId: employ.id,
+                    employeeName: employ.employeeName,
+                    reply: rep,
+                    addTime: GetTimeNow()
+                };
+                Serv.Post('gc/ScheduleReply/Add', sr, function (response) {
+                    if (response.code == "00") {
+                        $("#reply").val("");
+                        datas2.unshift(sr);
+                        table.render({
+                            elem: '#lst2',
+                            title: '用户表',
+                            page: true,
+                            even: true,
+                            height: '360',
+                            cols: cols2,
+                            data: datas2,
+                        });
+                        layer_alert("成功！");
+                    }
+                    else {
+                        layer_alert(response.message);
+                    }
+                })
+                return false;
+            });
         });
         var is_pop = GetPara('is_pop');
         var employ = window.globCache.getEmployee();
@@ -254,23 +306,7 @@
                 history.back(-1);
             }
         });
-        $("#BtnComplete").click(function () {
-            var sc = {
-                id: 0,
-                scheduleId: id,
-                employeeId: employ.id,
-                addTime: '2019-01-01 00:00:00'
-            };
-            Serv.Post('gc/ScheduleComplete/Add', sc, function (response) {
-                if (response.code == "00") {
-                    layer_alert("成功！");
-                }
-                else{
-                    layer_alert(response.message);
-                }
-            })
-            return false;
-        });
+
     </script>
 </body>
 

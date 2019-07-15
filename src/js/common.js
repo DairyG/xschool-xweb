@@ -31,7 +31,7 @@ function layer_alert(message, callBack) {
     layer.alert((message || '成功'), {
         title: '提示',
         closeBtn: 0
-    }, function(index) {
+    }, function (index) {
         layer.close(index);
         callBack && callBack();
     });
@@ -52,10 +52,10 @@ function layer_confirm(message, confirmBack, cancelBack) {
         closeBtn: 0,
         anim: 0,
         icon: 3
-    }, function(index) {
+    }, function (index) {
         layer.close(index);
         confirmBack && confirmBack();
-    }, function(index) {
+    }, function (index) {
         layer.close(index);
         cancelBack && cancelBack();
     });
@@ -71,7 +71,7 @@ function layui_prompt(obj) {
         value: default_val,
         title: '请输入',
         area: ['350px', '120px'],
-        yes: function(index, elem) {
+        yes: function (index, elem) {
             var value = elem.find(".layui-layer-input").val();
             $(obj).val(value);
             layer.close(index);
@@ -83,7 +83,7 @@ function layui_prompt(obj) {
  * 日期格式转换
  * @param Boolean true=显示时间，false=不显示时间
  */
-String.prototype.FormatDate = function(hasTime) {
+String.prototype.FormatDate = function (hasTime) {
     if (!this) {
         return "";
     }
@@ -135,7 +135,7 @@ function FormatDate(date, hasTime) {
 /**
  * 验证空值
  */
-String.prototype.isEmpty = function() {
+String.prototype.isEmpty = function () {
     if (this == null || this == undefined || this == '') {
         return true;
     }
@@ -144,61 +144,61 @@ String.prototype.isEmpty = function() {
 /**
  * 验证邮件
  */
-String.prototype.IsEmail = function() {
+String.prototype.IsEmail = function () {
     var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
     return reg.test(this);
 }
 /**
  * 验证手机号码
  */
-String.prototype.IsMobile = function() {
+String.prototype.IsMobile = function () {
     var reg = /^[1][3,4,5,7,8][0-9]{9}$/;
     return reg.test(this);
 }
 /**
  * 验证座机号码
  */
-String.prototype.IsTelPhone = function() {
+String.prototype.IsTelPhone = function () {
     var reg = /^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$/;
     return reg.test(this);
 }
 /**
  * 验证座机/手机/400/800
  */
-String.prototype.IsTel2 = function() {
+String.prototype.IsTel2 = function () {
     var reg = /(^(\d{3,4}-)?\d{6,8}$)|(^1[3456789]\d{9}$)|(^400[0-9]{7})|(^800[0-9]{7})|(^(400)-(\d{3})-(\d{4}$))/;
     return reg.test(this);
 }
 /**
  * 验证Url地址
  */
-String.prototype.IsUrl = function() {
+String.prototype.IsUrl = function () {
     var reg = /^(http:||https:)\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
     return reg.test(this);
 }
 /**
  * 验证数字
  */
-String.prototype.IsNum = function() {
+String.prototype.IsNum = function () {
     var reg = /^[0-9\.]+$/;
     return reg.test(this);
 }
 
-$.fn.scrollFixed = function(fixed_w = '') {//页面滚动时tab-title始终在页面上方
-	var offset = this.offset().top;
-	var _this = this;
-	if(fixed_w == ''){
-		fixed_w = _this.parents('.childrenBody').width();
-	}
-	var w = _this.width();
-	var padd = (fixed_w - w)/2;
-	$(window).scroll(function(event){
-		if($(window).scrollTop() > offset){
-			_this.css({'position':'fixed','top':'0','left':'15px','width':w,'zIndex':'9999','background':'#fff','paddingTop':'15px','paddingLeft':padd,'paddingRight':padd});
-		} else {
-			_this.removeAttr('style');
-		}
-	});
+$.fn.scrollFixed = function (fixed_w = '') {//页面滚动时tab-title始终在页面上方
+    var offset = this.offset().top;
+    var _this = this;
+    if (fixed_w == '') {
+        fixed_w = _this.parents('.childrenBody').width();
+    }
+    var w = _this.width();
+    var padd = (fixed_w - w) / 2;
+    $(window).scroll(function (event) {
+        if ($(window).scrollTop() > offset) {
+            _this.css({ 'position': 'fixed', 'top': '0', 'left': '15px', 'width': w, 'zIndex': '9999', 'background': '#fff', 'paddingTop': '15px', 'paddingLeft': padd, 'paddingRight': padd });
+        } else {
+            _this.removeAttr('style');
+        }
+    });
 }
 
 //验证身份证号码
@@ -374,14 +374,14 @@ function QueryHZPY(id, pyId) {
     first.value = arrRslt;
 }
 
-String.prototype.RTrim = function(c) {
+String.prototype.RTrim = function (c) {
     if (!c) {
         c = ' ';
     }
     var reg = new RegExp('([' + c + ']*$)', 'gi');
     return this.replace(reg, '');
 }
-String.prototype.LTrim = function(c) {
+String.prototype.LTrim = function (c) {
     if (!c) {
         c = ' ';
     }
@@ -398,46 +398,46 @@ String.prototype.LTrim = function(c) {
  * @param function callback 回调函数
  */
 
-function user_popup(obj = null,allow_sels,num = 0,is_close_other = false,callback){
-	if (is_close_other) {
-		layer.closeAll();
-	}
-	
-	var has_user = allow_sels.indexOf('user') > -1 ? true : false;
-	var has_department = allow_sels.indexOf('department') > -1 ? true : false;
-	var has_company = allow_sels.indexOf('company') > -1 ? true : false;
-	var has_dpt_position = allow_sels.indexOf('dpt_position') > -1 ? true : false;
-	if(has_dpt_position){
-		var has_position = allow_sels.indexOf(',position') > -1 || allow_sels.indexOf('position,') > -1 ? true : false;
-	} else {
-		var has_position = allow_sels.indexOf('position') > -1 ? true : false;
-	}
-	var sel_type = '';
-	
-	window.sels = null;
-	if (typeof obj == 'object') {
-		if ($(obj).attr('type') == 'text') {
-			var arr = $(obj).siblings('input[name="sels"]').val();
-		} else {
-			var arr = $(obj).find('input[name="sels"]').val();
-		}
-		if (arr) {
-			sels = JSON.parse(arr);
-			sel_type = sels.sel_type;
-		}
-	} 
-	if(sel_type == ''){
-		if(has_user || has_company || has_department){
-			sel_type = 'org';
-		} else if(has_position){
-			sel_type = 'position';
-		} else {
-			sel_type = 'dpt_position';
-		}
-	}
-	var num = parseInt(num);
-	var url = '../../pages/public/user_select.html?sel_type='+sel_type+'&num='+num+'&has_user='+has_user+'&has_department='+has_department+'&has_company='+has_company+'&has_position='+has_position+'&has_dpt_position='+has_dpt_position;
-	
+function user_popup(obj = null, allow_sels, num = 0, is_close_other = false, callback) {
+    if (is_close_other) {
+        layer.closeAll();
+    }
+
+    var has_user = allow_sels.indexOf('user') > -1 ? true : false;
+    var has_department = allow_sels.indexOf('department') > -1 ? true : false;
+    var has_company = allow_sels.indexOf('company') > -1 ? true : false;
+    var has_dpt_position = allow_sels.indexOf('dpt_position') > -1 ? true : false;
+    if (has_dpt_position) {
+        var has_position = allow_sels.indexOf(',position') > -1 || allow_sels.indexOf('position,') > -1 ? true : false;
+    } else {
+        var has_position = allow_sels.indexOf('position') > -1 ? true : false;
+    }
+    var sel_type = '';
+
+    window.sels = null;
+    if (typeof obj == 'object') {
+        if ($(obj).attr('type') == 'text') {
+            var arr = $(obj).siblings('input[name="sels"]').val();
+        } else {
+            var arr = $(obj).find('input[name="sels"]').val();
+        }
+        if (arr) {
+            sels = JSON.parse(arr);
+            sel_type = sels.sel_type;
+        }
+    }
+    if (sel_type == '') {
+        if (has_user || has_company || has_department) {
+            sel_type = 'org';
+        } else if (has_position) {
+            sel_type = 'position';
+        } else {
+            sel_type = 'dpt_position';
+        }
+    }
+    var num = parseInt(num);
+    var url = '../../pages/public/user_select.html?sel_type=' + sel_type + '&num=' + num + '&has_user=' + has_user + '&has_department=' + has_department + '&has_company=' + has_company + '&has_position=' + has_position + '&has_dpt_position=' + has_dpt_position;
+
     layer.open({
         type: 2,
         title: '用户选择',
@@ -447,7 +447,7 @@ function user_popup(obj = null,allow_sels,num = 0,is_close_other = false,callbac
         skin: 'layui-layer-rim',
         area: ['760px', '480px'],
         content: url,
-        yes: function(index, layero) {
+        yes: function (index, layero) {
             var win = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
             var sels = win.sels;
             if (typeof obj == 'object') {
@@ -497,7 +497,7 @@ function user_popup(obj = null,allow_sels,num = 0,is_close_other = false,callbac
             }
             layer.close(index);
         },
-        btn2: function(index, layero) {
+        btn2: function (index, layero) {
             if (typeof callback === 'function') {
                 callback(null);
             }
@@ -525,7 +525,7 @@ function payitem_pop(obj = null, company_id, callback) {
         skin: 'layui-layer-rim',
         area: ['760px', '480px'],
         content: $('#popup_content'),
-        yes: function(index, layero) {
+        yes: function (index, layero) {
             //以下方式可获取到选中的 公司 部门 人员
 
             if (typeof obj == 'object') {
@@ -537,7 +537,7 @@ function payitem_pop(obj = null, company_id, callback) {
             }
             layer.close(index);
         },
-        btn2: function(index, layero) {
+        btn2: function (index, layero) {
             layer.close(index);
         }
     });
@@ -548,7 +548,7 @@ function payitem_pop(obj = null, company_id, callback) {
  */
 function assess_popup(obj, type = 'checkbox', callback) {
     var table;
-    layui.use(['table'], function() {
+    layui.use(['table'], function () {
         table = layui.table;
     });
     $('body').append('<div id="popup_content" data-type=' + type + '></div>');
@@ -560,7 +560,7 @@ function assess_popup(obj, type = 'checkbox', callback) {
         String: false,
         closeBtn: 1,
         btn: ['确认', '取消'],
-        yes: function(index) {
+        yes: function (index) {
             var checkStatus = table.checkStatus('assess_lst'),
                 data = checkStatus.data;
             if (typeof callback === 'function') {
@@ -669,4 +669,25 @@ function formart_sels(data, businessType) {
         }
     }
     return res;
+}
+/**
+* 
+* 获取当前时间
+*/
+function GetTimeNow() {
+    var myDate = new Date();
+    //获取当前年
+    var year = myDate.getFullYear();
+    //获取当前月
+    var month = myDate.getMonth() + 1;
+    //获取当前日
+    var date = myDate.getDate();
+    var h = myDate.getHours();       //获取当前小时数(0-23)
+    var m = myDate.getMinutes();     //获取当前分钟数(0-59)
+    var s = myDate.getSeconds();
+    var now = year + '-' + getNow(month) + "-" + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ":" + getNow(s);
+    return now;
+}
+function getNow(s) {
+    return s < 10 ? '0' + s : s;
 }
