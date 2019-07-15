@@ -72,12 +72,13 @@
 			var allow_num = GetPara('num');
 			var user_company = {id:1,pid:0};//默认当前用户的公司信息 实际另行获取
 			var default_sels = window.parent.sels;
+			var sel_type = GetPara('sel_type');
 			if(default_sels != null){
 				var sels = default_sels;
+				sel_type = sels.sel_type;
 			} else {
 				var sels = {'sel_type':'org','user':[],'department':[],'company':[],'position':[],'dpt_position':[]};
 			}
-			var sel_type = sels.sel_type;
 			var company_arr = globCache.getCompany();
 			var position_arr = globCache.getJobs();
 			var department_arr = globCache.getDepartment();
@@ -88,6 +89,9 @@
 			var dpt_position_arr = window.parent.dpt_positions;
 			
 			$(function(){
+				if(!has_company && !has_department && !has_user){
+					$("#sel_type1").parents('label').remove();
+				}
 				if(!has_position){
 					$("#sel_type2").parents('label').remove();
 				}
@@ -228,7 +232,7 @@
 				company_name = company_name && type != 'company' ? '<span>'+company_name+'</span> - ' : '';
 				var class_name = type+'_'+value;
 				if($("#selected_box").find("."+class_name).length == 0){
-					var html = '<li class="'+type+'_'+value+' overhide" >'+company_name+dpt_name+text+'<i class="layui-icon layui-icon-close-fill fr" onclick="user_sel_remove(\''+type+'\','+value+',\''+text+'\')"></i></li>'
+					var html = '<li class="'+type+'_'+value+' overhide" >'+company_name+dpt_name+text+'<i class="layui-icon layui-icon-close-fill fr" onclick="user_sel_remove(\''+type+'\',\''+value+'\',\''+text+'\')"></i></li>'
 					return html;
 				} 
 				return "";
@@ -312,7 +316,6 @@
 									if(arr[i].bindings.length > 0){
 										for(var j = 0;j < arr[i].bindings.length;j++){
 											var item = arr[i].bindings[j];
-											console.log(item);
 											var id = item.dptId + '_' + item.jobId;
 											var name = item.jobName + (item.employees.length > 0 ? '-'+item.employees[0].name : '');
 											html += build_check_html(id,name,'dpt_position',company_id);

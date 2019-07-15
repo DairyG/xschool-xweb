@@ -184,6 +184,23 @@ String.prototype.IsNum = function() {
     return reg.test(this);
 }
 
+$.fn.scrollFixed = function(fixed_w = '') {//页面滚动时tab-title始终在页面上方
+	var offset = this.offset().top;
+	var _this = this;
+	if(fixed_w == ''){
+		fixed_w = _this.parents('.childrenBody').width();
+	}
+	var w = _this.width();
+	var padd = (fixed_w - w)/2;
+	$(window).scroll(function(event){
+		if($(window).scrollTop() > offset){
+			_this.css({'position':'fixed','top':'0','left':'15px','width':w,'zIndex':'9999','background':'#fff','paddingTop':'15px','paddingLeft':padd,'paddingRight':padd});
+		} else {
+			_this.removeAttr('style');
+		}
+	});
+}
+
 //验证身份证号码
 function isCard(value) {
     var city = {
@@ -381,33 +398,46 @@ String.prototype.LTrim = function(c) {
  * @param function callback 回调函数
  */
 
-function user_popup(obj = null, allow_sels, num = 0, is_close_other = false, callback) {
-    if (is_close_other) {
-        layer.closeAll();
-    }
-
-    var has_user = allow_sels.indexOf('user') > -1 ? true : false;
-    var has_department = allow_sels.indexOf('department') > -1 ? true : false;
-    var has_company = allow_sels.indexOf('company') > -1 ? true : false;
-    var has_position = allow_sels.indexOf('position') > -1 ? true : false;
-    var has_dpt_position = allow_sels.indexOf('dpt_position') > -1 ? true : false;
-    var sel_type = 'org';
-    window.sels = null;
-    if (typeof obj == 'object') {
-        if ($(obj).attr('type') == 'text') {
-            var arr = $(obj).siblings('input[name="sels"]').val();
-        } else {
-            var arr = $(obj).find('input[name="sels"]').val();
-        }
-        if (arr) {
-            sels = JSON.parse(arr);
-            sel_type = sels.sel_type;
-        }
-    }
-
-    var num = parseInt(num);
-    var url = '../../pages/public/user_select.html?num=' + num + '&has_user=' + has_user + '&has_department=' + has_department + '&has_company=' + has_company + '&has_position=' + has_position + '&has_dpt_position=' + has_dpt_position;
-
+function user_popup(obj = null,allow_sels,num = 0,is_close_other = false,callback){
+	if (is_close_other) {
+		layer.closeAll();
+	}
+	
+	var has_user = allow_sels.indexOf('user') > -1 ? true : false;
+	var has_department = allow_sels.indexOf('department') > -1 ? true : false;
+	var has_company = allow_sels.indexOf('company') > -1 ? true : false;
+	var has_dpt_position = allow_sels.indexOf('dpt_position') > -1 ? true : false;
+	if(has_dpt_position){
+		var has_position = allow_sels.indexOf(',position') > -1 || allow_sels.indexOf('position,') > -1 ? true : false;
+	} else {
+		var has_position = allow_sels.indexOf('position') > -1 ? true : false;
+	}
+	var sel_type = '';
+	
+	window.sels = null;
+	if (typeof obj == 'object') {
+		if ($(obj).attr('type') == 'text') {
+			var arr = $(obj).siblings('input[name="sels"]').val();
+		} else {
+			var arr = $(obj).find('input[name="sels"]').val();
+		}
+		if (arr) {
+			sels = JSON.parse(arr);
+			sel_type = sels.sel_type;
+		}
+	} 
+	if(sel_type == ''){
+		if(has_user || has_company || has_department){
+			sel_type = 'org';
+		} else if(has_position){
+			sel_type = 'position';
+		} else {
+			sel_type = 'dpt_position';
+		}
+	}
+	var num = parseInt(num);
+	var url = '../../pages/public/user_select.html?sel_type='+sel_type+'&num='+num+'&has_user='+has_user+'&has_department='+has_department+'&has_company='+has_company+'&has_position='+has_position+'&has_dpt_position='+has_dpt_position;
+	
     layer.open({
         type: 2,
         title: '用户选择',
