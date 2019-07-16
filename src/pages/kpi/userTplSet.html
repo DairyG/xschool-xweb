@@ -17,6 +17,7 @@
       <div class="layui-card-header">考核设置</div>
       <div class="layui-card-body bgwhite">
         <form class="layui-form layui-form2" autocomplete="off">
+
           <div class="layui-row">
             <div class="layui-form-item layui-col-md6 margin-b-20">
               <label class="layui-form-label">
@@ -130,16 +131,16 @@
       {{#  if(d.length>0){ }}
 
       {{#  layui.each(d, function(index, item){ }}
-      <tr data-id="{{= item.id}}">
+      <tr data-id="{{= item.evaluationId}}">
       	<td>
       		<span class="table-btn-jia kpiContentAdd">+</span>
       		<span class="table-btn-jian kpiContentDel">-</span>
       	</td>
       	<td><input type="text" name="evaluationName" class="layui-input evaluationPopup" data-value="{{= jsonStr(item) }}"
-      			value="{{= item.name }}" placeholder="请选择考核项目" readonly />
+      			value="{{= item.evaluationName }}" placeholder="请选择考核项目" readonly />
       	</td>
-      	<td><input type="text" name="weight" maxlength="5" class="layui-input" value="" placeholder="请输入权重(分值)" /></td>
-      	<td><input type="text" name="explain" maxlength="100" class="layui-input" value="" placeholder="请输入说明" /></td>
+      	<td><input type="text" name="weight" maxlength="5" class="layui-input" value="{{=item.weight}}" placeholder="请输入权重(分值)" /></td>
+      	<td><input type="text" name="explain" maxlength="100" class="layui-input" value="{{=item.explain}}" placeholder="请输入说明" /></td>
       </tr>
       {{#  }); }}
 

@@ -257,9 +257,7 @@ layui.use(['table', 'element', 'form'], function() {
         layer_load();
         if (data.length > 0) {
 
-            var userSelVal = userPopModel;
-            userSelVal.sel_type = 'org'
-
+            var userSelVal = getUserPopModel();
             var index = 0;
             var htmls = '';
             $.each(data, function(i, item) {

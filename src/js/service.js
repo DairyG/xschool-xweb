@@ -15,13 +15,15 @@ var verifyModel = {
     }
 }
 
-var userPopModel = {
-    sel_type: '',
-    user: [],
-    department: [],
-    company: [],
-    position: [],
-    dpt_position: []
+function getUserPopModel() {
+    return {
+        sel_type: '',
+        user: [],
+        department: [],
+        company: [],
+        position: [],
+        dpt_position: []
+    }
 }
 
 var Serv = {
@@ -30,13 +32,13 @@ var Serv = {
     UCenterUrl: "",
     // Code: "JDWL",//站点名称
     Token: "", //用户的Token
-    GetToken: function () {
+    GetToken: function() {
         if (this.Token == "" || this.Token == null) {
             this.Token = localStorage.getItem("Service_Token");
         }
         return this.Token;
     },
-    SetToken: function (val) {
+    SetToken: function(val) {
         if (val == "") {
             return false;
         }
@@ -44,11 +46,11 @@ var Serv = {
         localStorage.setItem("Service_Token", val);
         return true;
     },
-    RemoveToken: function () {
+    RemoveToken: function() {
         Token = "";
         localStorage.removeItem("Service_Token");
     },
-    GetHeaders: function () {
+    GetHeaders: function() {
         return {
             // "_CODE_": Serv.Code,
             //"Access-Control-Allow-Origin": "*",
@@ -56,16 +58,16 @@ var Serv = {
             "Authorization": Serv.GetToken()
         }
     },
-    GetUrl: function (url) {
+    GetUrl: function(url) {
         return Serv.ServiceUrl + url;
     },
-    Get: function (url, args, callback, async) {
+    Get: function(url, args, callback, async) {
         this.Send(url, "GET", args, callback, async);
     },
-    Post: function (url, args, callback, async) {
+    Post: function(url, args, callback, async) {
         this.Send(url, "POST", args, callback, async);
     },
-    Send: function (url, type, args, callback, async) {
+    Send: function(url, type, args, callback, async) {
 
         jQuery.support.cors = true;
         $.ajax({
@@ -82,10 +84,11 @@ var Serv = {
             type: type,
             data: args,
             async: async !=undefined ? async :true,
-            success: function (data) {
+            success: function(data) {
                 callback(data);
             },
-            error: function (data) {
+            error: function(data) {
+                layer.closeAll('loading');
                 console.log(data);
                 // layer.closeAll();
                 // if (data.status == 400) {
@@ -106,12 +109,12 @@ var Serv = {
             }
         });
     },
-    ChkLogin: function () {
+    ChkLogin: function() {
         if (this.GetToken() == null || this.GetToken() == "") {
             //location.href="/";
         }
     },
-    getUserInit: function () {
+    getUserInit: function() {
 
     }
 };

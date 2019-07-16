@@ -32,9 +32,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
         var showValue = (paraJson.companyName.length > 9 ? (paraJson.companyName.substr(0, 9) + '...') : paraJson.companyName) + ' - ' +
             paraJson.dptName + ' - ' + paraJson.userName;
 
-        var userSelVal = userPopModel;
-        userSelVal.sel_type = 'org'
-        userSelVal.user = [];
+        var userSelVal = getUserPopModel();
         userSelVal.user.push({
             id: paraJson.employeeId,
             name: paraJson.userName,
@@ -57,12 +55,6 @@ layui.use(['laytpl', 'table', 'form'], function() {
             if (result != null) {
                 var jobJson = result.dpt_position[0];
                 setAuit(jobJson, result, valObj);
-
-                //var showValue = defaultSel;
-                // if (jobJson) {
-                //     showValue = (jobJson.company_name.length > 9 ? (jobJson.company_name.substr(0, 9) + '...') : jobJson.company_name) + ' - ' + jobJson.name;
-                // }
-                // valObj.html(showValue + '<input type="hidden" name="sels" value=\'' + JSON.stringify(result) + '\'>');
             }
         });
     });
@@ -72,7 +64,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
 
     kpiConObj.on('click', '.evaluationPopup', function() {
         assess_popup(null, 'checkbox', function(result) {
-            setEvaluationData(result);
+            setEvaluationData(result, 0);
         });
     });
     kpiConObj.on('click', '.kpiContentAdd', function() {
@@ -117,11 +109,10 @@ layui.use(['laytpl', 'table', 'form'], function() {
             kpiName = $('#kpiSelect').find('option:selected').text();
         $.each(userJson, function(i, item) {
             dataUser.push({
-                id: 0,
-                kpiType: 2,
+                id: paraJson.id || 0,
+                kpiType: paraJson.kpiType,
                 kpiId: kpiId,
                 kpiName: kpiName,
-                objectType: 1,
                 companyId: item.company_id,
                 companyName: item.company_name,
                 dptId: item.dpt_id,
@@ -163,16 +154,14 @@ layui.use(['laytpl', 'table', 'form'], function() {
                 var cObj = $(this);
                 var spanObj = cObj.find('.kpiAuditValue');
                 var value = spanObj.find('input[name="sels"]').val();
-                var tip = cObj.attr('data-type') == 1 ? '部门负责人' : '部门员工';
                 if (!value) {
-                    errorAudit = '请设置[' + tip + ']栏中的相关审核人';
+                    errorAudit = '请设置相关审核人';
                     error = false;
                     return false;
                 }
                 var vJson = JSON.parse(value);
                 var model = vJson.dpt_position[0];
                 dataAudit.push({
-                    objectType: cObj.attr('data-type'),
                     steps: cObj.attr('data-steps'),
                     companyId: model.company_id,
                     companyName: model.company_name,
@@ -210,9 +199,9 @@ layui.use(['laytpl', 'table', 'form'], function() {
 
             dataDetail.push({
                 id: 0,
-                evaluationId: valJson.id,
-                evaluationName: valJson.name,
-                evaluationType: valJson.evaluationTypeName,
+                evaluationId: valJson.evaluationId,
+                evaluationName: valJson.evaluationName,
+                evaluationType: valJson.evaluationType,
                 weight: weightVal,
                 explain: explainVal
             });
@@ -224,9 +213,10 @@ layui.use(['laytpl', 'table', 'form'], function() {
         // console.log(dataDetail);
 
         var modelSub = {
-            mode: 1,
-            kpiType: 2,
+            mode: paraJson.mode,
+            kpiType: paraJson.kpiType,
             kpiId: kpiId,
+            id: paraJson.id,
             templateRecord: dataUser,
             templateDetail: dataDetail,
             templateAuditRecord: dataAudit
@@ -246,20 +236,63 @@ layui.use(['laytpl', 'table', 'form'], function() {
         return false;
     });
 
-    //设置考核内容
-    function setEvaluationData(data) {
-        if (data.length > 0) {
-            var dataNew = $.map(data, function(item) {
-                var parentObj = kpiConObj.find('tr[data-id="' + item.id + '"]');
-                if (parentObj.length == 0) {
-                    return {
-                        id: item.id,
-                        name: item.name,
-                        evaluationTypeId: item.evaluationTypeId,
-                        evaluationTypeName: item.evaluationTypeName
-                    };
+    //获取详情
+    function getTemplatRecord(value) {
+        layer_load();
+        Serv.Get('gc/kpievaluation/gettemplatrecord/' + value, {}, function(result) {
+            layer_load_lose();
+            if (result) {
+
+                if (result.templateDetail.length > 0) {
+                    setEvaluationData(result.templateDetail, 1);
                 }
-            });
+                if (result.templateAuditRecord.length > 0) {
+
+                    $.each(result.templateAuditRecord, function(i, item) {
+                        var obj = kpiAuditBody.find('[data-steps="' + item.steps + '"]');
+                        if (obj.length > 0) {
+                            var valObj = obj.find('.kpiAuditValue');
+                            var tempModel = {
+                                // id: paraJson.employeeId,
+                                name: item.jobName,
+                                job_id: item.jobId,
+                                dpt_id: item.dptId,
+                                dpt_name: item.dptName,
+                                company_id: item.companyId,
+                                company_name: item.companyName
+                            };
+                            var userSelVal = getUserPopModel();
+                            userSelVal.dpt_position.push(tempModel);
+                            setAuit(tempModel, userSelVal, valObj);
+                        }
+                    });
+                }
+
+            } else {
+                layer_alert(result.message);
+            }
+        });
+    }
+
+    //设置考核内容
+    function setEvaluationData(data, type) {
+        if (data.length > 0) {
+            var dataNew = data;
+            if (type == 0) {
+                dataNew = [];
+                dataNew = $.map(data, function(item) {
+                    var parentObj = kpiConObj.find('tr[data-id="' + item.id + '"]');
+                    if (parentObj.length == 0) {
+                        return {
+                            evaluationId: item.id,
+                            evaluationName: item.name,
+                            evaluationType: item.evaluationTypeName,
+                            weight: item.weight || '',
+                            explain: item.explain || '',
+                        };
+                    }
+                });
+            }
             if (hasKpiConInit == 0) {
                 kpiConObj.empty();
             }
@@ -299,23 +332,6 @@ layui.use(['laytpl', 'table', 'form'], function() {
             }
         });
         return hasResult;
-    }
-
-    //获取详情
-    function getTemplatRecord(value) {
-        layer_load();
-        Serv.Get('gc/kpievaluation/gettemplatrecord/' + value, {}, function(result) {
-            layer_load_lose();
-            if (result) {
-
-                if (result.templateDetail.length > 0) {
-
-                }
-
-            } else {
-                layer_alert(result.message);
-            }
-        });
     }
 
     //设置审核人

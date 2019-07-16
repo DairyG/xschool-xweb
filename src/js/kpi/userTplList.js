@@ -17,7 +17,7 @@ var data_col = [
                     return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
                 } else {
                     var urlParam = setUrlParam(1, 0, 2, 1, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">设置</a>';
+                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
                 }
             }
         },
@@ -30,7 +30,7 @@ var data_col = [
                     return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
                 } else {
                     var urlParam = setUrlParam(1, 0, 2, 2, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">设置</a>';
+                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
                 }
             }
         },
@@ -39,9 +39,11 @@ var data_col = [
             'title': '半年',
             templet: function(d) {
                 if (d.halfYear > 0) {
-                    return '<a href="/pages/kpi/userTplSet.html" class="text-add">修改</a>'
+                    var urlParam = setUrlParam(2, 0, 2, 3, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.halfYear);
+                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
                 } else {
-                    return '<a href="/pages/kpi/userTplSet.html?mode=1&kpiType=2&batch=0" class="text-edit">设置</a>'
+                    var urlParam = setUrlParam(1, 0, 2, 3, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
+                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
                 }
             }
         },
@@ -50,9 +52,11 @@ var data_col = [
             'title': '年度',
             templet: function(d) {
                 if (d.annual > 0) {
-                    return '<a href="/pages/kpi/userTplSet.html" class="text-add">修改</a>'
+                    var urlParam = setUrlParam(2, 0, 2, 4, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.halfYear);
+                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
                 } else {
-                    return '<a href="/pages/kpi/userTplSet.html?mode=1&kpiType=2&batch=0" class="text-edit">设置</a>'
+                    var urlParam = setUrlParam(1, 0, 2, 4, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
+                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
                 }
             }
         }
@@ -75,7 +79,8 @@ layui.use(['table', 'element'], function() {
         if (treeNode.id > 0) {
             parameter.dptId = treeNode.id;
         }
-        lstPager.refresh();
+        console.log();
+        lstPager.refresh(parameter.dptId);
     });
     dptZTree.reload();
     var dptZTreeObj = dptZTree.obj();
@@ -86,6 +91,7 @@ layui.use(['table', 'element'], function() {
     }
 
     function search() {
+        console.log(parameter);
         return parameter;
     }
 
