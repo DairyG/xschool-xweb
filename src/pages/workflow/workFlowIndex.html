@@ -23,36 +23,7 @@
 								<button class="layui-btn layui-btn-sm" onclick="add_group()">新建分组</button>
 								<button class="layui-btn layui-btn-sm" onclick="javascript:window.location.href='createWorkFlow.html';">创建审批</button>
 							</div>
-							<div class="process_box">
-								<div class="process_item ">
-									<div class="process_title bgf2f2f2 padding-10">
-										<span class="fontsize-16">用车申请</span>
-										<span>(1)</span>
-										<a href="javascript:void(0);" onclick="DeleteSubjectType(19)" class="fr text-del padding-l-10"><i class="layui-icon layui-icon-delete"></i>删除</a>
-										<a href="javascript:;" class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-									</div>
-									<div class="process_content layui-row">
-										<div class="layui-col-md4 process_img">
-											<img src="../../img/car.png">
-											<div class="process_img_info">
-												<p>用车申请</p>
-												<p class="fontsize-12 text-85">适用于因公使用车辆的申请</p>
-												<p class="fontsize-12 text-85">2019.05.30 14:06:26 更新</p>
-											</div>
-										</div>
-										<div class="layui-col-md5 border-l-1 padding-l-15">
-											<p>可见范围</p>
-											<p class="fontsize-12 text-85" id="rec_box">全部可见 <a href="javascript:;" onclick="user_popup($('#rec_box'))">修改</a></p>
-										</div>
-										<div class="layui-col-md3">
-											<div class="opt_box text-right">
-												<a>编辑</a>
-												<a>停用</a>
-												<a href="javascript:;" onclick="process_move()">移动到</a>
-											</div>
-										</div>
-									</div>
-								</div>
+							<div class="process_box" id="process_box">
 								
 							</div>
 						</div>
@@ -99,11 +70,48 @@
 				</form>
 			</div>
 		</div>
+		<script type="text/html" id="process_tpl">
+			{{#  layui.each(d, function(index, item){ }}
+			<div class="process_item ">
+				<div class="process_title bgf2f2f2 padding-10">
+					<span class="fontsize-16">{{item.subjectTypeName}}</span>
+					<span>({{item.subjectList.length}})</span>
+					<a href="javascript:void(0);" onclick="DeleteSubjectType(19)" class="fr text-del padding-l-10"><i class="layui-icon layui-icon-delete"></i>删除</a>
+					<a href="javascript:;" class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+				</div>
+				{{#  layui.each(item.subjectList, function(j, item2){ }}
+				<div class="process_content layui-row">
+					<div class="layui-col-md4 process_img">
+						<img src="../../img/car.png">
+						<div class="process_img_info">
+							<p>{{item2.subjectName}}</p>
+							<p class="fontsize-12 text-85">{{item2.remark}}</p>
+							<p class="fontsize-12 text-85">2019.05.30 14:06:26 更新</p>
+						</div>
+					</div>
+					<div class="layui-col-md5 border-l-1 padding-l-15">
+						<p>可见范围</p>
+						<p class="fontsize-12 text-85" id="rec_box">全部可见 <a href="javascript:;" onclick="user_popup($('#rec_box'))">修改</a></p>
+					</div>
+					<div class="layui-col-md3">
+						<div class="opt_box text-right">
+							<a>编辑</a>
+							<a>停用</a>
+							<a href="javascript:;" onclick="process_move({{item2.subjectId}})">移动到</a>
+						</div>
+					</div>
+				</div>
+				{{# }); }}
+			</div>
+			{{# }); }}
+		</script>
 		<script type="text/javascript">
-			var layer_linePop,form;
-			layui.use(['table','form'], function() {
+			var layer_linePop,form,laytpl;
+			layui.use(['table','form','laytpl'], function() {
 				var table = layui.table;
 				form = layui.form;
+				laytpl = layui.laytpl;
+				loadData();
 			});
 			function add_group(){
 				layer_linePop = layer.open({
@@ -180,6 +188,24 @@
 						layer.msg('失败:'+resultData.message, {icon:2});
 					}
 				},true)
+			}
+
+			function loadData()
+			{
+				Serv.Get('lc/Subject/GetSubject',null,function(resultData){
+					if(resultData.succeed)
+					{
+						console.log(resultData.data);
+						var getTpl = $('#process_tpl').html();
+						laytpl(getTpl).render(resultData.data, function(html){
+							
+							$('#process_box').html(html);
+						});
+					}else{
+						layer.msg('失败:'+'数据加载失败', {icon:2});
+					}
+				},true)
+
 			}
 		</script>
 	</body>
