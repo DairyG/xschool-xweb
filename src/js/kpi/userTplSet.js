@@ -253,7 +253,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
                         if (obj.length > 0) {
                             var valObj = obj.find('.kpiAuditValue');
                             var tempModel = {
-                                // id: paraJson.employeeId,
+                                id: item.dptId + '_' + item.jobId,
                                 name: item.jobName,
                                 job_id: item.jobId,
                                 dpt_id: item.dptId,

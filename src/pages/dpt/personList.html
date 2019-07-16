@@ -125,10 +125,11 @@
         var table = layui.table;
         var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
           parameter.companyId = treeNode.companyId;
+          parameter.dptId = '';
           if (treeNode.id > 0) {
             parameter.dptId = treeNode.id;
           }
-          lstPager.refresh();
+          lstPager.search();
         });
         dptZTree.reload();
         var dptZTreeObj = dptZTree.obj();
@@ -139,7 +140,7 @@
         }
 
         function search() {
-          // console.log(parameter);
+          console.log(parameter);
           return parameter;
         }
         //分页初始化
