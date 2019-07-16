@@ -76,11 +76,11 @@ layui.use(['table', 'element'], function() {
     var table = layui.table;
     var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
         parameter.companyId = treeNode.companyId;
+        parameter.dptId = '';
         if (treeNode.id > 0) {
-            parameter.dptId = treeNode.id;
+          parameter.dptId = treeNode.id;
         }
-        console.log();
-        lstPager.refresh(parameter.dptId);
+        lstPager.search();
     });
     dptZTree.reload();
     var dptZTreeObj = dptZTree.obj();
@@ -91,7 +91,6 @@ layui.use(['table', 'element'], function() {
     }
 
     function search() {
-        console.log(parameter);
         return parameter;
     }
 
