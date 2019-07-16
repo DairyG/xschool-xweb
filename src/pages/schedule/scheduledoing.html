@@ -39,7 +39,9 @@
             <table class="layui-table" id="lst" lay-filter="lst"></table>
             <script type="text/html" id="bar">
 					<a class="layui-btn layui-btn-xs" href="javascript:;" lay-event="info">查看</a>
-					<a class="layui-btn layui-btn-xs layui-btn-normal" href="javascript:;" lay-event="fini">完成</a>
+                    {{#if(d.sche.executors.indexOf(',' + employ.id + ',') > -1){}}
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" href="javascript:;" lay-event="fini">完成</a>
+                    {{#}}}
 				</script>
             <script type="text/html" id="toolbar">
 				</script>
@@ -47,6 +49,7 @@
     </div>
     <script>
         var layer_linePop;
+        var employ = window.globCache.getEmployee();
         var cols = [[
             { type: 'numbers', title: '序号' },
             { field: 'date', title: '发布时间', minWidth: '150', templet: function (d) { return d.sche.addTime.FormatDate(true) } },
@@ -56,7 +59,7 @@
             { field: 'zx', title: '执行人', templet: function (d) { return d.sche.executorsJson } },
             { field: 'cs', title: '抄送人', templet: function (d) { return d.sche.scribblesJson } },
             { field: 'completion', title: '完成情况', minWidth: '120' },
-            { field: 'date2', title: '截止时间', minWidth: '310', templet: function (d) { return d.sche.endTime.FormatDate(true) } },
+            { field: 'date2', title: '截止时间', minWidth: '310', templet: function (d) { return  d.sche.beginTime.FormatDate(true) + '~' + d.sche.endTime.FormatDate(true) } },
             { field: 'plan', title: '考核方案', minWidth: '120' },
             { field: 'xm', title: '考核项目', minWidth: '120' },
             { toolbar: '#bar', title: '操作', fixed: 'right', minWidth: '120' }
@@ -64,7 +67,6 @@
         var datas = [];
         layui.use(['table'], function () {
             var table = layui.table;
-            var employ = window.globCache.getEmployee();
             Serv.Post('gc/Schedule/Get', { eid: employ.id, catalog: 'Doing' }, function (response) {
                 for (var i = 0; i < response.length; i++) {
                     //执行人
@@ -104,19 +106,6 @@
                 height: 'full-140',
                 cols: cols,
                 data: datas,
-            });
-            table.on('toolbar(lst)', function (data) {
-                if (data.event == 'add') {
-                    layer_linePop = layer.open({
-                        type: 1,
-                        title: '添加保险类别',
-                        String: false,
-                        closeBtn: 1,
-                        skin: 'layui-layer-rim',
-                        area: '750px',
-                        content: $('.linePop')
-                    });
-                }
             });
             table.on('tool(lst)', function (data) {
                 if (data.event == 'info') {

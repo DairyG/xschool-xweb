@@ -140,12 +140,7 @@
         var layer_linePop, table;
         var id = GetPara('id');
         var completes = [];
-        var initComp = function () {
-            Serv.Get('gc/ScheduleComplete/Get/' + id, {}, function (response) {
-                completes = response;
-            }, false);
-        };
-        initComp();
+
         var cols = [[
             { type: 'numbers', title: '序号' },
             { field: 'uname', title: '用户名称' },
@@ -153,6 +148,12 @@
             { field: 'date', title: '时间' },
         ]];
         var datas = [];
+        var initComp = function () {
+            Serv.Get('gc/ScheduleComplete/Get/' + id, {}, function (response) {
+                completes = response;
+            }, false);
+        };
+        initComp();
         var init = function () {
             Serv.Get('gc/Schedule/GetSingle/' + id, {}, function (response) {
                 if (response) {
@@ -164,13 +165,16 @@
                     var Executors = $.parseJSON(response.sche.executorsJson);
                     var htmlExc = "";
                     for (var i = 0; i < Executors.length; i++) {
-                        var tmpObj = completes.find((item) => {
-                            return item['id'] == Executors[i].id
+                        var tmpObj = false;
+                        completes.find(function(item) {
+                            if(item.employeeId == Executors[i].id) 
+                            { tmpObj = true;}
                         });
                         var model = {
+                            id: Executors[i].id,
                             uname: Executors[i].name,
-                            tips: (!tmpObj ? '未完成' : '已完成'),
-                            date: (!tmpObj ? '' : tmpObj.addTime.FormatDate(true))
+                            tips: (!tmpObj? '未完成' : '已完成'),
+                            date: (!tmpObj? '' : response.sche.addTime.FormatDate(true))
                         };
                         datas.push(model);
                         if (!tmpObj) {
@@ -239,6 +243,13 @@
                 data: datas2,
             });
             $("#BtnComplete").click(function () {
+                var tmpObj = datas.find((item) => {
+                    return item['id'] == employ.id
+                });
+                if (!tmpObj) {
+                    layer_alert("您不是任务的执行人，无法进行完成操作！");
+                    return false;
+                }
                 var sc = {
                     id: 0,
                     scheduleId: id,
