@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+</head>
+
+<body class="bgf2f2f2">
+    <div class="childrenBody">
+        <div class="layui-card-body">
+            <form class="layui-form layui-form2 layui-search-form padding-t-10">
+                <div class="layui-row">
+                    <div class="layui-form-item layui-col-md4 margin-b-20">
+                        <label class="layui-form-label">发布时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" id="date1" autocomplete="off" class="layui-input" readonly>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md3 margin-b-20">
+                        <label class="layui-form-label">发布人</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" placeholder="请选择发布人" autocomplete="off" class="layui-input"
+                                readonly onclick="showMenu()" id="treeIpt">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md2 margin-b-20">
+                        <button class="layui-btn layui-btn-normal">搜索</button>
+                    </div>
+                </div>
+            </form>
+            <table class="layui-table" id="lst" lay-filter="lst"></table>
+            <script type="text/html" id="bar">
+					<a class="layui-btn layui-btn-xs" href="javascript:;" lay-event="info">查看</a>
+					<a class="layui-btn layui-btn-xs layui-btn-normal" href="javascript:;" lay-event="fini">完成</a>
+				</script>
+            <script type="text/html" id="toolbar">
+				</script>
+        </div>
+    </div>
+    <script>
+        var layer_linePop;
+        var cols = [[
+            { type: 'numbers', title: '序号' },
+            { field: 'date', title: '发布时间', minWidth: '150', templet: function (d) { return d.sche.addTime.FormatDate(true) } },
+            { field: 'title', title: '标题', templet: function (d) { return d.sche.title } },
+            { field: 'emergencyName', title: '紧急' },
+            { field: 'fb', title: '发布人', templet: function (d) { return d.sche.employeeName } },
+            { field: 'zx', title: '执行人', templet: function (d) { return d.sche.executorsJson } },
+            { field: 'cs', title: '抄送人', templet: function (d) { return d.sche.scribblesJson } },
+            { field: 'completion', title: '完成情况', minWidth: '120' },
+            { field: 'date2', title: '截止时间', minWidth: '310', templet: function (d) { return d.sche.endTime.FormatDate(true) } },
+            { field: 'plan', title: '考核方案', minWidth: '120' },
+            { field: 'xm', title: '考核项目', minWidth: '120' },
+            { toolbar: '#bar', title: '操作', fixed: 'right', minWidth: '120' }
+        ]];
+        var datas = [];
+        layui.use(['table'], function () {
+            var table = layui.table;
+            var employ = window.globCache.getEmployee();
+            Serv.Post('gc/Schedule/Get', { eid: employ.id, catalog: 'Doing' }, function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    //执行人
+                    var exeNames = "";
+                    var execu = JSON.parse(response[i].sche.executorsJson);
+                    for (var j = 0; j < execu.length; j++) {
+                        if (j > 0) {
+                            exeNames += ",";
+                        }
+                        exeNames += execu[j].name;
+                    }
+                    response[i].sche.executorsJson = exeNames;
+                    //抄送人
+                    var srcNames = "";
+                    var srcib = JSON.parse(response[i].sche.scribblesJson);
+                    for (var k = 0; k < srcib.length; k++) {
+                        if (k > 0) {
+                            srcNames += ",";
+                        }
+                        srcNames += srcib[k].name;
+                    }
+                    response[i].sche.scribblesJson = srcNames;
+                }
+                datas = response;
+            }, false);
+            //关闭弹窗
+            $(".closePop").click(function () {
+                layer.closeAll()
+            })
+            //执行一个 table 实例
+            table.render({
+                elem: '#lst',
+                title: '用户表',
+                page: true,
+                toolbar: '#toolbar',
+                even: true,
+                height: 'full-140',
+                cols: cols,
+                data: datas,
+            });
+            table.on('toolbar(lst)', function (data) {
+                if (data.event == 'add') {
+                    layer_linePop = layer.open({
+                        type: 1,
+                        title: '添加保险类别',
+                        String: false,
+                        closeBtn: 1,
+                        skin: 'layui-layer-rim',
+                        area: '750px',
+                        content: $('.linePop')
+                    });
+                }
+            });
+            table.on('tool(lst)', function (data) {
+                if (data.event == 'info') {
+                    window.location.href = 'detailschedule.html?id=' + data.data.sche.id;
+                }
+                else if (data.event == 'fini') {
+                    var sc = {
+                        id: 0,
+                        scheduleId: data.data.sche.id,
+                        employeeId: employ.id,
+                        addTime: GetTimeNow()
+                    };
+                    Serv.Post('gc/ScheduleComplete/Add', sc, function (response) {
+                        if (response.code == "00") {
+                            layer_alert("成功！");
+                        }
+                        else {
+                            layer_alert(response.message);
+                        }
+                    })
+                    return false;
+                }
+            });
+        });
+        function closePop() {
+            layer.close(layer_linePop);
+        }
+    </script>
+</body>
+
+</html>
