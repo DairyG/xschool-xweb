@@ -26,7 +26,7 @@
               <div class="layui-input-block">
                 <div class="layui-input">
                   <span id="kpiObject"></span>
-                  <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" onclick="user_popup($('#kpiObject'),'user')">选择考核对象</span>
+                  <span id="kpiObjectPopup" class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" onclick="user_popup($('#kpiObject'),'user')">选择考核对象</span>
                 </div>
               </div>
             </div>
@@ -36,7 +36,7 @@
                 所属考核方案
               </label>
               <div class="layui-input-block">
-                <select>
+                <select id="kpiSelect">
                   <option value="1">月度考核方案</option>
                   <option value="2">季度考核方案</option>
                   <option value="3">半年考核方案</option>
@@ -47,20 +47,18 @@
             <div class="layui-form-item layui-col-md12 margin-b-20">
               <label class="layui-form-label">
                 <span class="text-red">*</span>
-                考核人设置
+                审核人设置
               </label>
               <div class="layui-input-block">
                 <table class="layui-table">
                   <thead>
                     <tr>
-                      <th>被考核人</th>
                       <th>初审人</th>
                       <th>终审人</th>
                     </tr>
                   </thead>
                   <tbody id="kpiAuditBody">
                     <tr class="kpiAuditItem">
-                      <td>部门负责人</td>
                       <td>
                         <div class="layui-input kpiAudit" data-type="1" data-steps="1">
                           <span class="kpiAuditValue">
@@ -76,25 +74,8 @@
                         </div>
                       </td>
                     </tr>
-                    <tr class="kpiAuditItem">
-                      <td>部门员工</td>
-                      <td>
-                        <div class="layui-input kpiAudit" data-type="2" data-steps="1">
-                          <span class="kpiAuditValue">
-                            <span class="text-85">点击选择</span>
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="layui-input kpiAudit" data-type="2" data-steps="2">
-                          <span class="kpiAuditValue">
-                            <span class="text-85">点击选择</span>
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
                     <tr>
-                      <td colspan="3">
+                      <td colspan="2">
                         说明：考核对象如有部门负责人时，请设置部门负责人的考核人，如不设置默认为自己考核
                       </td>
                     </tr>
@@ -133,8 +114,7 @@
             </div>
           </div>
           <div class="layui-row text-right">
-            <input type="button" class="layui-btn layui-btn-danger" lay-submit lay-filter="submitKpi" value="确认" />
-            <!-- <button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="formDemo">确认</button> -->
+            <input type="button" id="submitKpi" class="layui-btn layui-btn-danger" lay-submit lay-filter="submitKpi" value="确认" />
             <span class="layui-btn " onclick="history.back(-1)">返回</span>
           </div>
         </form>
@@ -145,7 +125,7 @@
       	var jsonStr = function(value){
       	  return JSON.stringify(value);
       	};
-        }}
+      }}
 
       {{#  if(d.length>0){ }}
 
@@ -164,7 +144,7 @@
       {{#  }); }}
 
       {{#  } else { }}
-      <tr>
+      <tr data-id="">
       	<td>
       		<span class="table-btn-jia kpiContentAdd">+</span>
       		<span class="table-btn-jian kpiContentDel">-</span>

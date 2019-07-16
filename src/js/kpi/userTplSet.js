@@ -7,21 +7,62 @@ layui.use(['laytpl', 'table', 'form'], function() {
         kpiConObj = $('#kpiContentBody'),
         kpiAuditBody = $('#kpiAuditBody'),
         hasKpiConInit = 0; //是否第一次设置
-
     var defaultSel = '<span class="text-85">点击选择</span>';
 
+    var para = decodeURIComponent(decodeURIComponent(GetPara('para'))) || '';
+    if (!isJson(para)) {
+        layer_alert('参数错误，请从正确入口进入');
+        $('#submitKpi').hide();
+        return false;
+    }
+    var paraJson = JSON.parse(para);
+    if (!paraJson.mode.toString().IsNum() || !paraJson.kpiType.toString().IsNum() || !paraJson.batch.toString().IsNum()) {
+        layer_alert('参数错误，请从正确入口进入');
+        $('#submitKpi').hide();
+        return false;
+    }
+    if (paraJson.batch != 1) {
+        $('#kpiObjectPopup').hide();
+    }
+    if (paraJson.kpiId.toString().IsNum()) {
+        $('#kpiSelect').val(paraJson.kpiId);
+        form.render('select');
+    }
+    if (paraJson.employeeId.toString().IsNum() && paraJson.employeeId >= 0) {
+        var showValue = (paraJson.companyName.length > 9 ? (paraJson.companyName.substr(0, 9) + '...') : paraJson.companyName) + ' - ' +
+            paraJson.dptName + ' - ' + paraJson.userName;
+
+        var userSelVal = userPopModel;
+        userSelVal.sel_type = 'org'
+        userSelVal.user = [];
+        userSelVal.user.push({
+            id: paraJson.employeeId,
+            name: paraJson.userName,
+            dpt_id: paraJson.dptId,
+            dpt_name: paraJson.dptName,
+            company_id: paraJson.companyId,
+            company_name: paraJson.companyName
+        });
+
+        $('#kpiObject').html(showValue + '<input type="hidden" name="sels" value=\'' + JSON.stringify(userSelVal) + '\'>');
+    }
+    if (paraJson.id.toString().IsNum()) {
+        getTemplatRecord(paraJson.id);
+    }
 
     //考核人设置
     kpiAuditBody.on('click', '.kpiAudit', function() {
         var valObj = $(this).find('.kpiAuditValue');
         user_popup(valObj, 'dpt_position', 1, false, function(result) {
             if (result != null) {
-                var jobJson = result.position[0];
-                var showValue = defaultSel;
-                if (jobJson) {
-                    showValue = (jobJson.company_name.length > 9 ? (jobJson.company_name.substr(0, 9) + '...') : jobJson.company_name) + ' - ' + jobJson.name;
-                }
-                valObj.html(showValue + '<input type="hidden" name="sels" value=\'' + JSON.stringify(result) + '\'>');
+                var jobJson = result.dpt_position[0];
+                setAuit(jobJson, result, valObj);
+
+                //var showValue = defaultSel;
+                // if (jobJson) {
+                //     showValue = (jobJson.company_name.length > 9 ? (jobJson.company_name.substr(0, 9) + '...') : jobJson.company_name) + ' - ' + jobJson.name;
+                // }
+                // valObj.html(showValue + '<input type="hidden" name="sels" value=\'' + JSON.stringify(result) + '\'>');
             }
         });
     });
@@ -61,67 +102,60 @@ layui.use(['laytpl', 'table', 'form'], function() {
         layer_load();
 
         //考核对象
-        var dataUser = [{
-            id: 0,
-            kpiType: 2,
-            kpiId: 1,
-            kpiName: '月度考核方案',
-            objectType: 1,
-            companyId: 1,
-            companyName: '阿里巴巴（中国）有限公司成都分公司',
-            dptId: '1',
-            dptName: '技术部',
-            employeeId: '3',
-            userName: '3',
-        }];
+        var dataUser = [];
+        var userValue = $('#kpiObject').find('input[name="sels"]').val();
+        if (!userValue) {
+            layer_alert('请选择考核对象');
+            return false;
+        }
+        var userJson = JSON.parse(userValue).user;
+        if (userJson.length == 0) {
+            layer_alert('请选择考核对象');
+            return false;
+        }
+        var kpiId = $('#kpiSelect').val(),
+            kpiName = $('#kpiSelect').find('option:selected').text();
+        $.each(userJson, function(i, item) {
+            dataUser.push({
+                id: 0,
+                kpiType: 2,
+                kpiId: kpiId,
+                kpiName: kpiName,
+                objectType: 1,
+                companyId: item.company_id,
+                companyName: item.company_name,
+                dptId: item.dpt_id,
+                dptName: item.dpt_name,
+                employeeId: item.id,
+                userName: item.name
+            });
+        });
+
+        //验证是否是 同一个部门下面的
+        for (var i = 0; i < dataUser.length; i++) {
+            var flag = true;
+            for (var j = i + 1; j < dataUser.length; j++) {
+                //第一个等同于第二个，splice方法删除第二个
+                if (dataUser[i].companyId != dataUser[j].companyId || dataUser[i].dptId != dataUser[j].dptId) {
+                    dataUser.splice(j, 1);
+                    j--;
+                    flag = false;
+                }
+            }
+            if (!flag) {
+                layer_alert('您设置的考核对象包含不同公司和部门，请检查');
+                return false;
+            }
+        }
         if (dataUser.length == 0) {
             layer_alert('请选择考核对象');
             return false;
         }
+        // console.log(dataUser);
 
         //考核审核
-        var dataAudit = [{
-                objectType: 1,
-                steps: 1,
-                companyId: 1,
-                companyName: '阿里巴巴（中国）有限公司成都分公司',
-                dptId: '1',
-                dptName: '技术部',
-                jobId: 1,
-                jobName: '专员',
-            },
-            {
-                objectType: 1,
-                steps: 2,
-                companyId: 1,
-                companyName: '阿里巴巴（中国）有限公司成都分公司',
-                dptId: '1',
-                dptName: '技术部',
-                jobId: 2,
-                jobName: '主管',
-            },
-            {
-                objectType: 2,
-                steps: 1,
-                companyId: 1,
-                companyName: '阿里巴巴（中国）有限公司成都分公司',
-                dptId: '1',
-                dptName: '技术部',
-                jobId: 1,
-                jobName: '专员',
-            },
-            {
-                objectType: 2,
-                steps: 2,
-                companyId: 1,
-                companyName: '阿里巴巴（中国）有限公司成都分公司',
-                dptId: '1',
-                dptName: '技术部',
-                jobId: 2,
-                jobName: '主管',
-            }
-        ];
-        var errorAudit = '';
+        var dataAudit = [],
+            errorAudit = '';
         kpiAuditBody.find('tr').each(function() {
             var pObj = $(this);
             var error = true;
@@ -136,40 +170,31 @@ layui.use(['laytpl', 'table', 'form'], function() {
                     return false;
                 }
                 var vJson = JSON.parse(value);
+                var model = vJson.dpt_position[0];
                 dataAudit.push({
                     objectType: cObj.attr('data-type'),
                     steps: cObj.attr('data-steps'),
-                    companyId: vJson.position[0].company_id,
-                    companyName: vJson.position[0].company_name,
-                    dptId: vJson.position[0].dpt_id,
-                    dptName: vJson.position[0].dpt_name,
-                    jobId: vJson.position[0].id,
-                    jobName: vJson.position[0].name,
+                    companyId: model.company_id,
+                    companyName: model.company_name,
+                    dptId: model.dpt_id,
+                    dptName: model.dpt_name,
+                    jobId: model.job_id,
+                    jobName: model.name,
                 });
-
-                //JSON.parse($(this).find('input[name="sels"]').val());
-
-                console.log(cObj.attr('data-type'));
-                console.log(cObj.attr('data-steps'));
             });
             if (!error) {
                 return false;
             }
-
-
-            // if (paramObj.find('input[type="checkbox"]:checked').length - 1 < 0) {
-            //     errorScope = '请您勾选[' + typeJson.param_name + ']相关参数';
-            //     return false;
-            // }
         });
         if (!errorAudit.isEmpty()) {
             layer_alert(errorAudit);
             return false;
         }
         if (dataAudit.length == 0) {
-            layer_alert('请设置考核人');
+            layer_alert('请设置审核人');
             return false;
         }
+        // console.log(dataAudit);
 
         var hasResult = validateKpiContent();
         if (!hasResult) {
@@ -196,7 +221,27 @@ layui.use(['laytpl', 'table', 'form'], function() {
             layer_alert('请设置考核内容');
             return false;
         }
-        console.log(dataDetail);
+        // console.log(dataDetail);
+
+        var modelSub = {
+            mode: 1,
+            kpiType: 2,
+            kpiId: kpiId,
+            templateRecord: dataUser,
+            templateDetail: dataDetail,
+            templateAuditRecord: dataAudit
+        };
+
+        Serv.Post('gc/kpievaluation/edittemplat', modelSub, function(result) {
+            layer_load_lose();
+            if (result.succeed) {
+                layer_alert(result.message, function() {
+                    window.location.href = '/pages/kpi/userTplList.html';
+                });
+            } else {
+                layer_alert(result.message);
+            }
+        });
 
         return false;
     });
@@ -215,17 +260,19 @@ layui.use(['laytpl', 'table', 'form'], function() {
                     };
                 }
             });
-
             if (hasKpiConInit == 0) {
                 kpiConObj.empty();
             }
             hasKpiConInit = 1;
-            kpiConObj.append(getKpiContent(dataNew));
+            if (dataNew.length > 0) {
+                kpiConObj.find('tr[data-id=""]').remove();
+                kpiConObj.append(getKpiContent(dataNew));
+            }
         }
     }
     //获取考核内容模板
     function getKpiContent(data) {
-        data = data ? data : [];
+        data = data || [];
         return laytpl(getTpl).render(data);
     }
     //验证考核内容
@@ -252,6 +299,32 @@ layui.use(['laytpl', 'table', 'form'], function() {
             }
         });
         return hasResult;
+    }
+
+    //获取详情
+    function getTemplatRecord(value) {
+        layer_load();
+        Serv.Get('gc/kpievaluation/gettemplatrecord/' + value, {}, function(result) {
+            layer_load_lose();
+            if (result) {
+
+                if (result.templateDetail.length > 0) {
+
+                }
+
+            } else {
+                layer_alert(result.message);
+            }
+        });
+    }
+
+    //设置审核人
+    function setAuit(model, data, obj) {
+        var showValue = defaultSel;
+        if (model) {
+            showValue = (model.company_name.length > 9 ? (model.company_name.substr(0, 9) + '...') : model.company_name) + ' - ' + model.name;
+        }
+        obj.html(showValue + '<input type="hidden" name="sels" value=\'' + JSON.stringify(data) + '\'>');
     }
 
 });
