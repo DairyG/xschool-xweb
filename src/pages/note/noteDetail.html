@@ -12,7 +12,8 @@
         <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
         <script type="text/javascript" src="../../layui/layui.js"></script>
         <script type="text/javascript" src="../../js/common.js"></script>
-        <script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/pager.js"></script>
         <script type="text/javascript" src="../../lib/vue.js"></script>
 	</head>
 
@@ -36,7 +37,7 @@
 					<div class="layui-tab">
 						<ul class="layui-tab-title">
 							<li class="layui-this">已浏览人</li>
-							<li>未浏览人</li>
+							<li >未浏览人</li>
 						</ul>
 						<div class="layui-tab-content">
 							<div class="layui-tab-item layui-show">
@@ -56,46 +57,6 @@
 				</div> 
 			</div>
 		</div>
-		<script type="text/javascript">
-			var data_col1 = [[
-				{type: 'numbers', title: '序号'},
-				{field: 'title', title: '员工姓名'},
-				{field: 'gs', title: '公司'},
-				{field: 'bm', title: '部门'},
-				{field: 'date', title: '浏览日期'},
-			]];
-			var data_col2 = [[
-				{type: 'numbers', title: '序号'},
-				{field: 'title', title: '员工姓名'},
-				{field: 'gs', title: '公司'},
-				{field: 'bm', title: '部门'}
-			]];
-			var datas = [
-				{'title':'张三',date:'2019-5-25',bm:'人事部',gs:'本公司'},
-				{'title':'李四',date:'2019-5-25',bm:'项目部',gs:'子公司1'},
-				{'title':'王五',date:'2019-5-25',bm:'项目部',gs:'本公司'},
-				{'title':'二蛋',date:'2019-5-25',bm:'人事部',gs:'子公司2'},
-			];
-			layui.use([ 'table','element'], function() {
-				var table = layui.table,
-					element = layui.element;
-					
-					table.render({
-						elem: '#lst1',
-						data: datas,
-						cols: data_col1,
-						toolbar:'#bar',
-						page:true,
-					});
-					table.render({
-						elem: '#lst2',
-						data: datas,
-						cols: data_col2,
-						toolbar:'#bar',
-						page:true,
-					});
-			});
-		</script>
 	</body>
     <script type="text/javascript" src="../../js/note/noteDetail.js"></script>
 </html>

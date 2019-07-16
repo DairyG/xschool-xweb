@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="../../js/service.js"></script>
 	<script type="text/javascript" src="../../js/verify.js"></script>
 	<script type="text/javascript" src="../../lib/vue.js"></script>
+	<script type="text/javascript" src="../../js/cache.js"></script>
 </head>
 
 <body class="bgf2f2f2">
@@ -26,7 +27,10 @@
 							<form class="layui-form layui-form2" lay-filter="frm">
 								<div class="layui-row">
 									<div class="layui-form-item layui-col-md12 margin-b-20">
-											<input type="hidden" name="id" v-model="id" value="0">
+										<input type="hidden" name="id" v-model="id" value="0">
+										<input type="hidden" name="PublisherId" v-model="PublisherId" value="0">
+										<input type="hidden" name="PublisherName" v-model="PublisherName" value="">
+										<input type="hidden" name="DepartmentName" v-model="DepartmentName" value="">
 										<label class="layui-form-label">标题<span class="text-red"> *</span></label>
 										<div class="layui-input-block">
 											<input type="text" name="Title" required lay-verify="required"
@@ -44,7 +48,7 @@
 										<label class="layui-form-label">查看人类型<span class="text-red"> *</span></label>
 										<div class="layui-input-block">
 											<span class="layui-btn layui-btn-normal"
-												onclick="user_popup($('#rec_box'))"><i
+												onclick="user_popup($('#rec_box'),'user,department,company,position')"><i
 													class="layui-icon layui-icon-add-1"></i>选择人员</span>
 										</div>
 									</div>
