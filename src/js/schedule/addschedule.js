@@ -116,14 +116,23 @@ layui.use(['table', 'laydate', 'layedit', 'form'], function () {
         }
         Serv.Post('gc/Schedule/Add', laydate.field, function (response) {
             if (response.code == '00') {
-                window.parent.addData.id = response.data;
-                window.parent.addData.title = laydate.field.title;
-                window.parent.addData.start = laydate.field.beginTime;
-                window.parent.addData.end = laydate.field.endTime;
-                window.parent.addData.colindex = laydate.field.emergency;
-                //layer_alert("添加成功！");
-                var index = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(index);
+                //修改PID为当前ID
+                Serv.Get('gc/Schedule/UpdatePid/' + response.data, {}, function (res) {
+                    if (res > 0) {
+                        window.parent.addData.id = response.data;
+                        window.parent.addData.title = laydate.field.title;
+                        window.parent.addData.start = laydate.field.beginTime;
+                        window.parent.addData.end = laydate.field.endTime;
+                        window.parent.addData.colindex = laydate.field.emergency;
+                        //layer_alert("添加成功！");
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }
+                    else{
+                        layer_alert("添加失败，请重试！");
+                    }
+                });
+
             }
             else {
                 layer_alert(response.message);
@@ -187,8 +196,7 @@ layui.use(['table', 'laydate', 'layedit', 'form'], function () {
                 $("#selEmergency").val(response.sche.emergency);
                 //重复
                 $("#selRepeat").val(response.sche.repeat);
-                if(response.sche.repeat > 1)
-                {
+                if (response.sche.repeat > 1) {
                     $("#repeat_time").show();
                 }
                 //重复结束时间
