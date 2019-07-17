@@ -7,9 +7,13 @@ var vm = new Vue({
     },
     mounted: function () {
         var _this = this;
-        var id = GetPara("id");
+        var id = GetPara("NoteId");
+        var UserId = GetPara("UserId");
+        var UserName = GetPara("UserName");
+        var CompanyName = GetPara("CompanyName");
+        var DptName = GetPara("DptName");
         id = !id ? '' : id;
-        _this.initLayui(id);
+        _this.initLayui(id,UserId,UserName,CompanyName,DptName);
 
 
         var data_col1 = [[
@@ -76,7 +80,7 @@ var vm = new Vue({
         });
     },
     methods: {
-        initLayui: function (id) {
+        initLayui: function (id,UserId,UserName,CompanyName,DptName) {
             var _this = this;
             layui.use(['element', 'form', 'table'], function () {
                 var element = layui.element,
@@ -88,20 +92,23 @@ var vm = new Vue({
                     return false;
                 }
 
-                _this.getNoteDetail(id);
+                _this.getNoteDetail(id,UserId,UserName,CompanyName,DptName);
             })
         },
-        getNoteDetail: function (id) {
+        getNoteDetail: function (id,UserId,UserName,CompanyName,DptName) {
             var _this = this;
             layer_load();
-            Serv.Get("gc/note/GetSigleNote?id=" + id, {}, function (result) {
+            Serv.Get("gc/note/GetSigleNote?NoteId=" + id+"&UserId="+UserId+
+            "&UserName="+UserName+"&CompanyName="+CompanyName+"&DptName="+DptName, {}, function (result) {
                 layer_load_lose();
                 if (result.succeed) {
-                    _this.noteDetail = result.data;
-                    _this.noteDetail.title = result.data.title;
-                    _this.noteDetail.createDate = result.data.createDate.FormatDate();
-                    _this.noteDetail.publisherId = result.data.publisherId;
-                    _this.noteDetail.content = decodeURIComponent(result.data.content);
+                    _this.noteDetail = result.data.noteDetail;
+                    _this.noteDetail.title = result.data.noteDetail.title;
+                    _this.noteDetail.createDate = result.data.noteDetail.createDate.FormatDate();
+                    _this.noteDetail.publisherId = result.data.noteDetail.publisherId;
+                    _this.noteDetail.publisherName = result.data.noteDetail.publisherName;
+                    _this.noteDetail.DepartmentName = result.data.noteDetail.departmentName;
+                    _this.noteDetail.content = decodeURIComponent(result.data.noteDetail.content);
                     $("#content").html(_this.noteDetail.content);
                 }
                 else {
