@@ -4,8 +4,8 @@ var data_col = [
             title: '序号',
         },
         {
-            field: 'userName',
-            title: '人员',
+            field: 'dptName',
+            title: '部门',
             minWidth: '80'
         },
         {
@@ -13,11 +13,11 @@ var data_col = [
             'title': '月度',
             templet: function(d) {
                 if (d.monthly > 0) {
-                    var urlParam = setUrlParam(0, 2, 1, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.monthly);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
+                    var urlParam = setUrlParam(0, 1, 1, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.monthly);
+                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
                 } else {
-                    var urlParam = setUrlParam(0, 2, 1, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
+                    var urlParam = setUrlParam(0, 1, 1, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
+                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
                 }
             }
         },
@@ -26,11 +26,11 @@ var data_col = [
             'title': '季度',
             templet: function(d) {
                 if (d.quarter > 0) {
-                    var urlParam = setUrlParam(0, 2, 2, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.quarter);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
+                    var urlParam = setUrlParam(0, 1, 2, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.quarter);
+                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
                 } else {
-                    var urlParam = setUrlParam(0, 2, 2, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
+                    var urlParam = setUrlParam(0, 1, 2, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
+                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
                 }
             }
         },
@@ -39,11 +39,11 @@ var data_col = [
             'title': '半年',
             templet: function(d) {
                 if (d.halfYear > 0) {
-                    var urlParam = setUrlParam(0, 2, 3, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.halfYear);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
+                    var urlParam = setUrlParam(0, 1, 3, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.halfYear);
+                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
                 } else {
-                    var urlParam = setUrlParam(0, 2, 3, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
+                    var urlParam = setUrlParam(0, 1, 3, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
+                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
                 }
             }
         },
@@ -53,10 +53,10 @@ var data_col = [
             templet: function(d) {
                 if (d.annual > 0) {
                     var urlParam = setUrlParam(0, 2, 4, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.halfYear);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
+                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
                 } else {
                     var urlParam = setUrlParam(0, 2, 4, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/userTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
+                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
                 }
             }
         }
@@ -66,7 +66,7 @@ var data_col = [
 var parameter = {
     companyId: '',
     dptId: '',
-    kpiType: 2,
+    kpiType: 1,
 };
 
 var lstPager;
@@ -99,8 +99,8 @@ layui.use(['table', 'element'], function() {
     table.on('toolbar(lst)', function(obj) {
         switch (obj.event) {
             case 'batchAdd':
-                var urlParam = setUrlParam(1, 2);
-                window.location.href = '/pages/kpi/userTplSet.html?para=' + encodeURI(urlParam);
+                var urlParam = setUrlParam(1, 1);
+                window.location.href = '/pages/kpi/dptTplSet.html?para=' + encodeURI(urlParam);
                 break;
         };
     });
@@ -108,7 +108,7 @@ layui.use(['table', 'element'], function() {
     //分页初始化
     lstPager = Pager(
         table, //lay-ui的table控件
-        '人员考核模板', //列表名称
+        '部门考核模板', //列表名称
         'lst', //绑定的列表Id
         'toolbar', //绑定的工具条Id
         data_col, //表头的显示行

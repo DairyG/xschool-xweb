@@ -6,7 +6,11 @@ layui.use(['laytpl', 'table', 'form'], function() {
     var getTpl = kpiContentTpl.innerHTML,
         kpiConObj = $('#kpiContentBody'),
         kpiAuditBody = $('#kpiAuditBody'),
+        kpiObject = $('#kpiObject'),
+        kpiObjectPopup = $('#kpiObjectPopup'),
+        hasHead = 0, //是否有部门负责人
         hasKpiConInit = 0; //是否第一次设置
+    var dptSelect = {}; //保存考核对象
     var defaultSel = '<span class="text-85">点击选择</span>';
 
     var para = decodeURIComponent(decodeURIComponent(GetPara('para'))) || '';
@@ -21,13 +25,13 @@ layui.use(['laytpl', 'table', 'form'], function() {
         $('#submitKpi').hide();
         return false;
     }
-    if (paraJson.kpiType != 2) {
+    if (paraJson.kpiType != 1) {
         layer_alert('参数错误，请从正确入口进入');
         $('#submitKpi').hide();
         return false;
     }
     if (paraJson.batch != 1) {
-        $('#kpiObjectPopup').hide();
+        kpiObjectPopup.hide();
     }
     if (paraJson.kpiId.toString().IsNum()) {
         $('#kpiSelect').val(paraJson.kpiId);
@@ -35,24 +39,29 @@ layui.use(['laytpl', 'table', 'form'], function() {
     }
     if (paraJson.employeeId.toString().IsNum() && paraJson.employeeId >= 0) {
         var showValue = (paraJson.companyName.length > 9 ? (paraJson.companyName.substr(0, 9) + '...') : paraJson.companyName) + ' - ' +
-            paraJson.dptName + ' - ' + paraJson.userName;
-
+            paraJson.dptName;
         var userSelVal = getUserPopModel();
-        userSelVal.user.push({
-            id: paraJson.employeeId,
-            name: paraJson.userName,
-            dpt_id: paraJson.dptId,
-            dpt_name: paraJson.dptName,
+        userSelVal.department.push({
+            id: paraJson.dptId,
+            name: paraJson.dptName,
             company_id: paraJson.companyId,
             company_name: paraJson.companyName
         });
-
         $('#kpiObject').html(showValue + '<input type="hidden" name="sels" value=\'' + JSON.stringify(userSelVal) + '\'>');
+        getDptHead(userSelVal.department[0]);
     }
     if (paraJson.id.toString().IsNum()) {
         getTemplatRecord(paraJson.id);
     }
-
+    //考核对象
+    kpiObjectPopup.on('click', function() {
+        user_popup(kpiObject, 'department', 1, false, function(result) {
+            if (result != null) {
+                var jobJson = result.department[0];
+                getDptHead(jobJson);
+            }
+        });
+    });
     //考核人设置
     kpiAuditBody.on('click', '.kpiAudit', function() {
         var valObj = $(this).find('.kpiAuditValue');
@@ -100,49 +109,40 @@ layui.use(['laytpl', 'table', 'form'], function() {
 
         //考核对象
         var dataUser = [];
-        var userValue = $('#kpiObject').find('input[name="sels"]').val();
+        var userValue = kpiObject.find('input[name="sels"]').val();
         if (!userValue) {
             layer_alert('请选择考核对象');
             return false;
         }
-        var userJson = JSON.parse(userValue).user;
+        var userJson = JSON.parse(userValue).department;
         if (userJson.length == 0) {
             layer_alert('请选择考核对象');
             return false;
         }
+        if (userJson.length > 1) {
+            layer_alert('请选择单个考核对象');
+            return false;
+        }
+
+        if (hasHead != 1 || !dptSelect) {
+            layer_alert('未查询到考核对象的负责人，请设置对应的负责人');
+            return false;
+        }
         var kpiId = $('#kpiSelect').val(),
             kpiName = $('#kpiSelect').find('option:selected').text();
-        $.each(userJson, function(i, item) {
-            dataUser.push({
-                id: paraJson.id || 0,
-                kpiType: paraJson.kpiType,
-                kpiId: kpiId,
-                kpiName: kpiName,
-                companyId: item.company_id,
-                companyName: item.company_name,
-                dptId: item.dpt_id,
-                dptName: item.dpt_name,
-                employeeId: item.id,
-                userName: item.name
-            });
-        });
 
-        //验证是否是 同一个部门下面的
-        for (var i = 0; i < dataUser.length; i++) {
-            var flag = true;
-            for (var j = i + 1; j < dataUser.length; j++) {
-                //第一个等同于第二个，splice方法删除第二个
-                if (dataUser[i].companyId != dataUser[j].companyId || dataUser[i].dptId != dataUser[j].dptId) {
-                    dataUser.splice(j, 1);
-                    j--;
-                    flag = false;
-                }
-            }
-            if (!flag) {
-                layer_alert('您设置的考核对象包含不同公司和部门，请检查');
-                return false;
-            }
-        }
+        dataUser.push({
+            id: paraJson.id || 0,
+            kpiType: paraJson.kpiType,
+            kpiId: kpiId,
+            kpiName: kpiName,
+            companyId: dptSelect.companyId,
+            companyName: dptSelect.companyName,
+            dptId: dptSelect.dptId,
+            dptName: dptSelect.dptName,
+            employeeId: dptSelect.employeeId,
+            userName: dptSelect.userName
+        });
         if (dataUser.length == 0) {
             layer_alert('请选择考核对象');
             return false;
@@ -229,7 +229,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
             layer_load_lose();
             if (result.succeed) {
                 layer_alert(result.message, function() {
-                    window.location.href = '/pages/kpi/userTplList.html';
+                    window.location.href = '/pages/kpi/dptTplList.html';
                 });
             } else {
                 layer_alert(result.message);
@@ -337,6 +337,41 @@ layui.use(['laytpl', 'table', 'form'], function() {
         return hasResult;
     }
 
+    //获取部门负责人
+    function getDptHead(valJson) {
+        layer_load();
+        Serv.Get('uc/department/getbycompany/' + valJson.company_id, {}, function(result) {
+            layer_load_lose();
+            hasHead = 0;
+            dptSelect = {};
+            if (result) {
+                var hasResult = false;
+                $.each(result, function(i, item) {
+                    if (item.companyId == valJson.company_id && item.id == valJson.id && item.bindings.length > 0) {
+                        hasHead = 1;
+                        var tempJson = item.bindings[0];
+                        dptSelect = {
+                            employeeId: tempJson.employees[0].id,
+                            userName: tempJson.employees[0].name,
+                            dptId: valJson.id,
+                            dptName: valJson.name,
+                            companyId: valJson.company_id,
+                            companyName: valJson.company_name
+                        };
+
+                        hasResult = true;
+                        return false;
+                    }
+                });
+                if (!hasResult) {
+                    layer_alert('未查询到考核对象的负责人，请设置对应的负责人');
+                    return false;
+                }
+            } else {
+                layer_alert(result.message);
+            }
+        });
+    }
     //设置审核人
     function setAuit(model, data, obj) {
         var showValue = defaultSel;
