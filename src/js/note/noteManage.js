@@ -51,7 +51,8 @@ layui.use(['table', 'element', 'laydate'], function () {
     table.on('tool(lst)', function (obj) {
         var layEvent = obj.event;
         if (layEvent == "info") {
-            window.location.href = "/pages/note/noteDetail.html?id=" + obj.data.id;
+            window.location.href = "/pages/note/noteDetail.html?NoteId=" + obj.data.id+"&UserId="+window.globCache.getEmployee().id+
+            "&UserName="+window.globCache.getEmployee().employeeName+"&CompanyName="+window.globCache.getEmployee().companyName+"&DptName="+window.globCache.getEmployee().dptName;
         }
         if (layEvent == "edit") {
             window.location.href = "/pages/note/noteAdd.html?id=" + obj.data.id;
