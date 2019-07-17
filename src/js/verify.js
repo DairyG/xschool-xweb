@@ -13,7 +13,7 @@ layui.use(['form'], function () {
             }
         },
         select: function (value, obj) {
-            if (value == null || value.length == 0) {
+            if (value == null || value.length == 0 || value == '-1') {
                 return '请选择' + $(obj).attr("placeholder");
             }
         },

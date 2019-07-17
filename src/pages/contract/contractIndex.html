@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/cache.js"></script>
+		<script type="text/javascript" src="../../js/pager.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card-body">
+				<form class="layui-form layui-form2 layui-search-form padding-t-10" autocomplete="off">
+					<div class="layui-row">
+						<div class="layui-form-item layui-col-md4 margin-b-20">
+							<label class="layui-form-label">合同类型</label>
+							<div class="layui-input-block">
+								<select id="Type">
+									<option></option>
+									<option value="1">收款合同</option>
+									<option value="2">付款合同</option>
+									<option value="3">事务合同</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md3 margin-b-20">
+							<label class="layui-form-label">合同编号</label>
+							<div class="layui-input-block">
+								<input type="text" id="No" placeholder="合同编号" class="layui-input" />
+							</div>
+						</div>
+						<div class="layui-form-item layui-col-md2 margin-b-20">
+							<input type="button" class="layui-btn layui-btn-normal" id="btnSearch" value="搜索" />
+						</div>
+					</div>
+				</form>
+				<table class="layui-table" id="lst" lay-filter="lst"></table>
+				<script type="text/html" id="bar">
+					<a class="layui-btn layui-btn-xs" lay-event="info" >查看</a>
+					<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="" >编辑</a>
+					<!-- 有关联数据时 不能删除 -->
+					<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="" >删除</a>
+				</script>
+				<script type="text/html" id="toolbar">
+					<button class="layui-btn  layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i> 添加</button>
+				</script>
+			</div>
+		</div>
+		<script>
+			var type_arr = {1:'收款合同',2:'付款合同',3:'事务合同'}
+			var layer_linePop;
+			var cols = [[
+				{type:'numbers',title:'序号'},
+				{field:'type',title:'合同类型'},
+				{field:'no',title:'合同编号'},
+				{field:'title',title:'合同标题'},
+				{field:'date',title:'合同有效期'},
+				{field:'amount',title:'合同总金额'},
+				{field:'relationNo',title:'请款单号'},
+				{field:'p_num',title:'付款次数'},
+				{toolbar:'#bar',title:'操作',fixed:'right',minWidth:'160'}
+			]];
+			
+			layui.use(['table'], function() {
+				var table = layui.table;
+				//关闭弹窗
+				$(".closePop").click(function(){
+					layer.closeAll()
+				})
+				var search = function() {
+					var	Type = $("#Type").val();
+					var	No = $("#No").val();
+					return {"search":JSON.stringify({Type:Type,No:No})};
+				}
+				var parseData = function (items){
+					for(var i = 0;i < items.length;i++){
+						var item = items[i];
+						item.date = item.startTime.FormatDate() + ' - ' + item.endTime.FormatDate();
+						if(item.payNum == 1){
+							item.p_num = '单次付款';
+						} else {
+							var payItems = JSON.parse(item.payItems);
+							item.p_num = payItems.length;
+						}
+						item.type = type_arr[item.type];
+					}
+					return items;
+				}
+				
+				lstPager = Pager2(
+					table,
+					'合同列表',
+					'lst',
+					'toolbar',
+					cols,
+					'gc/Contract/Get',
+					search,
+					parseData, //如果在显示之前需要对数据进行整理需要实现，否则传null
+					null, //有选择行才能有的操作，实现该方法,否则传null
+					null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+					null,
+					'full-180'
+				);
+				table.on('toolbar(lst)',function(data){
+					if(data.event == 'add'){
+						window.location.href = 'contractEdit.html';
+					}
+				});
+				
+				table.on('tool(lst)',function(obj){
+					var data = obj.data;
+					if(obj.event == 'info'){
+						window.location.href = 'contractInfo.html?id='+data.id;
+					} else if(obj.event == 'edit'){
+						window.location.href = 'contractEdit.html?id='+data.id;
+					}
+				});
+			});
+			$("#btnSearch").click(function(){				 
+				lstPager.search();				 
+			});
+			function closePop(){
+				layer.close(layer_linePop);
+			}
+		</script>
+	</body>
+</html>

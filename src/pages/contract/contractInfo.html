@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<style type="text/css">
+			#type2_box .t2 span {display: none;}
+		</style>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card-body bgwhite">
+				<div class="layui-tab">
+					<ul class="layui-tab-title">
+						<li class="layui-this">基本信息</li>
+						<li>合同正文</li>
+						<li>付款记录</li>
+						<button class="layui-btn layui-btn fr margin-l-10 back_history">返回</button>
+					</ul>
+					<div class="layui-tab-content">
+						<span class="process_state_img"><img src='../../img/process_s2.png' /></span>
+						<div class="layui-tab-item layui-show">
+							<form class="layui-form layui-form2 layui-form-info">
+								<div class="layui-row">
+									<div class="form-title">合同属性：</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">合同类型：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">收款合同</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">合同编号：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">342342343234242</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">合同标题：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">XX开发合同</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">合同有效期：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">2019-01-01~2019-10-01</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">合同总金额：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">1000000</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">金额大写：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">壹佰万整</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">请款单号：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">2412423434</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">付款次数：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">多次付款</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md12" id="pay_table_item" >
+										<label class="layui-form-label">付款次数：</label>
+										<div class="layui-input-block">
+											<table class="layui-table">
+												<thead>
+													<tr>
+														<th>款项名称</th>
+														<th>比例</th>
+														<th>金额</th>
+														<th>付款日期</th>
+														<th>备注</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>首款</td>
+														<td>30%</td>
+														<td>300000</td>
+														<td>2019-05-01</td>
+														<td>首次验收通过付款</td>
+													</tr>
+													<tr>
+														<td>中期款</td>
+														<td>60%</td>
+														<td>600000</td>
+														<td>2019-09-01</td>
+														<td>项目验收通过付款</td>
+													</tr>
+													<tr>
+														<td>中期款</td>
+														<td>10%</td>
+														<td>100000</td>
+														<td>2019-10-01</td>
+														<td>项目正式交付付款</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="form-title">甲方乙方：</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">甲方：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">财务公司</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">乙方：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">建筑公司</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">地址：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">成都高新天府大道9999号</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">地址：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">成都高新天府大道9999号</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">联系人：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">张三</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">联系人：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">李四</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">电话：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">028-111111111</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">电话：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">028-111111111</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">签字人：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">张三</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">签字人：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">李四</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">签字日期：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">2019-01-01</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">签字日期：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">2019-01-01</div>
+										</div>
+									</div>
+									<div class="form-title">收款方银行：</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">开户银行：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">建设银行</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">银行名称：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">建设银行高新第九支行</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">银行账户：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">1235235234423234</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6">
+										<label class="layui-form-label">银行预留电话：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">15333333333</div>
+										</div>
+									</div>
+									<div class="form-title">
+										发票信息： 
+									</div>
+									<div class="layui-row" id="invoice_box" style="display:none">
+										<div class="layui-form-item layui-col-md6">
+											<label class="layui-form-label">开票类型：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">企业</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6">
+											<label class="layui-form-label">发票抬头：</label>
+											<div class="layui-input-block">
+												<div class="layui-form-mid">建筑公司</div>
+											</div>
+										</div>
+										<div class="layui-row" id="type2_box" style="display: none;">
+											<div class="layui-form-item layui-col-md6">
+												<label class="layui-form-label">发票类型：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">增值税专用发票</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 t1">
+												<label class="layui-form-label">税务登记证号：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">53452343123131</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 t2">
+												<label class="layui-form-label">基本户银行：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">建设银行高新第九支行</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 t2">
+												<label class="layui-form-label">基本户银行账号：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">67234234234234</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 t2">
+												<label class="layui-form-label">注册固定电话：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">028-555555</div>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 t2">
+												<label class="layui-form-label">注册场所地址：</label>
+												<div class="layui-input-block">
+													<div class="layui-form-mid">成都高新天府大道9999号</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md12">
+										<label class="layui-form-label">附件：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid"></div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="layui-tab-item">
+							<div class="edit_content">
+								经济观察网 记者 任晓宁7月6日一早，微信新推出的停机断网充话费功能受到热议。据了解，这是7月5日，微信支付与移动、电信、联通三大运营商共同合作的功能，通过微信支付绿色缴费通道，用户在欠费断网的情况下，也能缴纳话费。
+
+								据介绍，在用户因欠费导致手机停机后，运营商会给用户发一条短信，并提供一个待遇绿色通道Web页面的链接，引导用户到“绿色缴费通道”里面通过微信支付缴费。
+
+								目前“绿色缴费通道”在广东移动、广东电信、湖南电信、青海移动等多地上线，覆盖100多个城市。
+
+								在今天用户热议的评论中，经济观察网记者看到，不少用户提到，支付宝有一个自动充功能，一次操作，永不停机，比微信这个功能还省事。
+
+								记者登陆支付宝，在充值中心找到自动充页面。目前自动充包括固定日期自动充与余额不足自动充。固定充可以设置每月某日固定充值。
+
+								余额充可以设置话费余额不足时，自动充值。但余额不足自动充的用户也有限制，中国移动仅支持广东省用户，中国联通支持全国4G用户，中国电信支持除西藏外全国用户。
+							</div>
+						</div>
+						<div class="layui-tab-item">
+							<table class="layui-table">
+								<thead>
+									<tr>
+										<th>款项名称</th>
+										<th>金额</th>
+										<th>付款日期</th>
+										<th>备注</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>首款</td>
+										<td>300000</td>
+										<td>2019-05-01</td>
+										<td>首次验收通过付款</td>
+									</tr>
+									<tr>
+										<td>中期款</td>
+										<td>600000</td>
+										<td>2019-09-01</td>
+										<td>项目验收通过付款</td>
+									</tr>
+									<tr>
+										<td>中期款</td>
+										<td>100000</td>
+										<td>2019-10-01</td>
+										<td>项目正式交付付款</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="linePop linePop1" >
+			<form class="layui-form layui-search-form">
+				<div class="layui-row margin-t-10">
+					<div class="search_item">
+						<span>单号</span><input type="text" name="title" placeholder="请输入单号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="search_item">
+						<span>费用名称</span><input type="text" name="title" placeholder="请输入费用名称" autocomplete="off" class="layui-input">
+					</div>
+					<div class="search_item">
+						<span>时间</span><input type="text" name="title" placeholder="请选择日期" autocomplete="off" class="layui-input" id="date1">
+					</div>
+					<div class="search_item">
+						<button class="layui-btn layui-btn-normal">搜索</button>
+					</div>	
+				</div>
+			</form>
+			<table id="apply_lst" lay-filter="apply_lst"></table>
+		</div>
+		<script>
+			var table;
+			layui.use(['form','laydate','table','layedit','element'], function() {
+				var form = layui.form,
+					laydate = layui.laydate,
+					layedit = layui.layedit,
+					element = layui.element;
+				table = layui.table;
+				layedit.build('content');
+				lay('.date').each(function(){
+					laydate.render({
+						elem:this
+					});
+				});
+				laydate.render({
+					elem:'#date1',
+					range:true
+				});
+				form.on('radio(pay_num)',function(obj){
+					if(obj.value == '1'){
+						$("#pay_table_item").hide();
+					} else {
+						$("#pay_table_item").show();
+					}
+				});
+				form.on('radio(has_invoice)',function(obj){
+					if(obj.value == '1'){
+						$("#invoice_box").show();
+					} else {
+						$("#invoice_box").hide();
+					}
+				});
+				form.on('select(invoice_type)',function(obj){
+					if(obj.value == '2'){
+						$("#type2_box").show();
+					} else {
+						$("#type2_box").hide();
+					}
+				});
+				form.on('select(invoice_mold)',function(obj){//发票类型
+					// 发票类型 企业增值税普通发票 
+						//税务登记证号 必填
+					// 发票类型 增值税专用发票
+						//全部必填
+					// 发票类型组织（非企业）增值税普通发票
+						//都非必填
+					switch(obj.value){
+						case '1':
+							$('#type2_box .t2 span').hide();
+							$('#type2_box .t1 span').show();
+							break;
+						case '2':
+							$('#type2_box .t2 span').show();
+							$('#type2_box .t1 span').show();
+							break;
+						case '3':
+							$('#type2_box .t2 span').hide();
+							$('#type2_box .t1 span').hide();
+							break;
+					}
+				});
+			});
+			function show_search(){
+				layer_linePop = layer.open({
+					type: 1,
+					title:'选择申请单',
+					String: false,
+					closeBtn: 1,
+					btn:['确认','取消'],
+					skin: 'layui-layer-rim',
+					area: ['850px','450px'],
+					content: $('.linePop1'),
+					success:function(){
+						table.render({
+							elem:'#apply_lst',
+							cols:[[
+								{type:'radio','title':'序号'},
+								{field:'no','title':'单号'},
+								{field:'bm','title':'申请部门'},
+								{field:'sqr','title':'申请人'},
+								{field:'title','title':'费用名称'},
+								{field:'date1','title':'申请日期'},
+								{field:'date2','title':'审核日期'},
+							]],
+							data:[
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+							],
+							height:'full-240',
+							page:true
+						});
+					}
+				});
+			}
+			function closePop(){
+				layer.close(layer_linePop);
+			}
+			$('.layui-tab-title').scrollFixed();
+		</script>
+	</body>
+</html>
+

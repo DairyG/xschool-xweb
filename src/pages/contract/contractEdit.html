@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/verify.js"></script>
+		<script type="text/javascript" src="../../js/cache.js"></script>
+		<style type="text/css">
+			#type2_box .t2 span {display: none;}
+		</style>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card-body bgwhite">
+				<form class="layui-form" lay-filter="form">
+					<div class="layui-tab">
+						<ul class="layui-tab-title">
+							<li class="layui-this">基本信息</li>
+							<li>合同正文</li>
+							<a class="layui-btn layui-btn fr margin-l-10 back_history">返回</a>
+							<button class="layui-btn layui-btn layui-btn-danger fr" lay-submit lay-filter="save">确认</button>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<div class="layui-form layui-form2">
+									<div class="layui-row">
+										<div class="form-title">合同属性：</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>合同类型</label>
+											<div class="layui-input-block">
+												<select name="Type" placeholder="合同类型" lay-verify="select">
+													<option value="-1">请选择合同类型</option>
+													<option value="1">收款合同</option>
+													<option value="2">付款合同</option>
+													<option value="3">事务合同</option>
+												</select>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>合同编号</label>
+											<div class="layui-input-block">
+												<input type="text" name="No" lay-verify="name" placeholder="合同编号"  class="layui-input" />
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>合同标题</label>
+											<div class="layui-input-block">
+												<input type="text" name="Title" lay-verify="name" placeholder="合同标题"  class="layui-input" />
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>合同有效期</label>
+											<div class="layui-input-block">
+												<input type="text" id="validDate" lay-verify="select" placeholder="合同有效期" readonly  class="layui-input" />
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>合同总金额</label>
+											<div class="layui-input-block">
+												<input type="text" name="Amount" lay-verify="name" placeholder="合同总金额"  class="layui-input" onchange="moneyStr(this)"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>金额大写</label>
+											<div class="layui-input-block">
+												<input type="text" name="AmountStr" id="AmountStr" readonly  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>请款单号</label>
+											<div class="layui-input-block">
+												<input type="text" class="layui-input" name="RelationNo" readonly onclick="show_search()" placeholder="请款单号"  lay-verify="name"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>付款次数</label>
+											<div class="layui-input-block">
+												<input type="radio" name="PayNum" title="单次付款" value="1" lay-filter="pay_num" checked>
+												<input type="radio" name="PayNum" title="多次付款" value="2" lay-filter="pay_num">
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12 margin-b-20" id="pay_table_item" style="display:none">
+											<label class="layui-form-label"><span class="text-red"> *</span>付款次数</label>
+											<div class="layui-input-block">
+												<table class="layui-table">
+													<thead>
+														<tr>
+															<th width="60">序号</th>
+															<th>款项名称</th>
+															<th>比例(%)</th>
+															<th>金额</th>
+															<th>付款日期</th>
+															<th>备注</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>
+																<span class="table-btn-jia" onclick="payItems(this,'add')">+</span>
+																<span class="table-btn-jian" onclick="payItems(this,'del')">-</span>
+															</td>
+															<td><input type="text" class="layui-input" data-name="name" onchange="save_ipt(this)"></td>
+															<td><input type="text" class="layui-input" data-name="scale" onchange="save_ipt(this)"></td>
+															<td><input type="text" class="layui-input" data-name="money" onchange="save_ipt(this)"></td>
+															<td><input type="text" class="layui-input date" readonly data-name="time"></td>
+															<td><input type="text" class="layui-input" readonly onclick="layui_prompt(this,prompt)" data-name="tips"></td>
+														</tr>
+														<tr>
+															<td></td>
+															<td>合计</td>
+															<td id="total_scale">0</td>
+															<td id="total_money">0</td>
+															<td></td>
+															<td></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div class="form-title">甲方乙方：</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>甲方</label>
+											<div class="layui-input-block">
+												<input type="text" name="JiaName" lay-verify="name" placeholder="甲方名称"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>乙方</label>
+											<div class="layui-input-block">
+												<input type="text" name="YiName" lay-verify="name" placeholder="乙方名称"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>地址</label>
+											<div class="layui-input-block">
+												<input type="text" name="JiaAddr" lay-verify="name" placeholder="甲方地址"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>地址</label>
+											<div class="layui-input-block">
+												<input type="text" name="YiAddr" lay-verify="name" placeholder="乙方地址"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>联系人</label>
+											<div class="layui-input-block">
+												<input type="text" name="JiaContact" lay-verify="name" placeholder="甲方联系人"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>联系人</label>
+											<div class="layui-input-block">
+												<input type="text" name="YiContact" lay-verify="name" placeholder="乙方联系人"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>电话</label>
+											<div class="layui-input-block">
+												<input type="text" name="JiaTel" lay-verify="tel2" placeholder="甲方电话"  class="layui-input" maxlength="16"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>电话</label>
+											<div class="layui-input-block">
+												<input type="text" name="YiTel" lay-verify="tel2" placeholder="乙方电话"  class="layui-input" maxlength="16"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>签字人</label>
+											<div class="layui-input-block">
+												<input type="text" name="JiaPerson" lay-verify="name" placeholder="甲方签字人"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>签字人</label>
+											<div class="layui-input-block">
+												<input type="text" name="YiPerson" lay-verify="name" placeholder="乙方签字人"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>签字日期</label>
+											<div class="layui-input-block">
+												<input type="text" name="JiaSignDate" lay-verify="name" placeholder="请选择甲方签字日期"  class="layui-input date"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label"><span class="text-red"> *</span>签字日期</label>
+											<div class="layui-input-block">
+												<input type="text" name="YiSignDate" lay-verify="name" placeholder="请选择乙方签字日期"  class="layui-input date"/>
+											</div>
+										</div>
+										<div class="form-title">收款方银行：</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label">开户银行</label>
+											<div class="layui-input-block">
+												<input type="text" name="RecBank" placeholder="开户银行"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label">银行名称</label>
+											<div class="layui-input-block">
+												<input type="text" name="RecBankName" placeholder="银行名称"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label">银行账户</label>
+											<div class="layui-input-block">
+												<input type="text" name="RecBankNo" placeholder="银行账户"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md6 margin-b-20">
+											<label class="layui-form-label">银行预留电话</label>
+											<div class="layui-input-block">
+												<input type="text" name="RecBankTel" placeholder="银行预留电话"  class="layui-input"/>
+											</div>
+										</div>
+										<div class="form-title">
+											发票信息： 
+											<input type="radio" name="Invoice" title="开票" value="1" lay-filter="has_invoice" />
+											<input type="radio" name="Invoice" title="不开票" value="0" lay-filter="has_invoice" checked/>
+										</div>
+										<div class="layui-row" id="invoice_box" style="display:none">
+											<div class="layui-form-item layui-col-md6 margin-b-20">
+												<label class="layui-form-label"><span class="text-red">*</span>开票类型</label>
+												<div class="layui-input-block">
+													<select name="InvoiceToType" id="InvoiceToType" lay-filter='invoice_type'>
+														<option value="1">个人</option>
+														<option value="2">企业</option>
+													</select>
+												</div>
+											</div>
+											<div class="layui-form-item layui-col-md6 margin-b-20">
+												<label class="layui-form-label"><span class="text-red">*</span>发票抬头</label>
+												<div class="layui-input-block">
+													<input type="text" data-lay-verify="name" name="InvoiceTitle" placeholder="发票抬头"  class="layui-input"/>
+												</div>
+											</div>
+											<div class="layui-row" id="type2_box" style="display: none;">
+												<div class="layui-form-item layui-col-md6 margin-b-20">
+													<label class="layui-form-label"><span class="text-red">*</span>发票类型</label>
+													<div class="layui-input-block">
+														<select name="InvoiceType" id="InvoiceType" lay-filter="invoice_mold">
+															<option value="1">企业增值税普通发票</option>
+															<option value="2">增值税专用发票</option>
+															<option value="3">组织（非企业）增值税普通发票</option>
+														</select>
+													</div>
+												</div>
+												<div class="layui-form-item layui-col-md6 margin-b-20 t1">
+													<label class="layui-form-label"><span class="text-red">*</span>税务登记证号</label>
+													<div class="layui-input-block">
+														<input type="text" name="InvoiceTaxNo" data-lay-verify="name" placeholder="税务登记证号"  class="layui-input"/>
+													</div>
+												</div>
+												<div class="layui-form-item layui-col-md6 margin-b-20 t2">
+													<label class="layui-form-label"><span class="text-red">*</span>基本户银行</label>
+													<div class="layui-input-block">
+														<input type="text" name="InvoiceBank" data-lay-verify="name" placeholder="基本户银行"  class="layui-input"/>
+													</div>
+												</div>
+												<div class="layui-form-item layui-col-md6 margin-b-20 t2">
+													<label class="layui-form-label"><span class="text-red">*</span>基本户银行账号</label>
+													<div class="layui-input-block">
+														<input type="text" name="InvoiceBankNo" data-lay-verify="name" placeholder="基本银行账号"  class="layui-input"/>
+													</div>
+												</div>
+												<div class="layui-form-item layui-col-md6 margin-b-20 t2">
+													<label class="layui-form-label"><span class="text-red">*</span>注册固定电话</label>
+													<div class="layui-input-block">
+														<input type="text" name="InvoiceTel" data-lay-verify="name" placeholder="注册固定电话"  class="layui-input"/>
+													</div>
+												</div>
+												<div class="layui-form-item layui-col-md6 margin-b-20 t2">
+													<label class="layui-form-label"><span class="text-red">*</span>注册场所地址</label>
+													<div class="layui-input-block">
+														<input type="text" name="InvoiceAddr" data-lay-verify="name" placeholder="注册场所地址"  class="layui-input"/>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="layui-form-item layui-col-md12">
+											<label class="layui-form-label">附件</label>
+											<div class="layui-input-block">
+												<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i class="layui-icon"></i>上传附件</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-tab-item">
+								<textarea name="Content" id="content"></textarea>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="linePop linePop1" >
+			<form class="layui-form layui-search-form">
+				<div class="layui-row margin-t-10">
+					<div class="search_item">
+						<span>单号</span><input type="text" name="title" placeholder="单号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="search_item">
+						<span>费用名称</span><input type="text" name="title" placeholder="费用名称" autocomplete="off" class="layui-input">
+					</div>
+					<div class="search_item">
+						<span>时间</span><input type="text" name="title" placeholder="请选择日期" autocomplete="off" class="layui-input date">
+					</div>
+					<div class="search_item">
+						<button class="layui-btn layui-btn-normal">搜索</button>
+					</div>	
+				</div>
+			</form>
+			<table id="apply_lst" lay-filter="apply_lst"></table>
+		</div>
+		<script type="text/html" id="payItem_html">
+			<tr>
+				<td>
+					<span class="table-btn-jia" onclick="payItems(this,'add')">+</span>
+					<span class="table-btn-jian" onclick="payItems(this,'del')">-</span>
+				</td>
+				<td><input type="text" class="layui-input" data-name="name" onchange="save_ipt(this)"></td>
+				<td><input type="text" class="layui-input" data-name="scale" onchange="save_ipt(this)"></td>
+				<td><input type="text" class="layui-input" data-name="money" onchange="save_ipt(this)"></td>
+				<td><input type="text" class="layui-input date" readonly data-name="time"></td>
+				<td><input type="text" class="layui-input" readonly onclick="layui_prompt(this,prompt)" data-name="tips"></td>
+			</tr>
+		</script>
+		<script>
+			var Employee = globCache.getEmployee();
+			var id = GetPara('id');
+			if(id > 0){
+				Serv.Post('gc/Contract/GetSingle',{id:id},function(res){
+					console.log();
+				},false);
+			}
+			/* var data = {
+				Amount: 1000000.00,
+				AmountStr: '壹佰万元整',
+				Content: '<p style="text-align: justify;">日前苹果调整了在印度的iPhone手机销售政策，已停止在印度市场销售iPhone SE、iPhone 6、iPhone 6 Plus和iPhone 6s Plus四款机型，新的入门级苹果手机将是iPhone 6s。</p><p style="text-align: justify;">随着印度市场iPhone入门机的调整，iPhone 6这一代手机正式退出历史舞台，早在几个月前，全球主要市场上iPhone 6手机就不再开卖了，国内的入门机型很早就是iPhone 6s系列了。</p><p style="text-align: justify;">iPhone 6这一代手机相比之前的手机最大变化就是屏幕变大，虽然比安卓机进入大屏时代晚了几年，但是用户的购买热情还是非常高的，导致当年苹果iPhone销量大涨，特别是亚洲市场上，大中华区iPhone销量iPhone销量环比增长90%，同比增长46%，首发季度就出货7447万部iPhone。</p><p style="text-align: justify;">iPhone 6尽管是5年前的手机了，不过这几年苹果把iPhone当作国内的低端机来卖，iPhone 6宝刀未老继续发挥余热，迄今累计销量至少2.5亿部了，这是有史以来iPhone产品中出货量最高的系列。</p><p style="text-align: justify;">iPhone 6系列手机发布于2014年9月10日，这是苹果首款大屏手机，iPhone 6是4.7寸分辨率为1334*750，iPhone 6 Plus是5.5寸，分辨率1920x1080，搭配的是A8处理器。</p><p style="text-align: justify;">在国内市场上，2014年10月10日苹果官网正式预售iPhone 6系列手机，其中iPhone 6售价5288元起，iPhone 6 Plus售6088元起——现在来看这个价格实在是太便宜了有没有。</p>',
+				EndTime: '2019-07-26',
+				Invoice: 1,
+				InvoiceAddr: '成都高新区天府大道',
+				InvoiceBank: '建设银行',
+				InvoiceBankNo: '63333333333333333333333',
+				InvoiceTaxNo: 'hk12235234121232',
+				InvoiceTel: '028-32343242',
+				InvoiceTitle: '建筑公司',
+				InvoiceToType: 2,
+				InvoiceType: 1,
+				JiaAddr: '成都高新区天府大道',
+				JiaContact: '张三',
+				JiaName: '建筑公司',
+				JiaPerson: '张三',
+				JiaSignDate: '2019-07-15',
+				JiaTel: '15322222222',
+				No: 'JT134324324',
+				PayItems:[{name: "首款", scale: 30, money: 300000, time: "2019-07-16", tips: "备注一"},{name: "尾款", scale: 70, money: 700000, time: "2019-07-17", tips: "备注二"}],
+				PayNum: 2,
+				RecBank: '建设银行',
+				RecBankName: '建设银行高新第九支行',
+				RecBankNo: '6332222222222223444',
+				RecBankTel: '15323232222',
+				RelationNo: '1312313',
+				StartTime: '2019-07-17',
+				Title: '建筑合同',
+				Type: 3,
+				YiAddr: '成都高新区天府大道',
+				YiContact: '李四',
+				YiName: '爱物公司',
+				YiPerson: '李四',
+				YiSignDate: '2019-07-15',
+				YiTel: '15322222222',
+				file: ''
+			} */
+			var PayItems = [];
+			var table;
+			layui.use(['form','laydate','table','layedit','element'], function() {
+				var form = layui.form,
+					laydate = layui.laydate,
+					layedit = layui.layedit,
+					element = layui.element;
+				table = layui.table;
+				layedit.build('content');
+				window.renderDate = function(){
+					lay('.date').each(function(){
+						laydate.render({
+							elem:this,
+							done: function(value, date, endDate){
+								var index = $(this.elem).closest('tr').index();
+								PayItems[index].time = value;
+							}
+						});
+					});
+				};
+				renderDate();
+				laydate.render({
+					elem:'#validDate',
+					range:true
+				});
+				form.on('radio(pay_num)',function(obj){
+					if(obj.value == '1'){
+						$("#pay_table_item").hide();
+					} else {
+						if(PayItems.length == 0){
+							PayItems.push({name:'',scale:'',money:'',time:'',tips:''});
+						}
+						$("#pay_table_item").show();
+					}
+				});
+				/* form.val('form',data); */
+				
+				function set_verify(){
+					// 发票类型 企业增值税普通发票 
+						//税务登记证号 必填
+					// 发票类型 增值税专用发票
+						//全部必填
+					// 发票类型组织（非企业）增值税普通发票
+						//都非必填
+					var t1 = $('#InvoiceType').val();
+					var t2 = $('#InvoiceToType').val();
+					$("#invoice_box input").removeAttr('lay-verify');
+					if (t2 == 2){//企业
+						switch(t1){
+							case '1':
+								$('#type2_box .t2 span').hide();
+								$('#type2_box .t1 span').show();
+								$('#type2_box .t1 input').each(function(){
+									var verify = $(this).attr('data-lay-verify');
+									$(this).attr('lay-verify',verify);
+								});
+								break;
+							case '2':
+								$('#type2_box .t2 span').show();
+								$('#type2_box .t1 span').show();
+								$('#type2_box input').each(function(){
+									var verify = $(this).attr('data-lay-verify');
+									$(this).attr('lay-verify',verify);
+								});
+								break;
+							case '3':
+								$('#type2_box .t2 span').hide();
+								$('#type2_box .t1 span').hide();
+								break;
+						}
+					} 
+					var verify = $('input[name="InvoiceTitle"]').attr('data-lay-verify');
+					$('input[name="InvoiceTitle"]').attr('lay-verify',verify);
+				}
+				form.on('radio(has_invoice)',function(obj){
+					if(obj.value == '1'){
+						$("#invoice_box").show();
+						$('input[name="InvoiceTitle"]').attr('lay-verify','name');
+						set_verify();
+					} else {
+						$("#invoice_box input").removeAttr('lay-verify');
+						$("#invoice_box").hide();
+					}
+				});
+				form.on('select(invoice_type)',function(obj){
+					if(obj.value == '2'){
+						$("#type2_box").show();
+					} else {
+						$("#type2_box").hide();
+					}
+					set_verify();
+				});
+				form.on('select(invoice_mold)',function(obj){//发票类型
+					set_verify();
+				});
+				form.on('submit(save)',function(data){
+					layer_load();
+					var field = data.field;
+					var validDate = $('#validDate').val();
+					field.StartTime = validDate.substr(0,10);
+					field.EndTime = validDate.substr(-10);
+					field.PayNum = parseInt(field.PayNum);
+					field.PayItems = PayItems;
+					if(field.PayNum == 2){//多次付款时
+						var items_total = 0;
+						for(var i = 0;i < field.PayItems.length; i++){
+							var item = field.PayItems[i];
+							var td = $('#pay_table_item tr').eq(i+1);
+							if(item.name == ""){
+								var ipt = td.find('input[data-name="name"]');
+								layer.msg('请填写费用项名称！');
+								ipt.focus();
+								return false;
+							}
+							if(item.money == ""){
+								var ipt = td.find('input[data-name="money"]');
+								layer.msg('请填写金额！');
+								ipt.focus();
+								return false;
+							}
+							items_total += field.PayItems[i].money;
+						}
+						
+						if(items_total != parseFloat(field.Amount)){
+							layer.msg('多次付款时，每次付款总额必须等于合同总金额！');
+							return false;
+						}
+					}
+					field.PayItems = JSON.stringify(field.PayItems);
+					field.CompanyId = Employee.companyId;
+					field.DptId = Employee.dptId;
+					field.EmployeeId = Employee.id;
+					field.EmployeeName = Employee.employeeName;
+					if(id){
+						field.Id = id;
+					}
+					Serv.Post('gc/Contract/Edit',field,function(res){
+						layer_load_lose();
+						if(res.succeed){
+							var msg = id ? '合同修改成功！' : '合同添加成功,是否继续添加！';
+							layer.confirm(msg, {
+								btn: ['确认','取消'],
+								shade: 0.1
+							}, function(){
+								window.location.reload();
+							}, function(){
+								window.location.href = 'contractIndex.html';
+							});
+						}
+					});
+					return false;
+				});
+			});
+			//付款详情
+			function save_ipt(obj){
+				var field_name = $(obj).attr('data-name');
+				var value = $(obj).val().trim();
+				if(field_name == 'money' || field_name == 'scale'){
+					if(value != "" && isNaN(value)){
+						$(obj).val('');
+						layer.tips('请填写数字！',$(obj));
+						return false;
+					}
+					value = parseFloat(value);
+					$(obj).val(value.toFixed(2));
+					if(field_name == 'money'){
+						var total_money = $('#total_money').html();
+							total_money = parseFloat(total_money);
+						total_money += value;
+						$('#total_money').html(total_money);
+					}
+					if(field_name == 'scale'){
+						var total_scale = $('#total_scale').html();
+							total_scale = parseFloat(total_scale);
+						total_scale += value;
+						$('#total_scale').html(total_scale);
+					}
+				}
+				var index = $(obj).closest('tr').index();
+				PayItems[index][field_name] = value;
+			}
+			
+			function prompt(obj,val){
+				var index = $(obj).closest('tr').index();
+				PayItems[index].tips = val;
+			}
+			
+			function show_search(){
+				layer_linePop = layer.open({
+					type: 1,
+					title:'选择申请单',
+					String: false,
+					closeBtn: 1,
+					btn:['确认','取消'],
+					skin: 'layui-layer-rim',
+					area: ['850px','450px'],
+					content: $('.linePop1'),
+					success:function(){
+						table.render({
+							elem:'#apply_lst',
+							cols:[[
+								{type:'radio','title':'序号'},
+								{field:'no','title':'单号'},
+								{field:'bm','title':'申请部门'},
+								{field:'sqr','title':'申请人'},
+								{field:'title','title':'费用名称'},
+								{field:'date1','title':'申请日期'},
+								{field:'date2','title':'审核日期'},
+							]],
+							data:[
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+							],
+							height:'full-240',
+							page:true
+						});
+					},
+					yes:function(index){
+						var data = table.checkStatus('apply_lst').data;
+						if(data.length > 0){
+							$('input[name="RelationNo"]').val(data[0].no);
+						}
+						layer.close(index);
+					}
+				});
+			}
+			
+			function moneyStr(obj){
+				var value = $(obj).val();
+				if(isNaN(value)){
+					$(obj).val('');
+					$('#AmountStr').val('');
+					layer.msg('请输入数字！');
+					return false;
+				}
+				value = parseFloat(value);
+				value =value.toFixed(2);
+				$(obj).val(value);
+				var str = convertCurrency(value);
+				$('#AmountStr').val(str);
+			}
+			function payItems(obj,type){
+				var index = $(obj).closest('tr').index();
+					index = index + 1;
+				if(type == 'add'){
+					$(obj).parents('tr').after($('#payItem_html').html());
+					PayItems.splice(index,0,{name:'',scale:'',money:'',time:'',tips:''});
+				} else {
+					if($(obj).parents('tbody').find('tr').length > 2){
+						$(obj).parents('tr').remove();
+						PayItems.splice(index,1);
+					}
+				}
+				renderDate();
+			}
+			function closePop(){
+				layer.close(layer_linePop);
+			}
+			$('.layui-tab-title').scrollFixed();
+		</script>
+	</body>
+</html>
+
