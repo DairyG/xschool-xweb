@@ -629,10 +629,15 @@ function formart_sels(data, businessType) {
                 businessType: businessType,
                 dataType: dataType_arr[dataType],
                 companyId: c[i].id,
+				companyName:c[i].name,
                 depId: 0,
+				dpeName:'',
                 userId: 0,
+				userName:'',
                 jobDepId: 0,
-                jobId: 0
+				jobDepNmae:'',
+                jobId: 0,
+				jobName:'',
             }
             res.push(data);
         }
@@ -646,7 +651,12 @@ function formart_sels(data, businessType) {
                 depId: d[i].id,
                 userId: 0,
                 jobDepId: 0,
-                jobId: 0
+                jobId: 0,
+				companyName:'',
+				dpeName:d[i].name,
+				userName:'',
+				jobDepNmae:'',
+				jobName:'',
             }
             res.push(data);
         }
@@ -660,7 +670,12 @@ function formart_sels(data, businessType) {
                 depId: 0,
                 userId: u[i].id,
                 jobDepId: 0,
-                jobId: 0
+                jobId: 0,
+				companyName:'',
+				dpeName:'',
+				userName:u[i].name,
+				jobDepNmae:'',
+				jobName:'',
             }
             res.push(data);
         }
@@ -674,14 +689,19 @@ function formart_sels(data, businessType) {
                 depId: 0,
                 userId: 0,
                 jobDepId: 0,
-                jobId: p[i].id
+                jobId: p[i].id,
+				companyName:'',
+				dpeName:'',
+				userName:'',
+				jobDepNmae:'',
+				jobName:p[i].name,
             }
             res.push(data);
         }
     }
     if (dp != '') {
         for (var i = 0; i < dp.length; i++) {
-            var r = dp[i].id.split('|');
+            var r = dp[i].id.split('_');
             data = {
                 businessType: businessType,
                 dataType: dataType_arr[dataType],
@@ -689,7 +709,12 @@ function formart_sels(data, businessType) {
                 depId: 0,
                 userId: 0,
                 jobDepId: r[0],
-                jobId: r[1]
+                jobId: r[1],
+				companyName:'',
+				dpeName:'',
+				userName:'',
+				jobDepNmae:dp[i].dpt_name,
+				jobName:dp[i].name
             }
             res.push(data);
         }
