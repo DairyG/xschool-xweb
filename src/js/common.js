@@ -828,7 +828,37 @@ function GetTimeNow() {
     var now = year + '-' + getNow(month) + "-" + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ":" + getNow(s);
     return now;
 }
-
+//获取本月
+function GetMonthNow() {
+    var myDate = new Date();
+    //获取当前年
+    var year = myDate.getFullYear();
+    //获取当前月
+    var month = myDate.getMonth() + 1;
+    var now = year + '-' + getNow(month);
+    return now;
+}
+//获取今年
+function GetYearNow() {
+    var myDate = new Date();
+    //获取当前年
+    var year = myDate.getFullYear();
+    var now = year;
+    return now;
+}
 function getNow(s) {
     return s < 10 ? '0' + s : s;
+}
+//根据指定日期获取上个月
+function GetLastMonth(dt)
+{
+    var arr = dt.split('-');
+    var year = parseInt(arr[0]);
+    var month = parseInt(arr[1]) - 1;
+    if(month <= 0){
+        year = year - 1;
+        month = 12;
+    }
+    var res = getNow(year) + "-" + getNow(month);
+    return res;
 }

@@ -86,8 +86,7 @@
 					<div class="layui-form-item layui-col-md6 margin-b-20">
 						<label class="layui-form-label">导入</label>
 						<div class="layui-input-block">
-							<button
-								class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">{{labels.import_str}}</button>
+							<button	class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" id="btnImport">{{labels.import_str}}</button>
 						</div>
 					</div>
 					<div class="layui-form-item layui-col-md12 margin-b-20">
@@ -157,6 +156,7 @@
 			{ l1: '半年完成工作', l2: '半年工作总结', l3: '下半年工作计划', l4: '需协调和帮助', l5: '备注', import_str: '导入上半年计划' },
 			{ l1: '本年完成工作', l2: '年度工作总结', l3: '明年工作计划', l4: '需协调和帮助', l5: '备注', import_str: '导入上一年计划' },
 		];
+		var employ = window.globCache.getEmployee();
 		var vm = new Vue({
 			el: '#dom',
 			data: {
@@ -177,8 +177,7 @@
 				if (sid > 0) {
 					$("input[name='id']").val(sid);
 				}
-
-				var employ = window.globCache.getEmployee();
+				//var employ = window.globCache.getEmployee();
 				//console.log(employ);
 				if (employ) {
 					$("input[name='companyId']").val(employ.companyId);
@@ -229,14 +228,14 @@
 						case 0:
 							laydate.render({
 								elem: '#date',
-								value: '2019-05-01'
+								value: GetTimeNow().FormatDate(false)
 							});
 							break;
 						case 1:
 						case 2:
 							laydate.render({
 								elem: '#date',
-								value: '2019-05',
+								value: GetMonthNow(),
 								type: 'month'
 							});
 							break;
@@ -245,11 +244,83 @@
 						case 5:
 							laydate.render({
 								elem: '#date',
-								value: '2019',
+								value: GetYearNow(),
 								type: 'year'
 							});
 							break;
 					}
+					$("#btnImport").click(function(){
+						if(that.t == 0){
+							Serv.Post('gc/Schedule/GetByDate',{eid:employ.id,date:$("#date").val()},function(response){
+								if(response){
+									eFinish.txt.html(response.title);
+								}
+								else{
+									eFinish.txt.html("");
+									layer_alert("暂无可导入数据！");
+								}
+							});
+						}
+						else if(that.t == 1)
+						{
+							Serv.Post('gc/Summary/GetByDate',{eid:employ.id,date:$("#date").val(),type:that.t,index:$("select[name='selIndex1']").val()},function(response){
+								if(response){
+									eFinish.txt.html(response.plan);
+								}
+								else{
+									eFinish.txt.html("");
+									layer_alert("暂无可导入数据！");
+								}
+							});
+						}
+						else if(that.t == 2){
+							Serv.Post('gc/Summary/GetByDate',{eid:employ.id,date:GetLastMonth($("#date").val()),type:that.t},function(response){
+								if(response){
+									eFinish.txt.html(response.plan);
+								}
+								else{
+									eFinish.txt.html("");
+									layer_alert("暂无可导入数据！");
+								}
+							});
+						}
+						else if(that.t == 3)
+						{
+							Serv.Post('gc/Summary/GetByDate',{eid:employ.id,date:$("#date").val(),type:that.t,index:$("select[name='selIndex3']").val()},function(response){
+								if(response){
+									eFinish.txt.html(response.plan);
+								}
+								else{
+									eFinish.txt.html("");
+									layer_alert("暂无可导入数据！");
+								}
+							});
+						}
+						else if(that.t == 4)
+						{
+							Serv.Post('gc/Summary/GetByDate',{eid:employ.id,date:$("#date").val(),type:that.t,index:$("select[name='selIndex4']").val()},function(response){
+								if(response){
+									eFinish.txt.html(response.plan);
+								}
+								else{
+									eFinish.txt.html("");
+									layer_alert("暂无可导入数据！");
+								}
+							});
+						}
+						else{
+							Serv.Post('gc/Summary/GetByDate',{eid:employ.id,date:(parseInt($("#date").val()) - 1),type:that.t},function(response){
+								if(response){
+									eFinish.txt.html(response.plan);
+								}
+								else{
+									eFinish.txt.html("");
+									layer_alert("暂无可导入数据！");
+								}
+							});
+						}
+						return false;
+					});
 					if ($("input[name='id']").val() > 0) {
 						var sid = $("input[name='id']").val();
 						Serv.Get('gc/Summary/GetSingle/' + sid, {}, function (response) {
