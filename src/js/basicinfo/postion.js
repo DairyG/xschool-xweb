@@ -9,13 +9,13 @@ var data_col = [[
     { field: 'require', title: '入职要求' },
     { title: '操作', toolbar: '#bar', width: 180 }
 ]];
-
+var employ = window.globCache.getEmployee();
 layui.use(['table', 'element', 'laydate', 'form'], function () {
     var table = layui.table,
         element = layui.element;
 
     var search = function () {
-        return {"companyId":1};
+        return { "companyId": employ.companyId };
     };
     //操作栏的回调函数
     var onTools = function (layEvent, data) {
@@ -38,7 +38,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
             } else if (layEvent === "del") {
                 layer_confirm('确定删除信息吗？', function () {
                     layer_load();
-                    Serv.Get('uc/job/Delete/' + value,null, function (result) {
+                    Serv.Get('uc/job/Delete/' + value, null, function (result) {
                         if (result.code == "00") {
                             layer_alert(result.message, function () {
                                 lstPager.refresh();
@@ -90,8 +90,8 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(formDemo)', function (laydata) {
         layer_load();
         if (laydata.field.Id == "") {
-            laydata.field.Id = 0;
-            laydata.field.CompanyId = 1;
+            laydata.field.id = 0;
+            laydata.field.companyId = employ.companyId;
             //laydata.field.IsSystem = 0;
             //laydata.field.Type = $("input[name='Type_Chinese']").attr('e-value');
             console.log(laydata.field);
@@ -148,15 +148,15 @@ function closePop() {
 
 var model = {
     id: '',
-    companyId : '1',
+    companyId: '1',
     name: '',
-    description : '',
-    require : '' ,
-    index : 0,
+    description: '',
+    require: '',
+    index: 0,
 };
 var vm = new Vue({ el: '#workerinForm', data: model });
 function GetSingle(wId) {
-    Serv.Get('uc/job/Get/'+wId,null, function (response) {
+    Serv.Get('uc/job/Get/' + wId, null, function (response) {
         model.id = response.id;
         model.companyId = response.companyId;
         model.name = response.name;
