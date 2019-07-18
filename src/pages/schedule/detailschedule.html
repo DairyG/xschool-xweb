@@ -140,7 +140,7 @@
         var layer_linePop, table;
         var id = GetPara('id');
         var completes = [];
-
+        var employ = window.globCache.getEmployee();
         var cols = [[
             { type: 'numbers', title: '序号' },
             { field: 'uname', title: '用户名称' },
@@ -157,6 +157,12 @@
         var init = function () {
             Serv.Get('gc/Schedule/GetSingle/' + id, {}, function (response) {
                 if (response) {
+                    if(employ.id != response.employeeId)
+                    {
+                        var p = window.parent.document;
+                        $(p).find(".layui-layer-btn-").hide();
+                    }
+
                     $("#divTitle").html(response.sche.title);
                     $("#divBeginTime").html(response.sche.beginTime.FormatDate(true) + "开始");
                     $("#divEndTime").html(response.sche.endTime.FormatDate(true) + "截止");
@@ -304,7 +310,7 @@
             });
         });
         var is_pop = GetPara('is_pop');
-        var employ = window.globCache.getEmployee();
+        
         if (is_pop == 1) {
             $(".childrenBody").removeClass('childrenBody');
             $(".layui-card-header").remove();

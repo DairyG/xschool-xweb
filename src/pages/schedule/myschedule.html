@@ -31,7 +31,6 @@
         layui.use(['layer'], function () {
             layer = layui.layer;
         });
-
         var color_arr = { 1: '#3788d8', 2: '#FF5722', 3: '#FFB800', 0: '#5FB878' };
         var state_arr = { 0: '未完成', 1: '已完成' };
         var type_arr = { 1: '一般', 2: '紧急', 3: '重要' };
@@ -132,7 +131,6 @@
                     layer.closeAll('tips');
                 },
                 eventClick: function (arg) {
-                    //console.log(arg);
                     layer.open({
                         type: 2,
                         title: '任务详情',
