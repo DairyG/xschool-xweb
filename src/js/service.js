@@ -15,6 +15,19 @@ var verifyModel = {
     }
 }
 
+function getYears(year) {
+    year = year || 2017;
+    var nowYear = new Date().getFullYear();
+    var data = [];
+    for (var index = year; index <= nowYear; index++) {
+        data.push({
+            year: index,
+            selected: (index == nowYear ? 1 : 0)
+        });
+    }
+    return data;
+}
+
 function getUserPopModel() {
     return {
         sel_type: '',

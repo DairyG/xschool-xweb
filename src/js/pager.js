@@ -1,4 +1,5 @@
 function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parseFunc, toolBarFunc, toolFunc, doneFunc = null, height = 'full-300') {
+
     var tbl = table.render({
         elem: '#' + tblId,
         url: Serv.GetUrl(action), //数据接口

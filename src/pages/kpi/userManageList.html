@@ -16,46 +16,51 @@
   </head>
 
   <body class="bgf2f2f2">
-    <div class="childrenBody layui-row layui-col-space20" style="background:none;">
-      <div class="layui-col-md3 layui-col-sm3">
-        <div class="bgwhite">
-          <ul id="dptTree" class="ztree"></ul>
+    <form>
+      <div class="childrenBody layui-row layui-col-space20" style="background:none;">
+        <div class="layui-col-md3 layui-col-sm3">
+          <div class="bgwhite">
+            <ul id="dptTree" class="ztree"></ul>
+          </div>
         </div>
-      </div>
-      <div class="layui-col-md9 layui-col-sm9">
-        <div class="layui-card-body bgwhite">
-          <div class="layui-tab">
-            <ul class="layui-tab-title" lay-filter="contentTabs">
-              <li class="layui-this">月度考核</li>
-              <li>季度考核</li>
-              <li>半年考核</li>
-              <li>年度考核</li>
-            </ul>
-            <div class="layui-tab-content">
-              <div class="layui-tab-item layui-show">
-                <table class="layui-table" id="monthlyLst" lay-filter="monthlyLst"></table>
-              </div>
-              <div class="layui-tab-item">
-                <table class="layui-table" id="quarterLst" lay-filter="quarterLst"></table>
-              </div>
-              <div class="layui-tab-item">
-                <table class="layui-table" id="halfYearLst" lay-filter="halfYearLst"></table>
-              </div>
-              <div class="layui-tab-item">
-                <table class="layui-table" id="annualLst" lay-filter="annualLst"></table>
+        <div class="layui-col-md9 layui-col-sm9">
+          <div class="layui-card-body bgwhite">
+            <div class="layui-tab" lay-filter="contentTabs">
+              <ul class="layui-tab-title">
+                <li class="layui-this" data-value="monthly">月度考核</li>
+                <li data-value="quarter">季度考核</li>
+                <li data-value="halfYear">半年考核</li>
+                <li data-value="annual">年度考核</li>
+              </ul>
+              <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                  <table class="layui-table" id="monthlyLst" lay-filter="monthlyLst"></table>
+                </div>
+                <div class="layui-tab-item">
+                  <table class="layui-table" id="quarterLst" lay-filter="quarterLst"></table>
+                </div>
+                <div class="layui-tab-item">
+                  <table class="layui-table" id="halfYearLst" lay-filter="halfYearLst"></table>
+                </div>
+                <div class="layui-tab-item">
+                  <table class="layui-table" id="annualLst" lay-filter="annualLst"></table>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <script type="text/html" id="toolbar">
+    </form>
+    <script type="text/html" id="monthlyBar"></script>
+    <script type="text/html" id="quarterBar"></script>
+    <script type="text/html" id="halfYearBar"></script>
+    <script type="text/html" id="annuaBar"></script>
+    <script type="text/html" id="toolbarTpl">
       <div style="width:200px">
-      	<select>
-      		<option>2016年</option>
-      		<option>2017年</option>
-      		<option>2018年</option>
-      		<option selected>2019年</option>
+      	<select id="{{= d.kpiName}}Year" lay-filter="{{= d.kpiName}}Year">
+            {{# layui.each(d.list, function(index, item){ }}
+            <option value="{{= item.year}}" {{ item.selected == 1 ? 'selected' : ''}}>{{= item.year}}年</option>
+            {{# }); }}
       	</select>
       </div>
     </script>
