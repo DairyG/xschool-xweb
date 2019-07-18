@@ -110,6 +110,24 @@
 				if (data.event == 'info') {
 					window.location.href = 'detailschedule.html?id=' + data.data.sche.id;
 				}
+				else if (data.event == 'fini') {
+					var sc = {
+						id: 0,
+						scheduleId: data.data.sche.id,
+						employeeId: employ.id,
+						addTime: GetTimeNow()
+					};
+					Serv.Post('gc/ScheduleComplete/Add', sc, function (response) {
+						if (response.code == "00") {
+							layer_alert("成功！",function(){
+								window.location.reload();
+							});
+						}
+						else {
+							layer_alert(response.message);
+						}
+					})
+				}
 			});
 		});
 		function closePop() {
