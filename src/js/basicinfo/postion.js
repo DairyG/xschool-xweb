@@ -9,13 +9,13 @@ var data_col = [[
     { field: 'require', title: '入职要求' },
     { title: '操作', toolbar: '#bar', width: 180 }
 ]];
-var employ = window.globCache.getEmployee();
+//var employ = window.globCache.getEmployee();
 layui.use(['table', 'element', 'laydate', 'form'], function () {
     var table = layui.table,
         element = layui.element;
 
     var search = function () {
-        return { "companyId": employ.companyId };
+        return { "companyId": 3 };
     };
     //操作栏的回调函数
     var onTools = function (layEvent, data) {
@@ -91,7 +91,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         layer_load();
         if (laydata.field.Id == "") {
             laydata.field.id = 0;
-            laydata.field.companyId = employ.companyId;
+            laydata.field.companyId = 1;
             //laydata.field.IsSystem = 0;
             //laydata.field.Type = $("input[name='Type_Chinese']").attr('e-value');
             console.log(laydata.field);
