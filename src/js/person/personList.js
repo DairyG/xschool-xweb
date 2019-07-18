@@ -1,4 +1,4 @@
-var data_col = [
+var dataCol = [
     [{
             field: 'id',
             title: '序号'
@@ -143,7 +143,7 @@ layui.use(['table', 'element', 'form'], function() {
         '员工列表', //列表名称
         'lst', //绑定的列表Id
         '', //绑定的工具条Id
-        data_col, //表头的显示行
+        dataCol, //表头的显示行
         'uc/employee/get', //action url 只能post提交
         search, //获取查询条件的函数
         null, //如果在显示之前需要对数据进行整理需要实现，否则传null

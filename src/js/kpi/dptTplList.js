@@ -1,4 +1,4 @@
-var data_col = [
+var dataCol = [
     [{
             field: 'id',
             title: '序号',
@@ -73,8 +73,7 @@ var lstPager;
 layui.use(['table', 'element'], function() {
     var table = layui.table,
         element = layui.element;
-
-    var table = layui.table;
+        
     var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
         parameter.companyId = treeNode.companyId;
         parameter.dptId = '';
@@ -111,7 +110,7 @@ layui.use(['table', 'element'], function() {
         '部门考核模板', //列表名称
         'lst', //绑定的列表Id
         'toolbar', //绑定的工具条Id
-        data_col, //表头的显示行
+        dataCol, //表头的显示行
         'gc/kpievaluation/querytemplat', //action url 只能post提交
         search, //获取查询条件的函数
         null, //如果在显示之前需要对数据进行整理需要实现，否则传null
