@@ -30,7 +30,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
         $('#kpiObjectPopup').hide();
     }
     if (paraJson.kpiId.toString().IsNum()) {
-        $('#kpiSelect').val(paraJson.kpiId);
+        $('#kpiSelect').val(paraJson.kpiId).attr('disabled', 'disabled');
         form.render('select');
     }
     if (paraJson.employeeId.toString().IsNum() && paraJson.employeeId >= 0) {
@@ -110,44 +110,6 @@ layui.use(['laytpl', 'table', 'form'], function() {
             layer_alert('请选择考核对象');
             return false;
         }
-        var kpiId = $('#kpiSelect').val(),
-            kpiName = $('#kpiSelect').find('option:selected').text();
-        $.each(userJson, function(i, item) {
-            dataUser.push({
-                id: paraJson.id || 0,
-                kpiType: paraJson.kpiType,
-                kpiId: kpiId,
-                kpiName: kpiName,
-                companyId: item.company_id,
-                companyName: item.company_name,
-                dptId: item.dpt_id,
-                dptName: item.dpt_name,
-                employeeId: item.id,
-                userName: item.name
-            });
-        });
-
-        //验证是否是 同一个部门下面的
-        for (var i = 0; i < dataUser.length; i++) {
-            var flag = true;
-            for (var j = i + 1; j < dataUser.length; j++) {
-                //第一个等同于第二个，splice方法删除第二个
-                if (dataUser[i].companyId != dataUser[j].companyId || dataUser[i].dptId != dataUser[j].dptId) {
-                    dataUser.splice(j, 1);
-                    j--;
-                    flag = false;
-                }
-            }
-            if (!flag) {
-                layer_alert('您设置的考核对象包含不同公司和部门，请检查');
-                return false;
-            }
-        }
-        if (dataUser.length == 0) {
-            layer_alert('请选择考核对象');
-            return false;
-        }
-        // console.log(dataUser);
 
         //考核审核
         var dataAudit = [],
@@ -203,7 +165,6 @@ layui.use(['laytpl', 'table', 'form'], function() {
             var explainVal = $.trim($(this).find('input[name="explain"]').val());
 
             dataDetail.push({
-                id: 0,
                 evaluationId: valJson.evaluationId,
                 evaluationName: valJson.evaluationName,
                 evaluationType: valJson.evaluationType,
@@ -217,12 +178,50 @@ layui.use(['laytpl', 'table', 'form'], function() {
         }
         // console.log(dataDetail);
 
+        var kpiId = $('#kpiSelect').val(),
+            kpiName = $('#kpiSelect').find('option:selected').text();
+        $.each(userJson, function(i, item) {
+            dataUser.push({
+                id: paraJson.id || 0,
+                kpiType: paraJson.kpiType,
+                kpiId: kpiId,
+                kpiName: kpiName,
+                companyId: item.company_id,
+                companyName: item.company_name,
+                dptId: item.dpt_id,
+                dptName: item.dpt_name,
+                employeeId: item.id,
+                userName: item.name,
+                contents: JSON.stringify(dataDetail),
+                audits: JSON.stringify(dataAudit)
+            });
+        });
+
+        //验证是否是 同一个部门下面的
+        for (var i = 0; i < dataUser.length; i++) {
+            var flag = true;
+            for (var j = i + 1; j < dataUser.length; j++) {
+                //第一个等同于第二个，splice方法删除第二个
+                if (dataUser[i].companyId != dataUser[j].companyId || dataUser[i].dptId != dataUser[j].dptId) {
+                    dataUser.splice(j, 1);
+                    j--;
+                    flag = false;
+                }
+            }
+            if (!flag) {
+                layer_alert('您设置的考核对象包含不同公司和部门，请检查');
+                return false;
+            }
+        }
+        if (dataUser.length == 0) {
+            layer_alert('请选择考核对象');
+            return false;
+        }
+
         var modelSub = {
             kpiType: paraJson.kpiType,
             kpiId: kpiId,
-            templateRecord: dataUser,
-            templateDetail: dataDetail,
-            templateAuditRecord: dataAudit
+            templateRecord: dataUser
         };
 
         Serv.Post('gc/kpievaluation/edittemplat', modelSub, function(result) {
@@ -246,12 +245,12 @@ layui.use(['laytpl', 'table', 'form'], function() {
             layer_load_lose();
             if (result) {
 
-                if (result.templateDetail.length > 0) {
-                    setEvaluationData(result.templateDetail, 1);
+                if (isJson(result.contents)) {
+                    setEvaluationData(JSON.parse(result.contents), 1);
                 }
-                if (result.templateAuditRecord.length > 0) {
-
-                    $.each(result.templateAuditRecord, function(i, item) {
+                if (isJson(result.audits)) {
+                    var auditsData = JSON.parse(result.audits);
+                    $.each(auditsData, function(i, item) {
                         var obj = kpiAuditBody.find('[data-steps="' + item.steps + '"]');
                         if (obj.length > 0) {
                             var valObj = obj.find('.kpiAuditValue');
@@ -270,7 +269,6 @@ layui.use(['laytpl', 'table', 'form'], function() {
                         }
                     });
                 }
-
             } else {
                 layer_alert(result.message);
             }

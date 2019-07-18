@@ -34,7 +34,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
         kpiObjectPopup.hide();
     }
     if (paraJson.kpiId.toString().IsNum()) {
-        $('#kpiSelect').val(paraJson.kpiId);
+        $('#kpiSelect').val(paraJson.kpiId).attr('disabled', 'disabled');
         form.render('select');
     }
     if (paraJson.employeeId.toString().IsNum() && paraJson.employeeId >= 0) {
@@ -124,31 +124,6 @@ layui.use(['laytpl', 'table', 'form'], function() {
             return false;
         }
 
-        if (hasHead != 1 || !dptSelect) {
-            layer_alert('未查询到考核对象的负责人，请设置对应的负责人');
-            return false;
-        }
-        var kpiId = $('#kpiSelect').val(),
-            kpiName = $('#kpiSelect').find('option:selected').text();
-
-        dataUser.push({
-            id: paraJson.id || 0,
-            kpiType: paraJson.kpiType,
-            kpiId: kpiId,
-            kpiName: kpiName,
-            companyId: dptSelect.companyId,
-            companyName: dptSelect.companyName,
-            dptId: dptSelect.dptId,
-            dptName: dptSelect.dptName,
-            employeeId: dptSelect.employeeId,
-            userName: dptSelect.userName
-        });
-        if (dataUser.length == 0) {
-            layer_alert('请选择考核对象');
-            return false;
-        }
-        // console.log(dataUser);
-
         //考核审核
         var dataAudit = [],
             errorAudit = '';
@@ -203,7 +178,6 @@ layui.use(['laytpl', 'table', 'form'], function() {
             var explainVal = $.trim($(this).find('input[name="explain"]').val());
 
             dataDetail.push({
-                id: 0,
                 evaluationId: valJson.evaluationId,
                 evaluationName: valJson.evaluationName,
                 evaluationType: valJson.evaluationType,
@@ -217,12 +191,36 @@ layui.use(['laytpl', 'table', 'form'], function() {
         }
         // console.log(dataDetail);
 
+        if (hasHead != 1 || !dptSelect) {
+            layer_alert('未查询到考核对象的负责人，请设置对应的负责人');
+            return false;
+        }
+        var kpiId = $('#kpiSelect').val(),
+            kpiName = $('#kpiSelect').find('option:selected').text();
+        dataUser.push({
+            id: paraJson.id || 0,
+            kpiType: paraJson.kpiType,
+            kpiId: kpiId,
+            kpiName: kpiName,
+            companyId: dptSelect.companyId,
+            companyName: dptSelect.companyName,
+            dptId: dptSelect.dptId,
+            dptName: dptSelect.dptName,
+            employeeId: dptSelect.employeeId,
+            userName: dptSelect.userName,
+            contents: JSON.stringify(dataDetail),
+            audits: JSON.stringify(dataAudit)
+        });
+        if (dataUser.length == 0) {
+            layer_alert('请选择考核对象');
+            return false;
+        }
+        // console.log(dataUser);
+
         var modelSub = {
             kpiType: paraJson.kpiType,
             kpiId: kpiId,
-            templateRecord: dataUser,
-            templateDetail: dataDetail,
-            templateAuditRecord: dataAudit
+            templateRecord: dataUser
         };
 
         Serv.Post('gc/kpievaluation/edittemplat', modelSub, function(result) {
@@ -246,12 +244,13 @@ layui.use(['laytpl', 'table', 'form'], function() {
             layer_load_lose();
             if (result) {
 
-                if (result.templateDetail.length > 0) {
-                    setEvaluationData(result.templateDetail, 1);
+                if (isJson(result.contents)) {
+                    setEvaluationData(JSON.parse(result.contents), 1);
                 }
-                if (result.templateAuditRecord.length > 0) {
 
-                    $.each(result.templateAuditRecord, function(i, item) {
+                if (isJson(result.audits)) {
+                    var auditsData = JSON.parse(result.audits);
+                    $.each(auditsData, function(i, item) {
                         var obj = kpiAuditBody.find('[data-steps="' + item.steps + '"]');
                         if (obj.length > 0) {
                             var valObj = obj.find('.kpiAuditValue');
@@ -272,7 +271,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
                 }
 
             } else {
-                layer_alert(result.message);
+                layer_alert('未查询到记录');
             }
         });
     }
