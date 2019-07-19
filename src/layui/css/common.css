@@ -8,12 +8,12 @@
 /* 字体颜色 */
 .fc-FB80 {color: #FFB800;}
 .text-red  {color:red}
-.text-add {color:#1E9FFF}
-.text-edit {color:#FFB800}
-.text-del {color:#FF5722}
-.text-span {color:#009688}
-.text-85 {color:#858585}
-.text-a {color:#1E9FFF}
+.text-add {color:#1E9FFF}/*蓝*/
+.text-edit {color:#FFB800}/*黄*/
+.text-del {color:#FF5722}/*红*/
+.text-span {color:#009688}/*绿*/
+.text-85 {color:#858585}/*灰*/
+.text-a {color:#1E9FFF}/*蓝*/
 /* 边框 */
 .border-1 {border:1px solid #ddd;}
 .border-l-20 {border-left:20px solid #f2f2f2;}
@@ -33,6 +33,7 @@
 .padding-l-10 {padding-left: 10px;}
 .padding-l-15 {padding-left: 15px;}
 .padding-r-0 {padding-right: 0 !important;}
+.padding-r-20 {padding-right: 20px;}
 .padding-r-30 {padding-right: 30px;}
 .padding-r-50 {padding-right: 50px;}
 .padding-b-10 {padding-bottom: 10px;}
@@ -291,3 +292,17 @@ table .layui-table-edit {height:38px;line-height: 38px;}
 .cpr {cursor:pointer}
 .table-info  {}
 .table-info td {padding:5px 10px;}
+.process_state_img {position: absolute;top:80px;right:40px;z-index: 99;}
+.process_state_img img {width: 200px;}
+
+#map_content {}
+#map_content .input_box {position: absolute;right: 20px;top:10px;z-index:999999;width:300px;} 
+#map_content .input_box input { border: 0;height: 36px;float: left;width: 250px;}
+#map_content .input_box i { float: left;height: 36px;line-height: 36px;text-align: center;width: 36px;}
+#map_content .btn_content  {height: 76px;overflow: hidden;padding: 5px;}
+#map_content .btn_content  ul {width: 50%;float: left;}
+#map_content .btn_content  ul li {clear: both;padding: 5px 8px;overflow: hidden;}
+#map_content .btn_content  ul li label {float: left;width: 60px; text-align: right;padding-right: 10px;}
+#map_content .btn_content  ul li .layui-input {float: left;width: 250px;height: 28px;line-height:28px}
+#map_content .btn_content  .btn_box {width: auto;float: right;line-height: 75px;}
+.amap-sug-result {z-index:999999999 !important;}

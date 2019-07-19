@@ -1,3 +1,4 @@
+
 /**
  * 弹出加载层
  */
@@ -849,6 +850,19 @@ function GetYearNow() {
 function getNow(s) {
     return s < 10 ? '0' + s : s;
 }
+
+/**
+ * 首字母大写
+ */
+String.prototype.FirstUpperCase = function(){
+	return this.substring(0, 1).toUpperCase() + this.substring(1)
+}
+
+$(function(){
+	$('.back_history').click(function(){
+		window.history.back(-1);
+	});
+});
 //根据指定日期获取上个月
 function GetLastMonth(dt)
 {
