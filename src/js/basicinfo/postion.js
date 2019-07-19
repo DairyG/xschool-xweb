@@ -120,7 +120,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                 return false;
             }
             //console.log(laydata.field);
-            Serv.Post('uc/job/edit', { positionSetting: laydata.field }, function (response) {
+            Serv.Post('uc/job/edit', laydata.field, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', function () {
                         EmptyModel();
