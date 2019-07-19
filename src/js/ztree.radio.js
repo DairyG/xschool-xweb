@@ -93,7 +93,7 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom, option, iscompany, callBack)
                     dptName: item.companyName,
                     companyId: item.id,
                     pid: 0,
-                    open: true,
+                    open: true
                 };
             });
             var dptArray = $.map(dpts, function(item) {

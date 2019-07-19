@@ -64,7 +64,6 @@ function ZTreeRadio(zTreeDom, option, callBack) {
                 array.push(item);
             });
 
-            // console.log(options.zTreeDOM);
             zTreeObj = $.fn.zTree.init(options.zTreeDOM, setting, array);
             var nodes = zTreeObj.getNodes();
             if (nodes.length > 0) {

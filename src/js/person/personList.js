@@ -77,7 +77,7 @@ var dataCol = [
 ];
 
 var parameter = {
-    companyId: 1,
+    companyId: 0,
     linkPhone: '',
     userName: ''
 };
