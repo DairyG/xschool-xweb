@@ -170,8 +170,9 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
         // Serv.Get('uc/department/GetByCompany/' + 1, {}, function (response) {
         //     zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
         // })
+        Serv.Get('uc/department/query', {}, window.globCache.setDepartment);
     }
-    //initTree();
+    initTree();
 
     table.render({
         elem: '#lst'
@@ -181,11 +182,12 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
 
         if (laydata.field.Id == "0" || laydata.field.Id == "") {
             var nodes = zTreeObj.getSelectedNodes();
+            console.log(nodes);
             if (nodes.length == 0) {
                 layer_alert('请选择要添加部门的公司或者父级部门');
                 return false;
             }
-            laydata.field.companyId = nodes[0].CompanyId;
+            laydata.field.CompanyId = nodes[0].companyId;
             if (parseInt(laydata.field.PId) <= 0) {
                 laydata.field.LevelMap = "0,";
             } else if (parseInt(laydata.field.PId) > 0) {
@@ -197,7 +199,16 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
                     laydata.field.dptName = laydata.field.DptName;
                     zTreeObj.addNodes(nodes[0], -1, laydata.field);
 
-                    dpts.push(laydata.field);
+                    dpts.push({
+                        id:response.data,
+                        companyId:laydata.field.CompanyId,
+                        pid:(laydata.field.PId == 0 ? parseInt(laydata.field.CompanyId) * -1 : laydata.field.PId),
+                        dptName:laydata.field.DptName,
+                        dptStatus:1,
+                        levelMap:laydata.field.LevelMap,
+                        description:laydata.field.Description,
+                        dptCode : laydata.field.DptCode
+                    });
                     window.globCache.setDepartment(dpts);
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
                     layer_load_lose();
