@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: '#personBody',
     data: {
-        hasSubmit: false,
+        hasSubmit: true,
         person: {
             id: 0,
             userName: '',
@@ -125,7 +125,6 @@ var vm = new Vue({
                     $("._liveArea").jarea();
                     $("._liveArea").jarea('val');
 
-                    _this.hasSubmit = true;
                     _this.$nextTick(function() {
                         layui.form.render('select');
                     });
@@ -345,7 +344,6 @@ var vm = new Vue({
             Serv.Get('uc/employee/get/' + value, {}, function(result) {
                 layer_load_lose();
                 if (result) {
-                    _this.hasSubmit = true;
 
                     _this.person = result;
 
