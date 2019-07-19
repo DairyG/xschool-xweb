@@ -42,9 +42,9 @@
 				<table class="layui-table" id="lst" lay-filter="lst"></table>
 				<script type="text/html" id="bar">
 					<a class="layui-btn layui-btn-xs" lay-event="info" >查看</a>
-					<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="" >编辑</a>
+					<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit" >编辑</a>
 					<!-- 有关联数据时 不能删除 -->
-					<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="" >删除</a>
+					<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" >删除</a>
 				</script>
 				<script type="text/html" id="toolbar">
 					<button class="layui-btn  layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i> 添加</button>
@@ -91,7 +91,19 @@
 					}
 					return items;
 				}
-				
+				var ontools = function(event,data){
+					switch(event){
+						case 'info':
+							window.location.href = 'contractInfo.html?id='+data.id;
+							break;
+						case 'edit':
+							window.location.href = 'contractEdit.html?id='+data.id;
+							break;
+						case 'del':
+							
+							break;
+					}
+				}
 				lstPager = Pager2(
 					table,
 					'合同列表',
@@ -102,7 +114,7 @@
 					search,
 					parseData, //如果在显示之前需要对数据进行整理需要实现，否则传null
 					null, //有选择行才能有的操作，实现该方法,否则传null
-					null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+					ontools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
 					null,
 					'full-180'
 				);
@@ -118,6 +130,19 @@
 						window.location.href = 'contractInfo.html?id='+data.id;
 					} else if(obj.event == 'edit'){
 						window.location.href = 'contractEdit.html?id='+data.id;
+					} else if(obj.event == 'del'){
+						layer_confirm('是否确认删除？',function(){
+							layer_load();
+							Serv.Post('gc/Contract/Delete',{id:data.id},function(res){
+								layer_load_lose();
+								if(res.succeed){
+									layer.msg('删除成功！');
+									obj.del();
+								} else {
+									layer.msg(res.message);
+								}
+							});
+						});
 					}
 				});
 			});
