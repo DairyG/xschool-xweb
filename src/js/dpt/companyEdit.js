@@ -1,45 +1,43 @@
 new Vue({
     el: '#formEdit',
-    data() {
-        return {
-            hasSubmit: true,
-            hasReadonly: false,
-            company: {
-                id: 0,
-                companyName: '',
-                englishName: '',
-                credit: '',
-                companyType: '',
-                legalPerson: '',
-                registeredCapital: '',
-                responsible: '',
-                responsiblePhone: '',
-                registeredTime: '',
-                businessDate: '',
-                businessAddress: '',
-                businessScope: '',
-                logo: '',
-                companyPhone: '',
-                email: '',
-                officeAddress: '',
-                webSite: '',
-                intro: '',
-                culture: '',
-                history: ''
-            },
-            bankInfo: {
-                id: 0,
-                companyId: 0,
-                openBank: '',
-                openBankName: '',
-                bankAccount: '',
-                linkPhone: '',
-                remarks: ''
-            },
-            bankData: []
-        }
+    data: {
+        hasSubmit: true,
+        hasReadonly: false,
+        company: {
+            id: 0,
+            companyName: '',
+            englishName: '',
+            credit: '',
+            companyType: '',
+            legalPerson: '',
+            registeredCapital: '',
+            responsible: '',
+            responsiblePhone: '',
+            registeredTime: '',
+            businessDate: '',
+            businessAddress: '',
+            businessScope: '',
+            logo: '',
+            companyPhone: '',
+            email: '',
+            officeAddress: '',
+            webSite: '',
+            intro: '',
+            culture: '',
+            history: ''
+        },
+        bankInfo: {
+            id: 0,
+            companyId: 0,
+            openBank: '',
+            openBankName: '',
+            bankAccount: '',
+            linkPhone: '',
+            remarks: ''
+        },
+        bankData: []
     },
-    mounted() {
+    mounted: function() {
         let _this = this;
 
         layui.use(['element', 'laydate', 'form'], function() {

@@ -125,6 +125,7 @@ var vm = new Vue({
                     $("._liveArea").jarea();
                     $("._liveArea").jarea('val');
 
+                    _this.hasSubmit = true;
                     _this.$nextTick(function() {
                         layui.form.render('select');
                     });
