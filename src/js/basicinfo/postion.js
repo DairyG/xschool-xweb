@@ -9,13 +9,30 @@ var data_col = [[
     { field: 'require', title: '入职要求' },
     { title: '操作', toolbar: '#bar', width: 180 }
 ]];
-//var employ = window.globCache.getEmployee();
+var employ = window.globCache.getEmployee();
+var company = window.globCache.getCompany();
 layui.use(['table', 'element', 'laydate', 'form'], function () {
     var table = layui.table,
-        element = layui.element;
-
+        element = layui.element,
+        form = layui.form;
+    if(company)
+    {
+        var htmlsel = '<option value="0">请选择公司</option>';
+        for(var i=0;i<company.length;i++){
+            htmlsel += '<option value="'+company[i].id+'">'+company[i].companyName+'</option>';
+        }
+        $("#selCompany").html(htmlsel);
+        form.render('select');
+    }
+    var compId = 0;
+    if(employ){
+        compId = employ.companyId;
+    }
+    if(compId > 0){
+        $("#divCompany").hide();
+    }
     var search = function () {
-        return { "companyId": 3 };
+        return { "companyId": compId };
     };
     //操作栏的回调函数
     var onTools = function (layEvent, data) {
@@ -90,11 +107,19 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     layform.on('submit(formDemo)', function (laydata) {
         layer_load();
         if (laydata.field.Id == "") {
-            laydata.field.id = 0;
-            laydata.field.companyId = 1;
-            //laydata.field.IsSystem = 0;
-            //laydata.field.Type = $("input[name='Type_Chinese']").attr('e-value');
-            console.log(laydata.field);
+            laydata.field.Id = 0;
+            //laydata.field.CompanyId = 1;
+            if(compId > 0){
+                laydata.field.CompanyId = compId;
+            }
+            else{
+                laydata.field.CompanyId = $("#selCompany").val();
+            }
+            if(laydata.field.CompanyId <= 0){
+                layer_alert("请选择所属公司！");
+                return false;
+            }
+            //console.log(laydata.field);
             Serv.Post('uc/job/edit', { positionSetting: laydata.field }, function (response) {
                 if (response.code == "00") {
                     layer_confirm('添加成功，是否继续添加？', function () {
