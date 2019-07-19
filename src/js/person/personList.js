@@ -10,7 +10,8 @@ var dataCol = [
                 return $.map(d.bindings, function(item) {
                     return item.dptName
                 }).join('|');
-            }
+            },
+			minWidth:80
         },
         {
             field: 'jobName',
@@ -32,7 +33,8 @@ var dataCol = [
             title: '状态',
             templet: function(d) {
                 return ['未入职', '试用', '转正', '离职'][d.status];
-            }
+            },
+			width: 100
         },
         {
             field: 'isOpenAccount',
@@ -40,7 +42,8 @@ var dataCol = [
             templet: function(d) {
                 return d.isOpenAccount ? '<span class="text-span">已开通</span>' :
                     '<span class="text-del">未开通</span>';
-            }
+            },
+			width: 120
         },
         {
             field: 'employeeNo',
@@ -71,7 +74,7 @@ var dataCol = [
         {
             title: '操作',
             toolbar: '#toolbar',
-            width: 170
+            minWidth: 240
         }
     ]
 ];
