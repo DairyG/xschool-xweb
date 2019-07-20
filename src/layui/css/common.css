@@ -306,3 +306,20 @@ table .layui-table-edit {height:38px;line-height: 38px;}
 #map_content .btn_content  ul li .layui-input {float: left;width: 250px;height: 28px;line-height:28px}
 #map_content .btn_content  .btn_box {width: auto;float: right;line-height: 75px;}
 .amap-sug-result {z-index:999999999 !important;}
+
+
+/*多图样式*/
+.upload-list{ margin:0; padding:0}
+.upload-list ul{ margin:10px 0; padding:0}
+.upload-list ul li{ list-style:none; float:left; margin:10px 20px 0 0; text-align:center}
+.upload-list ul li .img-box{ position:relative; border:1px solid #009688; padding:1px; width:122px; height:92px;cursor: pointer; z-index:1029}
+.upload-list ul li .click-hover .hover{ width:62px; height:24px; line-height:24px; top:66px; font-family:"Microsoft YaHei"; right:0; background:#009688; color:#FFF; font-size:12px; text-align:center; display:block; position:absolute; z-index:3; cursor:pointer}
+.upload-list ul li .click-bor .selected{ width:41px; height:37px; display:block; background: url(frist_icon.png) no-repeat; position:absolute; top:0; right:0}
+.upload-list ul li .set-btn{ text-align:left; margin-top:5px}
+.upload-multiple-box .btn-sm{background-color: #e5e5e5; color: #333; text-decoration: none; width: 46px; box-sizing: border-box; border-radius: 3px; font-size: 12px; line-height: 1.5; padding: 5px 10px; margin-right: 5px; -moz-user-select: none; border: 1px solid transparent; cursor: pointer; display: inline-block; font-weight: 400; margin-bottom: 0; text-align: center; vertical-align: middle; white-space: nowrap;}
+.upload-multiple-box .btn-del{color:#333;background:#E5E5E5;padding:4px 10px 5px 10px;font-size:13px;line-height:1.5;text-decoration:none;position:absolute;z-index:1000;  top:66px; right:0px }
+.upload-single-box{margin:15px 0 0 110px; position: relative;}
+.upload-single-box img{border:2px solid #009688}
+.upload-single-box a{color:#333;background:#E5E5E5;padding:4px 10px 5px 10px;font-size:13px;line-height:1.5;text-decoration:none;position:absolute;left:76px;top:2px;z-index:1000}
+
+

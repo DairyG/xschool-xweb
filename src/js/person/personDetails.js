@@ -83,8 +83,25 @@ var vm = new Vue({
                 if (result) {
                     _this.hasInit.training = false;
                     _this.trainingData = result;
+
+                    _this.$nextTick(function() {
+                        _this.imagesViewer();
+                    });
                 }
             });
+        },
+
+        //分割图片
+        splitImage: function(value) {
+            if (!value) {
+                return '';
+            }
+            var htmls = '';
+            var imgArr = value.split(',');
+            $.each(imgArr, function(i, item) {
+                htmls += '<img src="' + item + '" style="margin:10px;max-height:90px; max-width:99%; cursor:pointer" />';
+            });
+            return htmls;
         },
 
         //替换地址/
@@ -109,6 +126,12 @@ var vm = new Vue({
                 return '';
             }
             return value.FormatDate(hasTime);
+        },
+        //图片预览
+        imagesViewer: function() {
+            $(".v-images").viewer({
+                title: false
+            });
         }
     }
 });

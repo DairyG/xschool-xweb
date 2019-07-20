@@ -45,16 +45,51 @@ layui.use(['element', 'laydate', 'laytpl', 'form', 'upload'], function() {
 
     var E = window.wangEditor
     var eIntro = new E('#E_intro');
+    eIntro.customConfig.uploadImgServer = Serv.ImageUrl;
+    eIntro.customConfig.uploadImgHeaders = Serv.GetHeaders();
+    eIntro.customConfig.uploadImgHooks = {
+        customInsert: function(insertImg, result, editor) {
+            if (result.succeed) {
+                for (let index = 0; index < result.data.length; index++) {
+                    insertImg(result.data[index])
+                }
+            }
+        }
+    };
     eIntro.customConfig.onchange = function(html) {
         $('input[name="intro"]').val(html);
     };
     eIntro.create();
+
     var eCulture = new E('#E_culture');
+    eCulture.customConfig.uploadImgServer = Serv.ImageUrl;
+    eCulture.customConfig.uploadImgHeaders = Serv.GetHeaders();
+    eCulture.customConfig.uploadImgHooks = {
+        customInsert: function(insertImg, result, editor) {
+            if (result.succeed) {
+                for (let index = 0; index < result.data.length; index++) {
+                    insertImg(result.data[index])
+                }
+            }
+        }
+    };
     eCulture.customConfig.onchange = function(html) {
         $('input[name="culture"]').val(html);
     };
     eCulture.create();
+
     var eHistory = new E('#E_history');
+    eHistory.customConfig.uploadImgServer = Serv.ImageUrl;
+    eHistory.customConfig.uploadImgHeaders = Serv.GetHeaders();
+    eHistory.customConfig.uploadImgHooks = {
+        customInsert: function(insertImg, result, editor) {
+            if (result.succeed) {
+                for (let index = 0; index < result.data.length; index++) {
+                    insertImg(result.data[index])
+                }
+            }
+        }
+    };
     eHistory.customConfig.onchange = function(html) {
         $('input[name="history"]').val(html);
     };
@@ -68,11 +103,13 @@ layui.use(['element', 'laydate', 'laytpl', 'form', 'upload'], function() {
         bankPanel.html(getBankContent());
     }
 
+    //Logo上传
     upload.render({
-        elem: '#companyLogo',
+        elem: '#logoBtn',
         url: Serv.ImageUrl,
         accept: 'images',
         acceptMime: 'image/*',
+        headers: Serv.GetHeaders(),
         before: function(obj) {
             layer_load();
         },
@@ -80,6 +117,9 @@ layui.use(['element', 'laydate', 'laytpl', 'form', 'upload'], function() {
             layer_load_lose();
             $('#logoValue').val(result.data[0]);
             $('#logoImage').show().find('img').attr('src', result.data[0]);
+        },
+        error: function() {
+            layer_load_lose();
         }
     });
 

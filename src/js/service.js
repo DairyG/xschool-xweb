@@ -66,9 +66,6 @@ var Serv = {
     },
     GetHeaders: function() {
         return {
-            // "_CODE_": Serv.Code,
-            //"Access-Control-Allow-Origin": "*",
-            "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
             "Authorization": Serv.GetToken()
         }
     },

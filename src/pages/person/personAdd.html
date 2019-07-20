@@ -14,11 +14,12 @@
     <script type="text/javascript" src="../../js/service.js"></script>
     <script type="text/javascript" src="../../js/cache.js"></script>
     <script type="text/javascript" src="../../js/verify.js"></script>
-    <!-- <script type="text/javascript" src="../../lib/vue.js"></script> -->
     <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="../../lib/pick-pcc/pick-pcc.js"></script>
     <script type="text/javascript" src="../../js/jquery.jarea.js"></script>
     <script type="text/javascript" src="../../js/ztree.radio.js"></script>
+    <link rel="stylesheet" href="../../lib/viewer/viewer.min.css" />
+    <script type="text/javascript" src="../../lib/viewer/viewer.min.js"></script>
     <style>
       .layui-table-box,
       .layui-table-body {
@@ -319,11 +320,13 @@
                     <div class="layui-form-item layui-col-md12 margin-b-20">
                       <label class="layui-form-label">个人照片</label>
                       <div class="layui-input-block">
-                        <input type="hidden" name="photoPath" v-model="person.photoPath" />
-                        <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
+                        <button type="button" id="photoPathBtn" class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
                           <i class="layui-icon">&#xe67c;</i>
                           上传照片
-                        </span>
+                        </button>
+                        <div class="upload-list upload-multiple-box">
+                          <ul id="photoPathPanel" class="v-images"></ul>
+                        </div>
                       </div>
                     </div>
                     <div class="layui-form-item layui-col-md12 margin-b-20">
@@ -735,7 +738,7 @@
                         培训课程
                       </label>
                       <div class="layui-input-block">
-                        <input type="text" name="course" v-model="training.course" maxlength="100" required lay-verify="name" placeholder="培训课程" class="layui-input" />
+                        <input type="text" name="course" maxlength="100" required lay-verify="name" placeholder="培训课程" class="layui-input" />
                       </div>
                     </div>
                     <div class="layui-form-item layui-col-md6 margin-b-20">
@@ -744,7 +747,7 @@
                         培训机构
                       </label>
                       <div class="layui-input-block">
-                        <input type="text" name="institutions" v-model="training.institutions" maxlength="100" required lay-verify="name" placeholder="培训机构" class="layui-input" />
+                        <input type="text" name="institutions" maxlength="100" required lay-verify="name" placeholder="培训机构" class="layui-input" />
                       </div>
                     </div>
                     <div class="layui-form-item layui-col-md6 margin-b-20">
@@ -753,7 +756,7 @@
                         开始时间
                       </label>
                       <div class="layui-input-block">
-                        <input type="text" id="startDate" name="startDate" v-model="training.startDate" required lay-verify="name" placeholder="开始时间" class="layui-input" readonly />
+                        <input type="text" id="startDate" name="startDate" required lay-verify="name" placeholder="开始时间" class="layui-input" readonly />
                       </div>
                     </div>
                     <div class="layui-form-item layui-col-md6 margin-b-20">
@@ -762,7 +765,7 @@
                         结束时间
                       </label>
                       <div class="layui-input-block">
-                        <input type="text" id="endDate" name="endDate" v-model="training.endDate" required lay-verify="name" placeholder="开始时间" class="layui-input" readonly />
+                        <input type="text" id="endDate" name="endDate" required lay-verify="name" placeholder="开始时间" class="layui-input" readonly />
                       </div>
                     </div>
                     <div class="layui-form-item layui-col-md12 margin-b-20">
@@ -771,7 +774,7 @@
                         培训地点
                       </label>
                       <div class="layui-input-block">
-                        <input type="text" name="address" v-model="training.address" maxlength="200" required lay-verify="name" placeholder="培训地点" class="layui-input" />
+                        <input type="text" name="address" maxlength="200" required lay-verify="name" placeholder="培训地点" class="layui-input" />
                       </div>
                     </div>
                     <div class="layui-form-item layui-col-md12 margin-b-20">
@@ -780,23 +783,25 @@
                         培训内容
                       </label>
                       <div class="layui-input-block">
-                        <textarea name="content" v-model="training.content" maxlength="1500" required lay-verify="name" placeholder="培训内容" class="layui-textarea"></textarea>
+                        <textarea name="content" maxlength="1500" required lay-verify="name" placeholder="培训内容" class="layui-textarea"></textarea>
                       </div>
                     </div>
                     <div class="layui-form-item layui-col-md12 margin-b-20">
                       <label class="layui-form-label">所获荣誉</label>
                       <div class="layui-input-block">
-                        <textarea name="honor" v-model="training.honor" maxlength="800" placeholder="所获荣誉" class="layui-textarea"></textarea>
+                        <textarea name="honor" maxlength="800" placeholder="所获荣誉" class="layui-textarea"></textarea>
                       </div>
                     </div>
                     <div class="layui-form-item layui-col-md12 margin-b-20">
                       <label class="layui-form-label">附件</label>
                       <div class="layui-input-block">
-                        <input type="hidden" name="attachment" v-model="training.attachment" />
-                        <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
+                        <button type="button" id="attachmentBtn" class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
                           <i class="layui-icon">&#xe67c;</i>
                           上传照片
-                        </span>
+                        </button>
+                        <div class="upload-list upload-multiple-box">
+                          <ul id="attachmentPanel"></ul>
+                        </div>
                       </div>
                     </div>
                   </div>

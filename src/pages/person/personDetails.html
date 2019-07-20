@@ -12,6 +12,8 @@
     <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript" src="../../js/service.js"></script>
     <script type="text/javascript" src="../../lib/vue.js"></script>
+    <link rel="stylesheet" href="../../lib/viewer/viewer.min.css" />
+    <script type="text/javascript" src="../../lib/viewer/viewer.min.js"></script>
   </head>
 
   <body>
@@ -673,6 +675,10 @@
                         <tr>
                           <td class="table_label">所获荣誉</td>
                           <td colspan="3" v-html="replaceLine(item.honor)"></td>
+                        </tr>
+                        <tr v-if="item.attachment">
+                          <td class="table_label">附件</td>
+                          <td colspan="3" class="v-images" v-html="splitImage(item.attachment)"></td>
                         </tr>
                       </table>
                     </div>

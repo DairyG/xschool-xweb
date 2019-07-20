@@ -1,4 +1,3 @@
-
 /**
  * 弹出加载层
  */
@@ -65,7 +64,7 @@ function layer_confirm(message, confirmBack, cancelBack) {
 /** 
  * 弹出输入层
  */
-function layui_prompt(obj,callback) {
+function layui_prompt(obj, callback) {
     var default_val = $(obj).val();
     layer.prompt({
         formType: 2,
@@ -75,9 +74,9 @@ function layui_prompt(obj,callback) {
         yes: function(index, elem) {
             var value = elem.find(".layui-layer-input").val();
             $(obj).val(value);
-			if(typeof callback === 'function'){
-				callback(obj,value);
-			}
+            if (typeof callback === 'function') {
+                callback(obj, value);
+            }
             layer.close(index);
         }
     });
@@ -513,7 +512,7 @@ function user_popup(obj = null, allow_sels, num = 0, is_close_other = false, cal
     });
 }
 
-function getSelStr(sels){
+function getSelStr(sels) {
     var html = '';
     var L1 = sels.user.length,
         L2 = sels.department.length,
@@ -566,15 +565,15 @@ function parse_sels(data, businessType) {
                 businessType: businessType,
                 dataType: dataType_arr[dataType],
                 companyId: c[i].id,
-				companyName:c[i].name,
+                companyName: c[i].name,
                 depId: 0,
-				dpeName:'',
+                dpeName: '',
                 userId: 0,
-				userName:'',
+                userName: '',
                 jobDepId: 0,
-				jobDepNmae:'',
+                jobDepNmae: '',
                 jobId: 0,
-				jobName:'',
+                jobName: '',
             }
             res.push(data);
         }
@@ -589,11 +588,11 @@ function parse_sels(data, businessType) {
                 userId: 0,
                 jobDepId: 0,
                 jobId: 0,
-				companyName:'',
-				dpeName:d[i].name,
-				userName:'',
-				jobDepNmae:'',
-				jobName:'',
+                companyName: '',
+                dpeName: d[i].name,
+                userName: '',
+                jobDepNmae: '',
+                jobName: '',
             }
             res.push(data);
         }
@@ -608,11 +607,11 @@ function parse_sels(data, businessType) {
                 userId: u[i].id,
                 jobDepId: 0,
                 jobId: 0,
-				companyName:'',
-				dpeName:'',
-				userName:u[i].name,
-				jobDepNmae:'',
-				jobName:'',
+                companyName: '',
+                dpeName: '',
+                userName: u[i].name,
+                jobDepNmae: '',
+                jobName: '',
             }
             res.push(data);
         }
@@ -627,11 +626,11 @@ function parse_sels(data, businessType) {
                 userId: 0,
                 jobDepId: 0,
                 jobId: p[i].id,
-				companyName:'',
-				dpeName:'',
-				userName:'',
-				jobDepNmae:'',
-				jobName:p[i].name,
+                companyName: '',
+                dpeName: '',
+                userName: '',
+                jobDepNmae: '',
+                jobName: p[i].name,
             }
             res.push(data);
         }
@@ -647,11 +646,11 @@ function parse_sels(data, businessType) {
                 userId: 0,
                 jobDepId: r[0],
                 jobId: r[1],
-				companyName:'',
-				dpeName:'',
-				userName:'',
-				jobDepNmae:dp[i].dpt_name,
-				jobName:dp[i].name
+                companyName: '',
+                dpeName: '',
+                userName: '',
+                jobDepNmae: dp[i].dpt_name,
+                jobName: dp[i].name
             }
             res.push(data);
         }
@@ -671,44 +670,47 @@ function formart_sels(data){
 		return false;
 	}
     var result = {
-        sel_type:"org",
-        user:[],
-        department:[],
-        company:[],
-        position:[],
-        dpt_position:[]
+        sel_type: "org",
+        user: [],
+        department: [],
+        company: [],
+        position: [],
+        dpt_position: []
     };
     var dataType_arr = {
-        1:'org',
-        2:'position',
-        3:'dpt_position'
+        1: 'org',
+        2: 'position',
+        3: 'dpt_position'
     };
-    if(data.length == 0){
+    if (data.length == 0) {
         return JSON.stringify(result);
     }
     result.sel_type = dataType_arr[data[0].dataType];
-    for(var i = 0;i < data.length;i++){
+    for (var i = 0; i < data.length; i++) {
         var item = data[i];
-        var d = {id:'',name:''};
-        if(item.userId > 0){
+        var d = {
+            id: '',
+            name: ''
+        };
+        if (item.userId > 0) {
             d.id = item.userId;
             d.name = item.userName;
             result.user.push(d);
-        } else if(item.depId > 0){
+        } else if (item.depId > 0) {
             d.id = item.depId;
             d.name = item.depName;
             result.department.push(d);
-        } else if(item.companyId > 0){
+        } else if (item.companyId > 0) {
             d.id = item.companyId;
             d.name = item.companyName;
             result.company.push(d);
-        } else if(item.jobDepId > 0){
+        } else if (item.jobDepId > 0) {
             d.id = item.jobDepId + '_' + item.jobId;
             d.name = item.jobDepNmae;
             d.dpt_name = item.jobName;
             d.dpt_id = item.jobId;
             result.dpt_position.push(d);
-        } else if(item.jobId > 0){
+        } else if (item.jobId > 0) {
             d.id = item.jobId;
             d.name = item.jobName;
             result.position.push(d);
@@ -787,91 +789,91 @@ function assess_popup(obj, type = 'checkbox', callback) {
 
 
 function convertCurrency(money) {
-	//汉字的数字  
-	var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
-	//基本单位  
-	var cnIntRadice = new Array('', '拾', '佰', '仟');
-	//对应整数部分扩展单位  
-	var cnIntUnits = new Array('', '万', '亿', '兆');
-	//对应小数部分单位  
-	var cnDecUnits = new Array('角', '分', '毫', '厘');
-	//整数金额时后面跟的字符  
-	var cnInteger = '整';
-	//整型完以后的单位  
-	var cnIntLast = '元';
-	//最大处理的数字  
-	var maxNum = 999999999999999.9999;
-	//金额整数部分  
-	var integerNum;
-	//金额小数部分  
-	var decimalNum;
-	//输出的中文金额字符串  
-	var chineseStr = '';
-	//分离金额后用的数组，预定义  
-	var parts;
-	if (money == '') {
-		return '';
-	}
-	money = parseFloat(money);
-	if (money >= maxNum) {
-		//超出最大处理数字  
-		return '';
-	}
-	if (money == 0) {
-		chineseStr = cnNums[0] + cnIntLast + cnInteger;
-		return chineseStr;
-	}
-	//转换为字符串  
-	money = money.toString();
-	if (money.indexOf('.') == -1) {
-		integerNum = money;
-		decimalNum = '';
-	} else {
-		parts = money.split('.');
-		integerNum = parts[0];
-		decimalNum = parts[1].substr(0, 4);
-	}
-	//获取整型部分转换  
-	if (parseInt(integerNum, 10) > 0) {
-		var zeroCount = 0;
-		var IntLen = integerNum.length;
-		for (var i = 0; i < IntLen; i++) {
-			var n = integerNum.substr(i, 1);
-			var p = IntLen - i - 1;
-			var q = p / 4;
-			var m = p % 4;
-			if (n == '0') {
-				zeroCount++;
-			} else {
-				if (zeroCount > 0) {
-					chineseStr += cnNums[0];
-				}
-				//归零  
-				zeroCount = 0;
-				chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
-			}
-			if (m == 0 && zeroCount < 4) {
-				chineseStr += cnIntUnits[q];
-			}
-		}
-		chineseStr += cnIntLast;
-	}
-	//小数部分  
-	if (decimalNum != '') {
-		var decLen = decimalNum.length;
-		for (var i = 0; i < decLen; i++) {
-			var n = decimalNum.substr(i, 1);
-			if (n != '0') {
-				chineseStr += cnNums[Number(n)] + cnDecUnits[i];
-			}
-		}
-	}
-	if (chineseStr == '') {
-		chineseStr += cnNums[0] + cnIntLast + cnInteger;
-	} else if (decimalNum == '') {
-		chineseStr += cnInteger;
-	}
-	return chineseStr;
+    //汉字的数字  
+    var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
+    //基本单位  
+    var cnIntRadice = new Array('', '拾', '佰', '仟');
+    //对应整数部分扩展单位  
+    var cnIntUnits = new Array('', '万', '亿', '兆');
+    //对应小数部分单位  
+    var cnDecUnits = new Array('角', '分', '毫', '厘');
+    //整数金额时后面跟的字符  
+    var cnInteger = '整';
+    //整型完以后的单位  
+    var cnIntLast = '元';
+    //最大处理的数字  
+    var maxNum = 999999999999999.9999;
+    //金额整数部分  
+    var integerNum;
+    //金额小数部分  
+    var decimalNum;
+    //输出的中文金额字符串  
+    var chineseStr = '';
+    //分离金额后用的数组，预定义  
+    var parts;
+    if (money == '') {
+        return '';
+    }
+    money = parseFloat(money);
+    if (money >= maxNum) {
+        //超出最大处理数字  
+        return '';
+    }
+    if (money == 0) {
+        chineseStr = cnNums[0] + cnIntLast + cnInteger;
+        return chineseStr;
+    }
+    //转换为字符串  
+    money = money.toString();
+    if (money.indexOf('.') == -1) {
+        integerNum = money;
+        decimalNum = '';
+    } else {
+        parts = money.split('.');
+        integerNum = parts[0];
+        decimalNum = parts[1].substr(0, 4);
+    }
+    //获取整型部分转换  
+    if (parseInt(integerNum, 10) > 0) {
+        var zeroCount = 0;
+        var IntLen = integerNum.length;
+        for (var i = 0; i < IntLen; i++) {
+            var n = integerNum.substr(i, 1);
+            var p = IntLen - i - 1;
+            var q = p / 4;
+            var m = p % 4;
+            if (n == '0') {
+                zeroCount++;
+            } else {
+                if (zeroCount > 0) {
+                    chineseStr += cnNums[0];
+                }
+                //归零  
+                zeroCount = 0;
+                chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
+            }
+            if (m == 0 && zeroCount < 4) {
+                chineseStr += cnIntUnits[q];
+            }
+        }
+        chineseStr += cnIntLast;
+    }
+    //小数部分  
+    if (decimalNum != '') {
+        var decLen = decimalNum.length;
+        for (var i = 0; i < decLen; i++) {
+            var n = decimalNum.substr(i, 1);
+            if (n != '0') {
+                chineseStr += cnNums[Number(n)] + cnDecUnits[i];
+            }
+        }
+    }
+    if (chineseStr == '') {
+        chineseStr += cnNums[0] + cnIntLast + cnInteger;
+    } else if (decimalNum == '') {
+        chineseStr += cnInteger;
+    }
+    return chineseStr;
 }
 /**
  * 
@@ -909,6 +911,7 @@ function GetYearNow() {
     var now = year;
     return now;
 }
+
 function getNow(s) {
     return s < 10 ? '0' + s : s;
 }
@@ -916,25 +919,51 @@ function getNow(s) {
 /**
  * 首字母大写
  */
-String.prototype.FirstUpperCase = function(){
-	return this.substring(0, 1).toUpperCase() + this.substring(1)
+String.prototype.FirstUpperCase = function() {
+    return this.substring(0, 1).toUpperCase() + this.substring(1)
 }
 
-$(function(){
-	$('.back_history').click(function(){
-		window.history.back(-1);
-	});
+$(function() {
+    $('.back_history').click(function() {
+        window.history.back(-1);
+    });
 });
 //根据指定日期获取上个月
-function GetLastMonth(dt)
-{
+function GetLastMonth(dt) {
     var arr = dt.split('-');
     var year = parseInt(arr[0]);
     var month = parseInt(arr[1]) - 1;
-    if(month <= 0){
+    if (month <= 0) {
         year = year - 1;
         month = 12;
     }
     var res = getNow(year) + "-" + getNow(month);
     return res;
+}
+
+//是否是图片
+function IsImage(value) {
+    if (!value) {
+        return false;
+    }
+    return /.(bmp|gif|jpg|jpeg|png)$/.test(value.toLowerCase());
+}
+
+//多图上传 图片删除
+function delImg(obj) {
+    var pObj = $(obj).parents('li');
+    layer_confirm('确定删除吗？', function() {
+        pObj.remove();
+    });
+}
+//设置 图片
+function setImageHtml(value) {
+    var htmls =
+        '<li>' +
+        '<div class="img-box click-bor">' +
+        '  <img src="' + value + '" width="120" height="90" />' +
+        '  <a class="btn default btn-del black" onclick="delImg(this)"><i class="fa fa-trash-o"></i>删除</a>' +
+        '</div>' +
+        '</li>';
+    return htmls;
 }

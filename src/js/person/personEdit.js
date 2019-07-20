@@ -29,11 +29,12 @@ var data = {
     workData: [], //职位
 };
 
-layui.use(['element', 'form', 'table', 'laydate'], function() {
+layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
     var element = layui.element,
         table = layui.table,
         laydate = layui.laydate,
-        form = layui.form;
+        form = layui.form,
+        upload = layui.upload;
 
     var formBasic = $('#formBasic'),
         formTraining = $('#formTraining');
@@ -43,6 +44,9 @@ layui.use(['element', 'form', 'table', 'laydate'], function() {
         seltRecruitment = $('#seltRecruitment'),
         seltArrival = $('#seltArrival'),
         seltJob = $('#seltJob');
+
+    var attachmentPanel = $('#attachmentPanel'),
+        photoPathPanel = $('#photoPathPanel');
 
     var id = GetPara('id');
     id = !id ? '' : id;
@@ -91,6 +95,44 @@ layui.use(['element', 'form', 'table', 'laydate'], function() {
     laydate.render({
         elem: '#endDate'
     });
+
+    //成长管理 图片上传
+    upload.render({
+        elem: '#attachmentBtn',
+        url: Serv.ImageUrl,
+        accept: 'images',
+        acceptMime: 'image/*',
+        headers: Serv.GetHeaders(),
+        before: function(obj) {
+            layer_load();
+        },
+        done: function(result) {
+            layer_load_lose();
+            attachmentPanel.append(setImageHtml(result.data[0]));
+        },
+        error: function() {
+            layer_load_lose();
+        }
+    });
+    //个人照片 图片上传
+    upload.render({
+        elem: '#photoPathBtn',
+        url: Serv.ImageUrl,
+        accept: 'images',
+        acceptMime: 'image/*',
+        headers: Serv.GetHeaders(),
+        before: function(obj) {
+            layer_load();
+        },
+        done: function(result) {
+            layer_load_lose();
+            photoPathPanel.append(setImageHtml(result.data[0]));
+        },
+        error: function() {
+            layer_load_lose();
+        }
+    });
+
 
     if (id.IsNum()) {
         getPerson(id);
@@ -159,6 +201,12 @@ layui.use(['element', 'form', 'table', 'laydate'], function() {
             laydata.field.liveCounty = liveAreaArr[2] || '';
             laydata.field.liveArea = formBasic.find('input[name="liveArea"]').val();
         }
+
+        var photoPathData = [];
+        photoPathPanel.find('img').each(function() {
+            photoPathData.push($(this).attr('src'));
+        });
+        laydata.field.photoPath = photoPathData.join(',');
 
         //家庭成员
         var hasFamily = validateFamily($('#familyPanel').find('div.layui-table-body'), true);
@@ -245,11 +293,18 @@ layui.use(['element', 'form', 'table', 'laydate'], function() {
         }
         laydata.field.employeeId = data.employeeId;
 
+        var attData = [];
+        attachmentPanel.find('img').each(function() {
+            attData.push($(this).attr('src'));
+        });
+        laydata.field.attachment = attData.join(',');
+
         Serv.Post('gc/training/edit', laydata.field, function(result) {
             layer_load_lose();
             if (result.succeed) {
                 formTraining.find('input[name="id"]').val(result.data);
                 layer_confirm('操作成功，确定继续吗？', function() {
+                    attachmentPanel.find('li').remove();
                     form.val("formTraining", data.training);
                 });
             } else {
@@ -291,6 +346,15 @@ layui.use(['element', 'form', 'table', 'laydate'], function() {
                     liveAreaCode = result.liveProvince + ',' + result.liveCity + ',' + result.liveCounty;
                 }
                 formBasic.find('input[name="liveArea"]').attr('data-areacode', liveAreaCode).val(result.liveArea);
+
+                if (result.photoPath) {
+                    var imgArr = result.photoPath.split(',');
+                    $.each(imgArr, function(i, item) {
+                        photoPathPanel.append(setImageHtml(item));
+                    });
+
+                    imagesViewer();
+                }
 
                 if (result.family) {
                     data.familyData = JSON.parse(result.family);
@@ -906,4 +970,10 @@ layui.use(['element', 'form', 'table', 'laydate'], function() {
         return html;
     }
 
+    //图片预览
+    function imagesViewer() {
+        $(".v-images").viewer({
+            title: false
+        });
+    }
 });
