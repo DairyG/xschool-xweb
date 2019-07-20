@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card-body bgwhite">
+				<div class="layui-tab margin-t-0">
+					<ul class="layui-tab-title">
+						<li class="fontsize-16">请款申请</li>
+						<span class="layui-btn layui-btn-sm fr" onclick="history.back(-1)">返回</span>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show" tab-name="内容设计">
+							<ul class="process_step">
+								<li class="active padding-l-0"><i>1</i><span>发起申请</span></li>
+								<li><i>2</i><span>部门管理员审批</span></li>
+								<li><i>3</i><span>抄送财务</span></li>
+								<li class="padding-r-0"><i>4</i><span>流程完成</span></li>
+							</ul>
+							<form class="layui-form layui-form2">
+								<div class="layui-row">
+								  表单数据
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item">
+										<div class="layui-input-block text-right">
+											<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确定</button>
+											<span class="layui-btn" onclick="history.back(-1)">返回</span>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var subjectId = GetPara('subjectId');
+			layui.use(['table','laydate','form'], function() {
+				var table = layui.table,
+					laydate = layui.laydate
+					form = layui.form;
+					
+				laydate.render({elem:'.date'});
+				form.on('radio(pay_num)',function(obj){
+					if(obj.value == '1'){
+						$("#pay_table_item").hide();
+					} else {
+						$("#pay_table_item").show();
+					}
+				});
+				if(subjectId>0)
+				{
+					//绑定数据
+					BindFun(subjectId);
+				}
+			});
+			function BindFun(subjectId)
+			{
+				Serv.Get('lc/WorkflowMain/GetWorkFlowForm/'+subjectId,null,function(resultData){
+					console.log(resultData.data);
+
+				})
+
+			}
+		</script>
+	</body>
+</html>
