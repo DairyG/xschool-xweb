@@ -1,99 +1,6 @@
 var chnNumChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
 var kpiName = ['monthly', 'quarter', 'halfYear', 'annual'];
 
-var monthlyCol0 = [{
-    'field': 'userName',
-    'title': '人员',
-    minWidth: '80'
-}];
-for (var index = 1; index <= 12; index++) {
-    var colData = {
-        'field': 'score' + index,
-        'title': chnNumChar[index] + '月',
-        templet: function(d, colIndex) {
-            var keyStatus = 'status' + colIndex,
-                keyScore = 'score' + colIndex;
-            if (d[keyStatus] == -2) {
-                return '<span class="text-85">无效</span>';
-            } else if (d[keyStatus] == -1) {
-                return '<span class="text-85">未开始</span>';
-            } else if (d[keyStatus] == 1) {
-                return '<a href="人员考核详情.html" class="text-add">' + d[keyScore] + '</a>';
-            } else {
-                return '<a href="人员考核.html" class="text-add">考核</a>';
-            }
-        }
-    };
-    monthlyCol0.push(colData);
-}
-monthlyCol0.push({
-    'field': 'pj',
-    'title': '平均数',
-    minWidth: '80',
-    templet: function(d) {
-        var value = 0;
-        for (var i = 1; i <= 12; i++) {
-            value += d['score' + i];
-        }
-        return value;
-    }
-});
-var monthlyCol = [monthlyCol0];
-
-var quarterCol0 = [{
-    'field': 'userName',
-    'title': '人员',
-    minWidth: '80'
-}];
-for (var index = 1; index <= 4; index++) {
-    var colData = {
-        'field': 'score' + index,
-        'title': '第' + chnNumChar[index] + '季度',
-        templet: function(d, colIndex) {
-            var keyStatus = 'status' + colIndex,
-                keyScore = 'score' + colIndex;
-            if (d[keyStatus] == -2) {
-                return '<span class="text-85">无效</span>';
-            } else if (d[keyStatus] == -1) {
-                return '<span class="text-85">未开始</span>';
-            } else if (d[keyStatus] == 1) {
-                return '<a href="人员考核详情.html" class="text-add">' + d[keyScore] + '</a>';
-            } else {
-                return '<a href="人员考核.html" class="text-add">考核</a>';
-            }
-        }
-    };
-    quarterCol0.push(colData);
-}
-
-var quarterCol = [quarterCol0];
-var halfYearCol = [
-    [{
-            'field': 'userName',
-            'title': '人员'
-        },
-        {
-            'field': 'score1',
-            'title': '上半年'
-        },
-        {
-            'field': 'score2',
-            'title': '下半年'
-        },
-    ]
-];
-var annualCol = [
-    [{
-            'field': 'bm',
-            'title': '人员'
-        },
-        {
-            'field': 'm1',
-            'title': '2019年'
-        },
-    ]
-];
-
 var paramModel = {
     currTab: 'monthly',
     monthlyHasFirst: false,
@@ -129,6 +36,92 @@ var paramModel = {
         kpiType: 2,
     },
 };
+
+var monthlyCol0 = [{
+    field: 'userName',
+    title: '人员',
+    minWidth: '80'
+}];
+for (var index = 1; index <= 12; index++) {
+    var colData = {
+        field: 'score' + index,
+        title: chnNumChar[index] + '月',
+        templet: function(d, colIndex) {
+            var keyStatus = 'status' + colIndex,
+                keyScore = 'score' + colIndex;
+            return getStatusTxt(d[keyStatus], d[keyScore], d);
+        }
+    };
+    monthlyCol0.push(colData);
+}
+monthlyCol0.push({
+    field: 'aveScore',
+    title: '平均数',
+    minWidth: '80',
+    templet: function(d) {
+        var value = 0;
+        for (var i = 1; i <= 12; i++) {
+            value += d['score' + i];
+        }
+        return value;
+    }
+});
+var monthlyCol = [monthlyCol0];
+
+var quarterCol0 = [{
+    field: 'userName',
+    title: '人员',
+    minWidth: '80'
+}];
+for (var index = 1; index <= 4; index++) {
+    var colData = {
+        field: 'score' + index,
+        title: '第' + chnNumChar[index] + '季度',
+        templet: function(d, colIndex) {
+            var keyStatus = 'status' + colIndex,
+                keyScore = 'score' + colIndex;
+
+            return getStatusTxt(d[keyStatus], d[keyScore], d);
+        }
+    };
+    quarterCol0.push(colData);
+}
+var quarterCol = [quarterCol0];
+
+var halfYearCol0 = [{
+    field: 'userName',
+    title: '人员',
+    minWidth: '80'
+}];
+for (var index = 1; index <= 2; index++) {
+    var colData = {
+        field: 'score' + index,
+        title: index == 1 ? '上半年' : '下半年',
+        templet: function(d, colIndex) {
+            var keyStatus = 'status' + colIndex,
+                keyScore = 'score' + colIndex;
+            return getStatusTxt(d[keyStatus], d[keyScore], d);
+        }
+    };
+    halfYearCol0.push(colData);
+}
+var halfYearCol = [halfYearCol0];
+
+var annualCol = [
+    [{
+            field: 'userName',
+            title: '人员',
+            minWidth: '80'
+        },
+        {
+            field: 'score1',
+            title: paramModel.annual.year + '年',
+            templet: function(d, colIndex) {
+                return getStatusTxt(d.status1, d.score1, d);
+            }
+        },
+    ]
+];
 
 layui.use(['laytpl', 'table', 'element', 'form'], function() {
     var table = layui.table,
@@ -202,7 +195,23 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
     });
     form.on('select(annualYear)', function(data) {
         paramModel.annual.year = data.value;
-        annualPager.search();
+        annualCol = [
+            [{
+                    field: 'userName',
+                    title: '人员',
+                    minWidth: '80'
+                },
+                {
+                    field: 'score1',
+                    title: paramModel.annual.year + '年',
+                    templet: function(d, colIndex) {
+                        return getStatusTxt(d.status1, d.score1, d);
+                    }
+                },
+            ]
+        ];
+        initPager.initAnnual();
+        // annualPager.search();
     });
 
     function search() {
@@ -320,29 +329,62 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
             }
         },
         initAnnual: function() {
-            if (!paramModel.annualHasFirst) {
-                paramModel.annualHasFirst = true;
-                annualPager = Pager(
-                    table, //lay-ui的table控件
-                    '人员考核管理-年度', //列表名称
-                    'annualLst', //绑定的列表Id
-                    'annualBar', //绑定的工具条Id
-                    annualCol, //表头的显示行
-                    'gc/kpievaluation/querymanage', //action url 只能post提交
-                    search, //获取查询条件的函数
-                    null, //如果在显示之前需要对数据进行整理需要实现，否则传null
-                    null, //有选择行才能有的操作，实现该方法,否则传null
-                    null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
-                    function() {
-                        $('#annualYear').val(paramModel.annual.year);
-                        form.render('select');
-                    },
-                    'full-100'
-                );
-            }
+            annualPager = Pager(
+                table, //lay-ui的table控件
+                '人员考核管理-年度', //列表名称
+                'annualLst', //绑定的列表Id
+                'annualBar', //绑定的工具条Id
+                annualCol, //表头的显示行
+                'gc/kpievaluation/querymanage', //action url 只能post提交
+                search, //获取查询条件的函数
+                null, //如果在显示之前需要对数据进行整理需要实现，否则传null
+                null, //有选择行才能有的操作，实现该方法,否则传null
+                null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+                function() {
+                    $('#annualYear').val(paramModel.annual.year);
+                    form.render('select');
+                },
+                'full-100'
+            );
+
+            // if (!paramModel.annualHasFirst) {
+            //     paramModel.annualHasFirst = true;
+            //     annualPager = Pager(
+            //         table, //lay-ui的table控件
+            //         '人员考核管理-年度', //列表名称
+            //         'annualLst', //绑定的列表Id
+            //         'annualBar', //绑定的工具条Id
+            //         annualCol, //表头的显示行
+            //         'gc/kpievaluation/querymanage', //action url 只能post提交
+            //         search, //获取查询条件的函数
+            //         null, //如果在显示之前需要对数据进行整理需要实现，否则传null
+            //         null, //有选择行才能有的操作，实现该方法,否则传null
+            //         null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+            //         function() {
+            //             $('#annualYear').val(paramModel.annual.year);
+            //             form.render('select');
+            //         },
+            //         'full-100'
+            //     );
+            // }
         }
     };
 
     initPager.initMonthly();
 
 });
+
+//获取状态文本
+function getStatusTxt(status, score, model) {
+    if (status == 0) {
+        return '<span class="text-85">未开始</span>';
+    } else if (status == -1) {
+        return '<span class="text-85">无效</span>';
+    } else if (status == 1) {
+        return '<a href="人员考核详情.html" class="text-add">' + d[keyScore] + '</a>';
+    } else if (status == 10 || d[keyStatus] == 11) {
+        return '<a href="人员考核.html" class="text-add">考核</a>';
+    } else {
+        return '<span class="text-85">未知</span>';
+    }
+}

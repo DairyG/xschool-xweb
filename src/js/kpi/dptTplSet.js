@@ -41,6 +41,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
         var showValue = (paraJson.companyName.length > 9 ? (paraJson.companyName.substr(0, 9) + '...') : paraJson.companyName) + ' - ' +
             paraJson.dptName;
         var userSelVal = getUserPopModel();
+        userSelVal.sel_type = 'org';
         userSelVal.department.push({
             id: paraJson.dptId,
             name: paraJson.dptName,
@@ -264,6 +265,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
                                 company_name: item.companyName
                             };
                             var userSelVal = getUserPopModel();
+                            userSelVal.sel_type = 'dpt_position';
                             userSelVal.dpt_position.push(tempModel);
                             setAuit(tempModel, userSelVal, valObj);
                         }

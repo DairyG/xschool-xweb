@@ -144,11 +144,16 @@
                     <div class="layui-form-item layui-col-md6 margin-b-20">
                       <label class="layui-form-label">公司logo</label>
                       <div class="layui-input-block">
-                        <input type="hidden" name="logo" />
-                        <label class="file-upload">
-                          <span>+</span>
-                          <input type="file" />
-                        </label>
+                        <div class="layui-upload-list fl" id="logoImage" style="display:none">
+                          <img class="layui-upload-img" height="60" />
+                        </div>
+                        <input type="hidden" id="logoValue" name="logo" />
+                        <div class="fl">
+                          <button type="button" id="companyLogo" class="layui-btn layui-btn-primary" style="margin:20px 0 0 20px">
+                            <i class="layui-icon"></i>
+                            上传Logo
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

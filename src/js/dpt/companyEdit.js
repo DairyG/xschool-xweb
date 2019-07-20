@@ -15,11 +15,12 @@ var data = {
     companyData: [],
 };
 
-layui.use(['element', 'laydate', 'laytpl', 'form'], function() {
+layui.use(['element', 'laydate', 'laytpl', 'form', 'upload'], function() {
     var element = layui.element,
         laydate = layui.laydate,
         laytpl = layui.laytpl,
-        form = layui.form;
+        form = layui.form,
+        upload = layui.upload;
 
     resetCompanyData();
 
@@ -66,6 +67,21 @@ layui.use(['element', 'laydate', 'laytpl', 'form'], function() {
 
         bankPanel.html(getBankContent());
     }
+
+    upload.render({
+        elem: '#companyLogo',
+        url: Serv.ImageUrl,
+        accept: 'images',
+        acceptMime: 'image/*',
+        before: function(obj) {
+            layer_load();
+        },
+        done: function(result) {
+            layer_load_lose();
+            $('#logoValue').val(result.data[0]);
+            $('#logoImage').show().find('img').attr('src', result.data[0]);
+        }
+    });
 
     laydate.render({
         elem: '#registeredTime'
@@ -160,6 +176,10 @@ layui.use(['element', 'laydate', 'laytpl', 'form'], function() {
 
                 data.companyId = result.id;
                 data.level = result.level;
+
+                if (result.logo) {
+                    $('#logoImage').show().find('img').attr('src', result.logo);
+                }
 
                 getCompanyTpl(result.pid);
 

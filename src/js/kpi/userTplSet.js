@@ -38,6 +38,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
             paraJson.dptName + ' - ' + paraJson.userName;
 
         var userSelVal = getUserPopModel();
+        userSelVal.sel_type = 'org';
         userSelVal.user.push({
             id: paraJson.employeeId,
             name: paraJson.userName,
@@ -264,6 +265,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
                                 company_name: item.companyName
                             };
                             var userSelVal = getUserPopModel();
+                            userSelVal.sel_type = 'dpt_position';
                             userSelVal.dpt_position.push(tempModel);
                             setAuit(tempModel, userSelVal, valObj);
                         }

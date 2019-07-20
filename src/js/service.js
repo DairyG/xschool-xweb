@@ -40,9 +40,9 @@ function getUserPopModel() {
 }
 
 var Serv = {
-
-    //ServiceUrl: "http://114.116.54.157:8000/api/v1/",
-    ServiceUrl: "http://localhost:8000/api/v1/",
+    ServiceUrl: "http://114.116.54.157:8000/api/v1/",
+    // ServiceUrl: "http://localhost:8000/api/v1/",
+    ImageUrl: "http://114.116.54.157:8000/api/v1/imger/uploader/upload",
     UCenterUrl: "",
     // Code: "JDWL",//站点名称
     Token: "", //用户的Token

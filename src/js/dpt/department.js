@@ -347,6 +347,14 @@ function deleteBtn(btn) {
     var jobId = $(btn).attr("jobId");
     var empId = $(btn).attr("epId");
     var dptId = $("input[name='Id']").val();
+
+    var btnObj = $(btn);
+    layer_confirm('确定删除该记录吗？', function() {
+        delDptJob(dptId, jobId, empId, btnObj);
+    });
+}
+
+function delDptJob(dptId, jobId, empId, btnObj) {
     Serv.Post("uc/Department/DeleteDptJobBinding", {
         companyid: employee.companyId,
         dptId: dptId,
@@ -355,13 +363,12 @@ function deleteBtn(btn) {
     }, function(response) {
         if (response.code == "00") {
             //$(btn).parent().remove();
-            DptJobs.splice($(btn).attr("index"), 1);
+            DptJobs.splice(btnObj.attr("index"), 1);
             PushJobHtml();
         } else {
             layer_alert(response.message);
         }
     });
-
 }
 
 function PushJobHtml() {
