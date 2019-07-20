@@ -583,7 +583,7 @@
 									</div>
 								</div>
 								<div class="layui-row text-right">
-									<a class="layui-btn layui-btn-danger" href="javascript:void(0)" onclick="save()" >确认</a>
+									<a class="layui-btn layui-btn-danger" href="javascript:void(0)" class="link_Save" onclick="save()" >确认</a>
 									<span class="layui-btn" onclick="history.back(-1)">返回</span>
 								</div>
 							</form>
@@ -940,9 +940,18 @@
 					return false;
 				}
 				console.log(data);
+				layer.load();
+				$(".link_Save").attr({"disabled":"true"});
 				Serv.Post('lc/Subject/Add',data,function(resultData){
 					console.log(resultData);
-
+					$(".link_Save").attr({"disabled":"fasle"});
+					layer.closeAll('loading');			
+					if(resultData.succeed)
+					{
+						layer.msg('成功...', {icon:1});
+					}else{
+						layer.msg('失败:'+resultData.message, {icon:2});
+					}
 				},true)
 			}
 			
