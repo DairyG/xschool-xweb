@@ -9,6 +9,8 @@ function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parse
                 return searchFunc();
             }
         }(),
+        limits: [20, 30, 40, 50],
+        limit: 20,
         title: title,
         headers: Serv.GetHeaders(),
         page: true, //开启分页

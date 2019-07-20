@@ -3,16 +3,39 @@
  * @param string nameDom 显示文本框Id，例："ztreeName"
  * @param string boxDom zTreeDom对象的父级Id，如："menuContent"
  * @param string zTreeDom zTree对象Id，如："treeDemo"
- * @param json option 参数设置，如：{"text":"name","key":"id","parentKey":"pId"}
- * @param string iscompany 是否可以选择公司，1-是，0-否
+ * @param json option 参数
+ * parameter 参数说明：
+    {
+        //字段自定义
+        "field": { 
+            "text": "name",
+            "key": "id",
+            "parentKey": "pId"
+        },
+        //数据加载方式：ompany=公司，dpt=部门
+        dataMode: "ompany/dpt",
+        //是否可以选择公司
+        iscompany：0/1
+    }
  * @param function callBack 回调函数
  */
-function ZTreeRadio(nameDom, menuContent, zTreeDom, option, iscompany, callBack) {
+function ZTreeRadio(nameDom, menuContent, zTreeDom, parameter, callBack) {
+    var option = {
+        field: {
+            text: 'dptName',
+            key: 'id',
+            parentKey: 'pid'
+        },
+        dataMode: 'dpt',
+        iscompany: 0
+    }
+    $.extend(true, option, parameter);
+
     var zTreeObj;
     var options = {
-        text: option.text || 'dptName',
-        key: option.key || 'id',
-        parentKey: option.parentKey || 'pid',
+        text: option.field.text,
+        key: option.field.key,
+        parentKey: option.field.parentKey,
         nameDOM: $('#' + nameDom),
         menuContentDOM: $('#' + menuContent),
         zTreeDOM: $('#' + zTreeDom),
@@ -79,34 +102,38 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom, option, iscompany, callBack)
 
     //用于捕获勾选或取消勾选之前的事件回调函数
     function beforeClick(treeId, treeNode) {
-        if (iscompany == 0 && treeNode.id < 0) {
+        if (option.dataMode == 'dpt' && option.iscompany == 0 && treeNode.id < 0) {
             return false;
         }
     }
     return {
         reload: function(data) {
             var companys = window.globCache.getCompany();
-            var dpts = window.globCache.getDepartment();
-            var array = $.map(companys, function(item) {
-                return {
-                    id: item.id * -1,
-                    dptName: item.companyName,
-                    companyId: item.id,
-                    pid: 0,
-                    open: true
-                };
-            });
-            var dptArray = $.map(dpts, function(item) {
-                if (item.pid == 0) {
-                    item.pid = item.companyId * -1;
+            var array = [];
+            if (option.dataMode == 'dpt') {
+                var dpts = window.globCache.getDepartment();
+                var array = $.map(companys, function(item) {
+                    return {
+                        id: item.id * -1,
+                        dptName: item.companyName,
+                        companyId: item.id,
+                        pid: 0,
+                        open: true
+                    };
+                });
+                var dptArray = $.map(dpts, function(item) {
+                    if (item.pid == 0) {
+                        item.pid = item.companyId * -1;
+                        return item;
+                    }
                     return item;
-                }
-                return item;
-            });
-            $.each(dptArray, function(index, item) {
-                array.push(item);
-            });
-
+                });
+                $.each(dptArray, function(index, item) {
+                    array.push(item);
+                });
+            } else {
+                array = companys;
+            }
             zTreeObj = $.fn.zTree.init(options.zTreeDOM, setting, array);
             var nodes = zTreeObj.getNodes();
             if (nodes.length > 0) {
@@ -115,6 +142,9 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom, option, iscompany, callBack)
         },
         showZTree: function() {
             showZTree();
+        },
+        hideZTree: function() {
+            hideZTree();
         },
         setCheck: function() {
             setCheck();

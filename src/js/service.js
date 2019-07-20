@@ -40,8 +40,8 @@ function getUserPopModel() {
 }
 
 var Serv = {
-    ServiceUrl: "http://114.116.54.157:8000/api/v1/",
-    //ServiceUrl: "http://localhost:8000/api/v1/",
+    // ServiceUrl: "http://114.116.54.157:8000/api/v1/",
+    ServiceUrl: "http://localhost:8000/api/v1/",
     UCenterUrl: "",
     // Code: "JDWL",//站点名称
     Token: "", //用户的Token
@@ -104,20 +104,20 @@ var Serv = {
                 layer.closeAll('loading');
                 console.log(data);
                 // layer.closeAll();
-                // if (data.status == 400) {
-                //     var json = JSON.parse(data.responseText);
-                //     if (json.error == 'invalid_client') {
-                //         layer.alert('用户未授权', {
-                //             icon: 2,
-                //             title: '登陆提示'
-                //         });
-                //     } else {
-                //         layer.alert(json.error_description, {
-                //             icon: 2,
-                //             title: '登陆提示'
-                //         });
-                //     }
-                // }
+                if (data.status == 400) {
+                    var json = JSON.parse(data.responseText);
+                    if (json.error == 'invalid_client') {
+                        layer.alert(json.error_description, {
+                            icon: 2,
+                            title: '登陆提示'
+                        });
+                    } else {
+                        layer.alert(json.error_description, {
+                            icon: 2,
+                            title: '登陆提示'
+                        });
+                    }
+                }
                 // console.log("err:", data);
             }
         });

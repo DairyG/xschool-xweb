@@ -4,19 +4,27 @@ var dataCol = [
             title: '序号'
         },
         {
+            field: 'dptJob',
+            title: '所属部门|职位',
+            templet: function(d) {
+                return d.dptName + '|' + d.jobName;
+            },
+            minWidth: 80
+        },
+        {
             field: 'dptName',
-            title: '部门',
+            title: '管理岗位',
             templet: function(d) {
                 return $.map(d.bindings, function(item) {
                     return item.dptName
                 }).join('|');
             },
-			minWidth:80
+            minWidth: 80
         },
         {
             field: 'jobName',
             title: '职位',
-            width: 80,
+            minWidth: 80,
             templet: function(d) {
                 return $.map(d.bindings, function(item) {
                     return item.jobName
@@ -26,7 +34,7 @@ var dataCol = [
         {
             field: 'userName',
             title: '姓名',
-            width: 80
+            minWidth: 80
         },
         {
             field: 'status',
@@ -34,7 +42,7 @@ var dataCol = [
             templet: function(d) {
                 return ['未入职', '试用', '转正', '离职'][d.status];
             },
-			width: 100
+            minWidth: 100
         },
         {
             field: 'isOpenAccount',
@@ -43,7 +51,7 @@ var dataCol = [
                 return d.isOpenAccount ? '<span class="text-span">已开通</span>' :
                     '<span class="text-del">未开通</span>';
             },
-			width: 120
+            minWidth: 120
         },
         {
             field: 'employeeNo',
@@ -56,7 +64,7 @@ var dataCol = [
         {
             field: 'gender',
             title: '性别',
-            width: 60,
+            minWidth: 60,
             templet: function(d) {
                 return ["", "男", "女"][d.gender]
             }
@@ -64,12 +72,12 @@ var dataCol = [
         {
             field: 'linkPhone',
             title: '电话',
-            width: 120
+            minWidth: 120
         },
         {
             field: 'officePhone',
             title: '办公电话',
-            width: 120
+            minWidth: 120
         },
         {
             title: '操作',
@@ -184,9 +192,10 @@ layui.use(['table', 'element', 'form'], function() {
         var selObj = $(this).parents('tr').find('select[name="userJob"]');
         var obj = $(this);
         user_popup(this, 'department', 1, false, function(result) {
+            console.log(result)
             if (result != null && result.department.length > 0) {
                 var cName = result.department[0].company_name;
-                obj.val((cName.length > 9 ? (cName.substr(0, 9) + '...') : +cName) + ' - ' + result.department[0].name);
+                obj.val((cName.length > 9 ? (cName.substr(0, 9) + '...') : cName) + ' - ' + result.department[0].name);
                 getJob(result.department[0].company_id, selObj, '');
             }
         });
