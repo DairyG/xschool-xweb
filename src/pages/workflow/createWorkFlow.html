@@ -39,7 +39,7 @@
 					</ul>
 					<div class="layui-tab-content">
 						<div class="layui-tab-item layui-show" tab-name="基本信息">
-							<form class="layui-form layui-form2">
+							<form class="layui-form layui-form2" id="form" lay-filter="form">
 								<div class="layui-row">
 									<div class="layui-form-item layui-col-md12 margin-b-20 layui-form-item1">
 										<label class="layui-form-label"><span class="text-red"> *</span>流程名称</label>
@@ -50,9 +50,9 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label"><span class="text-red"> *</span>流程类型</label>
 										<div class="layui-input-block">
-											<input type="radio" name="FlowTypeId" title="事务流程" lay-skin="primary" checked />
-											<input type="radio" name="FlowTypeId" title="费用流程" lay-skin="primary" />
-
+											<select id="select_FlowTypeId">
+											
+											</select>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md6 margin-b-20">
@@ -86,7 +86,7 @@
 									<div class="layui-form-item layui-col-md6 margin-b-20">
 										<label class="layui-form-label">审批意见</label>
 										<div class="layui-input-block">
-											<input type="checkbox" title="必填" lay-skin="primary" name="PassInfo" value='1' />
+											<input id="PassInfo" type="checkbox" title="必填" lay-skin="primary" name="PassInfo" value='1' />
 										</div>
 									</div>
 								</div>
@@ -331,17 +331,66 @@
 						"../../form/js/jquery.mCustomScrollbar.min.js",
 						"../../form/js/formbuilder.js");
 			});
-			var layer_linePop,form,laytpl;
+			var layer_linePop,laytpl;
 			var  Id = GetPara('Id');
-			alert(Id);
 			layui.use(['table','element','form','laytpl'], function() {
 				var table = layui.table,
 					element = layui.element;
-					form = layui.form;
+				window.form = layui.form;
 				laytpl = layui.laytpl;
-					
+				loadFlowTypes();
 				loadSubjectTypes();
+
+				if(Id>0)
+				{
+					//编辑绑定数据
+					Serv.Get('lc/Subject/GetSubjectById',{Id:Id},function(data){
+						$("#txtSubjectName").val(data.subjectName);
+						$("#select_FlowTypeId").val(data.flowTypeId);
+						$("#select_SubjectTypeId").val(data.subjectTypeId);
+						if(data.passInfo){
+							$("#PassInfo").prop('checked',true);
+						}
+						$("#txtRemark").val(data.remark);
+						//可见范围
+						var subjectRuleRangeList = formart_sels(data.subjectRuleRangeList);
+						var html = getSelStr(subjectRuleRangeList);
+						$('#RangeList').val(html);
+						$('#RangeList').after('<input type="hidden" name="sels" value=\'' + JSON.stringify(subjectRuleRangeList) + '\'>');
+						M = JSON.parse(data.formAttribute);
+						F = JSON.parse(data.formContent);
+						//节点
+						$('.process_box li').eq(1).remove();
+						$('.process_box li').eq(1).remove();
+						for(var i = 0;i < data.subjectStepFlowList.length;i++){
+							var item = data.subjectStepFlowList[i];
+							if(item.passType == 1){
+								//或签、会签
+
+							} else if(item.passType == 2){
+
+							} else {
+
+							}
+						}
+					},false);
+				}
+				form.render();
 			});
+			function add_item(type,data,is_init){
+				var tpl_html = $("#"+type+"_html").html();
+				var index = $('#process_box li').length;
+				var p_li = $("input[name='add_item_point']:checked").parents('li');
+				data = data == undefined ? {index:index+1} : data;
+				is_init = is_init == undefined ? false : is_init;
+				laytpl(tpl_html).render(data, function(html){
+					$(p_li).after('<li>'+html+'</li>');
+					if(!is_init){
+						closePop();
+						form.render();
+					}
+				});
+			}
 			function add_group(){
 				layer_linePop = layer.open({
 					type: 1,
@@ -385,6 +434,7 @@
 					form.render();
 				});
 			}
+			
 			function on_select(obj){
 				var to_obj = $(obj).closest('.layui-card-body').find('.show_div');
 				user_popup(to_obj,'user,company,dpt_position,position,department');
@@ -402,6 +452,27 @@
 			function closePop(){
 				layer.close(layer_linePop);
 			}
+
+			//绑定流程类别
+			function loadFlowTypes()
+			{
+				Serv.Get('lc/SubjectType/GetFlowTypeList',null,function(data){
+					$("#select_FlowTypeId").empty();
+						$.each(data,function(index,item){
+						
+							if(index==0)
+							{
+								$("#select_FlowTypeId").append("<option value=''>请选择分组</option>");
+							}
+                        var opt=$("<option value="+item.key+">"+item.value+"</option>")
+                        $("#select_FlowTypeId").append(opt);
+					   });
+					   form.render('select');
+					console.log(data);
+				},false);
+			}
+
+			
 			//绑定流程组别
 			function loadSubjectTypes()
 			{
@@ -421,33 +492,19 @@
 				},false);
 				
 			}
-			if(Id>0)
-			{
-				//编辑绑定数据
-				Serv.Get('lc/Subject/GetSubjectById',{Id=Id},function(data){
-					// $("#select_SubjectTypeId").empty();
-					//    form.render('select');
-					console.log(data);
-
-
-				},false);
-		
-			}
-			}
-
 
 			function save()
 			{
 				var SubjectName=$("#txtSubjectName").val();
 				var Remark=$("#txtRemark").val();
-				var FlowTypeId=1;//$("input[name='FlowTypeId']:checked").val();
+				var FlowTypeId=$("#select_FlowTypeId").val();;
 				var PassInfo = $("input[name='PassInfo']").prop('checked');
 				var IcoUrl="";
 				var SubjectTypeId=$("#select_SubjectTypeId").val();
 				var FormContent = JSON.stringify(F);
 				var FormAttribute = JSON.stringify(M);
 				var RangeList = $('#RangeList').siblings('input').val();
-				var subjectRuleRangeList = RangeList ? formart_sels(RangeList,1) : [];
+				var subjectRuleRangeList = RangeList ? parse_sels(RangeList,1) : [];
 				
 				var subjectStepFlowList = [];
 				$('.process_box li').each(function(i,obj){
@@ -487,7 +544,7 @@
 					}
 					d.passType = PassType;
 					var RulePassList = $(obj).find('.show_div input[name="sels"]').val();
-					d.subjectRulePassList = RulePassList ? formart_sels(RulePassList,2) : [];
+					d.subjectRulePassList = RulePassList ? parse_sels(RulePassList,2) : [];
 					if(PassType == 3){//复盘节点 - 并且至少选择了一项
 						var s = {
 							businessType:2,
@@ -513,7 +570,7 @@
 				var data={
 					"SubjectName":SubjectName,
 					"Remark":Remark,
-					"FlowTypeId":parseInt(FlowTypeId),
+					"FlowTypeId":FlowTypeId,
 					"PassInfo":PassInfo,
 					"IcoUrl":IcoUrl,
 					"SubjectTypeId":SubjectTypeId,

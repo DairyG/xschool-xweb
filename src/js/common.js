@@ -478,27 +478,7 @@ function user_popup(obj = null, allow_sels, num = 0, is_close_other = false, cal
             var win = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
             var sels = win.sels;
             if (typeof obj == 'object') {
-                var html = "";
-                var L1 = sels.user.length,
-                    L2 = sels.department.length,
-                    L3 = sels.company.length,
-                    L4 = sels.position.length,
-                    L5 = sels.dpt_position.length;
-                if ((L1 + L2 + L3 + L4 + L5) > 1) {
-                    html = "等" + (L1 + L2 + L3 + L4 + L5) + '项';
-                }
-                if (L1 > 0) {
-                    html = sels.user[0].name + html;
-                } else if (L2 > 0) {
-                    html = sels.department[0].name + html;
-                } else if (L3 > 0) {
-                    html = sels.company[0].name + html;
-                } else if (L4 > 0) {
-                    html = sels.position[0].name + html;
-                } else if (L5 > 0) {
-                    html = sels.dpt_position[0].name + html;
-                }
-
+                var html = getSelStr(sels);
                 if ($(obj).attr('type') == 'text') {
                     $(obj).val(html);
                     var hide_ipt = $(obj).next('input[type="hidden"]');
@@ -533,79 +513,35 @@ function user_popup(obj = null, allow_sels, num = 0, is_close_other = false, cal
     });
 }
 
-/**
- * 费用项选择弹出框
- */
-function payitem_pop(obj = null, company_id, callback) {
-    if (parseInt(company_id) <= 0) {
-        layer.alert('请选择公司');
+function getSelStr(sels){
+    var html = '';
+    var L1 = sels.user.length,
+        L2 = sels.department.length,
+        L3 = sels.company.length,
+        L4 = sels.position.length,
+        L5 = sels.dpt_position.length;
+    if ((L1 + L2 + L3 + L4 + L5) > 1) {
+        html = "等" + (L1 + L2 + L3 + L4 + L5) + '项';
     }
-    $('body').append('<div id="popup_content" data-company_id="' + company_id + '"></div>');
-    $('#popup_content').load("../../pages/public/payitem_select.html");
-
-    layer.open({
-        type: 1,
-        title: '费用科目选择',
-        btn: ['确认', '取消'],
-        String: false,
-        closeBtn: 1,
-        skin: 'layui-layer-rim',
-        area: ['760px', '480px'],
-        content: $('#popup_content'),
-        yes: function(index, layero) {
-            //以下方式可获取到选中的 公司 部门 人员
-
-            if (typeof obj == 'object') {
-
-            };
-
-            if (typeof callback === 'function') {
-                callback(arr);
-            }
-            layer.close(index);
-        },
-        btn2: function(index, layero) {
-            layer.close(index);
-        }
-    });
-}
-
-/**
- * 考核项选择框
- */
-function assess_popup(obj, type = 'checkbox', callback) {
-    var table;
-    layui.use(['table'], function() {
-        table = layui.table;
-    });
-    $('body').append('<div id="popup_content" data-type=' + type + '></div>');
-    $('#popup_content').load("../../pages/public/assess.html");
-
-    layer.open({
-        type: 1,
-        title: '选择考核项',
-        String: false,
-        closeBtn: 1,
-        btn: ['确认', '取消'],
-        yes: function(index) {
-            var checkStatus = table.checkStatus('assess_lst'),
-                data = checkStatus.data;
-            if (typeof callback === 'function') {
-                callback(data);
-            }
-            layer.close(index);
-        },
-        skin: 'layui-layer-rim',
-        area: ['850px', '450px'],
-        content: $('#popup_content')
-    });
+    if (L1 > 0) {
+        html = sels.user[0].name + html;
+    } else if (L2 > 0) {
+        html = sels.department[0].name + html;
+    } else if (L3 > 0) {
+        html = sels.company[0].name + html;
+    } else if (L4 > 0) {
+        html = sels.position[0].name + html;
+    } else if (L5 > 0) {
+        html = sels.dpt_position[0].name + html;
+    }
+    return html;
 }
 
 /**
  * 解析用户选择项
  */
 
-function formart_sels(data, businessType) {
+function parse_sels(data, businessType) {
     if (data == "") {
         return [];
     }
@@ -721,6 +657,132 @@ function formart_sels(data, businessType) {
         }
     }
     return res;
+}
+
+
+/**
+ * 
+ * @param {*} obj 
+ * @param {*} company_id 
+ * @param {*} callback 
+ */
+function formart_sels(data){
+    if(data == ''){
+        data = JSON.parse(data);
+    }
+    var result = {
+        sel_type:"org",
+        user:[],
+        department:[],
+        company:[],
+        position:[],
+        dpt_position:[]
+    };
+    var dataType_arr = {
+        1:'org',
+        2:'position',
+        3:'dpt_position'
+    };
+    if(data.length == 0){
+        return JSON.stringify(result);
+    }
+    result.sel_type = dataType_arr[data[0].dataType];
+    for(var i = 0;i < data.length;i++){
+        var item = data[i];
+        var d = {id:'',name:''};
+        if(item.userId > 0){
+            d.id = item.userId;
+            d.name = item.userName;
+            result.user.push(d);
+        } else if(item.depId > 0){
+            d.id = item.depId;
+            d.name = item.depName;
+            result.department.push(d);
+        } else if(item.companyId > 0){
+            d.id = item.companyId;
+            d.name = item.companyName;
+            result.company.push(d);
+        } else if(item.jobDepId > 0){
+            d.id = item.jobDepId + '_' + item.jobId;
+            d.name = item.jobDepNmae;
+            d.dpt_name = item.jobName;
+            d.dpt_id = item.jobId;
+            result.dpt_position.push(d);
+        } else if(item.jobId > 0){
+            d.id = item.jobId;
+            d.name = item.jobName;
+            result.position.push(d);
+        }
+    }
+    return result;
+}
+
+/**
+ * 费用项选择弹出框
+ */
+function payitem_pop(obj = null, company_id, callback) {
+    if (parseInt(company_id) <= 0) {
+        layer.alert('请选择公司');
+    }
+    $('body').append('<div id="popup_content" data-company_id="' + company_id + '"></div>');
+    $('#popup_content').load("../../pages/public/payitem_select.html");
+
+    layer.open({
+        type: 1,
+        title: '费用科目选择',
+        btn: ['确认', '取消'],
+        String: false,
+        closeBtn: 1,
+        skin: 'layui-layer-rim',
+        area: ['760px', '480px'],
+        content: $('#popup_content'),
+        yes: function(index, layero) {
+            //以下方式可获取到选中的 公司 部门 人员
+
+            if (typeof obj == 'object') {
+
+            };
+
+            if (typeof callback === 'function') {
+                callback(arr);
+            }
+            layer.close(index);
+        },
+        btn2: function(index, layero) {
+            layer.close(index);
+        }
+    });
+}
+
+/**
+ * 考核项选择框
+ */
+function assess_popup(obj, type = 'checkbox', callback) {
+    var table;
+    layui.use(['table'], function() {
+        table = layui.table;
+    });
+    $('body').append('<div id="popup_content" data-type=' + type + '></div>');
+    $('#popup_content').load("../../pages/public/assess.html");
+
+    layer.open({
+        type: 1,
+        title: '选择考核项',
+        String: false,
+        closeBtn: 1,
+        btn: ['确认', '取消'],
+        yes: function(index) {
+            var checkStatus = table.checkStatus('assess_lst'),
+                data = checkStatus.data;
+            if (typeof callback === 'function') {
+                callback(data);
+            }
+            layer.close(index);
+        },
+        skin: 'layui-layer-rim',
+        area: ['850px', '450px'],
+        content: $('#popup_content')
+    });
 }
 
 
