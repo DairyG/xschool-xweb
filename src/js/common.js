@@ -667,9 +667,9 @@ function parse_sels(data, businessType) {
  * @param {*} callback 
  */
 function formart_sels(data){
-    if(data == ''){
-        data = JSON.parse(data);
-    }
+	if(data == undefined){
+		return false;
+	}
     var result = {
         sel_type:"org",
         user:[],

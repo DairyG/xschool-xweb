@@ -103,7 +103,7 @@
 							<form class="layui-form process_add_form">
 								<div class="layui-form-item">
 									<div style="width: 400px;margin:0 auto">
-										<ul class="process_box">
+										<ul class="process_box" id="process_box">
 											<li>
 												<div class="layui-card faqi_card">
 													<div class="layui-card-header">发起人</div>
@@ -247,14 +247,21 @@
 			<div class="layui-card shenpi_card">
 				<div class="layui-card-header">审批人
 					<div class="fr">
-						<input name="type_{{d.index}}" type="radio" value="false" title="或签" checked />
-						<input name="type_{{d.index}}" type="radio" value="true" title="会签" />
+						<input name="type_{{d.index}}" type="radio" value="false" title="或签" {{d.isCountersign ? 'checked' : ''}} />
+						<input name="type_{{d.index}}" type="radio" value="true" title="会签" {{d.isCountersign ? '' : 'checked'}} />
 					</div>
 					<input type="hidden" name="PassType" value="1" />
 					<i class="layui-icon layui-icon-close-fill fr fontsize-18" onclick="close_item(this)"></i>
 				</div>
 				<div class="layui-card-body">
-					<div class="show_div"><span class="text-85">请选择审批人</span></div>
+					<div class="show_div">
+						{{# if(d.str != ''){ }}
+							{{d.str}}
+							{{d.input}}
+						{{# } else { }}
+							<span class="text-85">请选择审批人</span>
+						{{# } }}
+					</div>
 					<label class="add_icon text-85">
 						<i class="layui-icon layui-icon-right fr fontsize-18"></i>
 						<input type="radio" name="add_item_point" lay-ignore  onclick="on_select(this)"/>
@@ -275,7 +282,14 @@
 					<input type="hidden" name="PassType" value="2" />
 				</div>
 				<div class="layui-card-body">
-					<div class="show_div"><span class="text-85">请选择抄送人</span></div>
+					<div class="show_div">
+						{{# if(d.str != ''){ }}
+							{{d.str}}
+							{{d.input}}
+						{{# } else { }}
+							<span class="text-85">请选择抄送人</span>
+						{{# } }}
+					</div>
 					<label class="add_icon text-85">
 						<i class="layui-icon layui-icon-right fr fontsize-18"></i>
 						<input type="radio" name="add_item_point" lay-ignore  onclick="on_select(this)"/>
@@ -340,10 +354,7 @@
 				laytpl = layui.laytpl;
 				loadFlowTypes();
 				loadSubjectTypes();
-
-				if(Id>0)
-				{
-					//编辑绑定数据
+				if(Id>0){//编辑绑定数据
 					Serv.Get('lc/Subject/GetSubjectById',{Id:Id},function(data){
 						$("#txtSubjectName").val(data.subjectName);
 						$("#select_FlowTypeId").val(data.flowTypeId);
@@ -364,31 +375,37 @@
 						$('.process_box li').eq(1).remove();
 						for(var i = 0;i < data.subjectStepFlowList.length;i++){
 							var item = data.subjectStepFlowList[i];
-							if(item.passType == 1){
-								//或签、会签
-
-							} else if(item.passType == 2){
-
+							if(item.passType <= 2){
+								init_add_item(item);
 							} else {
-
+								arr = item.subjectRulePassList[0];
+								if(arr.userId > 0){
+									$('.fupan_card input[name="UserId"]').prop('checked',true);
+								}
+								if(arr.depId > 0){
+									$('.fupan_card input[name="DepId"]').prop('checked',true);
+								}
 							}
 						}
 					},false);
 				}
 				form.render();
 			});
-			function add_item(type,data,is_init){
+			function init_add_item(data){
+				var type = data.passType == 1 ? 'shenpi' : 'chaosong';
 				var tpl_html = $("#"+type+"_html").html();
 				var index = $('#process_box li').length;
-				var p_li = $("input[name='add_item_point']:checked").parents('li');
-				data = data == undefined ? {index:index+1} : data;
-				is_init = is_init == undefined ? false : is_init;
-				laytpl(tpl_html).render(data, function(html){
-					$(p_li).after('<li>'+html+'</li>');
-					if(!is_init){
-						closePop();
-						form.render();
-					}
+				var li_obj = $('#process_box li').eq(index-2);
+				sels = formart_sels(data.subjectRulePassList);
+				var str = getSelStr(sels);
+				var d = {
+					index:data.passNo,
+					str:str,
+					input:'<input type="hidden" name="sels" value=\'' + JSON.stringify(sels) + '\'>',
+					isCountersign:data.isCountersign
+				}
+				laytpl(tpl_html).render(d, function(html){
+					$(li_obj).after('<li>'+html+'</li>');
 				});
 			}
 			function add_group(){
@@ -428,6 +445,12 @@
 				var tpl_html = $("#"+type+"_html").html();
 				var index = $('#process_box li').length;
 				var p_li = $("input[name='add_item_point']:checked").parents('li');
+				var d = {
+					index:index+1,
+					str:'',
+					input:'',
+					isCountersign:false
+				}
 				laytpl(tpl_html).render({index:index+1}, function(html){
 					$(p_li).after('<li>'+html+'</li>');
 					closePop();
