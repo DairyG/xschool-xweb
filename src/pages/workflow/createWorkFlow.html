@@ -332,6 +332,8 @@
 						"../../form/js/formbuilder.js");
 			});
 			var layer_linePop,form,laytpl;
+			var  Id = GetPara('Id');
+			alert(Id);
 			layui.use(['table','element','form','laytpl'], function() {
 				var table = layui.table,
 					element = layui.element;
@@ -419,6 +421,21 @@
 				},false);
 				
 			}
+			if(Id>0)
+			{
+				//编辑绑定数据
+				Serv.Get('lc/Subject/GetSubjectById',{Id=Id},function(data){
+					// $("#select_SubjectTypeId").empty();
+					//    form.render('select');
+					console.log(data);
+
+
+				},false);
+		
+			}
+			}
+
+
 			function save()
 			{
 				var SubjectName=$("#txtSubjectName").val();
@@ -543,7 +560,7 @@
 				if(flag){
 					return false;
 				}
-				console.log(data);
+				//console.log(data);
 				layer.load();
 				$(".link_Save").attr({"disabled":"true"});
 				Serv.Post('lc/Subject/Add',data,function(resultData){

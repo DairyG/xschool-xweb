@@ -91,11 +91,11 @@
 					</div>
 					<div class="layui-col-md5 border-l-1 padding-l-15">
 						<p>可见范围</p>
-						<p class="fontsize-12 text-85"><span class="rec_box">全部可见</span> <a href="javascript:;" onclick="changeRang($(this).siblings('span'),item.subjectId)">修改</a></p>
+						<p class="fontsize-12 text-85"><span class="rec_box">全部可见</span> <a href="javascript:;" onclick="changeRang($(this).siblings('span'),{{item2.subjectId}})">修改</a></p>
 					</div>
 					<div class="layui-col-md3">
 						<div class="opt_box text-right">
-							<a>编辑</a>
+							<a href="createWorkFlow.html?Id={{item2.subjectId}}">编辑</a>
 							<a>停用</a>
 							<a href="javascript:;" onclick="process_move({{item2.subjectId}})">移动到</a>
 						</div>
@@ -214,8 +214,15 @@
 			}
 			function subRang(data){
 				data = formart_sels(JSON.stringify(data),1);
-				Serv.Post('',{id:changeId,lst:data},function(res){
-
+				layer.load();
+				Serv.Post('lc/Subject/UpdateSubjectRange',{SubjectId:changeId,SubjectRuleRangeList:data},function(resultData){
+					layer.closeAll('loading');			
+					if(resultData.succeed)
+					{
+						layer.msg('成功...', {icon:1});
+					}else{
+						layer.msg('失败:'+resultData.message, {icon:2});
+					}
 				});
 
 				
