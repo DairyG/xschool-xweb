@@ -293,6 +293,7 @@ opacity: 0.5;
 position: fixed;
 _position:absolute;
 top:0;
+left:0;
 width: 100%;
 z-index: 8000;
 }

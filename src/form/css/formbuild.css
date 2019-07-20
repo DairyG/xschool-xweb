@@ -1,5 +1,6 @@
 @CHARSET "UTF-8";
 
+#container {font-size: 14px;}
 .txt-toolbar a,.wangEditor-drop-list a,.wangEditor-drop-panel a,.wangEditor-menu-container a{text-decoration:none}
 .wangEditor-container{position:relative;background-color:#fff;border:1px solid #ddd;z-index:1;width:100%}
 .wangEditor-container img,.wangEditor-container textarea{border:0}
@@ -175,25 +176,21 @@ fieldset ul li{margin-top:5px;position:relative}
 .num{text-align:center;color:#2596e6;font-size:300%;float:left}
 .radio,.checkbox{margin-right:5px}
 .noheight{height:0;margin-bottom:15px}
-#container{height:auto; position:relative;margin-bottom:10px;}
-#left{width:25%;border:1px solid #ddd;background-color:#fff;border-bottom:0;overflow: auto;position: absolute;top:0;left:0;}
-#middle{width:50%;overflow:hidden;background-color:#fff;margin-left:25%; }
-#middle .middle_content {min-height:400px;border:1px solid #ddd;margin: 0 20px;position: relative;overflow: auto;}
-#middle .middle_content #fields * {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;box-sizing: border-box;}
-#right{width:25%;overflow:auto;border:1px solid #ddd;background-color:#fff;box-sizing:border-box;z-index:900;position: absolute;top:0;right:0;}
-#addFields {overflow: auto;}
+#container{height:auto;overflow:hidden;position:relative;margin-bottom:10px}
+#left{width:25%;float:left;border:1px solid #ddd;background-color:#fff;border-bottom:0;position:absolute;box-sizing:border-box;}
+#middle{width:46%;overflow:hidden;min-height:500px;float:left;background-color:#fff;margin-left:27%;border:1px solid #ddd;box-sizing:content-box;}
+#right{width:25%;position:absolute;margin-left:75%;overflow:hidden;border:1px solid #ddd;background-color:#fff;box-sizing:border-box;z-index:900;overflow: auto;}
+#addFields li {width: 50%;float: left;}
+#addFields li:nth-child(even) a {border-right:0;}
 #addFields .btn-field{display:block;padding:10px 10px;border-right:1px solid #ddd;border-bottom:1px solid #ddd;cursor:move;font-size:85%}
 #addFields .btn-field-helper{border:1px solid #ddd!important;background-color:#f5f5f5}
+#col2 .btn-field,#col4 .btn-field,#col6 .btn-field{border-right:0}
 #addFields .btn-field:hover{background-color:#f5f5f5}
-
 h3.fields-group,h3.property-title{padding:9px 15px;background-color:#f1f1f1;border-bottom:1px solid #ddd}
 #addFields .btn-field .iconfont{font-size:12.5px;margin-right:15px}
-/* #col2 .btn-field,#col4 .btn-field,#col6 .btn-field{border-right:0}
 #col1 li,#col3 li,#col2 li,#col4 li,#col5 li,#col6 li{width:140px;box-sizing:border-box}
 #col1,#col3,#col5{float:left}
-#col2,#col4,#col6{float:right} */
-#left ul li {float: left;width: 50%;}
-#left h3 {clear: both;}
+#col2,#col4,#col6{float:right}
 #allPropsContainer{overflow:auto}
 #allProps>li{padding:0 20px}
 #allProps>li.bggray{background-color:#f8f8f8;padding-bottom:8px}
@@ -288,7 +285,7 @@ input.xxl+i.qrinput{position:absolute;bottom:10px;right:5px}
 .flow{padding:0 0 0 20px}
 .flow div{border-left:2px solid #ddd;color:#ddd;font-size:170%;font-weight:bold;line-height:202px;text-indent:-2px}
 .choiceText{height:200px;width:98%;min-width:98%;margin:0 0 10px}
-.formButtons{background:none repeat scroll 0 0 #f1f1f1;padding:15px 0;text-align:center;width:100%;z-index:1;zoom:1;position:absolute;bottom:1px}
+.formButtons{background:none repeat scroll 0 0 #f1f1f1;padding:15px 0;text-align:center;width:46%;z-index:1;zoom:1;position:absolute;bottom:1px;box-sizing: content-box;display: none;}
 #lbContent ol.decide{list-style:none outside none;margin:17px 0 0;padding:0;width:100%}
 #lbContent ol.decide li{font-size:120%;margin:0 0 10px;padding:0;width:100%}
 #lbContent ol.decide li a{background-color:#fbfbfb;color:#555;display:block;line-height:40px;margin:1px;padding:1px 1px 1px 16px;text-decoration:none}
