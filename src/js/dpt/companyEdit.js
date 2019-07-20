@@ -1,237 +1,231 @@
-new Vue({
-    el: '#formEdit',
-    data: {
-        hasSubmit: true,
-        hasReadonly: false,
-        company: {
-            id: 0,
-            companyName: '',
-            englishName: '',
-            credit: '',
-            companyType: '',
-            legalPerson: '',
-            registeredCapital: '',
-            responsible: '',
-            responsiblePhone: '',
-            registeredTime: '',
-            businessDate: '',
-            businessAddress: '',
-            businessScope: '',
-            logo: '',
-            companyPhone: '',
-            email: '',
-            officeAddress: '',
-            webSite: '',
-            intro: '',
-            culture: '',
-            history: ''
-        },
-        bankInfo: {
-            id: 0,
-            companyId: 0,
-            openBank: '',
-            openBankName: '',
-            bankAccount: '',
-            linkPhone: '',
-            remarks: ''
-        },
-        bankData: []
+var data = {
+    companyId: 0,
+    level: 0,
+
+    company: {},
+    bankInfo: {
+        id: 0,
+        openBank: '',
+        openBankName: '',
+        bankAccount: '',
+        linkPhone: '',
+        remarks: ''
     },
-    mounted: function() {
-        let _this = this;
+    bankData: [],
+    companyData: [],
+};
 
-        layui.use(['element', 'laydate', 'form'], function() {
-            var element = layui.element,
-                laydate = layui.laydate,
-                layform = layui.form;
+layui.use(['element', 'laydate', 'laytpl', 'form'], function() {
+    var element = layui.element,
+        laydate = layui.laydate,
+        laytpl = layui.laytpl,
+        form = layui.form;
 
-            laydate.render({
-                elem: '#date1',
-                done: function(value) {
-                    _this.company.registeredTime = value;
-                }
-            });
+    resetCompanyData();
 
-            var E = window.wangEditor
-            var eIntro = new E('#E_intro');
-            eIntro.customConfig.onchange = function(html) {
-                $('input[name="intro"]').val(html);
-            };
-            eIntro.create();
-            var eCulture = new E('#E_culture');
-            eCulture.customConfig.onchange = function(html) {
-                $('input[name="culture"]').val(html);
-            };
-            eCulture.create();
-            var eHistory = new E('#E_history');
-            eHistory.customConfig.onchange = function(html) {
-                $('input[name="history"]').val(html);
-            };
-            eHistory.create();
+    var id = GetPara('id');
+    id = !id ? '' : id;
 
-            var id = GetPara('id');
-            id = !id ? '' : id;
-            var operation = GetPara('operation');
-            if ((operation == 'view' || operation == 'edit') && !id.IsNum()) {
-                layer_alert('参数错误');
-                _this.hasSubmit = false;
-                return false;
-            }
-            if (id.IsNum()) {
-                initData(id);
-            }
+    var operation = GetPara('operation');
+    if ((operation == 'view' || operation == 'edit') && !id.IsNum()) {
+        layer_alert('参数错误');
+        $('.hasSubmit').hide();
+        return false;
+    }
+    if (operation == 'view') {
+        $('.hasSubmit').hide();
+    }
 
-            if (operation == 'view') {
-                _this.hasSubmit = false;
-            }
+    var seltCompany = $('#seltCompany');
+    var formBasic = $('#formBasic');
 
-            //初始化
-            function initData(value) {
-                layer_load();
-                Serv.Get('uc/company/get/' + value, {}, function(result) {
-                    layer_load_lose();
-                    if (result) {
-                        _this.hasReadonly = true;
+    var getTpl = bankTpl.innerHTML,
+        bankPanel = $('#bankPanel');
 
-                        _this.company.id = result.id;
-                        _this.company.companyName = result.companyName;
-                        _this.company.englishName = result.englishName;
-                        _this.company.credit = result.credit;
-                        _this.company.companyType = result.companyType;
-                        _this.company.legalPerson = result.legalPerson;
-                        _this.company.registeredCapital = result.registeredCapital;
-                        _this.company.responsible = result.responsible;
-                        _this.company.responsiblePhone = result.responsiblePhone;
-                        _this.company.registeredTime = result.registeredTime.FormatDate(false);
-                        _this.company.businessDate = result.businessDate;
-                        _this.company.businessAddress = result.businessAddress;
-                        _this.company.businessScope = result.businessScope;
-                        _this.company.logo = result.logo;
-                        _this.company.companyPhone = result.companyPhone;
-                        _this.company.email = result.email;
-                        _this.company.officeAddress = result.officeAddress;
-                        _this.company.webSite = result.webSite;
-                        _this.company.intro = result.intro;
-                        _this.company.culture = result.culture;
-                        _this.company.history = result.history;
+    var E = window.wangEditor
+    var eIntro = new E('#E_intro');
+    eIntro.customConfig.onchange = function(html) {
+        $('input[name="intro"]').val(html);
+    };
+    eIntro.create();
+    var eCulture = new E('#E_culture');
+    eCulture.customConfig.onchange = function(html) {
+        $('input[name="culture"]').val(html);
+    };
+    eCulture.create();
+    var eHistory = new E('#E_history');
+    eHistory.customConfig.onchange = function(html) {
+        $('input[name="history"]').val(html);
+    };
+    eHistory.create();
 
-                        eIntro.txt.html(result.intro);
-                        eCulture.txt.html(result.culture);
-                        eHistory.txt.html(result.history);
+    if (id.IsNum()) {
+        getCompanyInfo(id);
+    } else {
+        getCompanyTpl('');
 
-                        _this.bankInfo.companyId = result.id;
+        bankPanel.html(getBankContent());
+    }
 
-                        _this.bankData = result.banks;
-                    } else {
-                        layer_alert(result.message);
-                    }
-                });
-            }
-
-            //基本信息
-            layform.on('submit(basicInfo)', function(laydata) {
-                layer_load();
-                Serv.Post('uc/company/edit', laydata.field, function(result) {
-                    if (result.succeed) {
-                        _this.company.id = result.data;
-                        _this.bankInfo.companyId = result.data;
-
-                        _this.hasReadonly = true;
-
-                        layer_alert(result.message);
-                    } else {
-                        layer_alert(result.message);
-                    }
-                });
-                return false;
-            });
-
-            $('#addBlank').click(function() {
-                _this.bankInfo.id = 0;
-                _this.bankInfo.openBank = '';
-                _this.bankInfo.openBankName = '';
-                _this.bankInfo.bankAccount = '';
-                _this.bankInfo.linkPhone = '';
-                _this.bankInfo.remarks = '';
-                _this.bankPop('添加');
-            });
-
-            //开户信息
-            layform.on('submit(backInfo)', function(laydata) {
-                if (laydata.field.companyId <= 0) {
-                    layer_alert('请先填写基本信息');
-                    return false;
-                }
-                layer_load();
-                Serv.Post('uc/bank/edit', laydata.field, function(result) {
-                    if (result.succeed) {
-                        layer_alert(result.message, function() {
-                            layer.closeAll();
-                            _this.getBank();
-                        });
-                    } else {
-                        layer_alert(result.message);
-                    }
-                });
-                return false;
-            });
-        });
-
-    },
-    methods: {
-        bankEdit: function(data) {
-            var _this = this;
-
-            _this.bankInfo.id = data.id;
-            _this.bankInfo.openBank = data.openBank;
-            _this.bankInfo.openBankName = data.openBankName;
-            _this.bankInfo.bankAccount = data.bankAccount;
-            _this.bankInfo.linkPhone = data.linkPhone;
-            _this.bankInfo.remarks = data.remarks;
-            _this.bankPop('修改');
-        },
-        bankDel: function(value) {
-            var _this = this;
-            layer_confirm('确定删除吗？', function() {
-                layer_load();
-                Serv.Get('uc/bank/delete/' + value, {}, function(result) {
-                    if (result.succeed) {
-                        layer_alert(result.message, function() {
-                            _this.getBank();
-                        });
-                    } else {
-                        layer_alert(result.message);
-                    }
-                });
-            });
-        },
-        getBank: function() {
-            var _this = this;
+    laydate.render({
+        elem: '#registeredTime'
+    });
+    form.on('select(seltCompany)', function(datas) {
+        if (datas.value > 0) {
+            data.level = parseInt($(datas.elem).find('option:selected').attr('data-level')) + 1;
+        } else {
+            data.level = 0;
+        }
+    });
+    //开户信息事件
+    bankPanel.on('click', '.bankEdit', function() {
+        form.val('formBack', JSON.parse($(this).attr('data-value')));
+        bankPop('修改');
+    });
+    bankPanel.on('click', '.bankDel', function() {
+        var value = $(this).attr('data-value');
+        layer_confirm('确定删除吗？', function() {
             layer_load();
-            Serv.Get('uc/bank/query/' + _this.company.id, {}, function(result) {
-                layer_load_lose();
-                if (result) {
-                    _this.bankData = result;
+            Serv.Get('uc/bank/delete/' + value, {}, function(result) {
+                if (result.succeed) {
+                    layer_alert(result.message, function() {
+                        getBank();
+                    });
                 } else {
                     layer_alert(result.message);
                 }
             });
-        },
-        bankPop: function(operation) {
-            var _this = this;
-            if (_this.bankInfo.companyId <= 0) {
-                layer_alert('请先填写基本信息');
-                return false;
+        });
+    });
+    $('#addBlank').click(function() {
+        form.val('formBack', data.bankInfo);
+        bankPop('添加');
+    });
+
+    //基本信息
+    form.on('submit(basicInfo)', function(laydata) {
+        layer_load();
+        laydata.field.level = data.level;
+        layer_load_lose();
+        Serv.Post('uc/company/edit', laydata.field, function(result) {
+            if (result.succeed) {
+                data.companyId = result.data;
+                formBasic.find('input[name=id]').val(result.data);
+                setReadonly();
+                resetCompanyData();
+                layer_alert(result.message);
+            } else {
+                layer_alert(result.message);
             }
-            layer.open({
-                type: 1,
-                title: operation + '银行账户',
-                String: false,
-                closeBtn: 1,
-                skin: 'layui-layer-rim',
-                area: '750px',
-                content: $('#bankPop')
-            });
+        });
+        return false;
+    });
+    //开户信息
+    form.on('submit(backInfo)', function(laydata) {
+        layer_load();
+        if (data.companyId <= 0) {
+            layer_alert('请先填写基本信息');
+            return false;
         }
+        laydata.field.companyId = data.companyId;
+        Serv.Post('uc/bank/edit', laydata.field, function(result) {
+            if (result.succeed) {
+                layer_alert(result.message, function() {
+                    layer.closeAll();
+                    getBank();
+                });
+            } else {
+                layer_alert(result.message);
+            }
+        });
+        return false;
+    });
+
+    //获取公司信息
+    function getCompanyInfo(value) {
+        layer_load();
+        Serv.Get('uc/company/get/' + value, {}, function(result) {
+            layer_load_lose();
+            if (result) {
+                setReadonly();
+
+                data.company = {};
+                result.registeredTime = result.registeredTime.FormatDate(false);
+                $.extend(true, data.company, result);
+                form.val("formBasic", result);
+
+                eIntro.txt.html(result.intro);
+                eCulture.txt.html(result.culture);
+                eHistory.txt.html(result.history);
+
+                data.companyId = result.id;
+                data.level = result.level;
+
+                getCompanyTpl(result.pid);
+
+                seltCompany.val(result.pid).attr('disabled', 'disabled');
+                form.render('select');
+
+                bankPanel.html(getBankContent(result.banks));
+            } else {
+                layer_alert(result.message);
+            }
+        });
+    }
+
+    //设置 只读
+    function setReadonly() {
+        $('#credit').attr('readonly', 'readonly');
+    }
+
+    //重置公司数据
+    function resetCompanyData() {
+        Serv.Get('uc/company/query', {}, window.globCache.setCompany);
+    }
+    //获取公司模板
+    function getCompanyTpl(value) {
+        var data = window.globCache.getCompany();
+        seltCompany.empty().append('<option value="0" data-level="0">请选择</option>');
+        $.each(data, function(i, item) {
+            seltCompany.append('<option value="' + item.id + '" ' + (item.id == value ? 'selected' : '') + ' data-level="' + item.level + '">' + item.companyName + '</option>');
+        });
+        layui.form.render('select');
+    }
+
+    //开户信息 获取
+    function getBank() {
+        layer_load();
+        Serv.Get('uc/bank/query/' + data.companyId, {}, function(result) {
+            layer_load_lose();
+            if (result) {
+                bankPanel.html(getBankContent(result));
+            } else {
+                layer_alert(result.message);
+            }
+        });
+    }
+    //开户信息 弹窗
+    function bankPop(operation) {
+        if (data.companyId <= 0) {
+            layer_alert('请先填写基本信息');
+            return false;
+        }
+        layer.open({
+            type: 1,
+            title: operation + '银行账户',
+            String: false,
+            closeBtn: 1,
+            skin: 'layui-layer-rim',
+            area: '750px',
+            content: $('#bankPop')
+        });
+    }
+    //开户信息 内容模板
+    function getBankContent(data) {
+        data = data || [];
+        return laytpl(getTpl).render({
+            businessAddress: $('#businessAddress').val(),
+            list: data
+        });
     }
 });

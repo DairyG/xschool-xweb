@@ -65,7 +65,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
     });
 
     //初始化
-    getKpiContent();
+    // getKpiContent();
 
     kpiConObj.on('click', '.evaluationPopup', function() {
         assess_popup(null, 'checkbox', function(result) {

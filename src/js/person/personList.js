@@ -16,21 +16,21 @@ var dataCol = [
             title: '管理岗位',
             templet: function(d) {
                 return $.map(d.bindings, function(item) {
-                    return item.dptName
-                }).join('|');
+                    return item.dptName + '|' + item.jobName
+                }).join('，');
             },
             minWidth: 80
         },
-        {
-            field: 'jobName',
-            title: '职位',
-            minWidth: 80,
-            templet: function(d) {
-                return $.map(d.bindings, function(item) {
-                    return item.jobName
-                }).join('|');
-            }
-        },
+        // {
+        //     field: 'jobName',
+        //     title: '职位',
+        //     minWidth: 80,
+        //     templet: function(d) {
+        //         return $.map(d.bindings, function(item) {
+        //             return item.jobName
+        //         }).join('|');
+        //     }
+        // },
         {
             field: 'userName',
             title: '姓名',
@@ -305,7 +305,7 @@ layui.use(['table', 'element', 'form'], function() {
                 '<td><span class="table-btn-jia userJobAdd">+</span><span class="table-btn-jian userJobDel">-</span></td>';
             htmls +=
                 '<td><input type="text" name="userDept" placeholder="请选择" class="layui-input deptPopup" value="' +
-                ((cName != null && cName.length > 9) ? (cName.substr(0, 9) + '...') : +cName) + ' - ' + model.dptName +
+                ((cName != null && cName.length > 9) ? (cName.substr(0, 9) + '...') : cName) + ' - ' + model.dptName +
                 '" readonly />' +
                 '<input type="hidden" name="sels" value=\'' + JSON.stringify(selVal) + '\'>' +
                 '</td>';

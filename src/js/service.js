@@ -30,7 +30,7 @@ function getYears(year) {
 
 function getUserPopModel() {
     return {
-        sel_type: '',
+        sel_type: 'org',
         user: [],
         department: [],
         company: [],
