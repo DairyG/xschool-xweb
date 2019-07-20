@@ -322,11 +322,11 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
         initAnnual: function() {
             if (!paramModel.annualHasFirst) {
                 paramModel.annualHasFirst = true;
-                monthlyPager = Pager(
+                annualPager = Pager(
                     table, //lay-ui的table控件
                     '人员考核管理-年度', //列表名称
                     'annualLst', //绑定的列表Id
-                    'annuaBar', //绑定的工具条Id
+                    'annualBar', //绑定的工具条Id
                     annualCol, //表头的显示行
                     'gc/kpievaluation/querymanage', //action url 只能post提交
                     search, //获取查询条件的函数
@@ -334,7 +334,7 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
                     null, //有选择行才能有的操作，实现该方法,否则传null
                     null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
                     function() {
-                        $('#annuaYear').val(paramModel.annua.year);
+                        $('#annualYear').val(paramModel.annual.year);
                         form.render('select');
                     },
                     'full-100'

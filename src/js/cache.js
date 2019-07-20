@@ -106,9 +106,10 @@ window.globCache = {
         window.localStorage.setItem(key, value)
     },
     clear: function() {
-        window.localStorage.removeItem('Service_Token');
-        for (const key in cacheModel) {
-            window.localStorage.removeItem(cacheModel[key]);
-        }
+        localStorage.clear();
+        // window.localStorage.removeItem('Service_Token');
+        // for (const key in cacheModel) {
+        //     window.localStorage.removeItem(cacheModel[key]);
+        // }
     }
 }

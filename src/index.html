@@ -453,6 +453,9 @@
   <script type="text/javascript" src="js/cache.js"></script>
   <script>
     $(function() {
+
+      Serv.ChkLogin();
+
       //async init data
       Serv.Get('uc/company/query', {}, window.globCache.setCompany);
       Serv.Get('uc/department/query', {}, window.globCache.setDepartment);

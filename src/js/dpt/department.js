@@ -1,6 +1,8 @@
 var zTreeObj;
 var DptJobs;
 var currentid = 0;
+//获取当前员工归属
+var employee = window.globCache.getEmployee();
 
 var setting = {
     view: {
@@ -19,7 +21,7 @@ var setting = {
         }
     },
     callback: {
-        onClick: function (e, treeId, treeNode) {
+        onClick: function(e, treeId, treeNode) {
             //商家
             if (treeNode.level == 0) {
                 currentid = 0;
@@ -41,7 +43,7 @@ var setting = {
                 layform.render('radio');
             }
         },
-        onAsyncSuccess: function (event, treeId, treeNode, msg) {
+        onAsyncSuccess: function(event, treeId, treeNode, msg) {
             var nodes = zTree.getNodes();
             var node = nodes.length > 0 ? nodes[0] : null;
             //onsole.log(node);
@@ -52,7 +54,7 @@ var setting = {
         }
     }
 }; // zTree 的参数配置，后面详解
-$(document).ready(function () {
+$(document).ready(function() {
     //zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
 })
 
@@ -74,7 +76,7 @@ var vm = new Vue({
 function GetSingle(Id) {
     Serv.Post('uc/Department/GetSingle', {
         Id: Id
-    }, function (response) {
+    }, function(response) {
         model.id = response.id;
         model.companyId = response.companyId;
         model.pId = response.pid;
@@ -116,8 +118,8 @@ function ClickAdd() {
     };
     ClearModel(dpt);
 }
-$(function () {
-    $("a[lay-filter='btnAdd']").click(function () {
+$(function() {
+    $("a[lay-filter='btnAdd']").click(function() {
         ClickAdd();
         $("#dptForm input").prop("disabled", false);
         $("#dptForm button").prop("disabled", false);
@@ -125,7 +127,7 @@ $(function () {
         $("#firstAddJob").css("display", "none");
         $("#firstJobDiv").css("display", "none");
     });
-    $("a[lay-filter='btnEdit']").click(function () {
+    $("a[lay-filter='btnEdit']").click(function() {
         var zTree = $.fn.zTree.getZTreeObj('ztree');
         nodes = zTree.getSelectedNodes();
         if (nodes.length > 0) {
@@ -144,7 +146,7 @@ $(function () {
     });
 });
 var layform;
-layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
+layui.use(['table', 'element', 'laydate', 'form', 'layer'], function() {
     var table = layui.table,
         element = layui.element,
         laydate = layui.laydate;
@@ -153,19 +155,28 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
     var companys = window.globCache.getCompany();
     var dpts = window.globCache.getDepartment();
 
-    var array = $.map(companys, function (item) { return { id: item.id * -1, dptName: item.companyName, companyId: item.id, pid: 0, open: true }; });
-    var dptArray = $.map(dpts, function (item) {
+    var array = $.map(companys, function(item) {
+        return {
+            id: item.id * -1,
+            dptName: item.companyName,
+            companyId: item.id,
+            pid: 0,
+            open: true
+        };
+    });
+    var dptArray = $.map(dpts, function(item) {
         if (item.pid == 0) {
             item.pid = item.companyId * -1;
             return item;
         }
         return item;
     });
-    $.each(dptArray, function (index, item) {
+    $.each(dptArray, function(index, item) {
         array.push(item);
     });
 
     zTreeObj = $.fn.zTree.init($("#ztree"), setting, array);
+
     function initTree() {
         // Serv.Get('uc/department/GetByCompany/' + 1, {}, function (response) {
         //     zTreeObj = $.fn.zTree.init($("#ztree"), setting, response);
@@ -177,7 +188,7 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
     table.render({
         elem: '#lst'
     });
-    layform.on('submit(dptInfo)', function (laydata) {
+    layform.on('submit(dptInfo)', function(laydata) {
         layer_load();
 
         if (laydata.field.Id == "0" || laydata.field.Id == "") {
@@ -193,21 +204,24 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
             } else if (parseInt(laydata.field.PId) > 0) {
                 laydata.field.LevelMap = $("input[name='LevelMap']").val() + laydata.field.PId + ",";
             }
-            Serv.Post('uc/Department/add', laydata.field, function (response) {
+
+            console.log(nodes[0].companyId);
+
+            Serv.Post('uc/Department/add', laydata.field, function(response) {
                 if (response.code == "00") {
                     laydata.field.id = response.data;
                     laydata.field.dptName = laydata.field.DptName;
                     zTreeObj.addNodes(nodes[0], -1, laydata.field);
 
                     dpts.push({
-                        id:response.data,
-                        companyId:laydata.field.CompanyId,
-                        pid:(laydata.field.PId == 0 ? parseInt(laydata.field.CompanyId) * -1 : laydata.field.PId),
-                        dptName:laydata.field.DptName,
-                        dptStatus:1,
-                        levelMap:laydata.field.LevelMap,
-                        description:laydata.field.Description,
-                        dptCode : laydata.field.DptCode
+                        id: response.data,
+                        companyId: laydata.field.CompanyId,
+                        pid: (laydata.field.PId == 0 ? parseInt(laydata.field.CompanyId) * -1 : laydata.field.PId),
+                        dptName: laydata.field.DptName,
+                        dptStatus: 1,
+                        levelMap: laydata.field.LevelMap,
+                        description: laydata.field.Description,
+                        dptCode: laydata.field.DptCode
                     });
                     window.globCache.setDepartment(dpts);
                     layer_confirm('添加成功，是否继续添加？', ClickAdd());
@@ -218,8 +232,8 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
                 }
             })
         } else {
-            Serv.Post('uc/Department/edit', laydata.field, function (response) {
-                var array = $.grep(dpts, function (i, n) {
+            Serv.Post('uc/Department/edit', laydata.field, function(response) {
+                var array = $.grep(dpts, function(i, n) {
                     if (n.id == laydata.field.id) {
                         return laydata.field;
                     }
@@ -234,16 +248,16 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
         }
         return false;
     });
-    layform.on('submit(dptAdd)', function (laydata) {
+    layform.on('submit(dptAdd)', function(laydata) {
         layer_load();
         console.log(laydata);
         if ($("input[name='Id']").val() == "0") {
-            Serv.Post('uc/Department/edit', laydata.field, function (response) {
+            Serv.Post('uc/Department/edit', laydata.field, function(response) {
                 layer_alert(response.message, ClickAdd());
                 //initTree();
             })
         } else {
-            Serv.Post('uc/Department/edit', laydata.field, function (response) {
+            Serv.Post('uc/Department/edit', laydata.field, function(response) {
                 layer_alert(response.message, ClickAdd());
                 $("input[name='Id']").val("0");
                 //initTree();
@@ -251,7 +265,7 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
         }
         return false;
     });
-    layform.on('submit(btnDel)', function (laydata) {
+    layform.on('submit(btnDel)', function(laydata) {
         var zTree = $.fn.zTree.getZTreeObj('ztree');
         nodes = zTree.getSelectedNodes();
         var node = nodes[0];
@@ -261,19 +275,24 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
         } else {
             //console.log(laydata.field.Id);
             //laydata.field.dptStatus = 0;
-            Serv.Get('uc/Department/Delete/' + laydata.field.Id, null, function (response) {
-                layer_alert(response.message, function () {
+            Serv.Get('uc/Department/Delete/' + laydata.field.Id, null, function(response) {
+                layer_alert(response.message, function() {
                     window.location.reload()
                 });
             })
         }
     });
 
-    Serv.Post("uc/Job/Get", { page: 1, limit: 50, companyId: 1 }, function (response) {
+
+    Serv.Post("uc/Job/Get", {
+        page: 1,
+        limit: 50,
+        companyId: employee.companyId
+    }, function(response) {
         if (response.totalCount > 0) {
             var jobs = response.items;
             var divhtml = "";
-            $.each(jobs, function (i, job) {
+            $.each(jobs, function(i, job) {
                 divhtml += '<input type="radio" name="pos[]" value="' + job.id + '" title="' + job.name + '" lay-skin="primary">';
             });
             $("#divJobs").append(divhtml);
@@ -282,7 +301,7 @@ layui.use(['table', 'element', 'laydate', 'form', 'layer'], function () {
     }, false);
 });
 
-$('.set_btn').click(function () {
+$('.set_btn').click(function() {
     layer_linePop = layer.open({
         type: 1,
         title: '设置领导职位',
@@ -292,15 +311,24 @@ $('.set_btn').click(function () {
         skin: 'layui-layer-rim',
         area: ['500px', '220px'],
         content: $('#linePopPostion'),
-        yes: function (index) {
+        yes: function(index) {
             var jobId = $("input[name='pos[]']:checked").val();
             var jobName = $("input[name='pos[]']:checked").attr("title");
             var dptId = $("input[name='Id']").val();
             if (dptId > 0) {
 
-                Serv.Post("uc/Department/AddDptJobBinding", { Id: 0, CompanyId: 1, DptId: dptId, JobId: jobId }, function (response) {
+                Serv.Post("uc/Department/AddDptJobBinding", {
+                    Id: 0,
+                    CompanyId: employee.companyId,
+                    DptId: dptId,
+                    JobId: jobId
+                }, function(response) {
                     if (response.code == "00") {
-                        DptJobs.push({ jobId: jobId, jobName: jobName, employees: [] });
+                        DptJobs.push({
+                            jobId: jobId,
+                            jobName: jobName,
+                            employees: []
+                        });
                         PushJobHtml();
                         layer.close(index);
                         layer_alert(response.message);
@@ -319,13 +347,17 @@ function deleteBtn(btn) {
     var jobId = $(btn).attr("jobId");
     var empId = $(btn).attr("epId");
     var dptId = $("input[name='Id']").val();
-    Serv.Post("uc/Department/DeleteDptJobBinding", { companyid: 1, dptId: dptId, jobId: jobId, employeeId: empId }, function (response) {
+    Serv.Post("uc/Department/DeleteDptJobBinding", {
+        companyid: employee.companyId,
+        dptId: dptId,
+        jobId: jobId,
+        employeeId: empId
+    }, function(response) {
         if (response.code == "00") {
             //$(btn).parent().remove();
             DptJobs.splice($(btn).attr("index"), 1);
             PushJobHtml();
-        }
-        else {
+        } else {
             layer_alert(response.message);
         }
     });
@@ -353,8 +385,7 @@ function PushJobHtml() {
     if (DptJobs.length > 0) {
         $("#firstAddJob").css("display", "none");
         $("#firstJobDiv").css("display", "");
-    }
-    else {
+    } else {
         $("#firstAddJob").css("display", "");
         $("#firstJobDiv").css("display", "none");
     }

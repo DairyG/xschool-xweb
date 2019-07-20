@@ -21,16 +21,6 @@ var dataCol = [
             },
             minWidth: 80
         },
-        // {
-        //     field: 'jobName',
-        //     title: '职位',
-        //     minWidth: 80,
-        //     templet: function(d) {
-        //         return $.map(d.bindings, function(item) {
-        //             return item.jobName
-        //         }).join('|');
-        //     }
-        // },
         {
             field: 'userName',
             title: '姓名',

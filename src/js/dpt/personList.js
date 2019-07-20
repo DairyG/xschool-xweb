@@ -4,24 +4,22 @@ var dataCol = [
             title: '序号',
         },
         {
-            field: 'dptName',
-            title: '部门',
+            field: 'dptJob',
+            title: '所属部门|职位',
             templet: function(d) {
-                return $.map(d.bindings, function(item) {
-                    return item.dptName;
-                }).join('|');
+                return d.dptName + '|' + d.jobName;
             },
             minWidth: 80
         },
         {
-            field: 'jobName',
-            title: '职位',
-            width: 80,
+            field: 'dptName',
+            title: '管理岗位',
             templet: function(d) {
                 return $.map(d.bindings, function(item) {
-                    return item.jobName;
-                }).join('|');
+                    return item.dptName + '|' + item.jobName
+                }).join('，');
             },
+            minWidth: 80
         },
         {
             field: 'userName',
@@ -72,12 +70,7 @@ var dataCol = [
             field: 'officePhone',
             title: '办公电话',
             width: 120,
-        },
-        {
-            title: '操作',
-            toolbar: '#toolbar',
-            minWidth: 170,
-        },
+        }
     ],
 ];
 
@@ -90,6 +83,7 @@ var lstPager;
 layui.use(['table'], function() {
     var table = layui.table;
     var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
+        console.log(treeNode);
         parameter.companyId = treeNode.companyId;
         parameter.dptId = '';
         if (treeNode.id > 0) {
@@ -106,6 +100,7 @@ layui.use(['table'], function() {
     }
 
     function search() {
+        console.log(parameter);
         return parameter;
     }
     //分页初始化
