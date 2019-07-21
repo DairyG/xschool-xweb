@@ -665,10 +665,10 @@ function parse_sels(data, businessType) {
  * @param {*} company_id 
  * @param {*} callback 
  */
-function formart_sels(data){
-	if(data == undefined){
-		return false;
-	}
+function formart_sels(data) {
+    if (data == undefined) {
+        return false;
+    }
     var result = {
         sel_type: "org",
         user: [],
@@ -966,4 +966,8 @@ function setImageHtml(value) {
         '</div>' +
         '</li>';
     return htmls;
+}
+//设置附件
+function setAttachmentHtml(value, index) {
+    return '<li><a href="' + value + '" target="_blank" class="text-add">附件' + index + '</a></li>';
 }

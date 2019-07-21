@@ -333,10 +333,13 @@
                       <label class="layui-form-label">证书证件</label>
                       <div class="layui-input-block">
                         <input type="hidden" name="certificatePath" v-model="person.certificatePath" />
-                        <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
+                        <button type="button" id="certificateBtn" class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
                           <i class="layui-icon">&#xe67c;</i>
                           上传证件
-                        </span>
+                        </button>
+                        <div class="upload-list upload-multiple-box">
+                          <ul id="certificatePanel"></ul>
+                        </div>
                       </div>
                     </div>
                   </div>
