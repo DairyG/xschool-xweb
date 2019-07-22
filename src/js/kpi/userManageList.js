@@ -146,24 +146,32 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
 
     var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
         var companyId = treeNode.companyId;
-        var dptId = '';
-        if (treeNode.id > 0) {
-
-            console.log(dptZTreeObj.getNodesByParam("name", "test", treeNode));
-
-            dptId = treeNode.id;
+        var dptId = [];
+        //公司
+        if (treeNode.id > 0 && treeNode.pid < 0) {
+            dptId.push(treeNode.id);
+            var nodes = dptZTreeObj.getNodesByParam("pid", treeNode.id, treeNode);
+            $.each(nodes, function(i, item) {
+                dptId.push(item.id);
+            });
+        } else if (treeNode.id > 0 && treeNode.pid > 0) {
+            dptId.push(treeNode.id);
         }
 
         paramModel.monthly.companyId = companyId;
+        paramModel.monthly.dptId = [];
         paramModel.monthly.dptId = dptId;
 
         paramModel.quarter.companyId = companyId;
+        paramModel.quarter.dptId = [];
         paramModel.quarter.dptId = dptId;
 
         paramModel.halfYear.companyId = companyId;
+        paramModel.halfYear.dptId = [];
         paramModel.halfYear.dptId = dptId;
 
         paramModel.annual.companyId = companyId;
+        paramModel.annual.dptId = [];
         paramModel.annual.dptId = dptId;
 
         reloadData();
@@ -222,6 +230,7 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
     function search() {
         switch (paramModel.currTab) {
             case 'monthly':
+                // console.log(paramModel.monthly);
                 return paramModel.monthly;
             case 'quarter':
                 return paramModel.quarter;

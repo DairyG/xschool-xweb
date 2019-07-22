@@ -44,7 +44,7 @@ function Pager(table, title, tblId, toobarId, colData, action, searchFunc, parse
 
     if (searchFunc) {
         tbl.search = function() {
-
+            console.log(searchFunc());
             tbl.reload({
                 where: searchFunc(),
                 page: {
