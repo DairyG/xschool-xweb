@@ -42,6 +42,7 @@ layui.use(['table', 'laydate', 'layedit', 'form'], function () {
             $("#repeat_time").hide();
         }
     });
+
     form.on('submit(formDemo)', function (laydate) {
         var intIds1 = "";
         var person1 = [];
@@ -78,7 +79,8 @@ layui.use(['table', 'laydate', 'layedit', 'form'], function () {
         laydate.field.scribblesJson = JSON.stringify(person2);
 
         laydate.field.kpiPlan = $("#selPlan").val();
-        laydate.field.kpiId = 0;
+        laydate.field.kpiManageRecordId = $("#selKPI").val();
+        laydate.field.kpiManageRecordName = $("#selKPI").find("option:selected").text();
         laydate.field.remindTime = $("#selRemindTime").val();
         laydate.field.remindWay = $("#selRemindWay").val();
         laydate.field.emergency = $("#selEmergency").val();
@@ -128,7 +130,7 @@ layui.use(['table', 'laydate', 'layedit', 'form'], function () {
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }
-                    else{
+                    else {
                         layer_alert("添加失败，请重试！");
                     }
                 });
@@ -139,6 +141,28 @@ layui.use(['table', 'laydate', 'layedit', 'form'], function () {
             }
         });
         return false;
+    });
+
+    form.on('select(kpiPlan)', function (obj) {
+        if ($("#user_sel_box1 input").length > 0) {
+            var users1 = $.parseJSON($("#user_sel_box1").find("input[name='sels']").val()).user;
+            var ids = [];
+            for(var i = 0;i<users1.length;i++){
+                ids.push(users1[i].id);
+            }
+            if(obj.value > 0){
+                Serv.Post('gc/KpiEvaluation/QueryManageDetail',{employeeIds:ids,kpiId:obj.value},function(response){
+                    if(response){
+                        var htmlKpi = '<option value="0">请选择考核项目</option>';
+                        for(var i = 0;i<response.length;i++){
+                            htmlKpi += '<option value="'+response[i].id+'">'+response[i].name+'</option>';
+                        }    
+                        $("#selKPI").html(htmlKpi);
+                        form.render('select');
+                    }
+                });
+            }
+        }
     });
     //layedit.build('content');
     if (sid > 0) {
@@ -184,6 +208,29 @@ layui.use(['table', 'laydate', 'layedit', 'form'], function () {
                 //抄送人End——————————
                 //考核方案
                 $("#selPlan").val(response.sche.kpiPlan);
+                //考核项目
+                if (executors.length > 0) {
+                    var ids = [];
+                    for(var i = 0;i<executors.length;i++){
+                        ids.push(executors[i].id);
+                    }
+                    if(response.sche.kpiPlan > 0){
+                        Serv.Post('gc/KpiEvaluation/QueryManageDetail',{employeeIds:ids,kpiId:response.sche.kpiPlan},function(response1){
+                            if(response1){
+                                var htmlKpi = '<option value="0">请选择考核项目</option>';
+                                for(var i = 0;i<response1.length;i++){
+                                    htmlKpi += '<option value="'+response1[i].id+'">'+response1[i].name+'</option>';
+                                }    
+                                $("#selKPI").html(htmlKpi);
+                                $("#selKPI").val(response.sche.kpiManageRecordId);
+                                form.render('select');
+                            }
+                        });
+                    }
+                }
+                
+                
+                
                 //开始时间
                 $("input[name='beginTime']").val(response.sche.beginTime.FormatDate(true));
                 //截止时间
@@ -200,7 +247,10 @@ layui.use(['table', 'laydate', 'layedit', 'form'], function () {
                     $("#repeat_time").show();
                 }
                 //重复结束时间
-                $("input[name='repeatEndTime']").val(response.sche.repeatEndTime.FormatDate(true));
+                if(response.sche.repeatEndTime){
+                    $("input[name='repeatEndTime']").val(response.sche.repeatEndTime.FormatDate(true));
+                }
+                
                 //标题
                 $("input[name='title']").val(response.sche.title);
                 //内容
@@ -226,3 +276,4 @@ $('#close_btn').click(function () {
         history.back(-1);
     }
 });
+
