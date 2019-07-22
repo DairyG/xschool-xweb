@@ -322,4 +322,16 @@ table .layui-table-edit {height:38px;line-height: 38px;}
 .upload-single-box img{border:2px solid #009688}
 .upload-single-box a{color:#333;background:#E5E5E5;padding:4px 10px 5px 10px;font-size:13px;line-height:1.5;text-decoration:none;position:absolute;left:76px;top:2px;z-index:1000}
 
+/*附件列表样式*/
+.attach-list{ margin:0; padding:10px 0 0 0; }
+.attach-list ul{ margin:0 0 0 -15px; list-style:none; }
+.attach-list ul:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.attach-list ul li{ position:relative; float:left; margin:0 0 15px 15px; padding:5px 18px 8px 18px; border:1px solid #eee; box-shadow:0 0 3px 0 rgba(0, 0, 0, 0.1); width:215px; }
+.attach-list ul li i.icon-attachment{ position:absolute; display:block; top:8px; left:4px; width:12px; height:12px; line-height:14px; color:#535353; font-size:12px; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAA0UlEQVQoU4WSURHCMBBE7y4GkIAEJFRCpqkAJCChKKA4qICmEwdEAhKQgIHeMlegU6BAvvLxXrKbC9OP5b1ficiBiAoi2vd93/I33mDn3AnAUVWTiGRV9YvCHBaRS9d1OYTQMHP6EOYwM1sUApBtH2Pcvgj/YJMn4Rc8DEPjnFvHGO+R/sEi0ljhlNJ1FMqyzETUvme2k+fwGKmqqgKAB3Bh5s2z4BI8CiEE/xhMBlAz8/kbPJW2SCJS23vbjapaPzO/D3ZeugGwedyws4JLv+AGGKGuWbGkX6MAAAAASUVORK5CYII=) no-repeat }
+.attach-list ul li a:hover{ text-decoration:none; }
+.attach-list ul li .del{ position:absolute; display:block; top:0; right:0; width:20px; height:20px; line-height:20px; text-align:center; cursor:pointer; overflow:hidden; }
+.attach-list ul li .del i{ color:#535353 }
+.attach-list ul li .title{ display:block; margin-bottom:3px; border-bottom:1px solid #ccc; line-height:24px; height:26px; font-weight:bold; white-space:nowrap; word-break:break-all; overflow:hidden; }
+.attach-list ul li .info,.attach-list ul li .btns{ display:block; line-height:24px; }
+.attach-list ul li .btns input{ display:inline-block; padding:0 3px; border:1px solid #d7d7d7; width:40px; height:20px; line-height:18px; color:#666; font-size:12px; background:#fff; vertical-align:middle; }
 

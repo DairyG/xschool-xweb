@@ -46,7 +46,8 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         seltJob = $('#seltJob');
 
     var attachmentPanel = $('#attachmentPanel'),
-        photoPathPanel = $('#photoPathPanel');
+        photoPathPanel = $('#photoPathPanel'),
+        certificatePanel = $('#certificatePanel');
 
     var id = GetPara('id');
     id = !id ? '' : id;
@@ -71,7 +72,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
     //身份证
     $('input[name="idCard"]').blur(function() {
         var value = $.trim($(this).val());
-        if (value && isCard(value) == '') {
+        if (value && IsCard(value) == '') {
             var birthday = getBirthdayFromIdCard(value);
             var age = getAgeFromIdCard(value);
 
@@ -127,6 +128,23 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         done: function(result) {
             layer_load_lose();
             photoPathPanel.append(setImageHtml(result.data[0]));
+        },
+        error: function() {
+            layer_load_lose();
+        }
+    });
+    //证书证件 上传
+    upload.render({
+        elem: '#certificateBtn',
+        url: Serv.ImageUrl,
+        accept: 'file',
+        headers: Serv.GetHeaders(),
+        before: function(obj) {
+            layer_load();
+        },
+        done: function(result) {
+            layer_load_lose();
+            certificatePanel.append(setAttachHtml(result.data[0]));
         },
         error: function() {
             layer_load_lose();
@@ -202,11 +220,17 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             laydata.field.liveArea = formBasic.find('input[name="liveArea"]').val();
         }
 
-        var photoPathData = [];
-        photoPathPanel.find('img').each(function() {
-            photoPathData.push($(this).attr('src'));
+        var photoData = [];
+        photoPathPanel.find('input[data-name="image"]').each(function() {
+            photoData.push($(this).val());
         });
-        laydata.field.photoPath = photoPathData.join(',');
+        laydata.field.photoPath = photoData.join(',');
+
+        var certificateData = [];
+        certificatePanel.find('input[data-name="attach"]').each(function() {
+            certificateData.push($(this).val());
+        });
+        laydata.field.certificatePath = certificateData.join(',');
 
         //家庭成员
         var hasFamily = validateFamily($('#familyPanel').find('div.layui-table-body'), true);
@@ -294,8 +318,8 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         laydata.field.employeeId = data.employeeId;
 
         var attData = [];
-        attachmentPanel.find('img').each(function() {
-            attData.push($(this).attr('src'));
+        attachmentPanel.find('input[data-name="image"]').each(function() {
+            attData.push($(this).val());
         });
         laydata.field.attachment = attData.join(',');
 
@@ -348,12 +372,18 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
                 formBasic.find('input[name="liveArea"]').attr('data-areacode', liveAreaCode).val(result.liveArea);
 
                 if (result.photoPath) {
-                    var imgArr = result.photoPath.split(',');
-                    $.each(imgArr, function(i, item) {
+                    var fileArr = result.photoPath.split(',');
+                    $.each(fileArr, function(i, item) {
                         photoPathPanel.append(setImageHtml(item));
                     });
 
                     imagesViewer();
+                }
+                if (result.certificatePath) {
+                    var fileArr = result.certificatePath.split(',');
+                    $.each(fileArr, function(i, item) {
+                        certificatePanel.append(setAttachHtml(item));
+                    });
                 }
 
                 if (result.family) {

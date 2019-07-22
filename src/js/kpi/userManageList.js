@@ -9,7 +9,7 @@ var paramModel = {
     annualHasFirst: false,
     monthly: {
         companyId: '',
-        dptId: '',
+        dptId: [],
         year: 2019,
         kpiId: 1,
         kpiType: 2,
@@ -23,14 +23,14 @@ var paramModel = {
     },
     halfYear: {
         companyId: '',
-        dptId: '',
+        dptId: [],
         year: 2019,
         kpiId: 3,
         kpiType: 2,
     },
     annual: {
         companyId: '',
-        dptId: '',
+        dptId: [],
         year: 2019,
         kpiId: 4,
         kpiType: 2,
@@ -49,7 +49,7 @@ for (var index = 1; index <= 12; index++) {
         templet: function(d, colIndex) {
             var keyStatus = 'status' + colIndex,
                 keyScore = 'score' + colIndex;
-            return getStatusTxt(d[keyStatus], d[keyScore], d);
+            return getStatusTxt(d[keyStatus], d[keyScore], colIndex, d);
         }
     };
     monthlyCol0.push(colData);
@@ -61,7 +61,9 @@ monthlyCol0.push({
     templet: function(d) {
         var value = 0;
         for (var i = 1; i <= 12; i++) {
-            value += d['score' + i];
+            if (d['status' + i] == 1) {
+                value += d['score' + i];
+            }
         }
         return value;
     }
@@ -81,7 +83,7 @@ for (var index = 1; index <= 4; index++) {
             var keyStatus = 'status' + colIndex,
                 keyScore = 'score' + colIndex;
 
-            return getStatusTxt(d[keyStatus], d[keyScore], d);
+            return getStatusTxt(d[keyStatus], d[keyScore], colIndex, d);
         }
     };
     quarterCol0.push(colData);
@@ -100,7 +102,7 @@ for (var index = 1; index <= 2; index++) {
         templet: function(d, colIndex) {
             var keyStatus = 'status' + colIndex,
                 keyScore = 'score' + colIndex;
-            return getStatusTxt(d[keyStatus], d[keyScore], d);
+            return getStatusTxt(d[keyStatus], d[keyScore], colIndex, d);
         }
     };
     halfYearCol0.push(colData);
@@ -116,8 +118,8 @@ var annualCol = [
         {
             field: 'score1',
             title: paramModel.annual.year + '年',
-            templet: function(d, colIndex) {
-                return getStatusTxt(d.status1, d.score1, d);
+            templet: function(d) {
+                return getStatusTxt(d.status1, d.score1, 1, d);
             }
         },
     ]
@@ -146,6 +148,9 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
         var companyId = treeNode.companyId;
         var dptId = '';
         if (treeNode.id > 0) {
+
+            console.log(dptZTreeObj.getNodesByParam("name", "test", treeNode));
+
             dptId = treeNode.id;
         }
 
@@ -231,7 +236,6 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
         switch (paramModel.currTab) {
             case 'monthly':
                 if (paramModel.monthlyHasFirst) {
-                    console.log(monthlyPager);
                     monthlyPager.search();
                 } else {
                     initPager.initMonthly();
@@ -375,16 +379,46 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
 });
 
 //获取状态文本
-function getStatusTxt(status, score, model) {
+function getStatusTxt(status, score, index, model) {
     if (status == 0) {
         return '<span class="text-85">未开始</span>';
     } else if (status == -1) {
         return '<span class="text-85">无效</span>';
     } else if (status == 1) {
-        return '<a href="人员考核详情.html" class="text-add">' + d[keyScore] + '</a>';
-    } else if (status == 10 || d[keyStatus] == 11) {
-        return '<a href="人员考核.html" class="text-add">考核</a>';
+        return '<a href="userManageDetails.html?para=' + encodeURIComponent(encodeURIComponent(setUrlParam(model, index))) + '" class="text-add">' + score + '</a>';
+    } else if (status == 10 || status == 11) {
+        return '<a href="userManageEdit.html?para=' + encodeURIComponent(encodeURIComponent(setUrlParam(model, index))) + '" class="text-add">考核</a>';
     } else {
         return '<span class="text-85">未知</span>';
     }
+}
+
+/**
+ * 设置参数
+ * @param {*} kpiType 考核类型
+ * @param {*} kpiId 考核方案
+ * @param {*} kpiName 考核方案名称
+ * @param {*} companyId 公司Id
+ * @param {*} companyName 公司名称
+ * @param {*} dptId 部门Id
+ * @param {*} dptName 部门名称
+ * @param {*} employeeId 员工Id
+ * @param {*} userName 姓名
+ * @param {*} year 年份 
+ * @param {*} kpiDate 考核时间 
+ */
+function setUrlParam(model, kpiDate) {
+    return JSON.stringify({
+        kpiType: model.kpiType || '',
+        kpiId: model.kpiId || '',
+        kpiName: model.kpiName || '',
+        companyId: model.companyId || '',
+        companyName: model.companyName || '',
+        dptId: model.dptId || '',
+        dptName: model.dptName || '',
+        employeeId: model.employeeId || '',
+        userName: model.userName || '',
+        year: model.year || '',
+        kpiDate: kpiDate || ''
+    });
 }

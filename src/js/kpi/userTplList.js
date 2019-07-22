@@ -73,7 +73,7 @@ var lstPager;
 layui.use(['table', 'element'], function() {
     var table = layui.table,
         element = layui.element;
-        
+
     var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
         parameter.companyId = treeNode.companyId;
         parameter.dptId = '';
@@ -121,7 +121,19 @@ layui.use(['table', 'element'], function() {
     );
 });
 
-//设置参数
+/**
+ * 设置参数
+ * @param {*} batch 批量
+ * @param {*} kpiType 考核类型
+ * @param {*} kpiId 考核方案
+ * @param {*} companyId 公司Id
+ * @param {*} companyName 公司名称
+ * @param {*} dptId 部门Id
+ * @param {*} dptName 部门名称
+ * @param {*} employeeId 员工Id
+ * @param {*} userName 员工姓名
+ * @param {*} id 考核记录Id
+ */
 function setUrlParam(batch, kpiType, kpiId, companyId, companyName, dptId, dptName, employeeId, userName, id) {
     return JSON.stringify({
         batch: batch,
