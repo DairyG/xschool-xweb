@@ -8,10 +8,10 @@ var vm = new Vue({
     mounted: function () {
         var _this = this;
         var id = GetPara("NoteId");
-        var UserId = GetPara("UserId");
-        var UserName = GetPara("UserName");
-        var CompanyName = GetPara("CompanyName");
-        var DptName = GetPara("DptName");
+        var UserId = window.globCache.getEmployee().id;
+        var UserName = window.globCache.getEmployee().employeeName;
+        var CompanyName = window.globCache.getEmployee().companyName;
+        var DptName = window.globCache.getEmployee().dptName;
         id = !id ? '' : id;
         _this.initLayui(id,UserId,UserName,CompanyName,DptName);
 
@@ -37,12 +37,12 @@ var vm = new Vue({
         };
         function search0() {
             parameter.NoteId = id;
-            parameter.IsRead = 0;
+            parameter.IsRead = 1;
             return parameter;
         }
         function search1() {
             parameter.NoteId = id;
-            parameter.IsRead = 1;
+            parameter.IsRead = 0;
             return parameter;
         }
         layui.use(['table', 'element'], function () {
@@ -51,7 +51,7 @@ var vm = new Vue({
 
             //分页初始化
             var lstPager = Pager2(table,//lay-ui的table控件
-                '未读',//列表名称
+                '已读',//列表名称
                 "lst1",//绑定的列表Id
                 'bar',//绑定的工具条Id
                 data_col1,//表头的显示行
@@ -126,5 +126,3 @@ var vm = new Vue({
         }
     }
 })
-
-

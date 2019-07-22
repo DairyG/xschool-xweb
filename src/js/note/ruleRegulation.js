@@ -93,7 +93,8 @@ layui.use(['form', 'element', 'layer', 'table'], function () {
     table.on('tool(lst)', function (obj) {
         var layEvent = obj.event;
         if (layEvent == "info") {
-            window.location.href = "/pages/note/ruleRegulationDetail.html?id=" + obj.data.id;
+            window.location.href = "/pages/note/ruleRegulationDetail.html?id=" + obj.data.id+"&UserId="+window.globCache.getEmployee().id+
+            "&UserName="+window.globCache.getEmployee().employeeName+"&CompanyName="+window.globCache.getEmployee().companyName+"&DptName="+window.globCache.getEmployee().dptName;
         }
         if (layEvent == "edit") {
             window.location.href = "/pages/note/ruleRegulationAdd.html?id=" + obj.data.id;

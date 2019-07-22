@@ -80,7 +80,7 @@ layui.use(['table', 'element', 'form', 'layedit'], function () {
     var id = GetPara("id");
     if (id > 0) {
         layer_load();
-        Serv.Get("gc/note/GetSigleNote?id=" + id, {}, function (result) {
+        Serv.Get("gc/note/GetSigleNote?NoteId=" + id, {}, function (result) {
             layer_load_lose();
             if (result.succeed) {
                 $("input[name='Title']").val(result.data.noteDetail.title);
