@@ -276,4 +276,25 @@ $('#close_btn').click(function () {
         history.back(-1);
     }
 });
+function LoadKpi(){
+    if ($("#user_sel_box1 input").length > 0) {
+        var users1 = $.parseJSON($("#user_sel_box1").find("input[name='sels']").val()).user;
+        var ids = [];
+        for(var i = 0;i<users1.length;i++){
+            ids.push(users1[i].id);
+        }
+        if($("#selPlan").val() > 0){
+            Serv.Post('gc/KpiEvaluation/QueryManageDetail',{employeeIds:ids,kpiId:$("#selPlan").val()},function(response){
+                if(response){
+                    var htmlKpi = '<option value="0">请选择考核项目</option>';
+                    for(var i = 0;i<response.length;i++){
+                        htmlKpi += '<option value="'+response[i].id+'">'+response[i].name+'</option>';
+                    }    
+                    $("#selKPI").html(htmlKpi);
+                    form.render('select');
+                }
+            });
+        }
+    }
+}
 
