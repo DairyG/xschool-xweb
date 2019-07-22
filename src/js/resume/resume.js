@@ -117,7 +117,7 @@ var vm = new Vue({
                 //身份证
                 $('input[name="idCard"]').blur(function () {
                     var value = $.trim($(this).val());
-                    if (value && isCard(value) == '') {
+                    if (value && IsCard(value) == '') {
                         var birthday = getBirthdayFromIdCard(value);
                         var age = getAgeFromIdCard(value);
                         _this.person.birthDay = birthday;

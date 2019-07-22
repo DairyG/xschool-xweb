@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+  </head>
+  <body class="bgf2f2f2">
+    <div class="childrenBody">
+      <div class="layui-card-body layui-tab bgwhite">
+        <ul class="layui-tab-title">
+          <li class="layui-this" id="kpiTitle">考核</li>
+          <li>任务情况</li>
+        </ul>
+        <!-- 评价打分后不能修改 -->
+        <div class="layui-tab-content">
+          <div class="layui-tab-item layui-show">
+            <form class="layui-form layui-row">
+              <table class="layui-table" id="kpiLst"></table>
+
+              <div class="layui-col-md12 margin-b-20" id="selfEvalPanel">
+                <div class="layui-form-label">自我评价</div>
+                <div class="layui-input-block">
+                  <textarea class="layui-textarea evaluation evaluation1"></textarea>
+                </div>
+              </div>
+              <div class="layui-col-md12 margin-b-20" id="oneEvalPanel">
+                <div class="layui-form-label">初审评价</div>
+                <div class="layui-input-block">
+                  <textarea class="layui-textarea evaluation evaluation2"></textarea>
+                </div>
+              </div>
+              <div class="layui-col-md12 margin-b-20" id="twoEvalPanel">
+                <div class="layui-form-label">终审评价</div>
+                <div class="layui-input-block">
+                  <textarea class="layui-textarea evaluation evaluation3"></textarea>
+                </div>
+              </div>
+            </form>
+            <div class="layui-row text-right">
+              <input type="button" class="layui-btn layui-btn-danger" id="formSubimt" lay-submit lay-filter="formSubimt" value="确认" />
+              <span class="layui-btn backBtn">返回</span>
+            </div>
+          </div>
+          <div class="layui-tab-item">
+            <table class="layui-table" id="lst2"></table>
+            <div class="layui-row text-right">
+              <span class="layui-btn backBtn">返回</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../../js/kpi/userManageEdit.js"></script>
+  </body>
+</html>

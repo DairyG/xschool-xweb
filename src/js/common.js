@@ -138,7 +138,7 @@ function FormatDate(date, hasTime) {
 /**
  * 验证空值
  */
-String.prototype.isEmpty = function() {
+String.prototype.IsEmpty = function() {
     if (this == null || this == undefined || this == '') {
         return true;
     }
@@ -187,6 +187,14 @@ String.prototype.IsNum = function() {
     return reg.test(this);
 }
 
+/**
+ * 整数或浮点数(1-2位小数)
+ */
+String.prototype.IsDecimal = function() {
+    return /^[0-9]+[.]?[0-9]{1,2}$/.test(this) || /^\d+$/.test(this);
+}
+
+
 $.fn.scrollFixed = function(fixed_w = '') { //页面滚动时tab-title始终在页面上方
     var offset = this.offset().top;
     var _this = this;
@@ -215,7 +223,7 @@ $.fn.scrollFixed = function(fixed_w = '') { //页面滚动时tab-title始终在�
 }
 
 //验证是否是JSON
-function isJson(value) {
+function IsJson(value) {
     if (typeof value == 'string') {
         try {
             JSON.parse(value);
@@ -228,7 +236,7 @@ function isJson(value) {
 }
 
 //验证身份证号码
-function isCard(value) {
+function IsCard(value) {
     var city = {
         11: "北京",
         12: "天津",
@@ -949,25 +957,36 @@ function IsImage(value) {
     return /.(bmp|gif|jpg|jpeg|png)$/.test(value.toLowerCase());
 }
 
-//多图上传 图片删除
-function delImg(obj) {
+//文件删除
+function delFileNode(obj) {
     var pObj = $(obj).parents('li');
     layer_confirm('确定删除吗？', function() {
         pObj.remove();
     });
 }
-//设置 图片
+//设置图片
 function setImageHtml(value) {
     var htmls =
         '<li>' +
         '<div class="img-box click-bor">' +
+        '  <input data-name="image" type="hidden" value="' + value + '">' +
         '  <img src="' + value + '" width="120" height="90" />' +
-        '  <a class="btn default btn-del black" onclick="delImg(this)"><i class="fa fa-trash-o"></i>删除</a>' +
+        '  <a class="btn default btn-del black" onclick="delFileNode(this)" title="删除图片"><i class="fa fa-trash-o"></i>删除</a>' +
         '</div>' +
         '</li>';
     return htmls;
 }
 //设置附件
-function setAttachmentHtml(value, index) {
-    return '<li><a href="' + value + '" target="_blank" class="text-add">附件' + index + '</a></li>';
+function setAttachHtml(value) {
+    let pos = value.lastIndexOf('\/'); // 查找最后一个/的位置
+    var fileName = value.substring(pos + 1); // 截取最后一个/位置到字符长度，也就是截取文件名
+    var htmls =
+        '<li>' +
+        '  <i class="icon-attachment"></i>' +
+        '  <input data-name="attach" type="hidden" value="' + value + '">' +
+        '  <a href="javascript:;" onclick="delFileNode(this);" class="del" title="删除附件"><i class="layui-icon layui-icon-close"></i></a>' +
+        '  <div class="title">' + fileName + '</div>' +
+        '  <div class="info"><a href="' + value + '" target="_blank">点击下载</a></div>' +
+        '</li>';
+    return htmls;
 }

@@ -14,7 +14,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
     var defaultSel = '<span class="text-85">点击选择</span>';
 
     var para = decodeURIComponent(decodeURIComponent(GetPara('para'))) || '';
-    if (!isJson(para)) {
+    if (!IsJson(para)) {
         layer_alert('参数错误，请从正确入口进入');
         $('#submitKpi').hide();
         return false;
@@ -156,7 +156,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
                 return false;
             }
         });
-        if (!errorAudit.isEmpty()) {
+        if (!errorAudit.IsEmpty()) {
             layer_alert(errorAudit);
             return false;
         }
@@ -245,11 +245,11 @@ layui.use(['laytpl', 'table', 'form'], function() {
             layer_load_lose();
             if (result) {
 
-                if (isJson(result.contents)) {
+                if (IsJson(result.contents)) {
                     setEvaluationData(JSON.parse(result.contents), 1);
                 }
 
-                if (isJson(result.audits)) {
+                if (IsJson(result.audits)) {
                     var auditsData = JSON.parse(result.audits);
                     $.each(auditsData, function(i, item) {
                         var obj = kpiAuditBody.find('[data-steps="' + item.steps + '"]');
@@ -324,7 +324,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
             }
             var valJson = JSON.parse(value);
             var weightVal = $.trim($(this).find('input[name="weight"]').val());
-            if (weightVal.isEmpty()) {
+            if (weightVal.IsEmpty()) {
                 layer_alert('请输入[' + valJson.evaluationName + ']栏中的[权重(分值)]项');
                 hasResult = false;
                 return false;
