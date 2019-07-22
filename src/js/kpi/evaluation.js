@@ -104,6 +104,15 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     table.on('toolbar(lst)', function (data) {
         if (data.event == 'add') {
             loadSelect();
+            model.id = 0;
+            model.name = '';
+            model.index = 0;
+            model.description = '';
+            model.status = 1;
+            model.evaluationTypeId = 0;
+            vm.$set({ data: model });
+            layui.form.render("select");
+            
             layer_linePop = layer.open({
                 type: 1,
                 title: '添加考核项目',

@@ -18,6 +18,7 @@
     <script src='../../lib/fullcalendar/packages/daygrid/main.js'></script>
     <script src='../../lib/fullcalendar/packages/timegrid/main.js'></script>
     <script src='../../lib/fullcalendar/packages/core/locales/zh-cn.js'></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
 </head>
 
 <body>
@@ -27,6 +28,7 @@
         </div>
     </div>
     <script>
+        var employ = window.globCache.getEmployee();
         var layer;
         layui.use(['layer'], function () {
             layer = layui.layer;
@@ -39,7 +41,7 @@
         var addData = {};
         var datas = [];
         var init = function () {
-                Serv.Get('gc/Schedule/Get', {}, function (response) {
+                Serv.Get('gc/Schedule/Get/' + employ.id, {}, function (response) {
                 for (var i = 0; i < response.length; i++) {
                     var model = {
                         id:response[i].id,
@@ -97,7 +99,9 @@
                                     allDay: addData.allDay,
                                     backgroundColor: color_arr[addData.colindex],//背景色
                                     borderColor: color_arr[addData.colindex],//边框色
-                                    textColor: '#fff'//字体色
+                                    textColor: '#fff',//字体色
+                                    state:0,
+                                    type:addData.colindex
                                 });
                             }
                             calendar.unselect()

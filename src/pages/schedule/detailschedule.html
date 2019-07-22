@@ -157,7 +157,7 @@
         var init = function () {
             Serv.Get('gc/Schedule/GetSingle/' + id, {}, function (response) {
                 if (response) {
-                    if(employ.id != response.employeeId)
+                    if(employ.id != response.sche.employeeId)
                     {
                         var p = window.parent.document;
                         $(p).find(".layui-layer-btn-").hide();
