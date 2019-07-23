@@ -131,7 +131,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
                 }
                 var vJson = JSON.parse(value);
                 var model = vJson.dpt_position[0];
-                if(model.companyId != employee.companyId){
+                if (model.companyId != employee.companyId) {
                     errorAudit = '审核人只能选择同一公司下的审核人';
                     error = false;
                     return false;
