@@ -10,26 +10,25 @@
 		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/verify.js"></script>
+		<script type="text/javascript" src="../../lib/form_build.js"></script>
+		<script type="text/javascript" src="../../lib/pick-pcc/city.min.js"></script>
 	</head>
 	<body class="bgf2f2f2">
 		<div class="childrenBody">
 			<div class="layui-card-body bgwhite">
 				<div class="layui-tab margin-t-0">
 					<ul class="layui-tab-title">
-						<li class="fontsize-16">请款申请</li>
+						<li class="fontsize-16" id="subjectName"></li>
 						<span class="layui-btn layui-btn-sm fr" onclick="history.back(-1)">返回</span>
 					</ul>
 					<div class="layui-tab-content">
 						<div class="layui-tab-item layui-show" tab-name="内容设计">
 							<ul class="process_step">
-								<li class="active padding-l-0"><i>1</i><span>发起申请</span></li>
-								<li><i>2</i><span>部门管理员审批</span></li>
-								<li><i>3</i><span>抄送财务</span></li>
-								<li class="padding-r-0"><i>4</i><span>流程完成</span></li>
 							</ul>
-							<form class="layui-form layui-form2">
-								<div class="layui-row">
-								  表单数据
+							<form class="layui-form layui-form2" id="form">
+								<div class="layui-row" id="form_box">
+								  
 								</div>
 								<div class="layui-row">
 									<div class="layui-form-item">
@@ -46,33 +45,92 @@
 			</div>
 		</div>
 		<script type="text/javascript">
+			layer_load();
 			var subjectId = GetPara('subjectId');
-			layui.use(['table','laydate','form'], function() {
-				var table = layui.table,
-					laydate = layui.laydate
-					form = layui.form;
-					
-				laydate.render({elem:'.date'});
-				form.on('radio(pay_num)',function(obj){
-					if(obj.value == '1'){
-						$("#pay_table_item").hide();
-					} else {
-						$("#pay_table_item").show();
-					}
-				});
-				if(subjectId>0)
-				{
-					//绑定数据
+			var form = {};//form_data.formData;
+			var parem = {};//form_data.parameterData;
+			layui.config({
+				base: '../../lib/'
+			}).extend({
+				pick_pcc: 'pick-pcc/layui-pick-pcc'
+			});
+			layui.use(['pick_pcc','form','laydate','upload'], function() {
+				var pick_pcc = layui.pick_pcc,
+					form = layui.form,
+					laydate = layui.laydate,
+					upload = layui.upload;
+				if(subjectId>0){
 					BindFun(subjectId);
 				}
+				form.render();
+				layer_load_lose();
+				lay('.date').each(function(){
+					var type = $(this).data('type');
+					var range = $(this).data('range');
+					laydate.render({
+						elem:this,
+						type:type,
+						range:range
+					});
+				});
+				lay('.pickArea').each(function(){
+					var that = this;
+					pick_pcc.render({
+						elem:that,
+						getVal:function(names,codes){
+							var val = {names:names,codes:codes};
+							$(that).siblings('input').val(JSON.stringify(val));
+						}
+					});
+				});
+				lay('.upload').each(function(){
+					Serv.Upload({
+						elem:this,
+						done:function(res){
+							console.log(res);
+						}
+					});
+				});
+				form.on('submit(submit)',function(data){
+					for(var i = 0;i < parem.length;i++){
+						var field_name = 'f'+i;
+						var val = $('input[name="'+field_name+'"]').val();
+						var item = parem[i];
+						switch(item.TYP){
+							case 'dropdown':
+								
+								break;
+							case 'section':
+								delete parem[i];
+								break;
+							default:
+								item.VAL = data.field[field_name];
+								break;
+						}
+					}
+					console.log(parem);
+					return false;
+				});
 			});
-			function BindFun(subjectId)
-			{
+			
+			function BindFun(subjectId){
 				Serv.Get('lc/WorkflowMain/GetWorkFlowForm/'+subjectId,null,function(resultData){
-					console.log(resultData.data);
-
-				})
-
+					var data = resultData.data;
+					var html = '';
+					form = data.formAttribute;
+					parem = JSON.parse(data.formContent);
+					html = form_build(form,parem);
+					
+					$('#form_box').html(html);
+					var PassList = data.subjectPassList;
+					html = '<li class="active padding-l-0"><i>1</i><span>发起申请</span></li>';
+					for(var i = 0;i < PassList.length;i++){
+						html += '<li><i>'+(i+2)+'</i><span>'+PassList[i].passName+'</span></li>';
+					}
+					html += '<li class="padding-r-0"><i>'+(PassList.length+1)+'</i><span>流程完成</span></li>';
+					$('#subjectName').html(data.subjectName);
+					$('.process_step').html(html);
+				},false)
 			}
 		</script>
 	</body>

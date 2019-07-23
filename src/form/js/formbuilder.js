@@ -152,14 +152,14 @@ function resizeHandle(b) {
             f = $(DEFFLD.handle);
             c.append(f)
         }
-        f.position({
+        /* f.position({
             of: c,
             my: 'left top',
             at: 'left top'
-        });
+        }); */
         var d = c.outerWidth(),
         e = c.outerHeight();
-        f.css('width', d).css('height', e);
+        f.css({'width':d,'height':e});
         f.find('i.move').css('lineHeight', (e - 2) + 'px')
     };
     if (b == 'all') {
@@ -2391,7 +2391,6 @@ function saveForm(e, f, c) {
         $.showStatus('正在保存表单数据 ...')
     }
 	var data = { formData: JSON.stringify(M), parameterData: JSON.stringify(F) };
-	console.log(data);
 	//保存数据 返回guid表示唯一ID
     /* $.postJSON('/CustomFrom/FormDesign/FormSave', 
 		{ formData: JSON.stringify(M), parameterData: JSON.stringify(F) }, 

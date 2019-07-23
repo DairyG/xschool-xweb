@@ -2,9 +2,18 @@
  * 弹出加载层
  */
 function layer_load() {
-    window.layer_loading_id = layer.load(3, {
-        shade: 0.3
-    });
+	if(typeof layer == undefined || typeof layer == 'undefined'){
+		layui.use(['layer'],function(){
+			window.layer = layui.layer;
+			window.layer_loading_id = layer.load(3, {
+			    shade: 0.3
+			});
+		});
+	} else {
+		window.layer_loading_id = layer.load(3, {
+		    shade: 0.3
+		});
+	}
 };
 
 /**

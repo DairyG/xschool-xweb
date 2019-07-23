@@ -250,7 +250,7 @@ input.xxl+i.qrinput{position:absolute;bottom:10px;right:5px}
 .fieldActions .iconfont{cursor:pointer}
 .faDup{margin-right:15px;color:#31ba42;background-color:#fff}
 .faDel{color:#f0483f;background-color:#fff}
-.handle{position:absolute;height:98%;width:100%;top:0;left:0}
+.handle{position:absolute;height:98%;width:100%;top:0;right:0}
 .handle i{right:2px;top:1px;position:absolute;cursor:move!important;background-color:#fbfbfb}
 .section{font-size:110%!important;border-top:1px dotted #ccc}
 #fields li.private{background-image:url(images/locksmall.png)!important;background-repeat:no-repeat;background-position:98% 7px}

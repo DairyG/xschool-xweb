@@ -337,21 +337,19 @@
 		</div>
 		<script type="text/javascript" src="../../form/js/head.load.min.js"></script>
 		<script type="text/javascript">
-			$('#build_container').load('../public/form.html','',function(){
-				head.js("../../form/js/jquery-ui-1.8.24.custom.min.js",
-						"../../form/js/wangEditor.min.js",
-						"../../form/js/utils.js",
-						"../../form/js/widgets.js",
-						"../../form/js/jquery.mCustomScrollbar.min.js",
-						"../../form/js/formbuilder.js");
-			});
 			var layer_linePop,laytpl;
 			var  Id = GetPara('Id');
+			$('#build_container').load('../public/form.html','',function(){
+				if(Id == null){
+					loadFormJs();
+				}
+			});
 			layui.use(['table','element','form','laytpl'], function() {
 				var table = layui.table,
 					element = layui.element;
 				window.form = layui.form;
 				laytpl = layui.laytpl;
+				layer_load()
 				loadFlowTypes();
 				loadSubjectTypes();
 				if(Id>0){//编辑绑定数据
@@ -370,6 +368,7 @@
 						$('#RangeList').after('<input type="hidden" name="sels" value=\'' + JSON.stringify(subjectRuleRangeList) + '\'>');
 						M = JSON.parse(data.formAttribute);
 						F = JSON.parse(data.formContent);
+						loadFormJs();
 						//节点
 						$('.process_box li').eq(1).remove();
 						$('.process_box li').eq(1).remove();
@@ -390,6 +389,7 @@
 					},false);
 				}
 				form.render();
+				layer_load_lose();
 			});
 			function init_add_item(data){
 				var type = data.passType == 1 ? 'shenpi' : 'chaosong';
@@ -491,7 +491,6 @@
                         $("#select_FlowTypeId").append(opt);
 					   });
 					   form.render('select');
-					console.log(data);
 				},false);
 			}
 
@@ -602,6 +601,9 @@
 					"subjectRuleRangeList":subjectRuleRangeList,
 					"subjectStepFlowList":subjectStepFlowList,
 				};
+				if(Id > 0){
+					data.Id = Id;
+				}
 				if(data.SubjectName.trim() == ""){
 					layer.msg('流程名称不能为空!');
 					$('#tab_index1').click();
@@ -640,22 +642,28 @@
 				if(flag){
 					return false;
 				}
-				//console.log(data);
 				layer.load();
 				$(".link_Save").attr({"disabled":"true"});
-				Serv.Post('lc/Subject/Add',data,function(resultData){
-					console.log(resultData);
+				var url = Id == null ? 'lc/Subject/Add' : 'lc/Subject/Edit';
+				Serv.Post(url,data,function(resultData){
 					$(".link_Save").attr({"disabled":"fasle"});
-					layer.closeAll('loading');			
+					layer.closeAll('loading');
+					var msg =  Id == null ? '流程模板添加成功！' : '流程模板修改成功！';
 					if(resultData.succeed)
 					{
-						layer.msg('成功...', {icon:1});
+						layer.msg(msg, {icon:1});
 					}else{
 						layer.msg('失败:'+resultData.message, {icon:2});
 					}
 				},true)
 			}
-			
+			function loadFormJs(){
+				head.js("../../form/js/jquery-ui-1.8.24.custom.min.js",
+						"../../form/js/utils.js",
+						"../../form/js/widgets.js",
+						"../../form/js/jquery.mCustomScrollbar.min.js",
+						"../../form/js/formbuilder.js");
+			}
 		</script>
 	</body>
 </html>
