@@ -33,7 +33,7 @@
 								<div class="layui-row">
 									<div class="layui-form-item">
 										<div class="layui-input-block text-right">
-											<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确定</button>
+											<button class="layui-btn layui-btn-danger link_Save" lay-submit lay-filter="submit">确定</button>
 											<span class="layui-btn" onclick="history.back(-1)">返回</span>
 										</div>
 									</div>
@@ -47,8 +47,8 @@
 		<script type="text/javascript">
 			layer_load();
 			var subjectId = GetPara('subjectId');
-			var form = {};//form_data.formData;
-			var parem = {};//form_data.parameterData;
+			var F = {};//form_data.formData;
+			var M = {};//form_data.parameterData;
 			layui.config({
 				base: '../../lib/'
 			}).extend({
@@ -91,25 +91,40 @@
 						}
 					});
 				});
+				//数据提交
 				form.on('submit(submit)',function(data){
-					for(var i = 0;i < parem.length;i++){
+					
+					for(var i = 0;i < F.length;i++){
 						var field_name = 'f'+i;
 						var val = $('input[name="'+field_name+'"]').val();
-						var item = parem[i];
+						var item = F[i];
 						switch(item.TYP){
 							case 'dropdown':
 								
 								break;
 							case 'section':
-								delete parem[i];
+								delete F[i];
 								break;
 							default:
 								item.VAL = data.field[field_name];
 								break;
 						}
 					}
-					console.log(parem);
-					return false;
+					var dataValue={SubjectId:subjectId,FormAttribute:M,FormContent:F};
+					console.log(dataValue);
+					layer.load();
+					$(".link_Save").attr({"disabled":"true"});
+					Serv.Post('lc/WorkflowMain/CreateWork',dataValue,function(resultData){
+				    $(".link_Save").attr({"disabled":"fasle"});
+					layer.closeAll('loading');
+				
+					if(resultData.succeed)
+					{
+						layer.msg("成功...", {icon:1});
+					}else{
+						layer.msg('失败:'+resultData.message, {icon:2});
+					}
+				},true)
 				});
 			});
 			
@@ -118,8 +133,8 @@
 					var data = resultData.data;
 					var html = '';
 					form = data.formAttribute;
-					parem = JSON.parse(data.formContent);
-					html = form_build(form,parem);
+					F = JSON.parse(data.formContent);
+					html = form_build(form,F);
 					
 					$('#form_box').html(html);
 					var PassList = data.subjectPassList;

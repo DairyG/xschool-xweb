@@ -23,7 +23,7 @@ layui.use(['form'], function () {
             }
         },
         address: function (value, obj) {
-            if (value.length == 0) {
+            if (value != undefined && value.length == 0) {
                 return '请填写' + $(obj).attr("placeholder");
             }
         },
@@ -66,7 +66,9 @@ layui.use(['form'], function () {
             }
         },
         content: function (value) {
-            layedit.sync(editIndex);
+            if(typeof layedit != 'undefined'){
+                layedit.sync(editIndex);
+            }
         },
         num2: function (value, obj) {
             if (value == "") {
