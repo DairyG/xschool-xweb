@@ -9,6 +9,8 @@ layui.use(['laytpl', 'table', 'form'], function() {
         hasKpiConInit = 0; //是否第一次设置
     var defaultSel = '<span class="text-85">点击选择</span>';
 
+    var employee = window.globCache.getEmployee();
+
     var para = decodeURIComponent(decodeURIComponent(GetPara('para'))) || '';
     if (!IsJson(para)) {
         layer_alert('参数错误，请从正确入口进入');
@@ -129,6 +131,11 @@ layui.use(['laytpl', 'table', 'form'], function() {
                 }
                 var vJson = JSON.parse(value);
                 var model = vJson.dpt_position[0];
+                if(model.companyId != employee.companyId){
+                    errorAudit = '审核人只能选择同一公司下的审核人';
+                    error = false;
+                    return false;
+                }
                 dataAudit.push({
                     steps: cObj.attr('data-steps'),
                     companyId: model.company_id,
