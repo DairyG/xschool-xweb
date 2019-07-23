@@ -3,17 +3,26 @@
  * @param string message 提示信息
  */
 function layer_load(message) {
-    if (message) {
-        window.layer_loading_id = layer.msg(message, {
-            icon: 16,
-            shade: 0.3,
-            time: 0
-        });
-    } else {
-        window.layer_loading_id = layer.load(3, {
-            shade: 0.3
-        });
-    }
+	if(typeof layer == undefined || typeof layer == 'undefined'){
+		layui.use(['layer'],function(){
+			window.layer = layui.layer;
+			if (message) {
+				window.layer_loading_id = layer.msg(message, {
+					icon: 16,
+					shade: 0.3,
+					time: 0
+				});
+			} else {
+				window.layer_loading_id = layer.load(3, {
+					shade: 0.3
+				});
+			}
+		});
+	} else {
+		window.layer_loading_id = layer.load(3, {
+		    shade: 0.3
+		});
+	}
 };
 
 /**

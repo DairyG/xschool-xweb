@@ -103,7 +103,11 @@ window.globCache = {
         return window.localStorage.getItem(key);
     },
     set: function(key, value) {
-        window.localStorage.setItem(key, value)
+		if(value == null){
+			window.localStorage.removeItem(key)
+		} else {
+			window.localStorage.setItem(key, value)
+		}
     },
     clear: function() {
         localStorage.clear();

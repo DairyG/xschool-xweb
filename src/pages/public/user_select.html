@@ -71,6 +71,7 @@
 			var has_dpt_position = GetPara('has_dpt_position') == 'true' ? true : false;
 			var allow_num = GetPara('num');
 			var user_company = {id:1,pid:0};//默认当前用户的公司信息 实际另行获取
+			var employee = globCache.getEmployee();
 			var default_sels = window.parent.sels;
 			var sel_type = GetPara('sel_type');
 			if(default_sels != null){
@@ -114,9 +115,8 @@
 			//处理导航栏
 			function location_sel(obj,type,company_id,department_id,company_name){
 				$(obj).parent('span').nextAll().remove();
-				if($(obj).parent('span').index() == 1|| parseInt(department_id) > 0){
-					$(obj).parent('span').remove();
-				}
+				$(obj).parent('span').remove();
+				
 				show_items(type,company_id,department_id,company_name);
 			}
 			
@@ -260,7 +260,6 @@
 							html += build_check_html(company_arr[i].id, company_arr[i].companyName, type, company_id);
 						}
 						$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'company\','+company_id+',0,\''+company_arr[0].companyName+'\')">全部</a>&gt;</span>');
-						console.log($(".loaction_box").html());
 						break;
 					case 'department':
 						//此处加载部门列表
@@ -284,7 +283,7 @@
 							$('#n_cname').val(company_name);
 						} 
 						//此处加载用户列表
-						if (has_user && sel_type != 'dpt_position') {
+						if (has_user && sel_type != 'dpt_position' && department_id > 0) {
 							// 根据 公司ID 和 部门ID获取用户列表
 							// 部门ID为0时获取该公司下所有的用户
 							// 部门ID大于0时获取当前部门和所有子部门的用户
@@ -416,7 +415,12 @@
 				$(".loaction_box").html('');
 				sel_type = this_type;
 				$('#sel_type').val(sel_type);
-				show_items('company');
+				if(employee != null){
+					var show_type = this_type == 'position' ? 'position' : 'department';
+					show_items(show_type,employee.companyId,0,employee.companyName);
+				} else {
+					show_items('company');
+				}
 			}
 			
 			/**
@@ -465,7 +469,6 @@
 						}
 					});
 				}
-			
 			}
 		</script>
 	</body>

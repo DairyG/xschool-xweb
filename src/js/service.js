@@ -79,7 +79,6 @@ var Serv = {
         this.Send(url, "POST", args, callback, async);
     },
     Send: function(url, type, args, callback, async) {
-
         jQuery.support.cors = true;
         $.ajax({
             //xhrFields: {withCredentials: true},
@@ -99,9 +98,8 @@ var Serv = {
                 callback(data);
             },
             error: function(data) {
-                layer.closeAll('loading');
                 console.log(data);
-                // layer.closeAll();
+				layer_load_lose();
                 if (data.status == 400) {
                     var json = JSON.parse(data.responseText);
                     if (json.error == 'invalid_client') {

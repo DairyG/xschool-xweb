@@ -495,8 +495,6 @@
         window.globCache.setRecruitment(result.recruitmentSource);
       });
       var UserToken = globCache.getUserToken();
-
-      console.log(UserToken);
       $('#account').html(UserToken.displayName + '-' + UserToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/mobilephone']);
 
       $('#logout').on('click', function() {
