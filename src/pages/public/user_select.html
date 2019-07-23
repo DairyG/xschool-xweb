@@ -258,10 +258,9 @@
 						//此处加载公司列表
 						for(var i = 0;i < company_arr.length;i++){
 							html += build_check_html(company_arr[i].id, company_arr[i].companyName, type, company_id);
-							if(company_arr[i].id == company_id){
-								$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'company\','+company_id+',0,\''+company_arr[i].companyName+'\')">全部</a>&gt;</span>');
-							}
 						}
+						$(".loaction_box").html('<span><a href="javascript:;" onclick="location_sel(this,\'company\','+company_id+',0,\''+company_arr[0].companyName+'\')">全部</a>&gt;</span>');
+						console.log($(".loaction_box").html());
 						break;
 					case 'department':
 						//此处加载部门列表
@@ -417,7 +416,7 @@
 				$(".loaction_box").html('');
 				sel_type = this_type;
 				$('#sel_type').val(sel_type);
-				show_items('company',user_company.id);
+				show_items('company');
 			}
 			
 			/**
