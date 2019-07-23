@@ -976,17 +976,18 @@ function setImageHtml(value) {
         '</li>';
     return htmls;
 }
-//设置附件
-function setAttachHtml(value) {
+/**
+ * 设置附件
+ * @param {*} value 值
+ * @param {*} hideDel 是否隐藏删除按钮
+ */
+function setAttachHtml(value, hideDel) {
     let pos = value.lastIndexOf('\/'); // 查找最后一个/的位置
     var fileName = value.substring(pos + 1); // 截取最后一个/位置到字符长度，也就是截取文件名
-    var htmls =
-        '<li>' +
-        '  <i class="icon-attachment"></i>' +
-        '  <input data-name="attach" type="hidden" value="' + value + '">' +
-        '  <a href="javascript:;" onclick="delFileNode(this);" class="del" title="删除附件"><i class="layui-icon layui-icon-close"></i></a>' +
-        '  <div class="title">' + fileName + '</div>' +
-        '  <div class="info"><a href="' + value + '" target="_blank">点击下载</a></div>' +
-        '</li>';
+    var htmls = '<li><i class="icon-attachment"></i><input data-name="attach" type="hidden" value="' + value + '">';
+    if (hideDel != 1) {
+        htmls += '<a href="javascript:;" onclick="delFileNode(this);" class="del" title="删除附件"><i class="layui-icon layui-icon-close"></i></a>';
+    }
+    htmls += '<div class="title">' + fileName + '</div><div class="info"><a href="' + value + '" target="_blank">点击下载</a></div></li>';
     return htmls;
 }

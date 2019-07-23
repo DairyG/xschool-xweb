@@ -12,34 +12,34 @@ var paramModel = {
         dptId: [],
         year: 2019,
         kpiId: 1,
-        kpiType: 2,
+        kpiType: 1,
     },
     quarter: {
         companyId: '',
         dptId: [],
         year: 2019,
         kpiId: 2,
-        kpiType: 2,
+        kpiType: 1,
     },
     halfYear: {
         companyId: '',
         dptId: [],
         year: 2019,
         kpiId: 3,
-        kpiType: 2,
+        kpiType: 1,
     },
     annual: {
         companyId: '',
         dptId: [],
         year: 2019,
         kpiId: 4,
-        kpiType: 2,
+        kpiType: 1,
     },
 };
 
 var monthlyCol0 = [{
-    field: 'userName',
-    title: '人员',
+    field: 'dptName',
+    title: '部门',
     minWidth: '80'
 }];
 for (var index = 1; index <= 12; index++) {
@@ -71,8 +71,8 @@ monthlyCol0.push({
 var monthlyCol = [monthlyCol0];
 
 var quarterCol0 = [{
-    field: 'userName',
-    title: '人员',
+    field: 'dptName',
+    title: '部门',
     minWidth: '80'
 }];
 for (var index = 1; index <= 4; index++) {
@@ -91,8 +91,8 @@ for (var index = 1; index <= 4; index++) {
 var quarterCol = [quarterCol0];
 
 var halfYearCol0 = [{
-    field: 'userName',
-    title: '人员',
+    field: 'dptName',
+    title: '部门',
     minWidth: '80'
 }];
 for (var index = 1; index <= 2; index++) {
@@ -111,8 +111,8 @@ var halfYearCol = [halfYearCol0];
 
 var annualCol = [
     [{
-            field: 'userName',
-            title: '人员',
+            field: 'dptName',
+            title: '部门',
             minWidth: '80'
         },
         {
@@ -230,7 +230,6 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
     function search() {
         switch (paramModel.currTab) {
             case 'monthly':
-                // console.log(paramModel.monthly);
                 return paramModel.monthly;
             case 'quarter':
                 return paramModel.quarter;
@@ -280,7 +279,7 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
                 paramModel.monthlyHasFirst = true;
                 monthlyPager = Pager(
                     table, //lay-ui的table控件
-                    '人员考核管理-月度', //列表名称
+                    '部门考核管理-月度', //列表名称
                     'monthlyLst', //绑定的列表Id
                     'monthlyBar', //绑定的工具条Id
                     monthlyCol, //表头的显示行
@@ -304,7 +303,7 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
                 paramModel.quarterHasFirst = true;
                 quarterPager = Pager(
                     table, //lay-ui的table控件
-                    '人员考核管理-季度', //列表名称
+                    '部门考核管理-季度', //列表名称
                     'quarterLst', //绑定的列表Id
                     'quarterBar', //绑定的工具条Id
                     quarterCol, //表头的显示行
@@ -328,7 +327,7 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
                 paramModel.halfYearHasFirst = true;
                 halfYearPager = Pager(
                     table, //lay-ui的table控件
-                    '人员考核管理-半年', //列表名称
+                    '部门考核管理-半年', //列表名称
                     'halfYearLst', //绑定的列表Id
                     'halfYearBar', //绑定的工具条Id
                     halfYearCol, //表头的显示行
@@ -350,7 +349,7 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
         initAnnual: function() {
             annualPager = Pager(
                 table, //lay-ui的table控件
-                '人员考核管理-年度', //列表名称
+                '部门考核管理-年度', //列表名称
                 'annualLst', //绑定的列表Id
                 'annualBar', //绑定的工具条Id
                 annualCol, //表头的显示行
@@ -380,9 +379,9 @@ function getStatusTxt(status, score, index, model) {
     } else if (status == -1) {
         return '<span class="text-85">无效</span>';
     } else if (status == 1) {
-        return '<a href="userManageDetails.html?para=' + encodeURIComponent(encodeURIComponent(setUrlParam(model, index))) + '" class="text-add">' + score + '</a>';
+        return '<a href="dptManageDetails.html?para=' + encodeURIComponent(encodeURIComponent(setUrlParam(model, index))) + '" class="text-add">' + score + '</a>';
     } else if (status == 10 || status == 11) {
-        return '<a href="userManageEdit.html?para=' + encodeURIComponent(encodeURIComponent(setUrlParam(model, index))) + '" class="text-add">考核</a>';
+        return '<a href="dptManageEdit.html?para=' + encodeURIComponent(encodeURIComponent(setUrlParam(model, index))) + '" class="text-add">考核</a>';
     } else {
         return '<span class="text-85">未知</span>';
     }

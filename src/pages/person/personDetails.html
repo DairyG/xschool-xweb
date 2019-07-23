@@ -43,8 +43,8 @@
             <div class="layui-card-body">
               <div class="layui-tab layui-tab-brief" lay-filter="component-tabs">
                 <ul class="layui-tab-title">
-                  <li class="layui-this">职位信息</li>
-                  <li>个人信息</li>
+                  <li class="layui-this">个人信息</li>
+                  <li>职位信息</li>
                   <li>合同信息</li>
                   <li>工资福利</li>
                   <li>工资记录</li>
@@ -58,7 +58,7 @@
                   <a href="javascript:;" class="layui-btn layui-btn-sm fr" onclick="history.back(-1)">返回</a>
                 </ul>
                 <div class="layui-tab-content">
-                  <div class="layui-tab-item layui-show" tab-name="职位信息">
+                  <div class="layui-tab-item layui-show" tab-name="个人信息">
                     <div class="layui-form layui-form2 layui-form-info layui-row" v-if="person">
                       <div class="layui-form-item layui-col-md6 ">
                         <label class="layui-form-label">所属部门：</label>
@@ -72,58 +72,6 @@
                           <div class="layui-form-mid">{{ person.jobName }}</div>
                         </div>
                       </div>
-                      <div class="layui-form-item layui-col-md6 ">
-                        <label class="layui-form-label">员工工号：</label>
-                        <div class="layui-input-block">
-                          <div class="layui-form-mid">{{ person.employeeNo }}</div>
-                        </div>
-                      </div>
-                      <div class="layui-form-item layui-col-md6 ">
-                        <label class="layui-form-label">在职状态：</label>
-                        <div class="layui-input-block">
-                          <div class="layui-form-mid">{{ person.statusText }}</div>
-                        </div>
-                      </div>
-                      <div class="layui-form-item layui-col-md6 ">
-                        <label class="layui-form-label">办公电话：</label>
-                        <div class="layui-input-block">
-                          <div class="layui-form-mid">{{ person.officePhone }}</div>
-                        </div>
-                      </div>
-                      <div class="layui-form-item layui-col-md6 ">
-                        <label class="layui-form-label">办公邮箱：</label>
-                        <div class="layui-input-block">
-                          <div class="layui-form-mid">{{ person.officeEmail }}</div>
-                        </div>
-                      </div>
-                      <div class="layui-form-item layui-col-md6 ">
-                        <label class="layui-form-label">传真号码：</label>
-                        <div class="layui-input-block">
-                          <div class="layui-form-mid">{{ person.faxNumber }}</div>
-                        </div>
-                      </div>
-                      <div class="layui-form-item layui-col-md6">
-                        <label class="layui-form-label">推荐人：</label>
-                        <div class="layui-input-block">
-                          <div class="layui-form-mid">{{ person.referees }}</div>
-                        </div>
-                      </div>
-                      <div class="layui-form-item layui-col-md12 ">
-                        <label class="layui-form-label">办公地址：</label>
-                        <div class="layui-input-block">
-                          <div class="layui-form-mid">{{ person.officeAddress }}</div>
-                        </div>
-                      </div>
-                      <div class="layui-form-item layui-col-md12 ">
-                        <label class="layui-form-label">职位描述：</label>
-                        <div class="layui-input-block">
-                          <div class="padding-t-9 padding-l-15" v-html="replaceLine(person.positionDescribe)"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="layui-tab-item" tab-name="个人信息">
-                    <div class="layui-form layui-form2 layui-form-info layui-row" v-if="person">
                       <div class="layui-form-item layui-col-md4">
                         <label class="layui-form-label">个人姓名：</label>
                         <div class="layui-input-block">
@@ -282,11 +230,17 @@
                       </div>
                       <div class="layui-form-item layui-col-md12">
                         <label class="layui-form-label">个人照片：</label>
-                        <div class="layui-input-block"></div>
+                        <div class="layui-input-block">
+                          <div style="margin-left: 15px" class="v-images" v-html="splitAttach(person.photoPath,1)"></div>
+                        </div>
                       </div>
                       <div class="layui-form-item layui-col-md12">
                         <label class="layui-form-label">证书证件：</label>
-                        <div class="layui-input-block"></div>
+                        <div class="layui-input-block">
+                          <div class="attach-list" style="margin-left: 15px">
+                            <ul style="margin: 0" v-html="splitAttach(person.certificatePath,2)"></ul>
+                          </div>
+                        </div>
                       </div>
                       <div class="layui-form-item layui-col-md12">
                         <label class="layui-form-label">简历附件：</label>
@@ -370,6 +324,58 @@
                               </tr>
                             </tbody>
                           </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layui-tab-item" tab-name="职位信息">
+                    <div class="layui-form layui-form2 layui-form-info layui-row" v-if="person">
+                      <div class="layui-form-item layui-col-md6 ">
+                        <label class="layui-form-label">员工工号：</label>
+                        <div class="layui-input-block">
+                          <div class="layui-form-mid">{{ person.employeeNo }}</div>
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-col-md6 ">
+                        <label class="layui-form-label">在职状态：</label>
+                        <div class="layui-input-block">
+                          <div class="layui-form-mid">{{ person.statusText }}</div>
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-col-md6 ">
+                        <label class="layui-form-label">办公电话：</label>
+                        <div class="layui-input-block">
+                          <div class="layui-form-mid">{{ person.officePhone }}</div>
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-col-md6 ">
+                        <label class="layui-form-label">办公邮箱：</label>
+                        <div class="layui-input-block">
+                          <div class="layui-form-mid">{{ person.officeEmail }}</div>
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-col-md6 ">
+                        <label class="layui-form-label">传真号码：</label>
+                        <div class="layui-input-block">
+                          <div class="layui-form-mid">{{ person.faxNumber }}</div>
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-col-md6">
+                        <label class="layui-form-label">推荐人：</label>
+                        <div class="layui-input-block">
+                          <div class="layui-form-mid">{{ person.referees }}</div>
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-col-md12 ">
+                        <label class="layui-form-label">办公地址：</label>
+                        <div class="layui-input-block">
+                          <div class="layui-form-mid">{{ person.officeAddress }}</div>
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-col-md12 ">
+                        <label class="layui-form-label">职位描述：</label>
+                        <div class="layui-input-block">
+                          <div class="padding-t-9 padding-l-15" v-html="replaceLine(person.positionDescribe)"></div>
                         </div>
                       </div>
                     </div>
@@ -535,116 +541,6 @@
                         <li class="layui-this">发放记录</li>
                         <li>调整记录</li>
                       </ul>
-                      <!-- <div class="layui-tab-content">
-                                            <div class="layui-tab-item layui-show">
-                                                <table class="layui-table"
-                                                    lay-data="{data:gz_datas, page: true,totalRow:true}">
-                                                    <thead>
-                                                        <tr>
-                                                            <th lay-data="{type:'numbers'}" rowspan="2">序号</th>
-                                                            <th lay-data="{field:'ny',align:'center',totalRowText:'合计'}"
-                                                                rowspan="2">年月</th>
-                                                            <th lay-data="{align:'center',totalRow:true}" colspan="5">工资
-                                                            </th>
-                                                            <th lay-data="{align:'center',totalRow:true}" colspan="3">奖惩
-                                                            </th>
-                                                            <th lay-data="{align:'center',totalRow:true}" colspan="2">保险
-                                                            </th>
-                                                            <th lay-data="{field:'amount1',totalRow:true,minWidth:'120'}"
-                                                                rowspan="2">应发</th>
-                                                            <th lay-data="{field:'amount2',totalRow:true,minWidth:'120'}"
-                                                                rowspan="2">实发</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th lay-data="{field:'jb',minWidth:'100',totalRow:true}">
-                                                                基本工资</th>
-                                                            <th lay-data="{field:'cb',minWidth:'100',totalRow:true}">餐补
-                                                            </th>
-                                                            <th lay-data="{field:'jt',minWidth:'100',totalRow:true}">
-                                                                交通补助</th>
-                                                            <th
-                                                                lay-data="{field:'hf',minWidth:'100',totalRow:true,minWidth:'100'}">
-                                                                话费补助</th>
-                                                            <th lay-data="{field:'gw',minWidth:'100',totalRow:true}">
-                                                                高温补助</th>
-                                                            <th lay-data="{field:'cd',minWidth:'100',totalRow:true}">迟到
-                                                            </th>
-                                                            <th lay-data="{field:'qj',minWidth:'100',totalRow:true}">请假
-                                                            </th>
-                                                            <th lay-data="{field:'jj',minWidth:'100',totalRow:true}">奖金
-                                                            </th>
-                                                            <th lay-data="{field:'yn',minWidth:'100',totalRow:true}">
-                                                                养老保险</th>
-                                                            <th lay-data="{field:'sy',minWidth:'100',totalRow:true}">
-                                                                失业保险</th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                            <div class="layui-tab-item">
-                                                <ul class="layui-timeline">
-                                                    <li class="layui-timeline-item">
-                                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                                                        <div class="layui-timeline-content layui-text">
-                                                            <h3 class="layui-timeline-title">2019年5月17日 17:22:15</h3>
-                                                            <p>【行政部】张三 15333333333</p>
-                                                            <p>调整事由：转正工资调整</p>
-                                                            <p class="text-red">执行日期：2019年5月17日</p>
-                                                            <p>调整备注：试用期满调整工资基数</p>
-                                                            <div class="layui-form">
-                                                                <table class="layui-table ">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="table_label">调整项</th>
-                                                                            <th class="table_label">调整前</th>
-                                                                            <th class="table_label">调整后</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>基本工资</td>
-                                                                            <td>800</td>
-                                                                            <td>1000</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="layui-timeline-item">
-                                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                                                        <div class="layui-timeline-content layui-text">
-                                                            <h3 class="layui-timeline-title">2019年5月17日 17:22:15</h3>
-                                                            <p>【行政部】张三 15333333333</p>
-                                                            <p>调整事由：转正工资调整</p>
-                                                            <p class="text-red">执行日期：2019年5月17日</p>
-                                                            <p>调整备注：试用期满调整工资基数</p>
-                                                            <div class="layui-form">
-                                                                <table class="layui-table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="table_label">调整项</th>
-                                                                            <th class="table_label">调整前</th>
-                                                                            <th class="table_label">调整后</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>基本工资</td>
-                                                                            <td>800</td>
-                                                                            <td>1000</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <script type="text/html" id="bar">
-
-                                            </script>
-                                        </div> -->
                     </div>
                   </div>
                   <div class="layui-tab-item" tab-name="资产信息"></div>
@@ -678,7 +574,7 @@
                         </tr>
                         <tr v-if="item.attachment">
                           <td class="table_label">附件</td>
-                          <td colspan="3" class="v-images" v-html="splitImage(item.attachment)"></td>
+                          <td colspan="3" class="v-images" v-html="splitAttach(item.attachment,1)"></td>
                         </tr>
                       </table>
                     </div>

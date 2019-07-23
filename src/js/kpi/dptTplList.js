@@ -65,7 +65,7 @@ var dataCol = [
 
 var parameter = {
     companyId: '',
-    dptId: '',
+    dptId: [],
     kpiType: 1,
 };
 
@@ -73,13 +73,23 @@ var lstPager;
 layui.use(['table', 'element'], function() {
     var table = layui.table,
         element = layui.element;
-        
+
     var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
         parameter.companyId = treeNode.companyId;
-        parameter.dptId = '';
-        if (treeNode.id > 0) {
-            parameter.dptId = treeNode.id;
+        var dptId = [];
+        if (treeNode.id > 0 && treeNode.pid < 0) {
+            dptId.push(treeNode.id);
+            var nodes = dptZTreeObj.getNodesByParam("pid", treeNode.id, treeNode);
+            $.each(nodes, function(i, item) {
+                dptId.push(item.id);
+            });
+        } else if (treeNode.id > 0 && treeNode.pid > 0) {
+            dptId.push(treeNode.id);
         }
+
+        parameter.dptId = [];
+        parameter.dptId = dptId;
+
         lstPager.search();
     });
     dptZTree.reload();
@@ -116,7 +126,10 @@ layui.use(['table', 'element'], function() {
         null, //如果在显示之前需要对数据进行整理需要实现，否则传null
         null, //有选择行才能有的操作，实现该方法,否则传null
         null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
-        null,
+        function() {
+            this.where = {};
+            this.where = parameter;
+        },
         'full-100'
     );
 });

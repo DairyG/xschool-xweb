@@ -5,7 +5,7 @@ layui.use(['table', 'form', 'element', 'laytpl'], function() {
         laytpl = layui.laytpl;
 
     $('.backBtn').on('click', function() {
-        window.location.href = '/pages/kpi/userManageList.html';
+        window.location.href = '/pages/kpi/dptManageList.html';
     });
 
     var dbRecord = {},
@@ -26,7 +26,7 @@ layui.use(['table', 'form', 'element', 'laytpl'], function() {
         return false;
     }
 
-    $('#kpiTitle').html(paraJson.dptName + '—' + paraJson.userName + '—' + paraJson.year + '年' +
+    $('#kpiTitle').html(paraJson.dptName + '—' + paraJson.year + '年' +
         (paraJson.kpiId == 1 ? paraJson.kpiDate + '月' : paraJson.kpiId == 2 ? paraJson.kpiDate + '季度' : paraJson.kpiId.kpiId == 3 ? (paraJson.kpiDate == 1 ? '上半年' : '下半年') : '') +
         '—' + paraJson.kpiName);
 
@@ -45,7 +45,7 @@ layui.use(['table', 'form', 'element', 'laytpl'], function() {
                 var getTpl = auditRecordTpl.innerHTML;
                 $('#auditRecordPanel').html(laytpl(getTpl).render(dbAuditRecord));
 
-                getSchedule(dbRecord.employeeId, dbRecord.kpiId, result.data.kpiDate);
+                // getSchedule(dbRecord.employeeId, dbRecord.kpiId, result.data.kpiDate);
 
                 initKpiDetail();
             } else {

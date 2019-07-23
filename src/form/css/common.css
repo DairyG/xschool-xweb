@@ -48,6 +48,7 @@ height: 0;
 }
 * html .clearfix             { zoom: 1; } /* IE6 */
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
 /*for ie6*/
 .text{
 font-family:"Verdana","微软雅黑","宋体","Lucida Grande";

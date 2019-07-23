@@ -67,7 +67,9 @@ var vm = new Vue({
                         _this.workData = JSON.parse(_this.person.work);
                     }
 
-                    // console.log(_this.workData);
+                    _this.$nextTick(function() {
+                        _this.imagesViewer();
+                    });
 
                 } else {
                     layer_alert('未获取到相关数据');
@@ -91,16 +93,26 @@ var vm = new Vue({
             });
         },
 
-        //分割图片
-        splitImage: function(value) {
+        /**
+         * 分割附件
+         * @param {*} value 值
+         * @param {*} type 1=图片，2-附件
+         */
+        splitAttach: function(value, type) {
             if (!value) {
                 return '';
             }
             var htmls = '';
-            var imgArr = value.split(',');
-            $.each(imgArr, function(i, item) {
-                htmls += '<img src="' + item + '" style="margin:10px;max-height:90px; max-width:99%; cursor:pointer" />';
-            });
+            var fileArr = value.split(',');
+            if (type == 1) {
+                $.each(fileArr, function(i, item) {
+                    htmls += '<img src="' + item + '" style="margin:10px;max-height:90px; max-width:99%; cursor:pointer" />';
+                });
+            } else if (type == 2) {
+                $.each(fileArr, function(i, item) {
+                    htmls += setAttachHtml(item, 1);
+                });
+            }
             return htmls;
         },
 
