@@ -9,8 +9,8 @@
     <script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="lib/jquery.md5.js"></script>
     <script type="text/javascript" src="js/num.js"></script>
+	<script type="text/javascript" src="js/layer.com.js"></script>
     <script type="text/javascript" src="js/service.js"></script>
-    <script type="text/javascript" src="js/layer.com.js"></script>
     <script type="text/javascript" src="js/cache.js"></script>
     <style>
       body {
@@ -214,6 +214,7 @@
         Serv.SetToken(result.token_type + ' ' + result.access_token);
         var token = parseJwt(result.access_token);
         window.globCache.setUserToken(token);
+		window.globCache.set(cacheModel.EMPLOYEE,null);
         Serv.Get(
           'uc/Employee/GetEmployeeByUserId/' + token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
           {},
