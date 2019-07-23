@@ -1,10 +1,11 @@
 var rec_type;
-
-layui.use(['table', 'element', 'form', 'layedit'], function () {
+var certificatePanel = $('#certificatePanel');
+layui.use(['table', 'element', 'form', 'layedit','upload'], function () {
     var table = layui.table,
         element = layui.element,
         layform = layui.form,
         layedit = layui.layedit;
+        upload = layui.upload;
 
     var index = layedit.build('Content', { height: 360 });
     layform.on('submit(noteAdd)', function (laydata) {
@@ -20,11 +21,11 @@ layui.use(['table', 'element', 'form', 'layedit'], function () {
                     }
                 })
             }
-            else{
+            else {
                 layer_load_lose();
                 layer_alert(resultData.data);
             }
-        })   
+        })
         return false;
     })
     layform.on('submit(noteAddAgain)', function (laydata) {
@@ -52,13 +53,18 @@ layui.use(['table', 'element', 'form', 'layedit'], function () {
     function CheckData(laydata, callback) {
         var result = new Array;
         var sels = laydata.field.sels;
+        var certificateData = [];
+        certificatePanel.find('input[data-name="attach"]').each(function() {
+            certificateData.push($(this).val());
+        });
+        var EnclosureUrl = certificateData.join(',');
         if (encodeURIComponent($("#Content")[0].value).length == 0) {
             result.succeed = false;
-            result.data="请填写公告内容！";
+            result.data = "请填写公告内容！";
         }
         if (sels == undefined) {
             result.succeed = false;
-            result.data="请公告阅读范围！";
+            result.data = "请公告阅读范围！";
         }
         else {
             var param = laydata.field;
@@ -70,12 +76,31 @@ layui.use(['table', 'element', 'form', 'layedit'], function () {
             param.DepList = JSON.parse(laydata.field["sels"]).department;
             param.ComList = JSON.parse(laydata.field["sels"]).company;
             param.PositionList = JSON.parse(laydata.field["sels"]).position;
-            param.SelType=JSON.parse(laydata.field["sels"]).sel_type;
+            param.SelType = JSON.parse(laydata.field["sels"]).sel_type;
+            param.EnclosureUrl=EnclosureUrl;
             result.succeed = true;
-            result.data=param;
+            result.data = param;
         }
         callback(result);
     }
+
+    //附件 上传
+    upload.render({
+        elem: '#certificateBtn',
+        url: Serv.ImageUrl,
+        accept: 'file',
+        headers: Serv.GetHeaders(),
+        before: function (obj) {
+            layer_load();
+        },
+        done: function (result) {
+            layer_load_lose();
+            certificatePanel.append(setAttachHtml(result.data[0]));
+        },
+        error: function () {
+            layer_load_lose();
+        }
+    });
 
     var id = GetPara("id");
     if (id > 0) {
@@ -87,14 +112,16 @@ layui.use(['table', 'element', 'form', 'layedit'], function () {
                 $("input[name=IsNeedRead][value='0']").attr("checked", result.data.noteDetail.isNeedRead == 0 ? true : false);
                 $("input[name=IsNeedRead][value='1']").attr("checked", result.data.noteDetail.isNeedRead == 1 ? true : false);
                 $("input[name='id']").val(result.data.noteDetail.id);
-                
-                var sels=result.data.chooseUser;
+                var fjHtml=splitAttach(result.data.noteDetail.enclosureUrl,2);                
+                $("#certificatePanel").html(fjHtml);
+
+                var sels = result.data.chooseUser;
                 var html = "";
                 var L1 = sels.user.length,
                     L2 = sels.department.length,
                     L3 = sels.company.length,
                     L4 = sels.position.length;
-                    //L5 = sels.dpt_position.length;
+                //L5 = sels.dpt_position.length;
                 if ((L1 + L2 + L3 + L4) > 1) {
                     html = "等" + (L1 + L2 + L3 + L4) + '项';
                 }
@@ -121,4 +148,27 @@ layui.use(['table', 'element', 'form', 'layedit'], function () {
 })
 function backhistory() {
     window.location.href = "/pages/note/noteManage.html";
+}
+
+/**
+ * 分割附件
+ * @param {*} value 值
+ * @param {*} type 1=图片，2-附件
+ */
+function splitAttach(value, type) {
+    if (!value) {
+        return '';
+    }
+    var htmls = '';
+    var fileArr = value.split(',');
+    if (type == 1) {
+        $.each(fileArr, function (i, item) {
+            htmls += '<img src="' + item + '" style="margin:10px;max-height:90px; max-width:99%; cursor:pointer" />';
+        });
+    } else if (type == 2) {
+        $.each(fileArr, function (i, item) {
+            htmls += setAttachHtml(item, 1);
+        });
+    }
+    return htmls;
 }

@@ -108,7 +108,9 @@ var vm = new Vue({
                     _this.noteDetail.publisherId = result.data.noteDetail.publisherId;
                     _this.noteDetail.publisherName = result.data.noteDetail.publisherName;
                     _this.noteDetail.DepartmentName = result.data.noteDetail.departmentName;
-                    _this.noteDetail.content = decodeURIComponent(result.data.noteDetail.content);
+                    _this.noteDetail.content = decodeURIComponent(result.data.noteDetail.content); 
+                    var fjHtml=splitAttach(result.data.noteDetail.enclosureUrl,2);                
+                    $("#certificatePanel").html(fjHtml);
                     $("#content").html(_this.noteDetail.content);
                 }
                 else {
@@ -126,3 +128,28 @@ var vm = new Vue({
         }
     }
 })
+
+/**
+ * 分割附件
+ * @param {*} value 值
+ * @param {*} type 1=图片，2-附件
+ */
+function splitAttach(value, type) {
+    if (!value) {
+        return '';
+    }
+    var htmls = '';
+    var fileArr = value.split(',');
+    if (type == 1) {
+        $.each(fileArr, function (i, item) {
+            htmls += '<img src="' + item + '" style="margin:10px;max-height:90px; max-width:99%; cursor:pointer" />';
+        });
+    } else if (type == 2) {
+        $.each(fileArr, function (i, item) {
+            htmls += setAttachHtml(item, 1);
+        });
+    }
+    if (htmls != '')
+    htmls = '<hr>' + htmls;
+    return htmls;
+}
