@@ -316,7 +316,6 @@ $('.set_btn').click(function() {
             var jobName = $("input[name='pos[]']:checked").attr("title");
             var dptId = $("input[name='Id']").val();
             if (dptId > 0) {
-
                 Serv.Post("uc/Department/AddDptJobBinding", {
                     Id: 0,
                     CompanyId: employee.companyId,

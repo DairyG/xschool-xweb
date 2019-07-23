@@ -41,10 +41,11 @@
         var addData = {};
         var datas = [];
         var init = function () {
-                Serv.Get('gc/Schedule/Get/' + employ.id, {}, function (response) {
+            var eid = employ ? employ.id : 0;
+            Serv.Get('gc/Schedule/Get/' + eid, {}, function (response) {
                 for (var i = 0; i < response.length; i++) {
                     var model = {
-                        id:response[i].id,
+                        id: response[i].id,
                         title: response[i].title,
                         start: response[i].beginTime.FormatDate(true),
                         end: response[i].endTime.FormatDate(true),
@@ -54,9 +55,9 @@
                         borderColor: color_arr[response[i].emergency],
                         textColor: '#fff'
                     };
-                    datas.push(model);   
+                    datas.push(model);
                 }
-            },false);
+            }, false);
         };
         init();
         document.addEventListener('DOMContentLoaded', function () {
@@ -76,37 +77,39 @@
                 select: function (arg) {//选中回调
                     //var title = prompt('Event Title:');
                     //console.log(arg);
-                    addData.start = arg.startStr;
-                    addData.end = arg.endStr;
-                    addData.allDay = arg.allDay;
-                    layer.open({
-                        type: 2,
-                        title: '添加日程',
-                        scrollbar: false,
-                        skin: 'layui-layer-rim',
-                        closeBtn: 1,
-                        area: ['100%', '100%'],
-                        anim: 2,
-                        move: false,
-                        content: 'addschedule.html?is_pop=1',
-                        end: function () {
-                            if (addData.title) {
-                                calendar.addEvent({
-                                    id : addData.id,
-                                    title: addData.title,
-                                    start: addData.start,
-                                    end: addData.end,
-                                    allDay: addData.allDay,
-                                    backgroundColor: color_arr[addData.colindex],//背景色
-                                    borderColor: color_arr[addData.colindex],//边框色
-                                    textColor: '#fff',//字体色
-                                    state:0,
-                                    type:addData.colindex
-                                });
+                    if (employ) {
+                        addData.start = arg.startStr;
+                        addData.end = arg.endStr;
+                        addData.allDay = arg.allDay;
+                        layer.open({
+                            type: 2,
+                            title: '添加日程',
+                            scrollbar: false,
+                            skin: 'layui-layer-rim',
+                            closeBtn: 1,
+                            area: ['100%', '100%'],
+                            anim: 2,
+                            move: false,
+                            content: 'addschedule.html?is_pop=1',
+                            end: function () {
+                                if (addData.title) {
+                                    calendar.addEvent({
+                                        id: addData.id,
+                                        title: addData.title,
+                                        start: addData.start,
+                                        end: addData.end,
+                                        allDay: addData.allDay,
+                                        backgroundColor: color_arr[addData.colindex],//背景色
+                                        borderColor: color_arr[addData.colindex],//边框色
+                                        textColor: '#fff',//字体色
+                                        state: 0,
+                                        type: addData.colindex
+                                    });
+                                }
+                                calendar.unselect()
                             }
-                            calendar.unselect()
-                        }
-                    });
+                        });
+                    }
                 },
                 slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false, meridiem: 'short' },
                 editable: true,
@@ -135,52 +138,55 @@
                     layer.closeAll('tips');
                 },
                 eventClick: function (arg) {
-                    layer.open({
-                        type: 2,
-                        title: '任务详情',
-                        scrollbar: false,
-                        skin: 'layui-layer-rim',
-                        closeBtn: 1,
-                        area: ['100%', '100%'],
-                        anim: 2,
-                        move: false,
-                        content: '../schedule/detailschedule.html?is_pop=1&id=' + arg.event.id,
-                        btn: ['修改', '删除'],
-                        yes: function (index) {
-                            layer.close(index);
-                            layer.open({
-                                type: 2,
-                                title: '修改任务',
-                                scrollbar: false,
-                                skin: 'layui-layer-rim',
-                                closeBtn: 1,
-                                area: ['100%', '100%'],
-                                anim: 2,
-                                move: false,
-                                content: '../schedule/addschedule.html?is_pop=1&sid=' + arg.event.id
-                            });
-                        },
-                        btn2: function () {
-                            layer.confirm('确认删除该日程？', {
-                                btn: ['确认', '取消'] //按钮
-                            }, function () {
-                                //删除操作
-                                Serv.Get('gc/Schedule/Delete/' + arg.event.id,{},function(response,index){
-                                    if(response.code == "00"){
-                                        layer_alert("删除成功！",function(){
-                                            window.location.reload();
-                                            layer.close(index);
-                                        });
-                                    }
-                                    else{
-                                        layer_alert(response.message);
-                                    }
-                                });
-                            }, function (index) {
+                    if (employ) {
+                        layer.open({
+                            type: 2,
+                            title: '任务详情',
+                            scrollbar: false,
+                            skin: 'layui-layer-rim',
+                            closeBtn: 1,
+                            area: ['100%', '100%'],
+                            anim: 2,
+                            move: false,
+                            content: '../schedule/detailschedule.html?is_pop=1&id=' + arg.event.id,
+                            btn: ['修改', '删除'],
+                            yes: function (index) {
+
                                 layer.close(index);
-                            });
-                        }
-                    });
+                                layer.open({
+                                    type: 2,
+                                    title: '修改任务',
+                                    scrollbar: false,
+                                    skin: 'layui-layer-rim',
+                                    closeBtn: 1,
+                                    area: ['100%', '100%'],
+                                    anim: 2,
+                                    move: false,
+                                    content: '../schedule/addschedule.html?is_pop=1&sid=' + arg.event.id
+                                });
+                            },
+                            btn2: function () {
+                                layer.confirm('确认删除该日程？', {
+                                    btn: ['确认', '取消'] //按钮
+                                }, function () {
+                                    //删除操作
+                                    Serv.Get('gc/Schedule/Delete/' + arg.event.id, {}, function (response, index) {
+                                        if (response.code == "00") {
+                                            layer_alert("删除成功！", function () {
+                                                window.location.reload();
+                                                layer.close(index);
+                                            });
+                                        }
+                                        else {
+                                            layer_alert(response.message);
+                                        }
+                                    });
+                                }, function (index) {
+                                    layer.close(index);
+                                });
+                            }
+                        });
+                    }
                 },
                 events: datas
             });
