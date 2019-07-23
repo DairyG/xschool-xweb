@@ -108,7 +108,8 @@ var vm = new Vue({
                     _this.ruleDetail.publisherId = result.data.ruleRegulationDetail.publisherId;
                     _this.ruleDetail.publisherName = result.data.ruleRegulationDetail.publisherName;
                     _this.ruleDetail.DepartmentName = result.data.ruleRegulationDetail.departmentName;
-                    _this.ruleDetail.content = decodeURIComponent(result.data.ruleRegulationDetail.content);
+                    _this.ruleDetail.content = result.data.ruleRegulationDetail.content; 
+                    $("#content").html(_this.ruleDetail.content);
                     var fjHtml=splitAttach(result.data.ruleRegulationDetail.enclosureUrl,2);                
                     $("#certificatePanel").html(fjHtml);
                     $("#content").html(_this.ruleDetail.content);

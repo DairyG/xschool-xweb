@@ -7,7 +7,24 @@ layui.use(['table', 'element', 'form', 'layedit', 'upload'], function () {
         layedit = layui.layedit;
     upload = layui.upload;
 
-    var index = layedit.build('editor1', { height: 360 });
+    //var index = layedit.build('editor1', { height: 360 });
+    var E = window.wangEditor
+    var eContent = new E('#E_Content');
+    eContent.customConfig.uploadImgServer = Serv.ImageUrl;
+    eContent.customConfig.uploadImgHeaders = Serv.GetHeaders();
+    eContent.customConfig.uploadImgHooks = {
+        customInsert: function(insertImg, result, editor) {
+            if (result.succeed) {
+                for (let index = 0; index < result.data.length; index++) {
+                    insertImg(result.data[index])
+                }
+            }
+        }
+    };
+    eContent.customConfig.onchange = function(html) {
+        $('input[name="content"]').val(html);
+    };
+    eContent.create();
 
     form.on('submit(noteAdd)', function (laydata) {
         layer_load();
@@ -101,8 +118,10 @@ layui.use(['table', 'element', 'form', 'layedit', 'upload'], function () {
                 var fjHtml=splitAttach(result.data.ruleRegulationDetail.enclosureUrl,2);                
                 $("#certificatePanel").html(fjHtml);
 
-                var content = decodeURIComponent(result.data.ruleRegulationDetail.content);
-                layedit.setContent(index, content, true);
+                var content = result.data.ruleRegulationDetail.content;
+                //layedit.setContent(index, content, true);
+                $("input[name='content']").val(content);
+                eContent.txt.html(content);
 
                 var zTree = $.fn.zTree.getZTreeObj('treeDemo');
                 var nodes = zTree.getNodesByParam("id", result.data.ruleRegulationDetail.typeId, null);
@@ -125,13 +144,12 @@ function CheckData(laydata, callback) {
     var sels = laydata.field.sels;
     var zTree = $.fn.zTree.getZTreeObj('treeDemo');
     var nodes = zTree.getCheckedNodes();
-    var content = encodeURIComponent($("#editor1")[0].value);
     var certificateData = [];
     certificatePanel.find('input[data-name="attach"]').each(function () {
         certificateData.push($(this).val());
     });
     var EnclosureUrl = certificateData.join(',');
-    if (content.length == 0) {
+    if ($.trim(laydata.field.content) == 0) {
         result.succeed = false;
         result.data = "请填写公告内容！";
     }
@@ -141,8 +159,8 @@ function CheckData(laydata, callback) {
     }
     else {
         var param = laydata.field;
-        param.TypeId = nodes[0].id;
-        param.Content = content;
+        param.TypeId = nodes[0].id; 
+        param.Content =encodeURIComponent(laydata.field.content);
         param.PublisherId = window.globCache.getEmployee().id;
         param.PublisherName = window.globCache.getEmployee().employeeName;
         param.DepartmentName = window.globCache.getEmployee().dptName;

@@ -1,5 +1,6 @@
 var rec_type;
 var certificatePanel = $('#certificatePanel');
+
 layui.use(['table', 'element', 'form', 'layedit','upload'], function () {
     var table = layui.table,
         element = layui.element,
@@ -7,7 +8,26 @@ layui.use(['table', 'element', 'form', 'layedit','upload'], function () {
         layedit = layui.layedit;
         upload = layui.upload;
 
-    var index = layedit.build('Content', { height: 360 });
+    //var index = layedit.build('Content', { height: 360 });
+    var E = window.wangEditor
+    var eContent = new E('#E_Content');
+    eContent.customConfig.uploadImgServer = Serv.ImageUrl;
+    eContent.customConfig.uploadImgHeaders = Serv.GetHeaders();
+    eContent.customConfig.uploadImgHooks = {
+        customInsert: function(insertImg, result, editor) {
+            if (result.succeed) {
+                for (let index = 0; index < result.data.length; index++) {
+                    insertImg(result.data[index])
+                }
+            }
+        }
+    };
+    eContent.customConfig.onchange = function(html) {
+        $('input[name="content"]').val(html);
+    };
+    eContent.create();
+
+
     layform.on('submit(noteAdd)', function (laydata) {
         layer_load();
         CheckData(laydata, function (resultData) {
@@ -58,7 +78,7 @@ layui.use(['table', 'element', 'form', 'layedit','upload'], function () {
             certificateData.push($(this).val());
         });
         var EnclosureUrl = certificateData.join(',');
-        if (encodeURIComponent($("#Content")[0].value).length == 0) {
+        if ($.trim(laydata.field.content) == 0) {
             result.succeed = false;
             result.data = "请填写公告内容！";
         }
@@ -68,7 +88,7 @@ layui.use(['table', 'element', 'form', 'layedit','upload'], function () {
         }
         else {
             var param = laydata.field;
-            param.Content = encodeURIComponent($("#Content")[0].value);
+            param.Content =encodeURIComponent(laydata.field.content);
             param.PublisherId = window.globCache.getEmployee().id;
             param.PublisherName = window.globCache.getEmployee().employeeName;
             param.DepartmentName = window.globCache.getEmployee().dptName;
@@ -136,8 +156,10 @@ layui.use(['table', 'element', 'form', 'layedit','upload'], function () {
                 }
                 $("div[id='rec_box']").text(html);
                 $("div[id='rec_box']").append('<input type="hidden" name="sels" value=\'' + JSON.stringify(result.data.chooseUser) + '\'>');
-                var content = decodeURIComponent(result.data.noteDetail.content);
-                layedit.setContent(index, content, true);
+                var content = result.data.noteDetail.content;
+                //layedit.setContent(index, content, true);
+                $("input[name='content']").val(content);
+                eContent.txt.html(content);
                 layform.render();
             }
             else {

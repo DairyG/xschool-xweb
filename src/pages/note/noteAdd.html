@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="../../js/verify.js"></script>
 	<script type="text/javascript" src="../../lib/vue.js"></script>
 	<script type="text/javascript" src="../../js/cache.js"></script>
+	<script type="text/javascript" src="../../lib/wangEditor/wangEditor.min.js"></script>
 </head>
 
 <body class="bgf2f2f2">
@@ -62,9 +63,13 @@
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">公告内容<span class="text-red"> *</span></label>
+										<!-- <div class="layui-input-block">
+											<textarea class="layui-textarea" placeholder="请输入公告内容" id="Content"></textarea>											
+										</div> -->
+										<!-- <div class="layui-input-block" id="Content"></div> -->
 										<div class="layui-input-block">
-											<textarea class="layui-textarea" placeholder="请输入公告内容"
-												id="Content"></textarea>
+											<input type="hidden" name="content">
+											<div id="E_Content"></div>
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">

@@ -108,7 +108,7 @@ var vm = new Vue({
                     _this.noteDetail.publisherId = result.data.noteDetail.publisherId;
                     _this.noteDetail.publisherName = result.data.noteDetail.publisherName;
                     _this.noteDetail.DepartmentName = result.data.noteDetail.departmentName;
-                    _this.noteDetail.content = decodeURIComponent(result.data.noteDetail.content); 
+                    _this.noteDetail.content = result.data.noteDetail.content; 
                     var fjHtml=splitAttach(result.data.noteDetail.enclosureUrl,2);                
                     $("#certificatePanel").html(fjHtml);
                     $("#content").html(_this.noteDetail.content);
