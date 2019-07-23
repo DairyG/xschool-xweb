@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
 	<script type="text/javascript" src="../../js/service.js"></script>
 	<script type="text/javascript" src="../../js/cache.js"></script>
+	<script type="text/javascript" src="../../lib/wangEditor/wangEditor.min.js"></script>
 </head>
 
 <body class="bgf2f2f2">
@@ -59,17 +60,25 @@
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">制度内容<span class="text-red"> *</span></label>
-										<div class="layui-input-block">
+										<!-- <div class="layui-input-block">
 											<textarea class="layui-textarea" placeholder="请输入制度内容"
 												id="editor1"></textarea>
-										</div>
+										</div> -->
+										<div class="layui-input-block">
+												<input type="hidden" name="content">
+												<div id="E_Content"></div>
+											</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">制度附件<span class="text-red"> *</span></label>
 										<div class="layui-input-block">
-											<span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3"><i
-													class="layui-icon">&#xe67c;</i>上传附件</span>
-										</div>
+											<button type="button" id="certificateBtn" class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
+											  <i class="layui-icon">&#xe67c;</i>上传附件
+											</button>
+											<div class="attach-list">
+											  <ul id="certificatePanel"></ul>
+											</div>
+										  </div>
 									</div>
 									<div class="layui-row">
 										<div class="layui-form-item">
