@@ -144,7 +144,7 @@ layui.use(['laytpl', 'table', 'element', 'form'], function() {
         }));
     }
 
-    var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
+    var dptZTree = new ZTreeSearch('dptTree', {}, function(event, treeId, treeNode) {
         var companyId = treeNode.companyId;
         var dptId = [];
         //公司

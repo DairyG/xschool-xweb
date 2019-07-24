@@ -4,7 +4,7 @@
  * @param json option 参数设置，如：{"text":"name","key":"id","parentKey":"pId"}
  * @param function callBack 回调函数
  */
-function ZTreeRadio(zTreeDom, option, callBack) {
+function ZTreeSearch(zTreeDom, option, callBack) {
     var zTreeObj;
     var options = {
         text: option.text ? option.text : 'dptName',

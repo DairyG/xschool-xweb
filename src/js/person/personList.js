@@ -169,13 +169,13 @@ layui.use(['table', 'element', 'form'], function() {
     });
     ujObj.on('click', '.userJobDel', function() {
         var length = ujObj.find('tr').length;
-        if (length <= 1) {
-            layer_alert('请勿删除');
-            return false;
-        }
         var obj = $(this).parents('tr');
         layer_confirm('确定删除吗？', function() {
             obj.remove();
+            if (length <= 1) {
+                ujObj.html(getUserJobTpl());
+                form.render();
+            }
         });
     });
     ujObj.on('click', '.deptPopup', function() {
@@ -194,25 +194,21 @@ layui.use(['table', 'element', 'form'], function() {
 
     form.on('submit(userJobSubmit)', function(laydata) {
         layer_load();
-        var hasResult = validateUserJob();
-        if (!hasResult) {
-            layer_load_lose();
-            return false;
-        }
-
         var data = [];
         ujObj.find('tr').each(function() {
-            var valJson = JSON.parse($(this).find('input[name="sels"]').val());
+            var depVal = $(this).find('input[name="sels"]').val();
             var jobVal = $.trim($(this).find('select[name="userJob"]').val());
-            data.push({
-                companyId: valJson.department[0].company_id,
-                dptId: valJson.department[0].id.toString(),
-                jobId: jobVal.toString()
-            });
+            if (depVal && jobVal) {
+                var valJson = JSON.parse(depVal);
+                data.push({
+                    companyId: valJson.department[0].company_id,
+                    dptId: valJson.department[0].id.toString(),
+                    jobId: jobVal.toString()
+                });
+            }
         });
-
-        if (data.length == 0) {
-            layer_alert('请设置相关职位');
+        if (data.length > 0 && !validateUserJob()) {
+            layer_load_lose();
             return false;
         }
 

@@ -7,15 +7,16 @@
  * parameter 参数说明：
     {
         //字段自定义
-        "field": { 
-            "text": "name",
-            "key": "id",
-            "parentKey": "pId"
+        field: { 
+            text: "name",
+            key: "id",
+            parentKey: "pid"
         },
-        //数据加载方式：ompany=公司，dpt=部门
-        dataMode: "ompany/dpt",
+        //数据加载方式：company=公司，dpt=部门
+        dataMode: "company/dpt/mondule",
         //是否可以选择公司
-        iscompany：0/1
+        iscompany：0/1,
+        isExpandAll：0/1, //是否展开全部
     }
  * @param function callBack 回调函数
  */
@@ -27,7 +28,8 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom, parameter, callBack) {
             parentKey: 'pid'
         },
         dataMode: 'dpt',
-        iscompany: 0
+        iscompany: 0,
+        isExpandAll: 0,
     }
     $.extend(true, option, parameter);
 
@@ -92,10 +94,13 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom, parameter, callBack) {
         $('body').unbind('mousedown', onBodyDown);
     }
     //设置初始值
-    var setCheck = function() {
+    var setCheck = function(hasDefault) {
         var value = options.nameDOM.attr('data-id');
         var node = zTreeObj.getNodeByParam('id', value, null);
-        if (node != null) {
+        if (node != null && value) {
+            if (hasDefault == 1) {
+                options.nameDOM.val(node[options.text]);
+            }
             zTreeObj.selectNode(node, true, false);
         }
     };
@@ -108,36 +113,44 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom, parameter, callBack) {
     }
     return {
         reload: function(data) {
-            var companys = window.globCache.getCompany();
             var array = [];
-            if (option.dataMode == 'dpt') {
-                var dpts = window.globCache.getDepartment();
-                var array = $.map(companys, function(item) {
-                    return {
-                        id: item.id * -1,
-                        dptName: item.companyName,
-                        companyId: item.id,
-                        pid: 0,
-                        open: true
-                    };
-                });
-                var dptArray = $.map(dpts, function(item) {
-                    if (item.pid == 0) {
-                        item.pid = item.companyId * -1;
-                        return item;
-                    }
-                    return item;
-                });
-                $.each(dptArray, function(index, item) {
-                    array.push(item);
-                });
+            if (option.dataMode == 'mondule') {
+                array = data;
             } else {
-                array = companys;
+                var companys = window.globCache.getCompany();
+                if (option.dataMode == 'dpt') {
+                    var dpts = window.globCache.getDepartment();
+                    var array = $.map(companys, function(item) {
+                        return {
+                            id: item.id * -1,
+                            dptName: item.companyName,
+                            companyId: item.id,
+                            pid: 0,
+                            open: true
+                        };
+                    });
+                    var dptArray = $.map(dpts, function(item) {
+                        if (item.pid == 0) {
+                            item.pid = item.companyId * -1;
+                            return item;
+                        }
+                        return item;
+                    });
+                    $.each(dptArray, function(index, item) {
+                        array.push(item);
+                    });
+                } else {
+                    array = companys;
+                }
             }
             zTreeObj = $.fn.zTree.init(options.zTreeDOM, setting, array);
-            var nodes = zTreeObj.getNodes();
-            if (nodes.length > 0) {
-                zTreeObj.expandNode(nodes[0], true);
+            if (option.isExpandAll == 1) {
+                zTreeObj.expandAll(true);
+            } else {
+                var nodes = zTreeObj.getNodes();
+                if (nodes.length > 0) {
+                    zTreeObj.expandNode(nodes[0], true);
+                }
             }
         },
         showZTree: function() {
@@ -146,8 +159,12 @@ function ZTreeRadio(nameDom, menuContent, zTreeDom, parameter, callBack) {
         hideZTree: function() {
             hideZTree();
         },
-        setCheck: function() {
-            setCheck();
+        //设置值，hasDefault=1，此函数里面给值
+        setCheck: function(hasDefault) {
+            setCheck(hasDefault);
         },
+        obj: function() {
+            return zTreeObj;
+        }
     };
 }

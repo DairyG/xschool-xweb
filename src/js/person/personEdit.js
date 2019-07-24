@@ -55,7 +55,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
     getBasic();
 
     dptZTreeObj = new ZTreeRadio('dptName', 'deptTreeContent', 'deptTree', {
-        "dataMode": 'dpt',
+        dataMode: 'dpt',
     }, function(event, treeId, treeNode) {
         if (treeNode.id < 0) {
             layer_msg('请选择公司下面的部门');
@@ -169,7 +169,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         getSelectHtml(seltArrival, data.basicArrival, '');
     }
 
-    form.val("formTraining", data.training);
+    form.val('formTraining', data.training);
 
     //基本信息
     form.on('submit(basicInfo)', function(laydata) {

@@ -131,7 +131,8 @@ layui.use(['laytpl', 'table', 'form'], function() {
                 }
                 var vJson = JSON.parse(value);
                 var model = vJson.dpt_position[0];
-                if (model.companyId != employee.companyId) {
+
+                if (model.company_id != employee.companyId) {
                     errorAudit = '审核人只能选择同一公司下的审核人';
                     error = false;
                     return false;
@@ -348,7 +349,7 @@ layui.use(['laytpl', 'table', 'form'], function() {
     function setAuit(model, data, obj) {
         var showValue = defaultSel;
         if (model) {
-            showValue = (model.company_name.length > 9 ? (model.company_name.substr(0, 9) + '...') : model.company_name) + ' - ' + model.name;
+            showValue = (model.company_name.length > 9 ? (model.company_name.substr(0, 9) + '...') : model.company_name) + ' - ' + model.dpt_name + ' - ' + model.name;
         }
         obj.html(showValue + '<input type="hidden" name="sels" value=\'' + JSON.stringify(data) + '\'>');
     }
