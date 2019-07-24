@@ -95,7 +95,7 @@
 				});
 				//数据提交
 				form.on('submit(submit)',function(data){
-					
+					layer_load();
 					for(var i = 0;i < F.length;i++){
 						var field_name = 'f'+i;
 						var val = $('input[name="'+field_name+'"]').val();
@@ -112,21 +112,18 @@
 								break;
 						}
 					}
-					var dataValue={SubjectId:subjectId,FormAttribute:M,FormContent:F};
-					console.log(dataValue);
-					layer.load();
+					var dataValue={SubjectId:subjectId,FormAttribute:JSON.stringify(M),FormContent:JSON.stringify(F)};
 					$(".link_Save").attr({"disabled":"true"});
 					Serv.Post('lc/WorkflowMain/CreateWork',dataValue,function(resultData){
-				    $(".link_Save").attr({"disabled":"fasle"});
-					layer.closeAll('loading');
-				
-					if(resultData.succeed)
-					{
-						layer.msg("成功...", {icon:1});
-					}else{
-						layer.msg('失败:'+resultData.message, {icon:2});
-					}
-				},true)
+						$(".link_Save").attr({"disabled":"fasle"});
+						layer_load_lose();
+						if(resultData.succeed)
+						{
+							layer.msg("成功...", {icon:1});
+						}else{
+							layer.msg('失败:'+resultData.message, {icon:2});
+						}
+					})
 				});
 			});
 			
@@ -134,9 +131,9 @@
 				Serv.Get('lc/WorkflowMain/GetWorkFlowForm/'+subjectId,null,function(resultData){
 					var data = resultData.data;
 					var html = '';
-					form = data.formAttribute;
+					M = JSON.parse(data.formAttribute);
 					F = JSON.parse(data.formContent);
-					html = form_build(form,F);
+					html = form_build(M,F);
 					
 					$('#form_box').html(html);
 					var PassList = data.subjectPassList;

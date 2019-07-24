@@ -102,9 +102,21 @@
 					data: datas,
 				});
 				
-				table.on('tool(lst)',function(data){
-					if(data.event == 'edit'){
-						window.location.href='审批流程.html';
+				table.on('tool(lst)',function(obj){
+					var data =obj.data;
+					switch(obj.event){
+						case 'edit':
+							break;
+						case 'zj':
+							user_popup(null,'user',1,false,function(sels){
+								user = sels.user;
+								if(user.length > 0){
+									user = user[0];
+								}
+							});
+							break;
+						case 'cx':
+							break;
 					}
 				});
 			});
