@@ -61,7 +61,7 @@
         ]];
         layui.use(['table'], function () {
             var table = layui.table;
-            var dptZTree = new ZTreeRadio('treeDemo', {}, function (event, treeId, treeNode) {
+            var dptZTree = new ZTreeSearch('treeDemo', {}, function (event, treeId, treeNode) {
                 parament.companyId = treeNode.companyId;
                 parament.dptId = '';
                 if (treeNode.id > 0) {

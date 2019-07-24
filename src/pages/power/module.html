@@ -4,19 +4,80 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <link rel="stylesheet" href="../../layui/css/common.css" />
     <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../layui/layui.js"></script>
-		<script type="text/javascript" src="../../js/layer.com.js"></script>
-		<script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/layui.extend.js"></script>
+    <script type="text/javascript" src="../../js/layer.com.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
     <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript" src="../../js/cache.js"></script>
     <script type="text/javascript" src="../../js/verify.js"></script>
     <script type="text/javascript" src="../../js/pager.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../js/ztree.radio.js"></script>
+
+    <link rel="stylesheet" href="../../lib/treeSelect/treeSelect.css" />
+
+    <style>
+      .layui-elem-quote {
+        margin-bottom: 2px;
+        padding: 10px;
+        padding-left: 0;
+        border: none;
+      }
+    </style>
   </head>
   <body class="bgf2f2f2">
     <div class="childrenBody" style="background:none;">
       <div class="layui-col-md12 layui-col-sm12">
+        <div id="searchTools">
+          <blockquote class="layui-elem-quote" id="toolsOperation">
+            <div class="layui-form">
+              <div class="layui-btn-group">
+                <button class="layui-btn layui-btn-sm" data-type="btnAdd" lay-event="btnAdd">
+                  <i class="layui-icon layui-icon-add-1"></i>
+                  添加模块
+                </button>
+                <button class="layui-btn layui-btn-sm" data-type="btnEdit" lay-event="btnEdit">
+                  <i class="layui-icon layui-icon-edit"></i>
+                  编辑模块
+                </button>
+                <button class="layui-btn layui-btn-sm" data-type="btnDel" lay-event="btnDel">
+                  <i class="layui-icon layui-icon-delete"></i>
+                  删除模块
+                </button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary" data-type="btnAddMenu" lay-event="btnAddMenu">
+                  <i class="layui-icon layui-icon-add-1"></i>
+                  添加菜单
+                </button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary" data-type="btnEditMenu" lay-event="btnEditMenu">
+                  <i class="layui-icon layui-icon-edit"></i>
+                  编辑菜单
+                </button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary" data-type="btnDelMenu" lay-event="btnDelMenu">
+                  <i class="layui-icon layui-icon-delete"></i>
+                  删除菜单
+                </button>
+              </div>
+
+              <div class="layui-input-inline">
+                <div class="layui-input-inline">
+                  <input type="text" id="searchTree" lay-filter="searchTree" class="layui-input" style="height: 30px" />
+                </div>
+              </div>
+              <div class="layui-inline">
+                <div class="layui-input-inline">
+                  <button class="layui-btn layui-btn-sm layui-btn-primary" id="searchSubmit">
+                    <i class="layui-icon layui-icon-search"></i>
+                    查询
+                  </button>
+                </div>
+              </div>
+            </div>
+          </blockquote>
+        </div>
         <div class="layui-col-md6 layui-col-sm6" style="background: #fff;">
           <div class="layui-card-body">
             <table id="moduleLst" lay-filter="moduleLst"></table>
@@ -29,6 +90,63 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="../../js/power/module.js"></script>
+
+    <div id="modulePop" class="linePop">
+      <div class="layui-card-body padding-r-50">
+        <form class="layui-form layui-form2" id="formModule" lay-filter="formModule" autocomplete="off">
+          <input type="hidden" name="id" />
+
+          <div class="layui-row">
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">
+                模块名称
+                <span class="text-red">*</span>
+              </label>
+              <div class="layui-input-block">
+                <input type="text" name="name" placeholder="模块名称" maxlength="50" required lay-verify="name" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">URL地址</label>
+              <div class="layui-input-block">
+                <input type="text" name="url" placeholder="URL地址" maxlength="100" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">图标</label>
+              <div class="layui-input-block">
+                <input type="text" id="monduleIcon" name="iconName" lay-filter="monduleIcon" class="layui-input" />
+                <div class="layui-form-mid layui-word-aux">
+                  提示：如果为
+                  <i class="layui-icon layui-icon-circle-dot"></i>
+                  此图标，表示此项为空，如果要选择该图标，请搜索dot
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">排序</label>
+              <div class="layui-input-block">
+                <input type="text" name="displayOrder" placeholder="排序" maxlength="9" required lay-verify="name|num" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">所属模块</label>
+              <div class="layui-input-block">
+                <input type="hidden" name="pid" />
+                <input type="text" id="pName" placeholder="所属模块" class="layui-input" readonly data-id="" data-value="" />
+              </div>
+            </div>
+          </div>
+          <div class="layui-row text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="submitModule" value="确认" />
+            <span class="layui-btn layui-btn-primary" onclick="closePop()">取消</span>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
+  <div id="treeContent" class="menuContent" style="display:none; position: absolute;background: #fff; z-index: 39891015">
+    <ul id="treeUl" class="ztree" style="width: 100%; height: 350px; overflow-y: auto; z-index: 40891015"></ul>
+  </div>
+  <script type="text/javascript" src="../../js/power/module.js"></script>
 </html>

@@ -82,7 +82,7 @@ var parameter = {
 var lstPager;
 layui.use(['table'], function() {
     var table = layui.table;
-    var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
+    var dptZTree = new ZTreeSearch('dptTree', {}, function(event, treeId, treeNode) {
         console.log(treeNode);
         parameter.companyId = treeNode.companyId;
         parameter.dptId = '';

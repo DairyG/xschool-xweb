@@ -9,7 +9,8 @@ var cacheModel = {
     B_EDUCATION: "B_EDUCATION_CACHE",
     B_PROPERTIES: "B_PROPERTIES_CACHE",
     B_RELATIONS: "B_RELATIONS_CACHE",
-    B_RECRUITMENT: "B_RECRUITMENT_CACHE"
+    B_RECRUITMENT: "B_RECRUITMENT_CACHE",
+    B_MONDULE: "B_MONDULE_CACHE",
 };
 
 window.globCache = {
@@ -137,16 +138,24 @@ window.globCache = {
     setRecruitment: function(value) {
         window.globCache.set(cacheModel.B_RECRUITMENT, JSON.stringify(value));
     },
+    //模块
+    getModule: function() {
+        var value = window.globCache.get(cacheModel.B_MONDULE);
+        return JSON.parse(value);
+    },
+    setModule: function(value) {
+        window.globCache.set(cacheModel.B_MONDULE, JSON.stringify(value));
+    },
 
     get: function(key) {
         return window.localStorage.getItem(key);
     },
     set: function(key, value) {
-		if(value == null){
-			window.localStorage.removeItem(key)
-		} else {
-			window.localStorage.setItem(key, value)
-		}
+        if (value == null) {
+            window.localStorage.removeItem(key)
+        } else {
+            window.localStorage.setItem(key, value)
+        }
     },
     clear: function() {
         localStorage.clear();

@@ -45,7 +45,7 @@ layui.use(['table', 'form', 'element', 'laytpl'], function() {
                 var getTpl = auditRecordTpl.innerHTML;
                 $('#auditRecordPanel').html(laytpl(getTpl).render(dbAuditRecord));
 
-                getSchedule(dbRecord.employeeId, dbRecord.kpiId, result.data.kpiDate);
+                getSchedule(dbRecord.employeeId, dbRecord.kpiId, result.data.startDate, result.data.endDate);
 
                 initKpiDetail();
             } else {
@@ -100,12 +100,13 @@ layui.use(['table', 'form', 'element', 'laytpl'], function() {
     }
 
     //获取任务情况
-    function getSchedule(employeeId, kpiId, date) {
+    function getSchedule(employeeId, kpiId, startDate, endDate) {
         layer_load();
         Serv.Post('gc/schedule/getbykpi', {
             eid: employeeId,
             planId: kpiId,
-            date: date
+            startDate: startDate,
+            endDate: endDate,
         }, function(result) {
             layer_load_lose();
             initSchedule(result);

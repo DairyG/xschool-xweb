@@ -1,9 +1,3 @@
-layui.config({
-    base: '../lib/'
-}).extend({
-    sliderVerify: 'sliderVerify',
-});
-
 layui.use(['element', 'form', 'layer', 'jquery', 'sliderVerify'], function() {
     var element = layui.element,
         form = layui.form,
@@ -125,8 +119,10 @@ function setData(result) {
         function(response) {
             if (response) {
                 window.globCache.setEmployee(response);
+                window.location.href = 'index.html';
+            } else {
+                layer_alert('获取数据失败');
             }
-            window.location.href = 'index.html';
         },
         false
     );

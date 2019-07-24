@@ -178,7 +178,7 @@
                     var laydate = layui.laydate,
                         table = layui.table,
                         form = layui.form;
-                    var dptZTree = new ZTreeRadio('ztree', {}, function (event, treeId, treeNode) {
+                    var dptZTree = new ZTreeSearch('ztree', {}, function (event, treeId, treeNode) {
                         parameter.companyId = treeNode.companyId;
                         if (treeNode.id > 0) {
                             parameter.dptId = treeNode.id;

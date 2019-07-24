@@ -74,7 +74,7 @@ layui.use(['table', 'element'], function() {
     var table = layui.table,
         element = layui.element;
 
-    var dptZTree = new ZTreeRadio('dptTree', {}, function(event, treeId, treeNode) {
+    var dptZTree = new ZTreeSearch('dptTree', {}, function(event, treeId, treeNode) {
         parameter.companyId = treeNode.companyId;
         var dptId = [];
         if (treeNode.id > 0 && treeNode.pid < 0) {
