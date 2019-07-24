@@ -645,6 +645,7 @@
 				layer.load();
 				$(".link_Save").attr({"disabled":"true"});
 				var url = Id == null ? 'lc/Subject/Add' : 'lc/Subject/Edit';
+				
 				Serv.Post(url,data,function(resultData){
 					$(".link_Save").attr({"disabled":"fasle"});
 					layer.closeAll('loading');
