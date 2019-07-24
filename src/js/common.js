@@ -349,7 +349,7 @@ String.prototype.LTrim = function(c) {
  * @param function callback 回调函数
  */
 
-function user_popup(obj = null, allow_sels, num = 0, is_close_other = false, callback) {
+function user_popup(obj = null, allow_sels, num, is_close_other = false, callback) {
     if (is_close_other) {
         layer.closeAll();
     }
