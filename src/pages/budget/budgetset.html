@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+    <style type="text/css">
+        .layui-form table .table_label {
+            background: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body class="bgf2f2f2 ">
+    <div class="childrenBody ">
+        <div class="layui-card-header">预算设置</div>
+        <div class="layui-card-body bgwhite">
+            <form class="layui-form layui-form2">
+                <div class="layui-row">
+                    <!-- 部门和年度选择后才出现表格 部门和年度确认后不能更改 -->
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>部门</label>
+                        <div class="layui-input-block">
+                            <div class="layui-input" id="user_sel_box1"
+                                onclick="user_popup($('#user_sel_box1'),'department',1,false)">
+                                <span class="layui-form-mid layui-word-aux">请选择部门</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>年度</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" id='date1' autocomplete="off" placeholder="请选择年度" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>总预算</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" autocomplete="off" placeholder="请选择总预算" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label"><span class="text-red"> *</span>科目</label>
+                        <div class="layui-input-block">
+                            <div class="layui-input" onclick="payitem_pop(this)">
+                                <div class="layui-form-mid layui-word-aux">请选择科目</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <table id="lst" lay-filter="lst"></table>
+                </div>
+                <div class="layui-row text-right">
+                    <button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="formDemo">确认</button>
+                    <span class="layui-btn " onclick="closePop()">返回</span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+        <ul id="ztree" class="ztree" style="width: 100%;"></ul>
+    </div>
+    <script type="text/html" id="toolbar">
+		</script>
+    <script type="text/html" id="bar">
+			<button class="layui-btn layui-btn-xs layui-btn-danger">删除</button>
+		</script>
+    <script>
+        var datas = [
+            { 'km': '人事预算', m1: '1.1', m2: '1.4', m3: '1.3', m4: '1', m5: '1.4', m6: '1.5', m7: '1.6', m8: '1.7', m9: '2', m10: '2.4', m11: '2', m12: '4', subtotal: '20' },
+            { 'km': '报销预算', m1: '1.1', m2: '1.4', m3: '1.3', m4: '1', m5: '1.4', m6: '1.5', m7: '1.6', m8: '1.7', m9: '2', m10: '2.4', m11: '2', m12: '4', subtotal: '20' },
+            { 'km': '设计预算', m1: '1.1', m2: '1.4', m3: '1.3', m4: '1', m5: '1.4', m6: '1.5', m7: '1.6', m8: '1.7', m9: '2', m10: '2.4', m11: '2', m12: '4', subtotal: '20' },
+            { 'km': '政府费用', m1: '1.1', m2: '1.4', m3: '1.3', m4: '1', m5: '1.4', m6: '1.5', m7: '1.6', m8: '1.7', m9: '2', m10: '2.4', m11: '2', m12: '4', subtotal: '20' },
+        ];
+        layui.use(['table', 'laydate', 'layedit'], function () {
+            var table = layui.table
+            laydate = layui.laydate,
+                layedit = layui.layedit;
+            laydate.render({
+                elem: '#date1',
+                type: 'year'
+            });
+            table.render({
+                elem: '#lst',
+                totalRow: true,
+                toolbar: '#toolbar',
+                cols: [[
+                    { 'field': 'km', 'title': '2019', totalRowText: '合计' },
+                    { 'field': 'm1', 'title': '一月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m1 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm2', 'title': '二月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m2 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm3', 'title': '三月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m3 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm4', 'title': '四月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m4 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm5', 'title': '五月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m5 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm6', 'title': '六月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m6 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm7', 'title': '七月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m7 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm8', 'title': '八月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m8 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm9', 'title': '九月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m9 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm10', 'title': '十月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m10 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm11', 'title': '十一月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m11 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'm12', 'title': '十二月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m12 + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'subtotal', 'title': '合计', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.subtotal + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { toolbar: '#bar', width: '70', title: '操作' }
+                ]],
+                data: datas
+            });
+        });
+        $(document).on("focus", "table .table-ipt", function () {
+            $(this).click();
+        });
+        var setting = {
+            check: {
+                enable: true,
+                chkStyle: "radio",
+                radioType: "all"
+            },
+            view: {
+                dblClickExpand: false
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                beforeClick: beforeClick,
+                onCheck: onCheck
+            }
+        };
+        var zNodes = [
+            {
+                name: "四川某某公司",
+                open: true,
+                nocheck: true,
+                children: [{
+                    name: "销售部",
+                    children: [{
+                        name: "销售1部",
+                        children: [{
+                            name: "销售1组"
+                        }]
+                    }]
+                },
+                {
+                    name: "市场部",
+                },
+                {
+                    name: "策划部",
+                    children: [{
+                        name: "策划1部"
+
+                    }]
+                }
+                ]
+            }
+        ];
+
+        function beforeClick(treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj(treeId);
+            zTree.checkNode(treeNode, !treeNode.checked, null, true);
+            return false;
+        }
+
+        function onCheck(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj(treeId),
+                nodes = zTree.getCheckedNodes(true),
+                v = "";
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                v += nodes[i].name + ",";
+            }
+            if (v.length > 0) v = v.substring(0, v.length - 1);
+            var cityObj = $("#treeIpt");
+            cityObj.attr("value", v);
+        }
+
+        function showMenu() {
+            var cityObj = $("#treeIpt");
+            var cityOffset = $("#treeIpt").offset();
+            $("#menuContent").css({ left: cityOffset.left + "px", top: cityOffset.top + cityObj.outerHeight() + "px", width: cityObj.outerWidth() + "px" }).slideDown("fast");
+
+            $("body").bind("mousedown", onBodyDown);
+        }
+        function hideMenu() {
+            $("#menuContent").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        }
+        function onBodyDown(event) {
+            if (!(event.target.id == "menuBtn" || event.target.id == "treeIpt" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length > 0)) {
+                hideMenu();
+            }
+        }
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#ztree"), setting, zNodes);
+        });
+    </script>
+</body>
+
+</html>
