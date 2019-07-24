@@ -10,7 +10,7 @@
     <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../layui/layui.js"></script>
     <script type="text/javascript" src="../../js/layer.com.js"></script>
-	<script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
     <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
@@ -76,15 +76,11 @@
 			<button class="layui-btn layui-btn-xs layui-btn-danger">删除</button>
 		</script>
     <script>
-        var datas = [
-            { 'km': '人事预算', m1: '1.1', m2: '1.4', m3: '1.3', m4: '1', m5: '1.4', m6: '1.5', m7: '1.6', m8: '1.7', m9: '2', m10: '2.4', m11: '2', m12: '4', subtotal: '20' },
-            { 'km': '报销预算', m1: '1.1', m2: '1.4', m3: '1.3', m4: '1', m5: '1.4', m6: '1.5', m7: '1.6', m8: '1.7', m9: '2', m10: '2.4', m11: '2', m12: '4', subtotal: '20' },
-            { 'km': '设计预算', m1: '1.1', m2: '1.4', m3: '1.3', m4: '1', m5: '1.4', m6: '1.5', m7: '1.6', m8: '1.7', m9: '2', m10: '2.4', m11: '2', m12: '4', subtotal: '20' },
-            { 'km': '政府费用', m1: '1.1', m2: '1.4', m3: '1.3', m4: '1', m5: '1.4', m6: '1.5', m7: '1.6', m8: '1.7', m9: '2', m10: '2.4', m11: '2', m12: '4', subtotal: '20' },
-        ];
+        var datas = [];
+        var table;
         layui.use(['table', 'laydate', 'layedit', 'form'], function () {
-            var table = layui.table,
-                laydate = layui.laydate,
+            table = layui.table;
+            var laydate = layui.laydate,
                 form = layui.form,
                 layedit = layui.layedit;
             laydate.render({
@@ -128,10 +124,14 @@
                     { 'field': 'm10', 'title': '十月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m10 + '" type="text" class="layui-input table-ipt"></div>' } },
                     { 'field': 'm11', 'title': '十一月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m11 + '" type="text" class="layui-input table-ipt"></div>' } },
                     { 'field': 'm12', 'title': '十二月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m12 + '" type="text" class="layui-input table-ipt"></div>' } },
-                    { 'field': 'subtotal', 'title': '合计', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.subtotal + '" type="text" class="layui-input table-ipt"></div>' } },
+                    { 'field': 'subtotal', 'title': '合计', totalRow: true, templet: function (d) { return parseInt(d.m1) + parseInt(d.m2) + parseInt(d.m3) + parseInt(d.m4) + parseInt(d.m5) + parseInt(d.m6) + parseInt(d.m7) + parseInt(d.m8) + parseInt(d.m9) + parseInt(d.m10) + parseInt(d.m11) + parseInt(d.m12) } },
                     { toolbar: '#bar', width: '70', title: '操作' }
                 ]],
                 data: datas
+            });
+            table.on('edit(lst)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                //console.log(obj.value); //得到修改后的值
+                obj.update(obj.data);
             });
             form.on('submit(formSet)', function (laydata) {
                 laydata.field.id = 0;
@@ -217,9 +217,40 @@
                 }
             }
         }
-		function payitem_done(obj){
-			console.log(obj);
-		}
+        function payitem_done(obj) {
+            if (obj.length > 0) {
+                for (var i = 0; i < obj.length; i++) {
+                    var b = true;
+                    for (var j = 0; j < datas.length; j++) {
+                        if (datas[j].id == obj[i].id) {
+                            b = false;
+                        }
+                    }
+                    if (b) {
+                        var model = {
+                            id: obj[i].id,
+                            km: obj[i].name,
+                            m1: 0,
+                            m2: 0,
+                            m3: 0,
+                            m4: 0,
+                            m5: 0,
+                            m6: 0,
+                            m7: 0,
+                            m8: 0,
+                            m9: 0,
+                            m10: 0,
+                            m11: 0,
+                            m12: 0,
+                            subtotal: 0
+                        };
+                        datas.push(model);
+                    }
+                }
+            }
+
+            table.reload('lst', { data: datas });
+        }
     </script>
 </body>
 
