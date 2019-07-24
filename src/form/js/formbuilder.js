@@ -117,7 +117,22 @@ DEFFLD = {
 		html: '<label class="desc"><span class="req hide"> *</span></label><div class="content textcontent"><input type="text" disabled="disabled" maxlength="255" class="input" /><i class="iconfont qrinput hide">&#xe67d;</i></div>',
 		json: '({LBL:"人员、部门",TYP:"person",REQD:"0",INSTR:"",ALLOWS:["user","company"]})',
 		holder: '<li class="field prefocus" style="height:71px;width:97%"></li>'
-	}
+	},
+	money_apply :{//请款申请
+		html: '<div class="noLabelAlign"><label class="desc section">请款申请</label><div class="content"><img src="/form/images/money_apply.png"></div></div>',
+		json: '({LBL:"请款申请",TYP:"money_apply",IS_KIT:true})',
+		holder: '<li class="field prefocus" style="height:54px;width:97%"></li>'
+	},
+	money_pay :{//付款申请
+	    html: '<div class="noLabelAlign"><label class="desc section">付款申请</label><div class="content"><img src="/form/images/money_pay.png"></div></div>',
+	    json: '({LBL:"付款申请",TYP:"money_pay",IS_KIT:true})',
+	    holder: '<li class="field prefocus" style="height:54px;width:97%"></li>'
+	},
+	recruit :{//招聘申请
+	    html: '<div class="noLabelAlign"><label class="desc section">招聘申请</label><div class="content"><img src="/form/images/recruit.png"></div></div>',
+	    json: '({LBL:"招聘申请",TYP:"recruit",IS_KIT:true})',
+	    holder: '<li class="field prefocus" style="height:54px;width:97%"></li>'
+	},
 };
 (function () {
     $.formatPrice = function (g, f, e, d, a, b) {
@@ -352,6 +367,15 @@ function showProperties(c) {
 			'popt_required',
 			'psecurity',
 			'popt_allows'
+		],
+		money_apply:[
+			'lbn',
+		],
+		money_pay:[
+			'lbn',
+		],
+		recruit:[
+			'lbn',
 		]
     };
     $.each(b, function (d, e) {
@@ -634,6 +658,9 @@ function isOneCol(a) {
     }
 }
 function setDefFieldDom(li, type, index, srcJSON) {
+	if(DEFFLD[type] == undefined){
+		return false;
+	}
     var newJSON = eval(DEFFLD[type].json);
     $.mergJSON(srcJSON, newJSON);
     F[index] = newJSON;
@@ -680,13 +707,12 @@ function fieldInit() {
                 return
             }
             var d = f.item.attr('ftype'),
-            i = f.item.attr('subtype') || '',
-            b = $(DEFFLD[d + i].holder).css('height');
+            b = $(DEFFLD[d].holder).css('height');
             f.placeholder.addClass('field default').css({
                 height: b,
                 width: '100%'
             });
-            var c = $(DEFFLD[d + i].holder);
+            var c = $(DEFFLD[d].holder);
             if (isInstruct(d)) {
                 f.placeholder.css({
                     width: a,
@@ -711,7 +737,19 @@ function fieldInit() {
                     }, 50);
                     return false
                 }
-                var c = d.item.attr('ftype') + (d.item.attr('subtype') || '');
+                var c = d.item.attr('ftype');
+				var is_kit = d.item.attr('is_kit');
+				if(is_kit == true || is_kit == 'true'){
+					if(M.is_kit){
+						layer_msg('只能添加一个套件字段！');
+						setTimeout(function () {
+						    d.item.remove()
+						}, 50);
+						return false;
+					} else {
+						M.is_kit = true;
+					}
+				}
                 if (c == 'image') {
                     var j = 0;
                     $(F).each(function (e, k) {
@@ -906,51 +944,6 @@ function propertyInit() {
                 }
             }
             ad.push(ac)
-        }
-        if (ab === 'dropdown2') {
-            var ae = {
-            };
-            ae.ITMS = [
-            ];
-            var af = ae;
-            var V = 0;
-            for (var Y = 0; Y < Z.length; Y++) {
-                var ag = $.trim(Z[Y]);
-                var U = ag.lastIndexOf('-') + 1;
-                ag = ag.substring(U);
-                if (ag && ag.length > 0) {
-                    var X = {
-                    };
-                    X.VAL = ag;
-                    if (V == U) {
-                        af.ITMS.push(X)
-                    } else {
-                        if (V < U) {
-                            V++;
-                            af = af.ITMS[af.ITMS.length - 1];
-                            af.ITMS = [
-                            ];
-                            af.ITMS.push(X)
-                        } else {
-                            if (V > U) {
-                                var W = 0;
-                                af = ae;
-                                while (W < U) {
-                                    W++;
-                                    af = af.ITMS[af.ITMS.length - 1]
-                                }
-                                V = U;
-                                if (!af.ITMS) {
-                                    af.ITMS = [
-                                    ]
-                                }
-                                af.ITMS.push(X)
-                            }
-                        }
-                    }
-                }
-            }
-            ad = ae.ITMS
         }
         createItems(aa, ab, ad);
         if (ab === 'radio' || ab === 'dropdown' || ab == 'checkbox' || ab == 'dropdown2') {
@@ -2186,6 +2179,10 @@ function propertyInit() {
                 $.alert('最多只能添加' + fieldsLimit + '个字段。');
                 return false
             }
+			if(F[IDX].IS_KIT && M.is_kit){
+				layer_msg('只能添加一个套件字段！');
+				return false;
+			}
             if (F[IDX].TYP == 'image') {
                 var ab = 0;
                 $(F).each(function (ac, ad) {
@@ -2195,18 +2192,6 @@ function propertyInit() {
                 });
                 if (ab >= imageNumber) {
                     $.alert('最多只能添加' + imageNumber + '个图片字段，<a href=\'/app/account/manage\' target=\'_blank\' class=\'link\'>升级</a>可添加更多。');
-                    return false
-                }
-            }
-            if (F[IDX].TYP == 'goods') {
-                var W = 0;
-                $(F).each(function (ac, ad) {
-                    if ('goods' === ad.TYP) {
-                        W += ad.ITMS.length
-                    }
-                });
-                if (W >= goodsNumber) {
-                    $.alert('最多只能添加' + goodsNumber + '件商品。');
                     return false
                 }
             }
@@ -2337,6 +2322,9 @@ function propertyInit() {
     };
     $('#btnDel,#fields i.faDel').live({
         click: function () {
+			if(F[IDX].IS_KIT){
+				M.is_kit = false;
+			}
             if (F[IDX].FLDID !== undefined && F[IDX].TYP !== 'section' && F[IDX].TYP !== 'html' && M.MXID > 0) {
                 $.confirm({
                     msg: delConfirmMsg,
@@ -2362,57 +2350,22 @@ function propertyInit() {
         }
     })
 }
- // 保存保存-- by wyl
-function saveForm(e, f, c) {
-    M.HEIGHT = $('#middle').outerHeight() + 50;
-    if (window.isForTemplate && !M.CODE) {
-        M.CODE = prompt('请输入模块代码', '')
-    }
-    delete M.F;
-    // var a = $('#liSale').getValues();
-    // if (a.SALE == '1') {
-        // $.extend(true, M, a)
-    // } else {
-        // delete M.SALE;
-        // delete M.SALEM;
-        // delete M.SALEJ
-    // }
-    $.each(F, function (g, h) {
-        if (!h) {
-            F.splice(g, 1)
-        }
-    });
-    var d = {
-        M: M,
-        F: F
-    },
-    b = 'save';
-    if (e) {
-        $.showStatus('正在保存表单数据 ...')
-    }
-	var data = { formData: JSON.stringify(M), parameterData: JSON.stringify(F) };
-	//保存数据 返回guid表示唯一ID
-    /* $.postJSON('/CustomFrom/FormDesign/FormSave', 
-		{ formData: JSON.stringify(M), parameterData: JSON.stringify(F) }, 
-		function (g) {
-			$.hideStatus();
-			if (g.ERRMSG) {
-				$.alert(g.ERRMSG);
-				return
-			}
-			$.extend(true, M, g.M);
-			$.extend(true, F, g.F);
-			$('#type,#N').prop('disabled', true);
-			if (f) {
-				f(M)
-			}
-			CHANGED = false;
-		}, {
-		async: !c
-    }); */
-}
+
 function addFieldsInit() {
     $('#addFields').find('li').click(function () {
+		var ftype = $(this).attr('ftype');
+		var is_kit = $(this).attr('is_kit');
+		if(ftype == '' || ftype == undefined){
+			return false;
+		}
+		if(is_kit == true || is_kit == 'true'){
+			if(M.is_kit){
+				layer_msg('只能添加一个套件字段！');
+				return false;
+			} else {
+				M.is_kit = true;
+			}
+		}
         var b = $('#fields>li').size(),
         a = b - 1,
         d = 'f' + b,
@@ -2439,7 +2392,7 @@ function addFieldsInit() {
             $('.field:eq(' + a + ')', '#fields').after(f)
         }
         f.attr('id', d);
-        setDefFieldDom(f, $(this).attr('ftype') + ($(this).attr('subtype') || ''), a + 1);
+        setDefFieldDom(f, $(this).attr('ftype'), a + 1);
         CHANGED = true;
         return false
     });

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card-body bgwhite">
+				<div class="layui-tab margin-t-0">
+					<ul class="layui-tab-title">
+						<li class="fontsize-16">付款申请</li>
+						<span class="layui-btn layui-btn-sm fr" onclick="history.back(-1)">返回</span>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show" >
+							<ul class="process_step">
+								<li class="active padding-l-0"><i>1</i><span>发起申请</span></li>
+								<li><i>2</i><span>部门管理员审批</span></li>
+								<li><i>3</i><span>抄送财务</span></li>
+								<li class="padding-r-0"><i>4</i><span>流程完成</span></li>
+							</ul>
+							<form class="layui-form layui-form2">
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>请款编号</label>
+										<div class="layui-input-block">
+											<input type="text" class="layui-input" readonly onclick="show_search()" />
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">合同编号</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required readonly lay-verify="required" placeholder="合同编号" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<!-- 付款次数 在关联了请款单号后才显示 -->
+									<!-- 有合同时 -->
+									<div class="layui-form-item layui-col-md12" id="pay_table_item" >
+										<label class="layui-form-label">付款次数：</label>
+										<div class="layui-input-block">
+											<table class="layui-table">
+												<thead>
+													<tr>
+														<th>款项名称</th>
+														<th>比例</th>
+														<th>金额</th>
+														<th>付款日期</th>
+														<th>备注</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>首款</td>
+														<td>30%</td>
+														<td>300000</td>
+														<td>2019-05-01</td>
+														<td>首次验收通过付款</td>
+													</tr>
+													<tr>
+														<td>中期款</td>
+														<td>60%</td>
+														<td>600000</td>
+														<td>2019-09-01</td>
+														<td>项目验收通过付款</td>
+													</tr>
+													<tr>
+														<td>中期款</td>
+														<td>10%</td>
+														<td>100000</td>
+														<td>2019-10-01</td>
+														<td>项目正式交付付款</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md12" id="pay_table_item" >
+										<label class="layui-form-label">已付款记录：</label>
+										<div class="layui-input-block">
+											<table class="layui-table">
+												<thead>
+													<tr>
+														<th>款项名称</th>
+														<th>申请金额</th>
+														<th>实际付款</th>
+														<th>付款凭证</th>
+														<th>付款日期</th>
+														<th>备注</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>首款</td>
+														<td>300000</td>
+														<td>300000</td>
+														<td>1242353423</td>
+														<td>2019-05-01</td>
+														<td>首次验收通过付款</td>
+													</tr>
+													<tr>
+														<td>中期款</td>
+														<td>600000</td>
+														<td>600000</td>
+														<td>2535345346</td>
+														<td>2019-09-01</td>
+														<td>项目验收通过付款</td>
+													</tr>
+													<tr>
+														<td>中期款</td>
+														<td>100000</td>
+														<td>100000</td>
+														<td>4423535234</td>
+														<td>2019-10-01</td>
+														<td>项目正式交付付款</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>费用项目</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required  lay-verify="required" placeholder="请输入费用项目" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<!-- 付款方式为现金时银行账号和银行名称不必填 -->
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>付款方式</label>
+										<div class="layui-input-block">
+											<select>
+												<option>请选择付款方式</option>
+												<option>转账</option>
+												<option>现金</option>
+											</select>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>收款公司名称</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required  lay-verify="required" placeholder="请输入公司名称" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>收款公司开户银行</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required  lay-verify="required" placeholder="请输入开户银行" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>收款公司银行账号</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required  lay-verify="required" placeholder="请输入银行账号" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>合同总金额</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required  lay-verify="required" placeholder="请输入合同总金额" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>已付金额</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required  lay-verify="required" placeholder="请输入已付金额" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label"><span class="text-red"> *</span>本次付款金额</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required  lay-verify="required" placeholder="请输入本次付款金额" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">处理时效</label>
+										<div class="layui-input-block">
+											<!-- 普通 48小时内处理 紧急 24小时内处理 -->
+											<select>
+												<option>普通</option>、
+												<option>紧急</option>
+											</select>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">付款备注</label>
+										<div class="layui-input-block">
+											<input type="text" name="title" required  lay-verify="required" placeholder="请输入付款备注" autocomplete="off" class="layui-input">
+										</div>
+									</div>
+								</div>
+								<div class="layui-row">
+									<div class="layui-form-item">
+										<div class="layui-input-block text-right">
+											<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确定</button>
+											<span class="layui-btn" onclick="history.back(-1)">返回</span>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="linePop linePop5" >
+			<form class="layui-form layui-search-form">
+				<div class="layui-row margin-t-10">
+					<div class="search_item">
+						<span>单号</span><input type="text" name="title" placeholder="请输入单号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="search_item">
+						<span>费用名称</span><input type="text" name="title" placeholder="请输入费用名称" autocomplete="off" class="layui-input">
+					</div>
+					<div class="search_item">
+						<span>时间</span><input type="text" name="title" placeholder="请选择日期" autocomplete="off" class="layui-input" id="date1">
+					</div>
+					<div class="search_item">
+						<button class="layui-btn layui-btn-normal">搜索</button>
+					</div>	
+				</div>
+			</form>
+			<table id="apply_lst" lay-filter="apply_lst"></table>
+		</div>
+		<script type="text/javascript">
+			var layer_linePop,table;
+			layui.use(['table','form','laydate'], function() {
+				table = layui.table;
+				var form = layui.form,
+					laydate = layui.laydate;
+				laydate.render({elem:'#date1'});
+				laydate.render({elem:'.date'});
+			});
+			
+			function show_search(){
+				layer_linePop = layer.open({
+					type: 1,
+					title:'选择申请单',
+					String: false,
+					closeBtn: 1,
+					btn:['确认','取消'],
+					skin: 'layui-layer-rim',
+					area: ['850px','450px'],
+					content: $('.linePop5'),
+					success:function(){
+						table.render({
+							elem:'#apply_lst',
+							cols:[[
+								{type:'radio','title':'序号'},
+								{field:'no','title':'单号'},
+								{field:'bm','title':'申请部门'},
+								{field:'sqr','title':'申请人'},
+								{field:'title','title':'费用名称'},
+								{field:'date1','title':'申请日期'},
+								{field:'date2','title':'审核日期'},
+							]],
+							data:[
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+								{'no':'1342353525',title:'物料费',date1:'2019-01-02',date2:'2019-01-02',bm:'销售部',sqr:'张三'},
+							],
+							height:'full-240',
+							page:true
+						});
+					}
+				});
+			}
+			function closePop(){
+				layer.close(layer_linePop);
+			}
+		</script>
+	</body>
+</html>

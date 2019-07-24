@@ -78,7 +78,7 @@
 				<div class="process_title bgf2f2f2 padding-10">
 					<span class="fontsize-16">{{item.subjectTypeName}}</span>
 					<span>({{item.subjectList.length}})</span>
-					<a href="javascript:void(0);" onclick="DeleteSubjectType(19)" class="fr text-del padding-l-10"><i class="layui-icon layui-icon-delete"></i>删除</a>
+					<a href="javascript:void(0);" onclick="DeleteSubjectType({{item.id}})" class="fr text-del padding-l-10"><i class="layui-icon layui-icon-delete"></i>删除</a>
 					<a href="javascript:;" class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
 				</div>
 				{{#  layui.each(item.subjectList, function(j, item2){ }}
@@ -98,7 +98,7 @@
 					<div class="layui-col-md3">
 						<div class="opt_box text-right">
 							<a href="createWorkFlow.html?Id={{item2.subjectId}}">编辑</a>
-							<a>停用</a>
+							<a href="javascript:void(0);" onclick="disabledSubject({{item2.subjectId}})">停用</a>
 							<a href="javascript:;" onclick="process_move({{item2.subjectId}})">移动到</a>
 						</div>
 					</div>
@@ -160,6 +160,28 @@
 			function DeleteSubjectType(id)
 			{
 				layer.confirm('您确定要删除？', {
+				btn: ['确定','取消'] //按钮
+				}, function(){
+				//删除
+				var data={Id:id};
+				Serv.Post('lc/SubjectType/DeleteSubjectType',data,function(resultData){
+					if(resultData.succeed)
+					{
+						layer.msg('成功。。', {icon:1});
+						closePop();
+					}else{
+						layer.msg('失败:'+resultData.message, {icon:2});
+					}
+				},true)
+				}, function(){
+				//取消
+				});
+
+			}
+
+			function disabledSubject(subjectId)
+			{
+				layer.confirm('您确定要停用？', {
 				btn: ['确定','取消'] //按钮
 				}, function(){
 				//删除

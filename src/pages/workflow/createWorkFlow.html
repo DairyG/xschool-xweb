@@ -15,11 +15,10 @@
 		<link type="text/css" rel="stylesheet" href="../../form/css/common.css" />
 		<link type="text/css" rel="stylesheet" href="../../form/css/jquery-ui-1.9.2.custom.css" />
 		<link type="text/css" rel="stylesheet" href="../../form/css/widgets.css" />
-		<link type="text/css" rel="stylesheet" href="../../form/css/jquery.mCustomScrollbar.min.css" />
 		<link type="text/css" rel="stylesheet" href="../../form/css/formbuild.css" />
 	</head>
 	<script type="text/javascript">
-		var M = {FRMNM: "表单名称",DESC: "",LANG: "cn",LBLAL: "T",CFMTYP: "T",CFMMSG: "提交成功。",SDMAIL: "0",CAPTCHA: "1",IPLMT: "0",SCHACT: "0",INSTR: "0",ISPUB: "1"};
+		var M = {FRMNM: "表单名称",is_kit:false};
 		var F = [];
 		var fieldsLimit=150;
 		var goodsNumber=60;
@@ -646,6 +645,7 @@
 				layer.load();
 				$(".link_Save").attr({"disabled":"true"});
 				var url = Id == null ? 'lc/Subject/Add' : 'lc/Subject/Edit';
+				
 				Serv.Post(url,data,function(resultData){
 					$(".link_Save").attr({"disabled":"fasle"});
 					layer.closeAll('loading');
@@ -662,7 +662,6 @@
 				head.js("../../form/js/jquery-ui-1.8.24.custom.min.js",
 						"../../form/js/utils.js",
 						"../../form/js/widgets.js",
-						"../../form/js/jquery.mCustomScrollbar.min.js",
 						"../../form/js/formbuilder.js");
 			}
 		</script>

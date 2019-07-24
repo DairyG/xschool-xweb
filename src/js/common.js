@@ -349,7 +349,7 @@ String.prototype.LTrim = function(c) {
  * @param function callback 回调函数
  */
 
-function user_popup(obj = null, allow_sels, num = 0, is_close_other = false, callback) {
+function user_popup(obj = null, allow_sels, num, is_close_other = false, callback) {
     if (is_close_other) {
         layer.closeAll();
     }
@@ -489,7 +489,7 @@ function parse_sels(data, businessType) {
             data = {
                 businessType: businessType,
                 dataType: dataType_arr[dataType],
-                companyId: c[i].id,
+                companyId: parseInt(c[i].id),
                 companyName: c[i].name,
                 depId: 0,
                 dpeName: '',
@@ -508,12 +508,12 @@ function parse_sels(data, businessType) {
             data = {
                 businessType: businessType,
                 dataType: dataType_arr[dataType],
-                companyId: 0,
-                depId: d[i].id,
+                companyId: parseInt(d[i].company_id),
+                depId: parseInt(d[i].id),
                 userId: 0,
                 jobDepId: 0,
                 jobId: 0,
-                companyName: '',
+                companyName: d[i].company_name,
                 dpeName: d[i].name,
                 userName: '',
                 jobDepNmae: '',
@@ -527,13 +527,13 @@ function parse_sels(data, businessType) {
             data = {
                 businessType: businessType,
                 dataType: dataType_arr[dataType],
-                companyId: 0,
-                depId: 0,
+                companyId: u[i].company_id,
+                depId: u[i].dpt_id,
                 userId: u[i].id,
                 jobDepId: 0,
                 jobId: 0,
-                companyName: '',
-                dpeName: '',
+                companyName: u[i].company_name,
+                dpeName: u[i].dpt_name,
                 userName: u[i].name,
                 jobDepNmae: '',
                 jobName: '',
@@ -546,12 +546,12 @@ function parse_sels(data, businessType) {
             data = {
                 businessType: businessType,
                 dataType: dataType_arr[dataType],
-                companyId: 0,
+                companyId:p[i].company_id,
                 depId: 0,
                 userId: 0,
                 jobDepId: 0,
                 jobId: p[i].id,
-                companyName: '',
+                companyName: p[i].company_name,
                 dpeName: '',
                 userName: '',
                 jobDepNmae: '',
@@ -566,12 +566,12 @@ function parse_sels(data, businessType) {
             data = {
                 businessType: businessType,
                 dataType: dataType_arr[dataType],
-                companyId: 0,
+                companyId: dp[i].company_id,
                 depId: 0,
                 userId: 0,
                 jobDepId: r[0],
                 jobId: r[1],
-                companyName: '',
+                companyName: dp[i].company_name,
                 dpeName: '',
                 userName: '',
                 jobDepNmae: dp[i].dpt_name,
