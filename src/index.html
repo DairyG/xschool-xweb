@@ -509,6 +509,7 @@
         window.globCache.setRelations(result.socialRelations);
         window.globCache.setRecruitment(result.recruitmentSource);
       });
+	   Serv.Post('gc/budget/get', {'search':''}, window.globCache.setBudgets);
       var UserToken = globCache.getUserToken();
       $('#account').html(UserToken.displayName + '-' + UserToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/mobilephone']);
 

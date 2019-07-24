@@ -647,31 +647,28 @@ function formart_sels(data) {
 /**
  * 费用项选择弹出框
  */
-function payitem_pop(obj = null, company_id, callback) {
-    if (parseInt(company_id) <= 0) {
-        layer.alert('请选择公司');
-    }
-    $('body').append('<div id="popup_content" data-company_id="' + company_id + '"></div>');
-    $('#popup_content').load("../../pages/public/payitem_select.html");
-
+function payitem_pop(obj = null, callback) {
+	var url = '../../pages/public/payitem_select.html';
+	
     layer.open({
-        type: 1,
+        type: 2,
         title: '费用科目选择',
         btn: ['确认', '取消'],
         String: false,
         closeBtn: 1,
         skin: 'layui-layer-rim',
         area: ['760px', '480px'],
-        content: $('#popup_content'),
+        content: url,
         yes: function(index, layero) {
             //以下方式可获取到选中的 公司 部门 人员
-
-            if (typeof obj == 'object') {
-
-            };
+			var win = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+			var sels = win.sels;
+			if (typeof obj == 'object') {
+				
+			};
 
             if (typeof callback === 'function') {
-                callback(arr);
+                callback(sels);
             }
             layer.close(index);
         },

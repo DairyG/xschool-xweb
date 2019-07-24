@@ -10,6 +10,7 @@
     <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../layui/layui.js"></script>
     <script type="text/javascript" src="../../js/layer.com.js"></script>
+	<script type="text/javascript" src="../../js/cache.js"></script>
     <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
@@ -52,7 +53,7 @@
                     <div class="layui-form-item layui-col-md6 margin-b-20">
                         <label class="layui-form-label"><span class="text-red"> *</span>科目</label>
                         <div class="layui-input-block">
-                            <div class="layui-input" onclick="payitem_pop(this)">
+                            <div class="layui-input" onclick="payitem_pop(this,payitem_done)">
                                 <div class="layui-form-mid layui-word-aux">请选择科目</div>
                             </div>
                         </div>
@@ -216,6 +217,9 @@
                 }
             }
         }
+		function payitem_done(obj){
+			console.log(obj);
+		}
     </script>
 </body>
 

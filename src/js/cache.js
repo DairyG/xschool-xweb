@@ -4,6 +4,7 @@ var cacheModel = {
     USERTOKEN: "USERTOKEN_CACHE",
     EMPLOYEE: "EMPLOYEE_CACHE",
     JOB: "JOB_CACHE",
+	BUDGET:"BUDGET_CACHE",
     B_ARRIVAL: "B_ARRIVAL_CACHE",
     B_EDUCATION: "B_EDUCATION_CACHE",
     B_PROPERTIES: "B_PROPERTIES_CACHE",
@@ -44,6 +45,44 @@ window.globCache = {
         }
         return array;
     },
+	setBudgets: function(value) {
+		var groups = {
+			1:[],
+			2:[],
+			3:[]
+		};
+		for (var i = 0; i < value.length; i++) {
+			var type = value[i].type;
+			var pid = value[i].pid;
+			if (groups[type][pid]) {
+				groups[type][pid].push(value[i]);
+			} else {
+				groups[type][pid] = [];
+				groups[type][pid].push(value[i]);
+			}
+			
+		}
+		var d = [
+			{id:-1,pid:-1,name:'建设成本',type:1},
+			{id:-2,pid:-2,name:'费用预算',type:2},
+			{id:-3,pid:-3,name:'固定成本',type:3}
+		];
+		for (var i = 0; i < value.length; i++) {
+			var item = value[i];
+			var type = value[i].type;
+			if(groups[type][item.id] != undefined && groups[type][item.id].length > 0){
+				item.is_last = false;
+			} else {
+				item.is_last = true;
+			}
+		}
+		value = d.concat(value);
+	    window.globCache.set(cacheModel.BUDGET, JSON.stringify(value))
+	},
+	getBudgets: function() {
+	    var value = window.globCache.get(cacheModel.BUDGET);
+	    return JSON.parse(value);
+	},
     setUserToken: function(value) {
         window.globCache.set(cacheModel.USERTOKEN, JSON.stringify(value));
     },
