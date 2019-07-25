@@ -34,7 +34,7 @@
 					<ul class="layui-tab-title">
 						<li id="tab_index1" class="layui-this">基本信息</li>
 						<li id="tab_index2">内容设计</li>
-						<li>流程设计</li>
+						<li id="tab_index3">流程设计</li>
 						<span class="layui-btn fr" onclick="history.back(-1)">返回</span>
 					</ul>
 					<div class="layui-tab-content">
@@ -369,7 +369,7 @@
 						M = JSON.parse(data.formAttribute);
 						F = JSON.parse(data.formContent);
 						loadFormJs();
-						//节点
+						//节点 编辑时删除默认添加的两个节点
 						$('.process_box li').eq(1).remove();
 						$('.process_box li').eq(1).remove();
 						for(var i = 0;i < data.subjectStepFlowList.length;i++){
@@ -645,7 +645,6 @@
 				layer.load();
 				$(".link_Save").attr({"disabled":"true"});
 				var url = Id == null ? 'lc/Subject/Add' : 'lc/Subject/Edit';
-				
 				Serv.Post(url,data,function(resultData){
 					$(".link_Save").attr({"disabled":"fasle"});
 					layer.closeAll('loading');
