@@ -35,10 +35,10 @@
                                     <div class="layui-form-item layui-col-md4 margin-b-20">
                                         <label class="layui-form-label">状态</label>
                                         <div class="layui-input-block">
-                                            <select>
-                                                <option></option>
-                                                <option>未读</option>
-                                                <option>已读</option>
+                                            <select class="IsRead">
+                                                <option value="-1" selected>全部</option>
+                                                <option value="0">未读</option>
+                                                <option value="1">已读</option>
                                             </select>
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
     </div>
     <script type="text/javascript">
         var data_col = [[
-            { type: 'id', title: '序号', templet: function (item) { return item.id; } },
+            { field: 'id', title: '序号',width:60},
             { field: 'title', title: '标题' },
             {
                 field: 'createDate', title: '发布日期', templet: function (item) {
@@ -73,7 +73,7 @@
             { field: 'readCount', title: '浏览次数' },
             {
                 field: 'isNeedRead', title: '强制阅读', templet: function (item) {
-                    if (item == 1)
+                    if (item.isNeedRead == 1)
                         return "是";
                     else
                         return "否";
@@ -84,7 +84,7 @@
         ]];
         var parameter = {
             Title: '',
-            IsRead: 0
+            IsRead: -1
         }
 
         layui.use(['table', 'element', 'laydate'], function () {
@@ -96,24 +96,26 @@
             //基本信息
             form.on('submit(search)', function (laydata) {
                 //分页初始化
-                lstPager = Pager2(table,//lay-ui的table控件
-                    '通知公告列表',//列表名称
-                    "lst",//绑定的列表Id
-                    'bar',//绑定的工具条Id
-                    data_col,//表头的显示行
-                    "gc/note/GetNotePage",//action url 只能post提交
-                    search,
-                    null,//如果在显示之前需要对数据进行整理需要实现，否则传null
-                    null,//有选择行才能有的操作，实现该方法,否则传null
-                    null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
-                    null,
-                    'full-100'
-                );
+                lstPager.search();
+                // Pager2(table,//lay-ui的table控件
+                //     '通知公告列表',//列表名称
+                //     "lst",//绑定的列表Id
+                //     'bar',//绑定的工具条Id
+                //     data_col,//表头的显示行
+                //     "gc/note/GetNotePage",//action url 只能post提交
+                //     search,
+                //     null,//如果在显示之前需要对数据进行整理需要实现，否则传null
+                //     null,//有选择行才能有的操作，实现该方法,否则传null
+                //     null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+                //     null,
+                //     'full-100'
+                // );
                 return false;
             });
 
             function search() {
                 parameter.Title = $("input[name='title']").val();
+                parameter.IsRead=$(".IsRead").val();
                 return parameter;
             }
 

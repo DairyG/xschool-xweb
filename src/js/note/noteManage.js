@@ -2,7 +2,7 @@ var lstPager;
 
 var parameter = {
     Title: '',
-    IsRead:0
+    IsRead:-1
 };
 layui.use(['table', 'element', 'laydate'], function () {
     var table = layui.table,
@@ -30,6 +30,7 @@ layui.use(['table', 'element', 'laydate'], function () {
 
     function search() {
         parameter.Title = $("input[name='title']").val();
+        parameter.IsRead=-1;
         return parameter;
     }
 

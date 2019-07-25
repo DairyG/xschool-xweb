@@ -1,5 +1,5 @@
 var data_col1 = [[
-    {type: 'id', title: '序号', templet: function (item) { return item.id; }},
+    {field: 'id', title: '序号',width:60},
     { field: 'userName', title: '员工姓名' },
     { field: 'companyName', title: '公司' },
     { field: 'dptName', title: '部门' },
@@ -8,7 +8,7 @@ var data_col1 = [[
    } }
 ]];
 var data_col2 = [[
-    {type: 'id', title: '序号', templet: function (item) { return item.id; }},
+    {field: 'id', title: '序号',width:60},
     { field: 'userName', title: '员工姓名' },
     { field: 'companyName', title: '公司' },
     { field: 'dptName', title: '部门' }
@@ -120,11 +120,14 @@ var vm = new Vue({
                         Serv.Post("gc/note/NoteReadRecord", param, function (response) {
                             IsRead = response;
                         }, false);
-                        var param=[];
-                        param.CompanyIds=CompanyIds;
-                        param.DptIds=DptIds;
-                        param.EmployeeIds=EmployeeIds;
-                        param.JobIds=JobIds;
+
+                        var param={
+                            CompanyIds:CompanyIds,
+                            DptIds:DptIds,
+                            EmployeeIds:EmployeeIds,
+                            JobIds:JobIds
+                        };
+
                         Serv.Post("uc/Employee/GetEmployees",param,function(result){
                             if(IsRead.code=="00")
                             {

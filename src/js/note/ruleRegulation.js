@@ -2,7 +2,7 @@ var zTreeObj;
 var lstPager;
 
 var data_col = [[
-    { type: 'id', title: '序号', templet: function (item) { return item.id; } },
+    { field: 'id', title: '序号',width:60 },
     { field: 'title', title: '标题' },
     {
         field: 'createDate', title: '发布日期', templet: function (item) {
