@@ -15,6 +15,9 @@
 		<script type="text/javascript" src="../../js/common.js"></script>		
 		<script type="text/javascript" src="../../lib/form_build.js"></script>
 		<script type="text/javascript" src="../../lib/pick-pcc/city.min.js"></script>
+		<script type="text/text/javascript">
+			var pick_pcc,form,laydate,upload;
+		</script>
 	</head>
 	<body class="bgf2f2f2">
 		<div class="childrenBody">
@@ -57,10 +60,10 @@
 				pick_pcc: 'pick-pcc/layui-pick-pcc'
 			});
 			layui.use(['pick_pcc','form','laydate','upload'], function() {
-				var pick_pcc = layui.pick_pcc,
-					form = layui.form,
-					laydate = layui.laydate,
-					upload = layui.upload;
+				pick_pcc = layui.pick_pcc;
+				form = layui.form;
+				laydate = layui.laydate;
+				upload = layui.upload;
 				if(subjectId>0){
 					BindFun(subjectId);
 				}
@@ -68,7 +71,9 @@
 				layer_load_lose();
 				lay('.date').each(function(){
 					var type = $(this).data('type');
+						type = type == undefined ? 'datetime' : type;
 					var range = $(this).data('range');
+						range = range == undefined ? false : range;
 					laydate.render({
 						elem:this,
 						type:type,
@@ -134,7 +139,15 @@
 					M = JSON.parse(data.formAttribute);
 					F = JSON.parse(data.formContent);
 					html = form_build(M,F);
-					
+					html += '<div class="layui-form-item layui-col-md12 margin-b-20">\
+							<label class="layui-form-label">处理时效</label>\
+							<div class="layui-input-block">\
+								<select>\
+									<option>普通</option>\
+									<option>紧急</option>\
+								</select>\
+							</div>\
+						</div>' ;
 					$('#form_box').html(html);
 					var PassList = data.subjectPassList;
 					html = '<li class="active padding-l-0"><i>1</i><span>发起申请</span></li>';

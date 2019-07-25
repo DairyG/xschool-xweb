@@ -739,17 +739,23 @@ function fieldInit() {
                 }
                 var c = d.item.attr('ftype');
 				var is_kit = d.item.attr('is_kit');
-				if(is_kit == true || is_kit == 'true'){
-					if(M.is_kit){
-						layer_msg('只能添加一个套件字段！');
-						setTimeout(function () {
-						    d.item.remove()
-						}, 50);
-						return false;
+				var flag = false;
+				
+				if(is_kit){
+					if(g > 0){
+						flag = true;
 					} else {
 						M.is_kit = true;
 					}
+				} else if(M.is_kit){
+					flag = true;
 				}
+				if(flag){
+					layer_msg('套件字段不能与其他字段同时存在！');
+					setTimeout(function () { d.item.remove() }, 50);
+					return false;
+				}
+				
                 if (c == 'image') {
                     var j = 0;
                     $(F).each(function (e, k) {
@@ -2358,25 +2364,25 @@ function addFieldsInit() {
 		if(ftype == '' || ftype == undefined){
 			return false;
 		}
-		if(is_kit == true || is_kit == 'true'){
-			if(M.is_kit){
-				layer_msg('只能添加一个套件字段！');
-				return false;
-			} else {
-				M.is_kit = true;
-			}
-		}
         var b = $('#fields>li').size(),
         a = b - 1,
         d = 'f' + b,
         f = $(DEFFLD.field_li);
         if (b === 0) {
-            $('#fields').append(f)
+            $('#fields').append(f);
+			if(is_kit){
+				M.is_kit = true;
+			}
         } else {
             if (b >= fieldsLimit) {
                 $.alert('最多只能添加' + fieldsLimit + '个字段。');
                 return false
             }
+			if(is_kit || M.is_kit){
+				layer_msg('套件字段不能与其他字段同时存在！');
+				return false;
+			}
+			
             if ($(this).attr('ftype') == 'image') {
                 var e = 0;
                 $(F).each(function (c, g) {
@@ -2391,6 +2397,7 @@ function addFieldsInit() {
             }
             $('.field:eq(' + a + ')', '#fields').after(f)
         }
+		
         f.attr('id', d);
         setDefFieldDom(f, $(this).attr('ftype'), a + 1);
         CHANGED = true;

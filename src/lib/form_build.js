@@ -127,6 +127,19 @@ function not_form_item_html(param,i){
 		case 'section':
 			html += '<div class="form-title">'+param.LBL+'：</div>';
 			break;
+		case 'recruit':
+		case 'money_pay':
+		case 'money_apply':
+			$.ajax({
+				type:'GET',
+				dataType:"html",
+				url:'/pages/public/form_kits/'+param.TYP+'.html',
+				async:false,
+				success:function(res){
+					html += res;
+				}
+			});
+			break;
 	}
 	return html;
 }
@@ -138,7 +151,7 @@ function not_form_item_html(param,i){
  */
 function form_build(formData,paramData){
 	var html = '<div class="layui-row layui-form layui-form2 ">';
-	var not_form_items = 'section';
+	var not_form_items = 'section,recruit,money_pay,money_apply';
 	for(var i = 0;i < paramData.length;i++){
 		if(not_form_items.indexOf(paramData[i].TYP) > -1){//非表单项的HTML
 			html += not_form_item_html(paramData[i],i);
