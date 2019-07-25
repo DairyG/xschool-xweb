@@ -1,3 +1,13 @@
+var data_col2 = [[
+    {type: 'id', title: '序号', templet: function (item) { return item.id; }},
+    { field: 'userName', title: '员工姓名' },
+    { field: 'companyName', title: '公司' },
+    { field: 'dptName', title: '部门' }
+]];
+var parameter = {
+    RuleRegulationId: 0,
+    IsRead: 0
+};
 var vm = new Vue({
     el: '#ruleMsg',
     data: {
@@ -25,16 +35,6 @@ var vm = new Vue({
                 return item.readDate.FormatDate();
            } }
         ]];
-        var data_col2 = [[
-            {type: 'id', title: '序号', templet: function (item) { return item.id; }},
-            { field: 'userName', title: '员工姓名' },
-            { field: 'companyName', title: '公司' },
-            { field: 'dptName', title: '部门' }
-        ]];
-        var parameter = {
-            RuleRegulationId: 0,
-            IsRead: 0
-        };
         function search0() {
             parameter.RuleRegulationId = id;
             parameter.IsRead = 1;
@@ -63,20 +63,6 @@ var vm = new Vue({
                 null,
                 'full-100'
             );
-            //分页初始化
-            var lstPager1 = Pager2(table,//lay-ui的table控件
-                '未读',//列表名称
-                "lst2",//绑定的列表Id
-                'bar',//绑定的工具条Id
-                data_col1,//表头的显示行
-                "gc/note/RuleRegulationRead",//action url 只能post提交
-                search1,
-                null,//如果在显示之前需要对数据进行整理需要实现，否则传null
-                null,//有选择行才能有的操作，实现该方法,否则传null
-                null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
-                null,
-                'full-100'
-            );
         });
     },
     methods: {
@@ -92,10 +78,72 @@ var vm = new Vue({
                     return false;
                 }
 
-                _this.getruleDetail(id,UserId,UserName,CompanyName,DptName);
+                _this.getruleDetail(id,UserId,UserName,CompanyName,DptName,function(resultUser){
+                    var CompanyIds=[];
+                    var DptIds=[];
+                    var JobIds=[];
+                    var EmployeeIds=[];
+                    if(resultUser.company.length>0)
+                    {
+                        $.each(resultUser.company,function(item){
+                            CompanyIds.push(resultUser.company[item].id);
+                        })
+                    }
+                    if(resultUser.department.length>0)
+                    {
+                        $.each(resultUser.department,function(item){
+                            DptIds.push(resultUser.department[item].id);
+                        })
+                    }
+                    if(resultUser.user.length>0)
+                    {
+                        $.each(resultUser.user,function(item){
+                            EmployeeIds.push(resultUser.user[item].id);
+                        })
+                    }
+                    if(resultUser.position.length>0)
+                    {
+                        $.each(resultUser.position,function(item){
+                            JobIds.push(resultUser.position[item].id);
+                        })
+                    }
+                    lstPager1();
+                    function lstPager1() {
+                        var param={
+                            IsRead:1,
+                            RuleRegulationId:id,
+                            page:1,
+                            limit:500
+                        };
+                        var NotReadCount;
+                        var IsRead;
+                        Serv.Post("gc/note/RuleRegulationRead", param, function (response) {
+                            IsRead = response;
+                        }, false);
+                        var param=[];
+                        param.CompanyIds=CompanyIds;
+                        param.DptIds=DptIds;
+                        param.EmployeeIds=EmployeeIds;
+                        param.JobIds=JobIds;
+                        Serv.Post("uc/Employee/GetEmployees",param,function(result){
+                            if(IsRead.code=="00")
+                            {
+                                var IsReadCount=IsRead.data.items;
+                                result=GetNotReadList(IsReadCount,result)
+                            }
+                            table.render({
+                                elem: '#lst2',
+                                data:result,
+                                page:true,
+                                limit:10,
+                                cols:data_col2
+                            })
+                        })
+                    }
+                });
             })
         },
-        getruleDetail: function (id,UserId,UserName,CompanyName,DptName) {
+        getruleDetail: function (id,UserId,UserName,CompanyName,DptName,callback) {
             var _this = this;
             layer_load();
             Serv.Get("gc/note/RuleRegulationDetail?id=" + id+"&UserId="+UserId+
@@ -113,6 +161,7 @@ var vm = new Vue({
                     var fjHtml=splitAttach(result.data.ruleRegulationDetail.enclosureUrl,2);                
                     $("#certificatePanel").html(fjHtml);
                     $("#content").html(_this.ruleDetail.content);
+                    callback(result.data.chooseUser);
                 }
                 else {
                     layer_alter("未获取到相应数据！");
@@ -146,4 +195,25 @@ function splitAttach(value, type) {
     if (htmls != '')
         htmls = '<hr>' + htmls;
     return htmls;
+}
+
+function GetNotReadList(array1,array2) {
+    var result = [];
+    for (var i = 0; i < array2.length; i++) {
+        var obj = array2[i];
+        var num = obj.id;
+        var isExist = false;
+        for (var j = 0; j < array1.length; j++) {
+            var aj = array1[j];
+            var n = aj.userId;
+            if (n == num) {
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist) {
+            result.push(obj);
+        }
+    }
+    return result;
 }

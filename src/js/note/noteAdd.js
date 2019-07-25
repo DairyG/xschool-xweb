@@ -52,7 +52,7 @@ layui.use(['table', 'element', 'form', 'layedit','upload'], function () {
         layer_load();
         CheckData(laydata, function (resultData) {
             if (resultData.succeed) {
-                Serv.Post('gc/note/AddNote', resultData.data, function (result) {
+                Serv.Post('gc/note/AddNote', resultData.dyao1ata, function (result) {
                     layer_load_lose();
                     if (result.code == "00") {
                         layer_confirm('添加成功，是否继续添加？', function () {
