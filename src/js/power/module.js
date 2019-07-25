@@ -9,18 +9,14 @@ var moduleCol = [
             width: 60
         },
         {
-            field: 'pid',
-            title: 'pId',
-            width: 60
+            field: 'code',
+            title: 'code',
+            width: 120
         },
         {
             field: 'name',
             title: '模块名称',
-            width: 160
-        },
-        {
-            field: 'url',
-            title: 'Url'
+            width: 120
         },
         {
             field: 'icon',
@@ -35,18 +31,59 @@ var moduleCol = [
             width: 60
         },
         {
-            field: 'displayOrder',
-            title: '排序',
-            width: 80
+            field: 'pName',
+            title: '父节点名称',
+            templet: function(d) {
+                console.log(d);
+                return (d.pName || '根节点');
+            }
+        },
+        {
+            field: 'url',
+            title: 'Url'
         },
         {
             fixed: 'right',
-            templet: function() {
-                return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="lsElement">查看菜单</a>';
+            templet: function(d) {
+                if (d.pid > 0) {
+                    return '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="lsElement">查看元素</a>';
+                } else {
+                    return '';
+                }
             },
             width: 90
         }
     ]
+];
+var elementCol = [
+    [{
+        type: 'checkbox',
+        fixed: 'left'
+    }, {
+        field: 'name',
+        title: '名称'
+    }, {
+        field: 'position',
+        title: '显示位置',
+        templet: function(d) {
+            return ['', 'Table上方', 'Table右边'][d.position];
+        }
+    }, {
+        field: 'attr',
+        title: '附加属性'
+    }, {
+        field: 'class',
+        title: '样式',
+        templet: '#elementBtnTpl',
+        width: 120
+    }, {
+        field: 'isSystem',
+        title: '默认',
+        templet: function(d) {
+            return ["否", "是"][d.isSystem];
+        },
+        width: 60
+    }]
 ];
 
 var data = {
@@ -56,11 +93,22 @@ var data = {
         url: '',
         iconName: 'layui-icon-circle-dot',
         pId: 0,
+        code: '',
         displayOrder: 10
+    },
+    element: {
+        id: 0,
+        moduleId: 0,
+        name: '',
+        attr: '',
+        iconName: 'layui-icon-circle-dot',
+        class: '',
+        position: 1,
+        displayOrder: 10,
     }
 }
 
-var layer_linePop;
+var layer_linePop, layer_resource;
 layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
     var table = layui.table,
         form = layui.form,
@@ -78,7 +126,8 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
         }
     };
 
-    var modulePop = $('#modulePop');
+    var modulePop = $('#modulePop'),
+        elementPop = $('#elementPop');
 
     iconPicker.render({
         // 选择器，推荐使用input
@@ -91,6 +140,14 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
             $('#monduleIcon').val(data.icon);
         }
     });
+    iconPicker.render({
+        elem: '#elementIcon',
+        type: 'fontClass',
+        cellWidth: '20%',
+        click: function(data) {
+            $('#elementIcon').val(data.icon);
+        }
+    });
 
     var searchTreeObj = $('#searchTree');
 
@@ -101,8 +158,7 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
             key: 'id',
             parentKey: 'pid'
         },
-        dataMode: 'mondule',
-        isExpandAll: 1
+        dataMode: 'mondule'
     }, function(event, treeId, treeNode) {
         ztreeInput.prev().val(treeNode.id);
         ztreeInput.val(treeNode.name).attr('data-id', treeNode.id);
@@ -120,47 +176,148 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
         });
     });
 
-    //操作时间
+    //操作
     $('#toolsOperation .layui-btn').on('click', function() {
         var type = $(this).data('type');
-        var checkStatus = table.checkStatus('moduleLst'),
-            datas = checkStatus.data;
         if (type == 'btnAdd') {
+
             iconPicker.checkIcon('monduleIcon', data.mondule.iconName);
+            ztreeInput.val('').attr('data-id', '');
             form.val('formModule', data.mondule);
             layPop('添加模块', modulePop);
+
             return false;
         } else if (type == 'btnEdit') {
+
+            var checkStatus = table.checkStatus('moduleLst'),
+                datas = checkStatus.data;
             if (datas.length == 0) {
-                layer_alert('勾选对应的数据进行操作');
+                layer_alert('请勾选模块数据进行操作');
                 return false;
             }
             if (datas.length > 1) {
-                layer_alert('不能勾选多条数据进行操作');
+                layer_alert('不能勾选多条模块数据进行操作');
                 return false;
             }
             if (datas[0].iconName) {
                 iconPicker.checkIcon('monduleIcon', datas[0].iconName);
             }
-            ztreeInput.attr('data-id', datas[0].pid);
+            ztreeInput.val(datas[0].pName).attr('data-id', datas[0].pid);
             form.val('formModule', datas[0]);
-            loadParentModule();
             layPop('编辑模块', modulePop);
+
             return false;
         } else if (type == 'btnDel') {
-            active.btnDel();
+
+            var checkStatus = table.checkStatus('moduleLst'),
+                datas = checkStatus.data;
+            if (datas.length == 0) {
+                layer_alert('请勾选模块数据进行操作');
+                return false;
+            }
+            var ids = [];
+            $.each(datas, function(i, item) {
+                ids.push(item.id);
+            });
+            layer_confirm('确定删除吗？', function() {
+                delElement(ids);
+            });
+
             return false;
         } else if (type == 'btnAddMenu') {
-            activeMenu.btnAdd();
+
+            var checkStatus = table.checkStatus('moduleLst'),
+                datas = checkStatus.data;
+            if (datas.length == 0) {
+                layer_alert('请勾选模块数据进行操作');
+                return false;
+            }
+            if (datas.length > 1) {
+                layer_alert('不能勾选多条模块数据进行操作');
+                return false;
+            }
+            if (datas[0].pid <= 0) {
+                layer_alert('请勿勾选模块数据根节点进行操作');
+                return false;
+            }
+            data.element.moduleId = datas[0].id;
+
+            iconPicker.checkIcon('elementIcon', data.element.iconName);
+            form.val('formElement', data.element);
+            layPop('添加元素', elementPop);
+
             return false;
         } else if (type == 'btnEditMenu') {
-            activeMenu.btnEdit();
+
+            var checkStatus = table.checkStatus('elementLst'),
+                datas = checkStatus.data;
+            if (datas.length == 0) {
+                layer_alert('请勾选元素数据进行操作');
+                return false;
+            }
+            if (datas.length > 1) {
+                layer_alert('不能勾选多条元素数据进行操作');
+                return false;
+            }
+            if (datas[0].iconName) {
+                iconPicker.checkIcon('elementIcon', datas[0].iconName);
+            }
+            form.val('formElement', datas[0]);
+            layPop('编辑元素', elementPop);
+
             return false;
         } else if (type == 'btnDelMenu') {
-            activeMenu.btnDel();
+
+            var checkStatus = table.checkStatus('elementLst'),
+                datas = checkStatus.data;
+            if (datas.length == 0) {
+                layer_alert('请勾选元素数据进行操作');
+                return false;
+            }
+            var ids = [];
+            $.each(datas, function(i, item) {
+                ids.push(item.id);
+            });
+            layer_confirm('确定删除吗？', function() {
+                delElement(ids);
+            });
+
             return false;
         }
     });
+    //删除 模块
+    function delModule(ids) {
+        layer_load();
+        Serv.Post('gc/power/deletemodule', {
+            ids: ids
+        }, function(result) {
+            layer_load_lose();
+            if (result.succeed) {
+                layer_alert(result.message, function() {
+                    mondulePager.search();
+                    elementPager.search();
+                });
+            } else {
+                layer_alert(result.message);
+            }
+        });
+    }
+    //删除 元素
+    function delElement(ids) {
+        layer_load();
+        Serv.Post('gc/power/deleteelement', {
+            ids: ids
+        }, function(result) {
+            layer_load_lose();
+            if (result.succeed) {
+                layer_alert(result.message, function() {
+                    elementPager.search();
+                });
+            } else {
+                layer_alert(result.message);
+            }
+        });
+    }
 
     //模板提交
     form.on('submit(submitModule)', function(laydata) {
@@ -174,6 +331,9 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
                     layer.closeAll();
                     loadSearchTree();
                     mondulePager.search();
+
+                    paramModel.element.moduleId = 0;
+                    elementPager.search();
                 });
                 // layer_confirm('操作成功，确定继续？', function() {}, function() {});
             } else {
@@ -181,19 +341,23 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
             }
         });
     });
-
-    //加载所属模块数据
-    function loadParentModule() {
-        var moduleData = window.globCache.getModule();
-        moduleData.push({
-            id: 0,
-            name: '根节点',
-            pid: 0,
-            displayOrder: -99999
+    //元素提交
+    form.on('submit(submitElement)', function(laydata) {
+        layer_load();
+        laydata.field.iconName = (laydata.field.iconName == 'layui-icon-circle-dot' ? '' : laydata.field.iconName);
+        Serv.Post('gc/power/editelement', laydata.field, function(result) {
+            layer_load_lose();
+            if (result.succeed) {
+                layer_alert(result.message, function() {
+                    layer.closeAll();
+                    paramModel.element.moduleId = laydata.field.moduleId;
+                    elementPager.search();
+                });
+            } else {
+                layer_alert(result.message);
+            }
         });
-        zTreeRadio.reload(moduleData);
-        zTreeRadio.setCheck(1);
-    };
+    });
 
     //弹窗
     function layPop(title, obj) {
@@ -244,6 +408,25 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
         });
     }
 
+    //元素样式
+    $('#elementClassLab').on('click', function() {
+        layer_resource = layer.open({
+            type: 1,
+            title: '查询按钮样式',
+            string: false,
+            closeBtn: 1,
+            skin: 'layui-layer-rim',
+            offset: '100px',
+            area: '750px',
+            content: $('#resourceButPop')
+        });
+    });
+    //点击选择
+    $('.resourceBut').on('click', function() {
+        $('#elementClassIpt').val($(this).attr('data-value'));
+        layer.close(layer_resource);
+    });
+
     //搜索
     $('#searchSubmit').on('click', function() {
         mondulePager.search();
@@ -254,19 +437,40 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
         paramModel.mondule.pid = value || 0;
         return paramModel.mondule;
     }
-
-    function elementSearch() {
-        return paramModel.element;
-    }
-
     var mondulePager = Pager(
         table, //lay-ui的table控件
         '模板管理', //列表名称
         'moduleLst', //绑定的列表Id
-        '', //绑定的工具条Id
+        'moduleTpl', //绑定的工具条Id
         moduleCol, //表头的显示行
         'gc/power/querymodule', //action url 只能post提交
         monduleSearch, //获取查询条件的函数
+        null, //如果在显示之前需要对数据进行整理需要实现，否则传null
+        null, //有选择行才能有的操作，实现该方法,否则传null
+        null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
+        null,
+        'full-160'
+    );
+    //监听table事件
+    table.on('tool(moduleLst)', function(obj) {
+        var data = obj.data;
+        if (obj.event == 'lsElement') { //查看
+            paramModel.element.moduleId = data.id;
+            elementPager.search();
+        }
+    });
+
+    function elementSearch() {
+        return paramModel.element;
+    }
+    var elementPager = Pager(
+        table, //lay-ui的table控件
+        '菜单管理', //列表名称
+        'elementLst', //绑定的列表Id
+        'elementTpl', //绑定的工具条Id
+        elementCol, //表头的显示行
+        'gc/power/queryelement', //action url 只能post提交
+        elementSearch, //获取查询条件的函数
         null, //如果在显示之前需要对数据进行整理需要实现，否则传null
         null, //有选择行才能有的操作，实现该方法,否则传null
         null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
@@ -276,24 +480,6 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
         },
         'full-160'
     );
-
-    // var elementPager = Pager(
-    //     table, //lay-ui的table控件
-    //     '模板元素管理', //列表名称
-    //     'moduleLst', //绑定的列表Id
-    //     '', //绑定的工具条Id
-    //     moduleCol, //表头的显示行
-    //     'gc/kpievaluation/querymanage', //action url 只能post提交
-    //     search, //获取查询条件的函数
-    //     null, //如果在显示之前需要对数据进行整理需要实现，否则传null
-    //     null, //有选择行才能有的操作，实现该方法,否则传null
-    //     null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
-    //     function() {
-    //         // this.where = {};
-    //         // this.where = paramModel.monthly;
-    //     },
-    //     'full-160'
-    // );
 
 });
 

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../layui/css/layui.css" />
     <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <link rel="stylesheet" href="../../layui/css/common.css" />
+    <link rel="stylesheet" href="../../lib/treeSelect/treeSelect.css" />
     <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../layui/layui.js"></script>
     <script type="text/javascript" src="../../js/layui.extend.js"></script>
@@ -17,15 +18,32 @@
     <script type="text/javascript" src="../../js/pager.js"></script>
     <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="../../js/ztree.radio.js"></script>
-
-    <link rel="stylesheet" href="../../lib/treeSelect/treeSelect.css" />
-
+    <script type="text/javascript" src="../../js/table.tr.checked.js"></script>
     <style>
       .layui-elem-quote {
         margin-bottom: 2px;
         padding: 10px;
         padding-left: 0;
         border: none;
+      }
+      .site-table {
+        width: 100%;
+        margin: 10px 0;
+      }
+      .site-table thead {
+        background-color: #f2f2f2;
+      }
+      .site-table th,
+      .site-table td {
+        padding: 6px 15px;
+        min-height: 20px;
+        line-height: 20px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        font-weight: 400;
+      }
+      .site-table tr:nth-child(even) {
+        background: #fbfbfb;
       }
     </style>
   </head>
@@ -50,15 +68,15 @@
                 </button>
                 <button class="layui-btn layui-btn-sm layui-btn-primary" data-type="btnAddMenu" lay-event="btnAddMenu">
                   <i class="layui-icon layui-icon-add-1"></i>
-                  添加菜单
+                  添加元素
                 </button>
                 <button class="layui-btn layui-btn-sm layui-btn-primary" data-type="btnEditMenu" lay-event="btnEditMenu">
                   <i class="layui-icon layui-icon-edit"></i>
-                  编辑菜单
+                  编辑元素
                 </button>
                 <button class="layui-btn layui-btn-sm layui-btn-primary" data-type="btnDelMenu" lay-event="btnDelMenu">
                   <i class="layui-icon layui-icon-delete"></i>
-                  删除菜单
+                  删除元素
                 </button>
               </div>
 
@@ -78,12 +96,12 @@
             </div>
           </blockquote>
         </div>
-        <div class="layui-col-md6 layui-col-sm6" style="background: #fff;">
+        <div class="layui-col-md7 layui-col-sm7" style="background: #fff;">
           <div class="layui-card-body">
             <table id="moduleLst" lay-filter="moduleLst"></table>
           </div>
         </div>
-        <div class="layui-col-md6 layui-col-sm6" style="background: #fff;border-left:15px solid #f2f2f2">
+        <div class="layui-col-md5 layui-col-sm5" style="background: #fff;border-left:15px solid #f2f2f2">
           <div class="layui-card-body">
             <table id="elementLst" lay-filter="elementLst"></table>
           </div>
@@ -107,6 +125,15 @@
               </div>
             </div>
             <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">
+                模块Code
+                <span class="text-red">*</span>
+              </label>
+              <div class="layui-input-block">
+                <input type="text" name="code" placeholder="模块Code" maxlength="9" required lay-verify="name|num" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
               <label class="layui-form-label">URL地址</label>
               <div class="layui-input-block">
                 <input type="text" name="url" placeholder="URL地址" maxlength="100" class="layui-input" />
@@ -126,7 +153,7 @@
             <div class="layui-form-item layui-col-md12 margin-b-20">
               <label class="layui-form-label">排序</label>
               <div class="layui-input-block">
-                <input type="text" name="displayOrder" placeholder="排序" maxlength="9" required lay-verify="name|num" class="layui-input" />
+                <input type="text" name="displayOrder" placeholder="排序" maxlength="20" required lay-verify="name|num" class="layui-input" />
               </div>
             </div>
             <div class="layui-form-item layui-col-md12 margin-b-20">
@@ -144,9 +171,138 @@
         </form>
       </div>
     </div>
+
+    <div id="elementPop" class="linePop">
+      <div class="layui-card-body padding-r-50">
+        <form class="layui-form layui-form2" id="formElement" lay-filter="formElement" autocomplete="off">
+          <input type="hidden" name="id" />
+          <input type="hidden" name="moduleId" />
+
+          <div class="layui-row">
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">
+                名称
+                <span class="text-red">*</span>
+              </label>
+              <div class="layui-input-block">
+                <input type="text" name="name" placeholder="名称" maxlength="50" required lay-verify="name" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">
+                DomId
+                <span class="text-red">*</span>
+              </label>
+              <div class="layui-input-block">
+                <input type="text" name="domId" placeholder="DomId" maxlength="50" required lay-verify="name" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">附加属性</label>
+              <div class="layui-input-block">
+                <input type="text" name="attr" maxlength="80" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">显示位置</label>
+              <div class="layui-input-block">
+                <select name="position">
+                  <option value="1">Table上方</option>
+                  <option value="2">Table右边</option>
+                </select>
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label" id="elementClassLab">样式(点击此处)</label>
+              <div class="layui-input-block">
+                <input type="text" name="class" id="elementClassIpt" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">图标</label>
+              <div class="layui-input-block">
+                <input type="text" id="elementIcon" name="iconName" lay-filter="elementIcon" class="layui-input" />
+                <div class="layui-form-mid layui-word-aux">
+                  提示：如果为
+                  <i class="layui-icon layui-icon-circle-dot"></i>
+                  此图标，表示此项为空，如果要选择该图标，请搜索dot
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md12 margin-b-20">
+              <label class="layui-form-label">排序</label>
+              <div class="layui-input-block">
+                <input type="text" name="displayOrder" placeholder="排序" maxlength="20" required lay-verify="name|num" class="layui-input" />
+              </div>
+            </div>
+          </div>
+          <div class="layui-row text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="submitElement" value="确认" />
+            <span class="layui-btn layui-btn-primary" onclick="closePop()">取消</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="resourceButPop" class="linePop">
+      <div class="site-text" style="margin:20px">
+        <p>
+          <button class="layui-btn layui-btn-primary resourceBut" data-value="layui-btn-primary">原始按钮</button>
+          <button class="layui-btn resourceBut" data-value="">默认按钮</button>
+          <button class="layui-btn layui-btn-normal resourceBut" data-value="layui-btn-normal">百搭按钮</button>
+          <button class="layui-btn layui-btn-warm resourceBut" data-value="layui-btn-warm">暖色按钮</button>
+          <button class="layui-btn layui-btn-danger resourceBut" data-value="layui-btn-danger">警告按钮</button>
+          <button class="layui-btn layui-btn-disabled resourceBut" data-value="layui-btn-disabled">禁用按钮</button>
+        </p>
+        <table class="site-table">
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>组合</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="resourceBut" data-value="layui-btn-primary">
+              <td style="text-align: center;">原始</td>
+              <td>layui-btn-primary</td>
+            </tr>
+            <tr class="resourceBut" data-value="">
+              <td style="text-align: center;">默认</td>
+              <td></td>
+            </tr>
+            <tr class="resourceBut" data-value="layui-btn-normal">
+              <td style="text-align: center;">百搭</td>
+              <td>layui-btn-normal</td>
+            </tr>
+            <tr class="resourceBut" data-value="layui-btn-warm">
+              <td style="text-align: center;">暖色</td>
+              <td>layui-btn-warm</td>
+            </tr>
+            <tr class="resourceBut" data-value="layui-btn-danger">
+              <td style="text-align: center;">警告</td>
+              <td>layui-btn-danger</td>
+            </tr>
+            <tr class="resourceBut" data-value="layui-btn-disabled">
+              <td style="text-align: center;">禁用</td>
+              <td>layui-btn-disabled</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
   <div id="treeContent" class="menuContent" style="display:none; position: absolute;background: #fff; z-index: 39891015">
     <ul id="treeUl" class="ztree" style="width: 100%; height: 350px; overflow-y: auto; z-index: 40891015"></ul>
   </div>
+
+  <script type="text/html" id="moduleTpl">
+    模块数据
+  </script>
+  <script type="text/html" id="elementTpl">
+    元素数据
+  </script>
+  <script type="text/html" id="elementBtnTpl">
+    <button class="layui-btn layui-btn-xs {{ d.class }} layui-btn-fluid" alt="{{ d.domId }}"> <i class="layui-icon {{ d.iconName }}"></i> {{ d.name }}</button>
+  </script>
   <script type="text/javascript" src="../../js/power/module.js"></script>
 </html>
