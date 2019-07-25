@@ -27,6 +27,7 @@
         <div class="layui-card-header">预算设置</div>
         <div class="layui-card-body bgwhite">
             <form class="layui-form layui-form2">
+                <input type="hidden" id="id" value="0" />
                 <div class="layui-row">
                     <!-- 部门和年度选择后才出现表格 部门和年度确认后不能更改 -->
                     <div class="layui-form-item layui-col-md6 margin-b-20">
@@ -73,7 +74,7 @@
     <script type="text/html" id="toolbar">
 		</script>
     <script type="text/html" id="bar">
-			<button class="layui-btn layui-btn-xs layui-btn-danger">删除</button>
+            <a class="layui-btn layui-btn-xs layui-btn-danger" href="javascript:;" lay-event="del">删除</a>
 		</script>
     <script>
         var datas = [];
@@ -92,13 +93,17 @@
                         if (department.length > 0) {
                             var dId = department[0].id;
                             Serv.Post('gc/Budgetset/Get', { dptId: dId, year: value }, function (response) {
-                                console.log(response);
+                                datas = [];
                                 if (response.length > 0) {
+                                    $("#id").val(response[0].id);
                                     $("#total").val(response[0].total);
                                     //查询各科目预算
+                                    GetDetails(response[0].id);
                                 }
                                 else {
+                                    $("#id").val(0);
                                     $("#total").val('');
+                                    table.reload('lst', { data: datas });
                                 }
                             })
                         }
@@ -124,17 +129,51 @@
                     { 'field': 'm10', 'title': '十月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m10 + '" type="text" class="layui-input table-ipt"></div>' } },
                     { 'field': 'm11', 'title': '十一月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m11 + '" type="text" class="layui-input table-ipt"></div>' } },
                     { 'field': 'm12', 'title': '十二月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m12 + '" type="text" class="layui-input table-ipt"></div>' } },
-                    { 'field': 'subtotal', 'title': '合计', totalRow: true, templet: function (d) { return parseInt(d.m1) + parseInt(d.m2) + parseInt(d.m3) + parseInt(d.m4) + parseInt(d.m5) + parseInt(d.m6) + parseInt(d.m7) + parseInt(d.m8) + parseInt(d.m9) + parseInt(d.m10) + parseInt(d.m11) + parseInt(d.m12) } },
+                    { 'field': 'subtotal', 'title': '合计', totalRow: true, templet: function (d) { return (parseFloat(d.m1) + parseFloat(d.m2) + parseFloat(d.m3) + parseFloat(d.m4) + parseFloat(d.m5) + parseFloat(d.m6) + parseFloat(d.m7) + parseFloat(d.m8) + parseFloat(d.m9) + parseFloat(d.m10) + parseFloat(d.m11) + parseFloat(d.m12)).toFixed(2) } },
                     { toolbar: '#bar', width: '70', title: '操作' }
                 ]],
                 data: datas
             });
             table.on('edit(lst)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                //console.log(obj.value); //得到修改后的值
-                obj.update(obj.data);
+                if (!isNaN(obj.value)) {
+                    obj.update(obj.data);
+                    var detail = datas.find(function (detail) {
+                        return detail.budgetId === obj.data.budgetId;
+                    });
+                    objIndex = datas.findIndex((o => o.budgetId == detail.budgetId));
+                    datas[objIndex][obj.field] = parseFloat(obj.value).toFixed(2);
+                    //处理行-合计
+                    //总预算
+                    var alltotal = parseFloat($("#total").val()).toFixed(2);
+                }
+                else {
+                    layer_alert("此处只能输入数字");
+                }
+
+            });
+            table.on('tool(lst)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                if (layEvent === 'del') { //查看
+                    //do somehing
+                    Serv.Get('gc/BudgetDetails/Delete/' + data.id, {}, function (response) {
+                        if (response.code == "00") {
+                            layer_alert("删除成功！");
+                            var detail = datas.find(function (detail) {
+                                return detail.id === data.id;
+                            });
+                            objIndex = datas.findIndex((o => o.id == detail.id));
+                            datas.splice(objIndex, 1);
+                            table.reload('lst', { data: datas });
+                        }
+                        else {
+                            layer_alert(response.message);
+                        }
+                    })
+                }
             });
             form.on('submit(formSet)', function (laydata) {
-                laydata.field.id = 0;
+                laydata.field.id = $("#id").val();
                 if ($("#user_sel_box1 input").length > 0) {
                     var department = $.parseJSON($("#user_sel_box1").find("input[name='sels']").val()).department;
                     if (department.length > 0) {
@@ -162,12 +201,12 @@
                     layer_alert("请输入总预算");
                     return false;
                 } else {
-                    laydata.field.total = $("#total").val();
+                    laydata.field.total = parseFloat($("#total").val()).toFixed(2);
                 }
                 laydata.field.addTime = GetTimeNow();
                 Serv.Post('gc/BudgetSet/Add', laydata.field, function (response) {
                     if (response.code == "00") {
-                        console.log(response.data);
+                        AddDetail(response.data);
                     }
                     else {
                         layui_alert(response.message);
@@ -179,26 +218,6 @@
         $(document).on("focus", "table .table-ipt", function () {
             $(this).click();
         });
-
-        // var setting = {
-        //     check: {
-        //         enable: true,
-        //         chkStyle: "radio",
-        //         radioType: "all"
-        //     },
-        //     view: {
-        //         dblClickExpand: false
-        //     },
-        //     data: {
-        //         simpleData: {
-        //             enable: true
-        //         }
-        //     },
-        //     callback: {
-        //         beforeClick: beforeClick,
-        //         onCheck: onCheck
-        //     }
-        // };
         function getSingle() {
             var y = $("#date1").val();
             if (y && $("#user_sel_box1 input").length > 0) {
@@ -206,15 +225,89 @@
                 if (department.length > 0) {
                     var dId = department[0].id;
                     Serv.Post('gc/Budgetset/Get', { dptId: dId, year: y }, function (response) {
+                        datas = [];
                         if (response.length > 0) {
+                            $("#id").val(response[0].id);
                             $("#total").val(response[0].total);
-                            //查询各科目预算
+                            GetDetails(response[0].id);
                         }
                         else {
+                            $("#id").val(0);
                             $("#total").val('');
+                            table.reload('lst', { data: datas });
                         }
                     })
                 }
+            }
+        }
+        function GetDetails(setId) {
+            //查询各科目预算
+            Serv.Get('gc/BudgetDetails/Get/' + setId, {}, function (result) {
+                if (result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        var model = {
+                            id: result[i].id,
+                            budgetId: result[i].budgetId,
+                            km: result[i].budgetName,
+                            m1: result[i].jan,
+                            m2: result[i].feb,
+                            m3: result[i].mar,
+                            m4: result[i].apr,
+                            m5: result[i].may,
+                            m6: result[i].jun,
+                            m7: result[i].jul,
+                            m8: result[i].aug,
+                            m9: result[i].sept,
+                            m10: result[i].oct,
+                            m11: result[i].nov,
+                            m12: result[i].dec,
+                            subtotal: result[i].total
+                        };
+                        datas.push(model);
+                    }
+                    table.reload('lst', { data: datas });
+                }
+            });
+        }
+        function AddDetail(setId) {
+            if (!isNaN(setId)) {
+                if (datas.length > 0) {
+                    //执行添加操作
+                    var details = [];
+                    for (var i = 0; i < datas.length; i++) {
+                        var det = {
+                            id: datas[i].id,
+                            budgetId: datas[i].budgetId,
+                            budgetName: datas[i].km,
+                            budgetSetId: setId,
+                            jan: datas[i].m1,
+                            feb: datas[i].m2,
+                            mar: datas[i].m3,
+                            apr: datas[i].m4,
+                            may: datas[i].m5,
+                            jun: datas[i].m6,
+                            jul: datas[i].m7,
+                            aug: datas[i].m8,
+                            sept: datas[i].m9,
+                            oct: datas[i].m10,
+                            nov: datas[i].m11,
+                            dec: datas[i].m12,
+                            total: (parseFloat(datas[i].m1) + parseFloat(datas[i].m2) + parseFloat(datas[i].m3) + parseFloat(datas[i].m4) + parseFloat(datas[i].m5) + parseFloat(datas[i].m6) + parseFloat(datas[i].m7) + parseFloat(datas[i].m8) + parseFloat(datas[i].m9) + parseFloat(datas[i].m10) +parseFloat(datas[i].m11) + parseFloat(datas[i].m12)).toFixed(2)
+                        };
+                        details.push(det);
+                    }
+                    Serv.Post('gc/BudgetDetails/Add', { list: details }, function (response) {
+                        if (response.code == "00") {
+                            layer_alert("操作成功！");
+                        }
+                        else {
+                            layer_alert(response.message);
+                        }
+                    });
+                }
+            }
+            else {
+                layer_alert("请选择部门");
             }
         }
         function payitem_done(obj) {
@@ -222,13 +315,14 @@
                 for (var i = 0; i < obj.length; i++) {
                     var b = true;
                     for (var j = 0; j < datas.length; j++) {
-                        if (datas[j].id == obj[i].id) {
+                        if (datas[j].budgetId == obj[i].id) {
                             b = false;
                         }
                     }
                     if (b) {
                         var model = {
-                            id: obj[i].id,
+                            id: 0,
+                            budgetId: obj[i].id,
                             km: obj[i].name,
                             m1: 0,
                             m2: 0,
@@ -248,7 +342,6 @@
                     }
                 }
             }
-
             table.reload('lst', { data: datas });
         }
     </script>
