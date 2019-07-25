@@ -77,7 +77,12 @@
             <a class="layui-btn layui-btn-xs layui-btn-danger" href="javascript:;" lay-event="del">删除</a>
 		</script>
     <script>
-        var datas = [];
+        var datas = [
+			{id: 1, budgetId: 1,'km':'人事预算',m1:'0',m2:'0',m3:'0',m4:'0',m5:'0',m6:'0',m7:'0',m8:'0',m9:'0',m10:'0',m11:'0',m12:'0',subtotal:'0'},
+			{id: 2, budgetId: 2,'km':'报销预算',m1:'0',m2:'0',m3:'0',m4:'0',m5:'0',m6:'0',m7:'0',m8:'0',m9:'0',m10:'0',m11:'0',m12:'0',subtotal:'0'},
+			{id: 3, budgetId: 3,'km':'设计预算',m1:'0',m2:'0',m3:'0',m4:'0',m5:'0',m6:'0',m7:'0',m8:'0',m9:'0',m10:'0',m11:'0',m12:'0',subtotal:'0'},
+			{id: 4, budgetId: 4,'km':'政府费用',m1:'0',m2:'0',m3:'0',m4:'0',m5:'0',m6:'0',m7:'0',m8:'0',m9:'0',m10:'0',m11:'0',m12:'0',subtotal:'0'},
+		];
         var table;
         layui.use(['table', 'laydate', 'layedit', 'form'], function () {
             table = layui.table;
@@ -129,27 +134,46 @@
                     { 'field': 'm10', 'title': '十月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m10 + '" type="text" class="layui-input table-ipt"></div>' } },
                     { 'field': 'm11', 'title': '十一月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m11 + '" type="text" class="layui-input table-ipt"></div>' } },
                     { 'field': 'm12', 'title': '十二月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m12 + '" type="text" class="layui-input table-ipt"></div>' } },
-                    { 'field': 'subtotal', 'title': '合计', totalRow: true, templet: function (d) { return (parseFloat(d.m1) + parseFloat(d.m2) + parseFloat(d.m3) + parseFloat(d.m4) + parseFloat(d.m5) + parseFloat(d.m6) + parseFloat(d.m7) + parseFloat(d.m8) + parseFloat(d.m9) + parseFloat(d.m10) + parseFloat(d.m11) + parseFloat(d.m12)).toFixed(2) } },
+                    { 'field': 'subtotal', 'title': '合计', totalRow: true},
                     { toolbar: '#bar', width: '70', title: '操作' }
                 ]],
                 data: datas
             });
-            table.on('edit(lst)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                if (!isNaN(obj.value)) {
-                    obj.update(obj.data);
-                    var detail = datas.find(function (detail) {
-                        return detail.budgetId === obj.data.budgetId;
-                    });
-                    objIndex = datas.findIndex((o => o.budgetId == detail.budgetId));
-                    datas[objIndex][obj.field] = parseFloat(obj.value).toFixed(2);
-                    //处理行-合计
-                    //总预算
-                    var alltotal = parseFloat($("#total").val()).toFixed(2);
-                }
-                else {
-                    layer_alert("此处只能输入数字");
-                }
+            table.on('edit(lst)', function (obj) {
+				var value = obj.value;
+				var field = obj.field;
+                if (isNaN(obj.value)) {
+					layer_msg("请输入数字");
+					value = 0;
+				}
+				//总预算
+				var alltotal = parseFloat($("#total").val()).toFixed(2);
+					alltotal = isNaN(alltotal) ? 0 : alltotal;
+				var tabTotal = $('.layui-table-total tr td').eq(13).find('div').html();
+					tabTotal = isNaN(parseFloat(tabTotal)) ? 0 : parseFloat(tabTotal);
+					tabTotal += parseFloat(value);
 
+				if(tabTotal > alltotal){
+					layer_msg("已超出部门总预算");
+					value = 0;
+				}
+				var data = {};
+				var detail = datas.find(function (detail) {
+					return detail.budgetId === obj.data.budgetId;
+				});
+				objIndex = datas.findIndex((o => o.budgetId == detail.budgetId));
+				datas[objIndex][field] = parseFloat(value).toFixed(2);
+				//更新合计
+				for(var i = 0;i < datas.length;i++){
+					var subTotal = 0;
+					var item = datas[i];
+					subTotal = toFloatFixed(item.m1) + toFloatFixed(item.m2) + toFloatFixed(item.m3) + toFloatFixed(item.m4) + toFloatFixed(item.m5) + toFloatFixed(item.m6) + toFloatFixed(item.m7) + toFloatFixed(item.m8) + toFloatFixed(item.m9) + toFloatFixed(item.m10) + toFloatFixed(item.m11) + toFloatFixed(item.m12);
+					datas[i].subtotal = subTotal;
+				}
+				
+				//处理行-合计
+				obj.update(datas[objIndex]);
+				table.reload('lst', { data: datas });
             });
             table.on('tool(lst)', function (obj) {
                 var data = obj.data; //获得当前行数据

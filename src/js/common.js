@@ -110,8 +110,12 @@ String.prototype.IsNum = function() {
 String.prototype.IsDecimal = function() {
     return /^[0-9]+[.]?[0-9]{1,2}$/.test(this) || /^\d+$/.test(this);
 }
-
-
+function toFloatFixed(val,len){
+	val = parseFloat(val);
+	len = len == undefined ? 2 : len;
+	var num = Math.pow(10,len); 
+	return Math.round(val * num) / num; 
+}
 $.fn.scrollFixed = function(fixed_w = '') { //页面滚动时tab-title始终在页面上方
     var offset = this.offset().top;
     var _this = this;
