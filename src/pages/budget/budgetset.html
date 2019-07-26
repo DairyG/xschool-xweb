@@ -65,7 +65,7 @@
                 </div>
                 <div class="layui-row text-right">
                     <button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="formSet">确认</button>
-                    <span class="layui-btn " onclick="closePop()">返回</span>
+                    <span class="layui-btn " onclick="javascript:window.location.href='budgetlist.html'">返回</span>
                 </div>
             </form>
         </div>
@@ -79,6 +79,7 @@
     <script>
         var datas = [];
         var table;
+        var id = GetPara('id');
         layui.use(['table', 'laydate', 'layedit', 'form'], function () {
             table = layui.table;
             var laydate = layui.laydate,
@@ -129,46 +130,46 @@
                     { 'field': 'm10', 'title': '十月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m10 + '" type="text" class="layui-input table-ipt"></div>' } },
                     { 'field': 'm11', 'title': '十一月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m11 + '" type="text" class="layui-input table-ipt"></div>' } },
                     { 'field': 'm12', 'title': '十二月', totalRow: true, edit: true, templet: function (d) { return '<div><input value="' + d.m12 + '" type="text" class="layui-input table-ipt"></div>' } },
-                    { 'field': 'subtotal', 'title': '合计', totalRow: true},
+                    { 'field': 'subtotal', 'title': '合计', totalRow: true },
                     { toolbar: '#bar', minWidth: '70', title: '操作' }
                 ]],
                 data: datas
             });
             table.on('edit(lst)', function (obj) {
-				var value = obj.value;
-				var field = obj.field;
+                var value = obj.value;
+                var field = obj.field;
                 if (isNaN(obj.value)) {
-					layer_msg("请输入数字");
-					value = 0;
-				}
-				//总预算
-				var alltotal = parseFloat($("#total").val()).toFixed(2);
-					alltotal = isNaN(alltotal) ? 0 : alltotal;
-				var tabTotal = $('.layui-table-total tr td').eq(13).find('div').html();
-					tabTotal = isNaN(parseFloat(tabTotal)) ? 0 : parseFloat(tabTotal);
-					tabTotal += parseFloat(value);
+                    layer_msg("请输入数字");
+                    value = 0;
+                }
+                //总预算
+                var alltotal = parseFloat($("#total").val()).toFixed(2);
+                alltotal = isNaN(alltotal) ? 0 : alltotal;
+                var tabTotal = $('.layui-table-total tr td').eq(13).find('div').html();
+                tabTotal = isNaN(parseFloat(tabTotal)) ? 0 : parseFloat(tabTotal);
+                tabTotal += parseFloat(value);
 
-				if(tabTotal > alltotal){
-					layer_msg("已超出部门总预算");
-					value = 0;
-				}
-				var data = {};
-				var detail = datas.find(function (detail) {
-					return detail.budgetId === obj.data.budgetId;
-				});
-				objIndex = datas.findIndex((o => o.budgetId == detail.budgetId));
-				datas[objIndex][field] = parseFloat(value).toFixed(2);
-				//更新合计
-				for(var i = 0;i < datas.length;i++){
-					var subTotal = 0;
-					var item = datas[i];
-					subTotal = toFloatFixed(item.m1) + toFloatFixed(item.m2) + toFloatFixed(item.m3) + toFloatFixed(item.m4) + toFloatFixed(item.m5) + toFloatFixed(item.m6) + toFloatFixed(item.m7) + toFloatFixed(item.m8) + toFloatFixed(item.m9) + toFloatFixed(item.m10) + toFloatFixed(item.m11) + toFloatFixed(item.m12);
-					datas[i].subtotal = subTotal;
-				}
-				
-				//处理行-合计
-				obj.update(datas[objIndex]);
-				table.reload('lst', { data: datas });
+                if (tabTotal > alltotal) {
+                    layer_msg("已超出部门总预算");
+                    value = 0;
+                }
+                var data = {};
+                var detail = datas.find(function (detail) {
+                    return detail.budgetId === obj.data.budgetId;
+                });
+                objIndex = datas.findIndex((o => o.budgetId == detail.budgetId));
+                datas[objIndex][field] = parseFloat(value).toFixed(2);
+                //更新合计
+                for (var i = 0; i < datas.length; i++) {
+                    var subTotal = 0;
+                    var item = datas[i];
+                    subTotal = toFloatFixed(item.m1) + toFloatFixed(item.m2) + toFloatFixed(item.m3) + toFloatFixed(item.m4) + toFloatFixed(item.m5) + toFloatFixed(item.m6) + toFloatFixed(item.m7) + toFloatFixed(item.m8) + toFloatFixed(item.m9) + toFloatFixed(item.m10) + toFloatFixed(item.m11) + toFloatFixed(item.m12);
+                    datas[i].subtotal = subTotal;
+                }
+
+                //处理行-合计
+                obj.update(datas[objIndex]);
+                table.reload('lst', { data: datas });
             });
             table.on('tool(lst)', function (obj) {
                 var data = obj.data; //获得当前行数据
@@ -237,6 +238,26 @@
         $(document).on("focus", "table .table-ipt", function () {
             $(this).click();
         });
+        var init = function () {
+            if (id > 0) {
+                $("#id").val(id);
+                Serv.Get('gc/Budgetset/GetSingle/' + id, {}, function (response) {
+                    datas = [];
+                    if (response) {
+                        $("#total").val(response.total);
+                        $("#date1").val(response.year);
+                        var html = response.dptName + '<input type="hidden" name="sels" value="{&quot;sel_type&quot;:&quot;org&quot;,&quot;user&quot;:[],&quot;department&quot;:[{&quot;id&quot;:'+response.dptId+',&quot;name&quot;:&quot;'+response.dptName+'&quot;,&quot;company_id&quot;:&quot;'+response.companyId+'&quot;,&quot;company_name&quot;:&quot;'+response.companyName+'&quot;}],&quot;company&quot;:[],&quot;position&quot;:[],&quot;dpt_position&quot;:[]}">';
+                        $("#user_sel_box1").html(html);
+                        GetDetails(response.id);
+                    }
+                    else {
+                        $("#id").val(0);
+                        $("#total").val('');
+                    }
+                });
+            }
+        };
+        init();
         function getSingle() {
             var y = $("#date1").val();
             if (y && $("#user_sel_box1 input").length > 0) {
@@ -311,7 +332,7 @@
                             oct: datas[i].m10,
                             nov: datas[i].m11,
                             dec: datas[i].m12,
-                            total: (parseFloat(datas[i].m1) + parseFloat(datas[i].m2) + parseFloat(datas[i].m3) + parseFloat(datas[i].m4) + parseFloat(datas[i].m5) + parseFloat(datas[i].m6) + parseFloat(datas[i].m7) + parseFloat(datas[i].m8) + parseFloat(datas[i].m9) + parseFloat(datas[i].m10) +parseFloat(datas[i].m11) + parseFloat(datas[i].m12)).toFixed(2)
+                            total: (parseFloat(datas[i].m1) + parseFloat(datas[i].m2) + parseFloat(datas[i].m3) + parseFloat(datas[i].m4) + parseFloat(datas[i].m5) + parseFloat(datas[i].m6) + parseFloat(datas[i].m7) + parseFloat(datas[i].m8) + parseFloat(datas[i].m9) + parseFloat(datas[i].m10) + parseFloat(datas[i].m11) + parseFloat(datas[i].m12)).toFixed(2)
                         };
                         details.push(det);
                     }
