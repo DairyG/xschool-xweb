@@ -28,6 +28,16 @@ window.globCache = {
     setDepartment: function(value) {
         window.globCache.set(cacheModel.DEPARTMENT, JSON.stringify(value));
     },
+    getDptName: function(dptId) {
+        var dpt = window.globCache.get(cacheModel.DEPARTMENT);
+        dpt = JSON.parse(dpt);
+        for(var i = 0;i < dpt.length;i++){
+            if(dpt[i].id == dptId){
+                return dpt[i].dptName;
+            }
+        }
+        return '';
+    },
     setJobs: function(value) {
         window.globCache.set(cacheModel.JOB, JSON.stringify(value))
     },
