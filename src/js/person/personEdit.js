@@ -1,4 +1,10 @@
 var data = {
+    hasInit: {
+        roles: true,
+    },
+
+    currTab: '',
+
     person: {},
     training: {
         id: 0,
@@ -37,6 +43,8 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         upload = layui.upload;
 
     var formBasic = $('#formBasic'),
+        formJobs = $('#formJobs'),
+        formRoles = $('#formRoles'),
         formTraining = $('#formTraining');
     var dptZTreeObj = null,
         dptInputObj = $('#dptName');
@@ -151,27 +159,21 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         }
     });
 
-
     if (id.IsNum()) {
         getPerson(id);
     } else {
-        intiFamily();
-        initEducation();
-        initWork();
-
-        $('._idCardArea').jarea();
-        $('._idCardArea').jarea('val');
-        $('._liveArea').jarea();
-        $('._liveArea').jarea('val');
-
-        getSelectHtml(seltDegree, data.basicEducation, '');
-        getSelectHtml(seltRecruitment, data.basicRecruitment, '');
-        getSelectHtml(seltArrival, data.basicArrival, '');
+        initBasic();
     }
 
-    form.val('formTraining', data.training);
+    element.on('tab(componentTabs)', function(event) {
+        var text = $(this).text();
+        if (text == '角色设置' && data.currTab != '角色设置') {
+            data.currTab = text;
+            getRoleRoles(id);
+        }
+    });
 
-    //基本信息
+    //个人信息-> 提交
     form.on('submit(basicInfo)', function(laydata) {
         layer_load();
 
@@ -280,7 +282,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         return false;
     });
 
-    //职位信息
+    //职位信息-> 提交
     form.on('submit(positionInfo)', function(laydata) {
         layer_load();
         if (data.person.id <= 0) {
@@ -304,7 +306,53 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         return false;
     });
 
-    //成长管理
+    //角色设置-> 选择
+    // form.on('select(multi)', function (data) { // 打开控制台查看效果
+    //     onsole.log(data.elem); //得到select原始DOM对象
+    //     console.log(data.value); //得到被选中的值（数组类型）
+    //     console.log(data.othis); //得到美化后的DOM对象
+    //     console.log(data.current_value); //当前操作的值（选中或取消的值）
+    // })
+    //角色设置-> 提交
+    form.on('submit(submitRoles)', function(laydata) {
+        layer_load();
+        if (data.person.id <= 0) {
+            layer_alert('请先填写个人信息');
+            return false;
+        }
+        var status = formJobs.find('select[name="status"]').val();
+        if (status == 3) {
+            layer_alert('请勿操作离职人员数据');
+            return false;
+        }
+        if (!laydata.field.roleRoles) {
+            layer_alert('请选择角色');
+            return false;
+        }
+
+        var roleIds = [];
+        $.each(laydata.field.roleRoles, function(i, item) {
+            roleIds.push(parseInt(item));
+        });
+        if (roleIds.length == 0) {
+            layer_alert('请选择角色');
+            return false;
+        }
+        Serv.Post('gc/power/editrolebyemployee', {
+            employeeId: data.person.id,
+            roleIds: roleIds
+        }, function(result) {
+            layer_load_lose();
+            if (result.succeed) {
+                layer_alert(result.message);
+            } else {
+                layer_alert(result.message);
+            }
+        });
+        return false;
+    });
+
+    //成长管理-> 提交
     form.on('submit(training)', function(laydata) {
         layer_load();
         if (data.employeeId <= 0) {
@@ -338,7 +386,22 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         return false;
     });
 
-    //获取人员信息
+    //个人信息-> 初始化
+    function initBasic(result) {
+        intiFamily();
+        initEducation();
+        initWork();
+
+        $('._idCardArea').jarea();
+        $('._idCardArea').jarea('val');
+        $('._liveArea').jarea();
+        $('._liveArea').jarea('val');
+
+        getSelectHtml(seltDegree, data.basicEducation, result ? result.degree : '');
+        getSelectHtml(seltRecruitment, data.basicRecruitment, result ? result.recruitSource : '');
+        getSelectHtml(seltArrival, data.basicArrival, result ? result.arrivalTime : '');
+    }
+    //个人信息-> 获取人员信息
     function getPerson(value) {
         layer_load();
         Serv.Get('uc/employee/get/' + value, {}, function(result) {
@@ -396,30 +459,18 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
                     data.workData = JSON.parse(result.work);
                 }
 
-                intiFamily();
-                initEducation();
-                initWork();
-
                 dptInputObj.attr('data-id', result.dptId);
                 dptZTreeObj.setCheck();
                 getJob(data.person.companyId, result.jobId);
 
-                $('._idCardArea').jarea();
-                $('._idCardArea').jarea('val');
-                $('._liveArea').jarea();
-                $('._liveArea').jarea('val');
-
-                getSelectHtml(seltDegree, data.basicEducation, result.degree);
-                getSelectHtml(seltRecruitment, data.basicRecruitment, result.recruitSource);
-                getSelectHtml(seltArrival, data.basicArrival, result.arrivalTime);
-
+                initBasic(result);
             } else {
                 $('.hasSubmit').hide();
                 layer_alert(result.message);
             }
         });
     }
-    //获取基础信息
+    //个人信息-> 获取基础信息
     function getBasic() {
         data.basicArrival = window.globCache.getArrival() || [];
         data.basicEducation = window.globCache.getEducation() || [];
@@ -427,16 +478,15 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         data.basicRelations = window.globCache.getRelations() || [];
         data.basicRecruitment = window.globCache.getRecruitment() || [];
     }
-    //获取下拉Html
+    //个人信息-> 获取下拉Html
     function getSelectHtml(obj, data, value) {
         obj.empty().append('<option value="">请选择</option>');
         $.each(data, function(i, item) {
             obj.append('<option value="' + item.id + '" ' + (item.id == value ? 'selected' : '') + '>' + item.name + '</option>');
         });
-        layui.form.render('select');
+        form.render('select');
     }
-
-    //设置部门
+    //个人信息-> 设置部门
     function setDpt(model) {
         dptInputObj.prev().val(model.id);
         dptInputObj.val(model.dptName).attr('data-id', model.id);
@@ -446,7 +496,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             getJob(model.companyId);
         }
     }
-    //获取职位
+    //个人信息-> 获取职位
     function getJob(cId, value) {
         Serv.Post('uc/job/get', {
             page: 1,
@@ -462,7 +512,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         });
     }
 
-    //初始化 家庭成员
+    //个人信息-> 初始化 家庭成员
     function intiFamily() {
         var len = data.familyData.length;
         if (len == 0) {
@@ -539,7 +589,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             }
         });
     }
-    //初始化 家庭成员数据
+    //个人信息-> 初始化 家庭成员数据
     function intiFamilyData(hasInit) {
         if (hasInit) {
             data.familyData = [];
@@ -552,7 +602,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             "FamAddress": ''
         });
     }
-    //验证 家庭成员
+    //个人信息-> 验证 家庭成员
     function validateFamily(obj, hasSubmit) {
         var hasResult = true;
         data.familyData = [];
@@ -610,7 +660,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         return hasResult;
     }
 
-    //初始化 教育经历
+    //个人信息-> 初始化 教育经历
     function initEducation() {
         var len = data.educationData.length;
         if (len == 0) {
@@ -697,7 +747,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             }
         });
     }
-    //初始化 教育经历数据
+    //个人信息-> 初始化 教育经历数据
     function initEducationData(hasInit) {
         if (hasInit) {
             data.educationData = [];
@@ -711,7 +761,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             "EduTime": ''
         });
     }
-    //验证 教育经历
+    //个人信息-> 验证 教育经历
     function validateEducation(obj, hasSubmit) {
         var hasResult = true;
         data.educationData = [];
@@ -770,7 +820,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         return hasResult;
     }
 
-    //初始化 工作经历
+    //个人信息-> 初始化 工作经历
     function initWork() {
         var len = data.workData.length;
         if (len == 0) {
@@ -864,7 +914,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             }
         });
     }
-    //初始化 工作经历数据
+    //个人信息-> 初始化 工作经历数据
     function initWorkData(hasInit) {
         if (hasInit) {
             data.workData = [];
@@ -879,7 +929,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             "WorkQuitReason": '',
         });
     }
-    //验证 工作经历
+    //个人信息-> 验证 工作经历
     function validateWork(obj, hasSubmit) {
         var hasResult = true;
         data.workData = [];
@@ -945,7 +995,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         return hasResult;
     }
 
-    //重新渲染
+    //个人信息-> 重新渲染 家庭成员/教育经历/工作经历
     function reloadTable(elem, data) {
         table.reload(elem, {
             data: data,
@@ -954,7 +1004,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             }
         });
     }
-    //移除数据
+    //个人信息-> 移除数据 家庭成员/教育经历/工作经历
     function removeData(id, data) {
         for (var i = 0; i < data.length; i++) {
             if (data[i].Number == id) {
@@ -963,7 +1013,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             }
         }
     }
-    //显示日期
+    //个人信息-> 显示日期 家庭成员/教育经历/工作经历
     function showLaydate(elem) {
         laydate.render({
             elem: elem,
@@ -972,24 +1022,24 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
             range: '~'
         });
     }
-    //时间范围模板
+    //个人信息-> 时间范围模板 家庭成员/教育经历/工作经历
     function getTimeTpl(id, name, value) {
         return '<input type="text" data-name="' + name + '" class="layui-input ' + name + '-' + id + '" readonly value="' + value + '" />';
     }
-    //操作模板
+    //个人信息-> 操作模板 家庭成员/教育经历/工作经历
     function getOperationTpl(name) {
         return '<span class="table-btn-jia" lay-event="' + name + 'Add">+</span><span class="table-btn-jian" lay-event="' + name + 'Del">-</span>';
     }
-    //input 普通模板
+    //个人信息-> input模板 家庭成员/教育经历/工作经历
     function getInputTpl(name, value, maxlength) {
         maxlength = !maxlength ? 50 : maxlength;
         return '<input type="text" data-name="' + name + '" maxlength="' + maxlength + '" class="layui-input" value="' + value + '" />';
     }
-    //Textarea模板
+    //个人信息-> textarea模板 家庭成员/教育经历/工作经历
     function getTextareaTpl(name, value) {
         return '<textarea class="layui-input" data-name="' + name + '" style="resize:none" readonly onclick="layui_prompt(this)">' + value + '</textarea>';
     }
-    //select模板
+    //个人信息-> select模板 家庭成员/教育经历/工作经历
     function getSelectTpl(data, name, value) {
         var html = '<select data-name="' + name + '">';
         html += '<option value="">请选择</option>';
@@ -999,6 +1049,51 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         html += '</select>';
         return html;
     }
+
+
+    //角色设置-> 获取角色
+    function getRoleRoles(employeeId) {
+        layer_load('数据加载中，请耐心等待...');
+        Serv.Get('gc/power/queryrole', {}, function(result) {
+            layer_load_lose();
+            if (result) {
+                var rolesSelObj = formRoles.find('select[name="roleRoles"]');
+                rolesSelObj.empty().append('<option value="">请选择角色</option>');
+                $.each(result, function(i, item) {
+                    rolesSelObj.append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+                if (employeeId.IsNum()) {
+                    getRoleRoleByEmployee(employeeId);
+                } else {
+                    form.render();
+                }
+            } else {
+                layer_alert(tips.noDataTip);
+            }
+        });
+    }
+    //角色设置-> 获取角色
+    function getRoleRoleByEmployee(value) {
+        layer_load('数据加载中，请耐心等待...');
+        Serv.Get('gc/power/queryrolebyemployee/' + value, {}, function(result) {
+            layer_load_lose();
+            if (result) {
+                var roleIds = [];
+                $.each(result, function(i, item) {
+                    roleIds.push(item.secondId);
+                });
+                formRoles.find('select[name="roleRoles"]').val(roleIds);
+
+                form.render();
+            } else {
+                form.render();
+            }
+        });
+    }
+
+    //成长管理-> 表单赋值
+    form.val('formTraining', data.training);
+
 
     //图片预览
     function imagesViewer() {

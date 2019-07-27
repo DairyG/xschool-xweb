@@ -28,6 +28,10 @@ function getYears(year) {
     return data;
 }
 
+var tips = {
+    noDataTip: '未获取到数据'
+};
+
 function getUserPopModel() {
     return {
         sel_type: 'org',
@@ -113,6 +117,8 @@ var Serv = {
                             title: '登陆提示'
                         });
                     }
+                } else {
+                    layer.alert('服务器异常，请稍后再试');
                 }
                 // console.log("err:", data);
             }

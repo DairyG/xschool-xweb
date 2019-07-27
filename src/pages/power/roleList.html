@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/layui.extend.js"></script>
+    <script type="text/javascript" src="../../js/layer.com.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../js/verify.js"></script>
+    <script type="text/javascript" src="../../js/pager.js"></script>
+  </head>
+  <body class="bgf2f2f2">
+    <div class="childrenBody">
+      <div class="layui-card-body">
+        <form class="layui-form layui-form2 layui-search-form" autocomplete="off">
+          <div class="layui-row">
+            <div class="layui-form-item layui-col-md3 margin-b-20">
+              <label class="layui-form-label">角色名称</label>
+              <div class="layui-input-block">
+                <input type="text" name="name" placeholder="角色名称" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item layui-col-md2 margin-b-20">
+              <input type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search" value="搜索" />
+            </div>
+          </div>
+        </form>
+
+        <table class="layui-table" id="roleLst" lay-filter="roleLst"></table>
+        <script type="text/html" id="rightBar">
+          <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="edit" href="javascript:;">编辑</a>
+          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" href="javascript:;">删除</a>
+        </script>
+        <script type="text/html" id="toolbar">
+          <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i> 添加</button>
+        </script>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../js/power/role.list.js"></script>
+</html>

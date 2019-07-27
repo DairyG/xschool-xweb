@@ -11,12 +11,12 @@ var moduleCol = [
         {
             field: 'code',
             title: 'code',
-            width: 120
+            width: 80
         },
         {
             field: 'name',
             title: '模块名称',
-            width: 120
+            width: 150
         },
         {
             field: 'icon',
@@ -34,13 +34,18 @@ var moduleCol = [
             field: 'pName',
             title: '父节点名称',
             templet: function(d) {
-                console.log(d);
                 return (d.pName || '根节点');
-            }
+            },
+            width: 100
         },
         {
             field: 'url',
             title: 'Url'
+        },
+        {
+            field: 'displayOrder',
+            title: '排序',
+            width: 80
         },
         {
             fixed: 'right',
@@ -57,33 +62,50 @@ var moduleCol = [
 ];
 var elementCol = [
     [{
-        type: 'checkbox',
-        fixed: 'left'
-    }, {
-        field: 'name',
-        title: '名称'
-    }, {
-        field: 'position',
-        title: '显示位置',
-        templet: function(d) {
-            return ['', 'Table上方', 'Table右边'][d.position];
-        }
-    }, {
-        field: 'attr',
-        title: '附加属性'
-    }, {
-        field: 'class',
-        title: '样式',
-        templet: '#elementBtnTpl',
-        width: 120
-    }, {
-        field: 'isSystem',
-        title: '默认',
-        templet: function(d) {
-            return ["否", "是"][d.isSystem];
+            type: 'checkbox',
+            fixed: 'left'
         },
-        width: 60
-    }]
+        {
+            field: 'name',
+            title: '名称'
+        },
+        {
+            field: 'domId',
+            title: 'DomId',
+            width: 120
+        },
+        {
+            field: 'position',
+            title: '位置',
+            templet: function(d) {
+                return ['', '上方', '右边'][d.position];
+            },
+            width: 60
+        },
+        {
+            field: 'attr',
+            title: '附加属性'
+        },
+        {
+            field: 'class',
+            title: '样式',
+            templet: '#elementBtnTpl',
+            width: 110
+        },
+        {
+            field: 'displayOrder',
+            title: '排序',
+            width: 60
+        },
+        {
+            field: 'isSystem',
+            title: '默认',
+            width: 60,
+            templet: function(d) {
+                return ['否', '是'][d.isSystem];
+            }
+        }
+    ]
 ];
 
 var data = {
@@ -101,6 +123,7 @@ var data = {
         moduleId: 0,
         name: '',
         attr: '',
+        domId: '',
         iconName: 'layui-icon-circle-dot',
         class: '',
         position: 1,
@@ -116,8 +139,6 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
         treeSelect = layui.treeSelect;
 
     var paramModel = {
-        monduleHasFirst: false,
-        elementHasFirst: false,
         mondule: {
             pid: 0
         },
@@ -182,6 +203,7 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
         if (type == 'btnAdd') {
 
             iconPicker.checkIcon('monduleIcon', data.mondule.iconName);
+            data.mondule.pid = 0;
             ztreeInput.val('').attr('data-id', '');
             form.val('formModule', data.mondule);
             layPop('添加模块', modulePop);
@@ -215,12 +237,21 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
                 layer_alert('请勾选模块数据进行操作');
                 return false;
             }
-            var ids = [];
+            var ids = [],
+                errorModule = '';
             $.each(datas, function(i, item) {
+                if (item.isSystem == 1) {
+                    errorModule = '您勾选的模块数据包含默认数据';
+                    return false;
+                }
                 ids.push(item.id);
             });
+            if (!errorModule.IsEmpty()) {
+                layer_alert(errorModule);
+                return false;
+            }
             layer_confirm('确定删除吗？', function() {
-                delElement(ids);
+                delModule(ids);
             });
 
             return false;
@@ -238,6 +269,10 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
             }
             if (datas[0].pid <= 0) {
                 layer_alert('请勿勾选模块数据根节点进行操作');
+                return false;
+            }
+            if (datas[0].isSystem == 1) {
+                layer_alert('请勿操作默认数据');
                 return false;
             }
             data.element.moduleId = datas[0].id;
@@ -274,10 +309,19 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
                 layer_alert('请勾选元素数据进行操作');
                 return false;
             }
-            var ids = [];
+            var ids = [],
+                errorElement = '';
             $.each(datas, function(i, item) {
+                if (item.isSystem == 1) {
+                    errorElement = '您勾选的元素数据包含默认数据';
+                    return false;
+                }
                 ids.push(item.id);
             });
+            if (!errorElement.IsEmpty()) {
+                layer_alert(errorElement);
+                return false;
+            }
             layer_confirm('确定删除吗？', function() {
                 delElement(ids);
             });
@@ -295,6 +339,8 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
             if (result.succeed) {
                 layer_alert(result.message, function() {
                     mondulePager.search();
+
+                    paramModel.element.moduleId = 0;
                     elementPager.search();
                 });
             } else {
@@ -367,7 +413,7 @@ layui.use(['table', 'form', 'iconPicker', 'treeSelect'], function() {
             string: false,
             closeBtn: 1,
             skin: 'layui-layer-rim',
-            offset: '100px',
+            offset: '50px',
             area: '750px',
             content: obj
         });

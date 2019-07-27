@@ -22,7 +22,7 @@ var dataCol = [
             minWidth: 80
         },
         {
-            field: 'userName',
+            field: 'employeeName',
             title: '姓名',
             minWidth: 80
         },
@@ -46,10 +46,6 @@ var dataCol = [
         {
             field: 'employeeNo',
             title: '工号'
-        },
-        {
-            field: 'roles',
-            title: '角色'
         },
         {
             field: 'gender',
@@ -90,12 +86,12 @@ layui.use(['table', 'element', 'form'], function() {
         element = layui.element,
         form = layui.form;
 
-    //基本信息
+    //搜索
     form.on('submit(search)', function(laydata) {
         parameter.userName = laydata.field.userName;
         parameter.linkPhone = laydata.field.linkPhone;
 
-        lstPager.refresh();
+        lstPager.search();
     });
 
     function search() {
@@ -114,7 +110,7 @@ layui.use(['table', 'element', 'form'], function() {
                 Serv.Get('uc/employee/openaccount/' + value, {}, function(result) {
                     if (result.succeed) {
                         layer_alert('开户成功', function() {
-                            lstPager.refresh();
+                            lstPager.search();
                         });
                     } else {
                         layer_alert(result.message);
@@ -127,7 +123,7 @@ layui.use(['table', 'element', 'form'], function() {
                 Serv.Get('uc/company/delete/' + value, {}, function(result) {
                     if (result.succeed) {
                         layer_alert(result.message, function() {
-                            lstPager.refresh();
+                            lstPager.search();
                         });
                     } else {
                         layer_alert(result.message);
@@ -220,7 +216,7 @@ layui.use(['table', 'element', 'form'], function() {
             if (result.succeed) {
                 layer_alert(result.message, function() {
                     layer.closeAll();
-                    lstPager.refresh();
+                    lstPager.search();
                 });
             } else {
                 layer_alert(result.message);

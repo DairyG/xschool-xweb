@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="../../lib/pick-pcc/pick-pcc.css" />
     <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../layui/layui.js"></script>
-		<script type="text/javascript" src="../../js/layer.com.js"></script>
-		<script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/layer.com.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
     <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript" src="../../js/cache.js"></script>
     <script type="text/javascript" src="../../js/verify.js"></script>
@@ -38,7 +38,7 @@
     <div class="childrenBody" id="personBody">
       <div class="layui-card">
         <div class="layui-card-body">
-          <div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+          <div class="layui-tab layui-tab-brief" lay-filter="componentTabs">
             <ul class="layui-tab-title">
               <li class="layui-this">个人信息</li>
               <li>职位信息</li>
@@ -370,7 +370,7 @@
                   <div class="layui-row">
                     <div class="layui-form-item">
                       <div class="layui-input-block text-right">
-                        <input type="button" class="layui-btn layui-btn-danger" lay-submit lay-filter="basicInfo" value="确认" v-if="hasSubmit" />
+                        <input type="button" class="layui-btn layui-btn-danger hasSubmit" lay-submit lay-filter="basicInfo" value="确认" />
                         <span class="layui-btn" onclick="javascript:window.location.href='/pages/person/personList.html'">返回</span>
                       </div>
                     </div>
@@ -379,7 +379,7 @@
               </div>
 
               <div class="layui-tab-item" tab-name="职位信息">
-                <form class="layui-form layui-form2" lay-filter="formPosition" autocomplete="off">
+                <form class="layui-form layui-form2" id="formJobs" lay-filter="formPosition" autocomplete="off">
                   <div class="layui-row">
                     <div class="layui-form-item layui-col-md6 margin-b-20">
                       <label class="layui-form-label">
@@ -550,7 +550,7 @@
               </div>
 
               <div class="layui-tab-item" tab-name="角色设置">
-                <form class="layui-form layui-form2">
+                <form class="layui-form layui-form2" id="formRoles" autocomplete="off">
                   <div class="layui-row">
                     <div class="layui-form-item">
                       <label class="layui-form-label">
@@ -558,11 +558,8 @@
                         系统角色
                       </label>
                       <div class="layui-input-block">
-                        <select multiple>
-                          <option>选择角色</option>
-                          <option>角色一</option>
-                          <option>角色二</option>
-                          <option>角色三</option>
+                        <select name="roleRoles"  multiple lay-search>
+                          <option value="">请选择角色</option>
                         </select>
                       </div>
                     </div>
@@ -573,7 +570,7 @@
                       </label>
                       <div class="layui-input-block">
                         <div class="layui-input">
-                          <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" onclick="user_popup()">请选择</span>
+                          <span class="layui-btn layui-btn-sm layui-btn-normal margin-t-3" onclick="user_popup(this, 'department', 0, false)">请选择</span>
                         </div>
                       </div>
                     </div>
@@ -581,9 +578,7 @@
                   <div class="layui-row">
                     <div class="layui-form-item">
                       <div class="layui-input-block text-right">
-                        <button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">
-                          确认
-                        </button>
+                        <input type="button" class="layui-btn layui-btn-danger hasSubmit" lay-submit lay-filter="submitRoles" value="确认" />
                         <span class="layui-btn" onclick="history.back(-1)">返回</span>
                       </div>
                     </div>
@@ -811,7 +806,7 @@
                   <div class="layui-row">
                     <div class="layui-form-item">
                       <div class="layui-input-block text-right">
-                        <input type="button" class="layui-btn layui-btn-danger" lay-submit lay-filter="training" value="确认" v-if="hasSubmit" />
+                        <input type="button" class="layui-btn layui-btn-danger hasSubmit" lay-submit lay-filter="training" value="确认" />
                         <span class="layui-btn" onclick="javascript:window.location.href='/pages/person/personList.html'">返回</span>
                       </div>
                     </div>

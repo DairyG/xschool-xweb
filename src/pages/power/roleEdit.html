@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <link rel="stylesheet" href="../../layui/css/icon/iconfont.css" />
+    <link rel="stylesheet" href="../../layui/css/power.tree.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="../../lib/icheck/skins/minimal/blue.css" />
+    <script type="text/javascript" src="../../lib/icheck/icheck.min.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/layui.extend.js"></script>
+    <script type="text/javascript" src="../../js/layer.com.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../js/verify.js"></script>
+    <script type="text/javascript" src="../../js/power/category.tree.js"></script>
+  </head>
+  <body class="bgf2f2f2">
+    <div class="childrenBody">
+      <div class="layui-card-body" style="background: #fff">
+        <form class="layui-form layui-form2" id="formRole" lay-filter="formRole" autocomplete="off">
+          <input type="hidden" name="id" />
+
+          <div class="layui-row">
+            <div class="layui-form-item margin-b-20">
+              <label class="layui-form-label">
+                <span class="text-red">*</span>
+                角色名称
+              </label>
+              <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="name" maxlength="150" placeholder="角色名称" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item margin-b-20">
+              <label class="layui-form-label">备注</label>
+              <div class="layui-input-block">
+                <input type="text" name="remarks" placeholder="备注" maxlength="100" class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item margin-b-20">
+              <label class="layui-form-label">
+                <span class="text-red">*</span>
+                排序
+              </label>
+              <div class="layui-input-block">
+                <input type="text" name="displayOrder" placeholder="排序" maxlength="20" required lay-verify="name|num" class="layui-input" />
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-row" style="padding-bottom: 54px">
+            <div class="tab-content">
+              <dl>
+                <dt>
+                  <span class="text-red">*</span>
+                  管理权限
+                </dt>
+                <dd>
+                  <div class="tree-list" id="treeBody">
+                    <div class="thead">
+                      <div class="col col-1">模块名称</div>
+                      <div class="col col-2">权限分配</div>
+                      <div class="col col-3">
+                        <label style="margin-left:5px">全选</label>
+                        <input name="checkAll" type="checkbox" lay-ignore />
+                      </div>
+                    </div>
+                    <ul id="monduleBody">
+                      <!-- <li class="layer-3">
+                        <div class="tbody">
+                          <div class="col index col-1">角色设置</div>
+                          <div class="col col-2">
+                            <input type="checkbox" id="cb11" value="" class="cb_item cb_item_@(item.module_id)" checked lay-ignore />
+                            <label for="cb11">查看</label>
+                          </div>
+                          <div class="col col-3">
+                            <input name="checkAll" type="checkbox" lay-ignore />
+                          </div>
+                        </div>
+                      </li> -->
+                    </ul>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
+
+          <div class="layui-row layui-layout-admin">
+            <div class="layui-footer" style="left: 0; padding-bottom:10px; text-align:center">
+              <div style=" background-color:#fff;">
+                <input type="button" class="layui-btn layui-btn-danger" lay-submit lay-filter="submitRole" value="确认" />
+                <a class="layui-btn backBtn" href="javascript:;">返回</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script id="monduleTpl" type="text/html">
+        {{#
+        	var jsonStr = function(value){
+        	  return JSON.stringify(value);
+        	};
+        }}
+        {{#  layui.each(d, function(i, item){ }}
+           <li class="layer-{{item.level}}">
+        		<div class="tbody">
+    <div class="col index col-1">{{item.name}}</div>
+    {{#  if(item.elements.length > 0){ }}
+    	<div class="col col-2">
+    		{{# layui.each(item.elements, function(j, itemElem){ }}
+    			<input type="checkbox" id="cb_{{itemElem.id}}" value="" class="cb_item cb_item_{{item.id}}" data-value="{{= jsonStr(itemElem)}}" value="" lay-ignore />
+    			<label for="cb_{{itemElem.id}}">{{itemElem.name}}</label>
+    		{{#  }); }}
+    	</div>
+    	<div class="col col-3">
+    		<input name="checkItemAll" type="checkbox" lay-ignore value="{{item.id}}" />
+    	</div>
+    {{#  } }}
+        		</div>
+        	</li>
+        {{#  }); }}
+  </script>
+  <script type="text/javascript" src="../../js/power/role.edit.js"></script>
+</html>

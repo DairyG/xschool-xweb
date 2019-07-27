@@ -1,0 +1,26 @@
+.tab-content dl,.div-content dl{ clear:both; display:block; padding:5px 0; line-height:30px; }
+.tab-content dl:after,.div-content dl:after{ clear:both; content:"."; display:block; height:0; visibility:hidden; }
+.tab-content dl:first-child{ border-top:none; }
+.tab-content dl dt{ display:block; float:left; width:120px; padding:9px 15px; text-align:right; font-weight:400; line-height:20px }
+.tab-content dl dd{ position:relative; margin-left:150px; *position:static; }
+
+
+.tree-list{ min-width:600px; font-size:14px; border:1px solid #eee; border-bottom:0; }
+.tree-list .thead{ padding:8px 0; color:#333; font-size:14px; font-weight:500; line-height:1.5em; border-bottom:1px solid #eee; background:#fafafa; }
+.tree-list .thead:after{ content:"."; display:block; height:0; clear:both; visibility:hidden; }
+.tree-list .thead .col{ display:block; float:left; }
+.tree-list li .tbody{ padding:8px 0; color:#666; font-size:14px; line-height:1.5em; border-bottom:1px solid #eee; }
+.tree-list li .tbody:after{ content:"."; display:block; height:0; clear:both; visibility:hidden; }
+.tree-list li .tbody .col{ display:block; float:left; min-height:1.5em; }
+.tree-list li .tbody .col .icon{ display:inline-block; margin-right:2px; width:14px; height:14px; line-height:14px; color:#c6c7c8; font-size:12px; text-align:center; vertical-align:middle; }
+.tree-list li .tbody .col .expandable{ cursor:pointer; }
+.tree-list li .tbody .col input{ vertical-align:middle; }
+.tree-list li .tbody .col label{ vertical-align:middle; margin:0 10px 0 5px }
+.tree-list li .tbody .cbroles label{ color:#1AA094 }
+.tree-list li .tbody .col .sort{ display:inline-block; padding:0 3px; border:1px solid #eee; width:40px; height:20px; line-height:18px; color:#666; font-size:12px; background:#fff; vertical-align:middle; }
+.tree-list li .tbody .col .cbitem{ display:inline-block;margin:2px 0 }
+.tree-list .col-1{ padding-left:1%; width:39%; }
+.tree-list .col-2{ width:50%; }
+.tree-list .col-3{ width:10%; text-align:center; }
+
+

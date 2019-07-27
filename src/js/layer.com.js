@@ -19,9 +19,17 @@ function layer_load(message) {
             }
         });
     } else {
-        window.layer_loading_id = layer.load(3, {
-            shade: 0.3
-        });
+        if (message) {
+            window.layer_loading_id = layer.msg(message, {
+                icon: 16,
+                shade: 0.3,
+                time: 0
+            });
+        } else {
+            window.layer_loading_id = layer.load(3, {
+                shade: 0.3
+            });
+        }
     }
 };
 
@@ -78,6 +86,7 @@ function layer_alert(message, callBack) {
  * @param function cancelBack 点击取消的回调函数
  */
 function layer_confirm(message, confirmBack, cancelBack) {
+    layer_load_lose();
     layer.confirm((message || '确定提交数据吗?'), {
         title: '确定信息',
         resize: false,
