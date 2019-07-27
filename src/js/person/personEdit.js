@@ -306,13 +306,6 @@ layui.use(['element', 'form', 'table', 'laydate', 'upload'], function() {
         return false;
     });
 
-    //角色设置-> 选择
-    // form.on('select(multi)', function (data) { // 打开控制台查看效果
-    //     onsole.log(data.elem); //得到select原始DOM对象
-    //     console.log(data.value); //得到被选中的值（数组类型）
-    //     console.log(data.othis); //得到美化后的DOM对象
-    //     console.log(data.current_value); //当前操作的值（选中或取消的值）
-    // })
     //角色设置-> 提交
     form.on('submit(submitRoles)', function(laydata) {
         layer_load();

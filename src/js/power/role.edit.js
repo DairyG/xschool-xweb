@@ -24,7 +24,7 @@ layui.use(['table', 'form', 'laytpl'], function() {
         getRole(roleId);
     } else {
         form.val('formRole', data.role);
-        getModule();
+        getModule(roleId);
     }
 
     //全选
@@ -42,6 +42,19 @@ layui.use(['table', 'form', 'laytpl'], function() {
             $('.cb_item_' + value).iCheck('uncheck');
         } else {
             $('.cb_item_' + value).iCheck('check');
+        }
+    });
+    //checkbox
+    monduleBody.on('ifClicked', '.cb_item', function(event) {
+        var valJson = JSON.parse($(this).attr('data-value')),
+            elementCount = $(this).attr('data-elements');
+        if (event.target.checked) {
+            $('.item_all_' + valJson.moduleId).iCheck('uncheck');
+        } else {
+            var ckCount = $('.cb_item_' + valJson.moduleId + ':checkbox:checked').length;
+            if (elementCount == (ckCount + 1)) {
+                $('.item_all_' + valJson.moduleId).iCheck('check');
+            }
         }
     });
     //提交
@@ -82,7 +95,7 @@ layui.use(['table', 'form', 'laytpl'], function() {
             layer_load_lose();
             if (result) {
                 form.val('formRole', result);
-                getModule();
+                getModule(value);
             } else {
                 layer_alert(tips.noDataTip);
             }
@@ -90,18 +103,20 @@ layui.use(['table', 'form', 'laytpl'], function() {
     }
 
     //获取模块
-    function getModule() {
+    function getModule(value) {
         layer_load('数据加载中，请耐心等待...');
-        Serv.Get('gc/power/querynav', {}, function(result) {
+        Serv.Get('gc/power/querynav', {
+            roleId: value || 0
+        }, function(result) {
             layer_load_lose();
             if (result) {
                 monduleBody.html(getModuleContent(result));
                 initCategory();
                 initCheck();
 
-                if (roleId.toString().IsNum()) {
-                    getRoleElement(roleId);
-                }
+                // if (roleId.toString().IsNum()) {
+                //     getRoleElement(roleId);
+                // }
             } else {
                 layer_alert(tips.noDataTip);
             }
@@ -122,7 +137,8 @@ layui.use(['table', 'form', 'laytpl'], function() {
             layer_load_lose();
             if (result) {
                 $.each(result, function(i, item) {
-                    $('#cb_' + item.secondId).prop('disabled', true).iCheck('check');
+                    $('#cb_' + item.secondId).iCheck('check');
+                    // $('#cb_' + item.secondId).prop('disabled', true).iCheck('check');
                 });
             } else {
                 layer_alert(tips.noDataTip);

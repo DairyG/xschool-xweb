@@ -66,7 +66,7 @@
                       <div class="col col-2">权限分配</div>
                       <div class="col col-3">
                         <label style="margin-left:5px">全选</label>
-                        <input name="checkAll" type="checkbox" lay-ignore />
+                        <!-- <input name="checkAll" type="checkbox" lay-ignore /> -->
                       </div>
                     </div>
                     <ul id="monduleBody">
@@ -78,7 +78,7 @@
                             <label for="cb11">查看</label>
                           </div>
                           <div class="col col-3">
-                            <input name="checkAll" type="checkbox" lay-ignore />
+                            <input name="checkItemAll" type="checkbox" lay-ignore />
                           </div>
                         </div>
                       </li> -->
@@ -102,29 +102,31 @@
     </div>
   </body>
   <script id="monduleTpl" type="text/html">
-        {{#
-        	var jsonStr = function(value){
-        	  return JSON.stringify(value);
-        	};
-        }}
-        {{#  layui.each(d, function(i, item){ }}
-           <li class="layer-{{item.level}}">
-        		<div class="tbody">
-    <div class="col index col-1">{{item.name}}</div>
-    {{#  if(item.elements.length > 0){ }}
-    	<div class="col col-2">
-    		{{# layui.each(item.elements, function(j, itemElem){ }}
-    			<input type="checkbox" id="cb_{{itemElem.id}}" value="" class="cb_item cb_item_{{item.id}}" data-value="{{= jsonStr(itemElem)}}" value="" lay-ignore />
-    			<label for="cb_{{itemElem.id}}">{{itemElem.name}}</label>
-    		{{#  }); }}
-    	</div>
-    	<div class="col col-3">
-    		<input name="checkItemAll" type="checkbox" lay-ignore value="{{item.id}}" />
-    	</div>
-    {{#  } }}
-        		</div>
-        	</li>
-        {{#  }); }}
+    {{#
+    	var jsonStr = function(value){
+    	  return JSON.stringify(value);
+    	};
+    }}
+    {{#  layui.each(d, function(i, item){ }}
+       <li class="layer-{{item.level}}">
+    		<div class="tbody">
+        <div class="col index col-1">{{item.name}}</div>
+        {{#  if(item.elements.length > 0){ }}
+          {{# var ckElement=0; }}
+          <div class="col col-2">
+            {{# layui.each(item.elements, function(j, itemElem){ }}
+              {{# ckElement += itemElem.checkeds>0 ? 1 : 0; }}
+              <input type="checkbox" id="cb_{{itemElem.id}}" value="" data-elements="{{item.elements.length}}" class="cb_item cb_item_{{item.id}}" data-value="{{= jsonStr(itemElem)}}" {{itemElem.checkeds>0 ? 'checked':'' }} value="" lay-ignore />
+              <label for="cb_{{itemElem.id}}">{{itemElem.name}}</label>
+            {{#  }); }}
+          </div>
+          <div class="col col-3">
+            <input name="checkItemAll" class="item_all_{{item.id}}" type="checkbox" {{item.elements.length==ckElement ? 'checked':'' }} lay-ignore value="{{item.id}}" />
+          </div>
+        {{#  } }}
+    		</div>
+    	</li>
+    {{#  }); }}
   </script>
   <script type="text/javascript" src="../../js/power/role.edit.js"></script>
 </html>
