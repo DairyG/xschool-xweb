@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -10,7 +10,9 @@
 		<script type="text/javascript" src="../../js/layer.com.js"></script>
 		<script type="text/javascript" src="../../js/service.js"></script>
 		<script type="text/javascript" src="../../js/verify.js"></script>
-		<script type="text/javascript" src="../../js/common.js"></script>	
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/pager.js"></script>
+		<script type="text/javascript" src="../../js/cache.js"></script>
 	</head>
 	<body class="bgf2f2f2">
 		<div class="childrenBody">
@@ -20,35 +22,35 @@
 						<div class="layui-form-item layui-col-md4 margin-b-20">
 							<label class="layui-form-label">流程名称</label>
 							<div class="layui-input-block">
-								<input type="text" name="title"  placeholder="请输入流程名称" autocomplete="off" class="layui-input">
+								<input type="text" name="SubjectName"  placeholder="请输入流程名称" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md4 margin-b-20">
 							<label class="layui-form-label">流程编号</label>
 							<div class="layui-input-block">
-								<input type="text" name="title" placeholder="请输入流程编号" autocomplete="off" class="layui-input">
+								<input type="text" name="BusinessCode" placeholder="请输入流程编号" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md4 margin-b-20">
 							<label class="layui-form-label">申请时间</label>
 							<div class="layui-input-block">
-								<input type="text" name="title"  placeholder="请输入申请时间" autocomplete="off" class="layui-input">
+								<input type="text" name="Createtime" id="data" readonly  placeholder="请输入申请时间" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md4 margin-b-20">
 							<label class="layui-form-label">申请部门</label>
 							<div class="layui-input-block">
-								<input type="text" name="title" placeholder="请输入申请部门" autocomplete="off" class="layui-input">
+								<input type="text" name="DeptId" placeholder="请输入申请部门" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md4 margin-b-20">
 							<label class="layui-form-label">申请人员</label>
 							<div class="layui-input-block">
-								<input type="text" name="title" placeholder="请输入申请人员" autocomplete="off" class="layui-input">
+								<input type="text" name="CreateUserName" placeholder="请输入申请人员" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-col-md2 margin-b-20">
-							<button class="layui-btn layui-btn-normal">搜索</button>
+							<a class="layui-btn layui-btn-normal" lay-submit lay-filter='search'>搜索</a>
 						</div>	
 					</div>
 				</form>
@@ -60,54 +62,6 @@
 				</script>
 			</div>
 		</div>
-		<script>
-			var layer_linePop;
-			var cols = [[
-				{type:'numbers',title:'序号'},
-				{field:'no',title:'流程编号'},
-				{field:'title',title:'流程名称'},
-				{field:'date',title:'申请时间'},
-				{field:'date1',title:'完成时间'},
-				{field:'dpt',title:'申请部门'},
-				{field:'uname',title:'申请人'},
-				{field:'state',title:'流程状态'},
-				{field:'spr',title:'当前审批人'},
-				{field:'lspr',title:'历史审批人'},
-				{toolbar:'#bar',title:'操作',minWidth:'160',fixed:'right'}
-			]];
-			var datas = [
-				{no:'2341223545',title:'招聘申请',dpt:'市场部',uname:'张三',date:'2019-01-12',date1:'2019-01-12',state:'同意',spr:'',lspr:'李四,王五'},
-				{no:'2341223545',title:'招聘申请',dpt:'市场部',uname:'张三',date:'2019-01-12',date1:'2019-01-12',state:'不同意',spr:'',lspr:'李四,王五'},
-				{no:'2341223545',title:'招聘申请',dpt:'市场部',uname:'张三',date:'2019-01-12',date1:'',state:'已驳回',spr:'李四',lspr:'王五'},
-				{no:'2341223545',title:'招聘申请',dpt:'市场部',uname:'张三',date:'2019-01-12',date1:'',state:'审批中',spr:'李四',lspr:'王五'},
-				{no:'2341223545',title:'招聘申请',dpt:'市场部',uname:'张三',date:'2019-01-12',date1:'',state:'已撤销',spr:'',lspr:''}
-			];
-			layui.use(['table'], function() {
-				var table = layui.table;
-				//关闭弹窗
-				$(".closePop").click(function(){
-					layer.closeAll()
-				})
-				//执行一个 table 实例
-				table.render({
-					elem: '#lst',
-					title: '用户表',
-					page: true,
-					toolbar: '#toolbar',
-					even: true,
-					height: 'full-180',
-					cols: cols,
-					data: datas,
-				});
-				table.on('tool(lst)',function(data){
-					if(data.event == 'edit'){
-						window.location.href='审批流程.html';
-					}
-				});
-			});
-			function closePop(){
-				layer.close(layer_linePop);
-			}
-		</script>
+		<script type="text/javascript" src="../../js/workFlow/ApprovalRecords.js"></script>		
 	</body>
 </html>
