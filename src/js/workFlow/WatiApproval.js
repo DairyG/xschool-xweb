@@ -96,11 +96,13 @@ layui.use(['table', 'element', 'form','laydate'], function() {
         
         return parameter;
     }
-    var onTools = function(data,event){
-        if(edit == 'edit'){
-
-        }
-    }
+var onTools = function(layEvent, data) {
+        if (layEvent === 'view') {
+           window.location.href = 'ApprovalDetails.html?id=' + data.id
+        } 
+		 
+		layer_load_lose();
+    };
     //分页初始化
     var lstPager = Pager(table, //lay-ui的table控件
         '待我审核', //列表名称

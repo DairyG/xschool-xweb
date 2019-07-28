@@ -80,7 +80,7 @@
 					<span class="fontsize-16">{{item.subjectTypeName}}</span>
 					<span>({{item.subjectList.length}})</span>
 					<a href="javascript:void(0);" onclick="DeleteSubjectType({{item.id}})" class="fr text-del padding-l-10"><i class="layui-icon layui-icon-delete"></i>删除</a>
-					<a href="javascript:;" class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+					<a href="javascript:void(0);"  onclick="edit_group({{item.id}})"  class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
 				</div>
 				{{#  layui.each(item.subjectList, function(j, item2){ }}
 				<div class="process_content layui-row">
@@ -88,8 +88,8 @@
 						<img src="../../img/car.png">
 						<div class="process_img_info">
 							<p>{{item2.subjectName}}</p>
-							<p class="fontsize-12 text-85">{{item2.remark}}</p>
-							<p class="fontsize-12 text-85">2019.05.30 14:06:26 更新</p>
+							<p class="fontsize-12 text-85">{{item2.remark==null?"":item2.remark}}</p>
+							<p class="fontsize-12 text-85">{{item2.updateTime!=""?item2.updateTime+"更新":""}}</p>
 						</div>
 					</div>
 					<div class="layui-col-md5 border-l-1 padding-l-15">
@@ -158,6 +158,17 @@
 					content: $('.linePop1')
 				});
 			}
+			function edit_group(){
+				layer_linePop = layer.open({
+					type: 1,
+					title:'修改分组',
+					String: false,
+					closeBtn: 1,
+					skin: 'layui-layer-rim',
+					area: '650px',
+					content: $('.linePop1')
+				});
+			}
 			function process_move(){
 					//弹出层
 					layer_linePop = layer.open({
@@ -209,15 +220,15 @@
 				});
 
 			}
-
+			//停用
 			function disabledSubject(subjectId)
 			{
 				layer.confirm('您确定要停用？', {
 				btn: ['确定','取消'] //按钮
 				}, function(){
 				//删除
-				var data={Id:id};
-				Serv.Post('lc/SubjectType/DeleteSubjectType',data,function(resultData){
+				var data={Id:subjectId,status:1};
+				Serv.Post('lc/Subject/EnableSubject',data,function(resultData){
 					if(resultData.succeed)
 					{
 						layer.msg('成功。。', {icon:1});

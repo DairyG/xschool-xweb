@@ -57,7 +57,7 @@
         {
             title: '操作',
             toolbar: '#bar',
-            width: 70
+            width: 200
         }
     ]
 ];
@@ -91,16 +91,32 @@ layui.use(['table', 'element', 'form','laydate'], function() {
         lstPager.search();
         return false;
     });
-
+var onTools = function(layEvent, data) {
+        layer_load();
+        if (layEvent === 'view') {
+           window.location.href = 'ApprovalDetails.html?id=' + data.id
+        } 
+		 if (layEvent === 'zj') {
+           window.location.href = 'ApprovalDetails.html?id=' + data.id
+        }
+		 if (layEvent === 'cx') {
+			 var dataValue={Id:data.id};
+           Serv.Post('lc/WorkflowMain/Revoke',dataValue,function(resultData){
+						if(resultData.succeed)
+						{
+							layer.msg("成功...", {icon:1});
+						}else{
+							layer.msg('失败:'+resultData.message, {icon:2});
+						}
+					})
+        }
+		layer_load_lose();
+    };
     function search() {
         
         return parameter;
     }
-    var onTools = function(data,event){
-        if(edit == 'edit'){
-
-        }
-    }
+    
     //分页初始化
     var lstPager = Pager(table, //lay-ui的table控件
         '待我审核', //列表名称
