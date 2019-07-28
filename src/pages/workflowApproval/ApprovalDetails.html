@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" href="../../layui/css/common.css" />
+		<link rel="stylesheet" href="../../layui/css/template.css" />
+		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+	</head>
+	<body class="bgf2f2f2">
+		<div class="childrenBody">
+			<div class="layui-card-body bgwhite">
+				<div class="layui-tab margin-t-0">
+					<ul class="layui-tab-title">
+						<li class="fontsize-16">付款申请</li>
+						<span class="layui-btn layui-btn-sm fr" onclick="history.back(-1)">返回</span>
+					</ul>
+					<div class="layui-tab-content">
+						<span class="process_state_img"><img src='../../img/process_s2.png' /></span>
+						<div class="layui-tab-item layui-show" >
+							<ul class="process_step">
+								<li class="active padding-l-0"><i>1</i><span>发起申请</span></li>
+								<li class="active"><i>2</i><span>部门管理员审批</span></li>
+								<li><i>3</i><span>抄送财务</span></li>
+								<li class="padding-r-0"><i>4</i><span>流程完成</span></li>
+							</ul>
+							<div class="form-title">发起人信息：</div>
+							<div class="layui-form layui-form2  layui-form-140 layui-form-info">
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">流程编号：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">724243422</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">发起时间：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">2019-1-1</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">发起时间：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">财务公司</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">发起部门：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">财务部</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">发起人姓名：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">张三</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">发起人职位：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">财务</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr class="layui-bg-blue hrheight3">
+							<div class="form-title">申请详情：</div>
+							<div class="layui-form layui-form2  layui-form-140 layui-form-info">
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">费用项目：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">2019春季物料费</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">请款单编号：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">433423423432</div>
+										</div>
+									</div>
+									<!-- 付款方式为现金时银行账号和银行名称不必填 -->
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">付款方式：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">转账</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">收款公司名称：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">设计咨询公司</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">收款公司开户银行：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">建设银行</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">收款公司银行账号：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">6455352323423423</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">合同总金额：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">894313.5元</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">已付金额：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">600000元</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">本次付款金额：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">200000元</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md6 margin-b-20">
+										<label class="layui-form-label">处理时限：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid">2019-7-1</div>
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">付款备注：</label>
+										<div class="layui-input-block">
+											<div class="layui-form-mid"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr class="layui-bg-blue hrheight3">
+							<div class="form-title">审批：</div>
+							<div class="layui-form layui-form2">
+								<div class="layui-row">
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label"><span class="text-red">*</span>是否同意</label>
+										<div class="layui-input-block">
+											<input type="radio" name="opinion" title="同意申请" />
+											<input type="radio" name="opinion" title="不同意申请" />
+											<input type="radio" name="opinion" title="驳回申请" />
+										</div>
+									</div>
+									<div class="layui-form-item layui-col-md12 margin-b-20">
+										<label class="layui-form-label">审批意见</label>
+										<div class="layui-input-block">
+											<textarea class="layui-textarea"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-row">
+								<div class="layui-input-block text-right">
+									<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确定</button>
+									<span class="layui-btn" onclick="history.back(-1)">返回</span>
+								</div>
+							</div>
+							<hr class="layui-bg-blue hrheight3">
+							<div class="form-title">审批日志：</div>
+							<ul class="layui-timeline">
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">发起申请</h3>
+										<div>
+											<p><font class="text-a cpr">张三</font> 2019-1-1 10:00:22</p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">审批人</h3>
+										<div>
+											<p><font class="text-a cpr">张三</font> 2019-1-1 10:00:22</p>
+											<p>通过申请</p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">审批人</h3>
+										<div>
+											<p><font class="text-a cpr">张三</font>（已转交） 2019-1-1 10:00:22</p>
+											<p>张三 将审批人从 张三 转交为 李四</p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">审批人</h3>
+										<div>
+											<p><font class="text-a cpr">张三</font> 李四会签（审批中）</p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">抄送人</h3>
+										<div>
+											<p><font class="text-a cpr">张三</font> 2019-1-1 10:00:22</p>
+											<p>抄送人 张三 已读</p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">抄送人</h3>
+										<div>
+											<p><font class="text-a cpr">李四</font></p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">审批人</h3>
+										<div>
+											<p><font class="text-a cpr">李四</font> 2019-1-1 10:00:22</p>
+											<p>审批人李四已同意申请</p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">审批人</h3>
+										<div>
+											<p><font class="text-a cpr">李四</font></p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">复核人</h3>
+										<div>
+											<p><font class="text-a cpr">王五</font></p>
+										</div>
+									</div>
+								</li>
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">复核人</h3>
+										<div>
+											<p><font class="text-a cpr">王五</font></p>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="linePop linePop2 layadmin-maillist-fluid" >
+			<div class="layadmin-contact-box"> 
+				<div class="layui-col-md4 layui-col-sm6">
+					<a href="javascript:;">
+						<div class="layadmin-text-center">
+							<img src="../../img/head.jpg" >
+							<div class="layadmin-maillist-img layadmin-font-blod">在职</div>
+						</div>
+					</a>
+				</div>
+				<div class="layui-col-md8 layadmin-padding-left20 layui-col-sm6">
+					<h3 class="layadmin-title">
+						<strong>张三</strong> <i class="layui-icon layui-icon-male"></i>
+					</h3>
+					<div class="layadmin-address layui-row" style="line-height: 1.8;margin-bottom: 0;">
+						<div class="layui-col-md12">028-3453452</div>
+						<div class="layui-col-md6">销售部</div>
+						<div class="layui-col-md6">经理</div>
+						<div class="layui-col-md6">销售部</div>
+						<div class="layui-col-md6">经理</div>
+						<div class="layui-col-md6">销售部</div>
+						<div class="layui-col-md6">经理</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var layer_linePop,table;
+			layui.use(['table','form','laydate'], function() {
+				table = layui.table;
+				var form = layui.form,
+					laydate = layui.laydate;
+				laydate.render({elem:'#date1'});
+			});
+			$(".process_step li").hover(function(){
+				var obj = $(this).find('i');
+				layer.tips('张三：同意<br/>李四：不同意<br/>', obj, {
+					tips: [3, '#3595CC'],
+					time: 10000
+				});
+			},function(){
+				layer.closeAll();
+			});
+			
+			$(".layui-timeline-item .text-a").click(function(){
+				layer.open({
+					type: 1,
+					title:false,
+					closeBtn: 1,
+					area: '400px',
+					content: $('.linePop2')
+				});
+			});
+		</script>
+	</body>
+</html>
