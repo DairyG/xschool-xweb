@@ -70,9 +70,9 @@
                     return item.createDate.FormatDate()
                 }
             },
-            { field: 'readCount', title: '浏览次数' },
+            { field: 'readCount', title: '浏览次数',width: 100 },
             {
-                field: 'isNeedRead', title: '强制阅读', templet: function (item) {
+                field: 'isNeedRead', title: '强制阅读', width: 100, templet: function (item) {
                     if (item.isNeedRead == 1)
                         return "是";
                     else
@@ -80,7 +80,7 @@
                 }
             },
             { field: 'people', title: '查看人' },
-            { title: '操作', toolbar: '#toolbar', width: 180, fixed: 'right' }
+            { title: '操作', toolbar: '#toolbar', width: 70, fixed: 'right' }
         ]];
         var parameter = {
             Title: '',
@@ -131,7 +131,7 @@
                 null,//有选择行才能有的操作，实现该方法,否则传null
                 null, //如果有每行的操作栏的操作回调，实现该方法，否则传null
                 null,
-                'full-100'
+                'full-140'
             );
 
             table.on('tool(lst)', function (obj) {

@@ -58,9 +58,9 @@
 				{ field: 'createDate', title: '发布日期',templet:function(item){
 					 return item.createDate.FormatDate();
 				} },
-				{ field: 'readCount', title: '浏览次数' },
+				{ field: 'readCount', title: '浏览次数',width: 100 },
 				{
-					field: 'isNeedRead', title: '强制阅读', templet: function (item) {
+					field: 'isNeedRead', title: '强制阅读',width: 100, templet: function (item) {
 						if (item == 1)
 							return "是";
 						else
