@@ -41,12 +41,12 @@
 							<label class="layui-form-label"><span class="text-red"> *</span>分组名称</label>
 							<div class="layui-input-block">
 								<input id="txtSubjectTypeName" type="text" name="title" required  lay-verify="required" placeholder="请输入分组名称" autocomplete="off" class="layui-input">
+								<input id="txtSubjectTypeId" type="hidden" value="0" />
 							</div>
 						</div>
 					</div>	
 					<div class="layui-row text-right">
 						<a class="layui-btn" lay-submit="" href="javascript:void(0)" onclick="saveSubjectType()" lay-filter="formDemo">确认</a>
-					
 						<span class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
 					</div>
 				</form>
@@ -80,30 +80,34 @@
 					<span class="fontsize-16">{{item.subjectTypeName}}</span>
 					<span>({{item.subjectList.length}})</span>
 					<a href="javascript:void(0);" onclick="DeleteSubjectType({{item.id}})" class="fr text-del padding-l-10"><i class="layui-icon layui-icon-delete"></i>删除</a>
-					<a href="javascript:void(0);"  onclick="edit_group({{item.id}})"  class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+					<a href="javascript:void(0);"  onclick="edit_group('{{item.subjectTypeName}}',{{item.id}})"  class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
 				</div>
 				{{#  layui.each(item.subjectList, function(j, item2){ }}
-				<div class="process_content layui-row">
-					<div class="layui-col-md4 process_img">
-						<img src="../../img/car.png">
-						<div class="process_img_info">
-							<p>{{item2.subjectName}}</p>
-							<p class="fontsize-12 text-85">{{item2.remark==null?"":item2.remark}}</p>
-							<p class="fontsize-12 text-85">{{item2.updateTime!=""?item2.updateTime+"更新":""}}</p>
+					{{# if(item2.edStatus == 2){ }}
+						<div class="process_content layui-row">
+							<div class="layui-col-md4 process_img">
+								<img src="../../img/car.png">
+								<div class="process_img_info">
+									<p>{{item2.subjectName}}</p>
+									<p class="fontsize-12 text-85">{{item2.remark==null?"":item2.remark}}</p>
+									<p class="fontsize-12 text-85">{{item2.updateTime!=""?item2.updateTime+"更新":""}}</p>
+								</div>
+							</div>
+							<div class="layui-col-md5 border-l-1 padding-l-15">
+								<p>可见范围</p>
+								<p class="fontsize-12 text-85"><span class="rec_box">全部可见</span> <a href="javascript:;" onclick="changeRang($(this).siblings('span'),{{item2.subjectId}})">修改</a></p>
+							</div>
+							<div class="layui-col-md3">
+								<div class="opt_box text-right">
+									<a href="createWorkFlow.html?Id={{item2.subjectId}}">编辑</a>
+									<a href="javascript:void(0);" onclick="SubjectSetStatus({{item2.subjectId}},1)">停用</a>
+									<a href="javascript:;" onclick="process_move({{item2.subjectId}})">移动到</a>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="layui-col-md5 border-l-1 padding-l-15">
-						<p>可见范围</p>
-						<p class="fontsize-12 text-85"><span class="rec_box">全部可见</span> <a href="javascript:;" onclick="changeRang($(this).siblings('span'),{{item2.subjectId}})">修改</a></p>
-					</div>
-					<div class="layui-col-md3">
-						<div class="opt_box text-right">
-							<a href="createWorkFlow.html?Id={{item2.subjectId}}">编辑</a>
-							<a href="javascript:void(0);" onclick="disabledSubject({{item2.subjectId}})">停用</a>
-							<a href="javascript:;" onclick="process_move({{item2.subjectId}})">移动到</a>
-						</div>
-					</div>
-				</div>
+					{{# } else { }}
+						{{# disabled_list.push(item2);}}
+					{{# } }}
 				{{# }); }}
 			</div>
 			{{# }); }}
@@ -128,9 +132,7 @@
 					</div>
 					<div class="layui-col-md3">
 						<div class="opt_box text-right">
-							<a href="createWorkFlow.html?Id={{item2.subjectId}}">编辑</a>
-							<a href="javascript:void(0);" onclick="disabledSubject({{item2.subjectId}})">停用</a>
-							<a href="javascript:;" onclick="process_move({{item2.subjectId}})">移动到</a>
+							<a href="javascript:void(0);" onclick="SubjectSetStatus({{item2.subjectId}},2)">启用</a>
 						</div>
 					</div>
 				</div>
@@ -158,7 +160,12 @@
 					content: $('.linePop1')
 				});
 			}
-			function edit_group(){
+			function edit_group(name,id){
+				id = id == undefined ? 0 : id;
+				if(id > 0){
+					$('#txtSubjectTypeId').val(id);
+					$('#txtSubjectTypeName').val(name);
+				}
 				layer_linePop = layer.open({
 					type: 1,
 					title:'修改分组',
@@ -221,18 +228,20 @@
 
 			}
 			//停用
-			function disabledSubject(subjectId)
+			function SubjectSetStatus(subjectId,status)
 			{
-				layer.confirm('您确定要停用？', {
-				btn: ['确定','取消'] //按钮
+				var confirm_msg = status == 1 ? '您确定要停用?' : '您确定要启用?';
+				layer.confirm(confirm_msg, {
+					btn: ['确定','取消'] //按钮
 				}, function(){
 				//删除
-				var data={Id:subjectId,status:1};
+				var data={Id:subjectId,status:status};
 				Serv.Post('lc/Subject/EnableSubject',data,function(resultData){
 					if(resultData.succeed)
 					{
 						layer.msg('成功。。', {icon:1});
 						closePop();
+						window.location.reload();
 					}else{
 						layer.msg('失败:'+resultData.message, {icon:2});
 					}
@@ -245,7 +254,10 @@
 			//添加流程组别
 			function saveSubjectType()
 			{
-				var data={SubjectTypeName:$("#txtSubjectTypeName").val()};
+				var data={
+					SubjectTypeName:$("#txtSubjectTypeName").val(),
+					Id:$("#txtSubjectTypeId").val(),
+				};
 				Serv.Post('lc/SubjectType/AddOrEdit',data,function(resultData){
 					if(resultData.succeed)
 					{
