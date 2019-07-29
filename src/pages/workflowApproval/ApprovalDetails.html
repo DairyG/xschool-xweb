@@ -9,7 +9,8 @@
 		<link rel="stylesheet" href="../../layui/css/template.css" />
 		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js"></script>
-		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/service.js"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>	
 	</head>
 	<body class="bgf2f2f2">
 		<div class="childrenBody">
@@ -299,11 +300,16 @@
 		</div>
 		<script type="text/javascript">
 			var layer_linePop,table;
+			var  Id = GetPara('Id');
 			layui.use(['table','form','laydate'], function() {
 				table = layui.table;
 				var form = layui.form,
 					laydate = layui.laydate;
 				laydate.render({elem:'#date1'});
+
+				if(Id>0){//绑定数据
+					GetCreateLCInfo(Id);
+				}
 			});
 			$(".process_step li").hover(function(){
 				var obj = $(this).find('i');
@@ -324,6 +330,15 @@
 					content: $('.linePop2')
 				});
 			});
+
+
+
+			function GetCreateLCInfo(Id)
+			{
+				Serv.Get('lc/WorkflowMain/GetCreateLCInfo',{Id:Id},function(data){
+					console.log(data);
+				},false);
+			}
 		</script>
 	</body>
 </html>
