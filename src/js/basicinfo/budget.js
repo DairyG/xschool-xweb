@@ -138,19 +138,6 @@ layui.config({
                 if (response.code == "00") {
                     initTable(initTable);
                     Serv.Post('gc/budget/get', {'search':''}, window.globCache.setBudgets);
-                    var bud = window.globCache.getBudgets();
-                    console.log(bud);
-                    // layer_confirm('添加成功，是否继续添加？', function () {
-                    //     layer_linePop = layer.open({
-                    //         type: 1,
-                    //         title: '修改' + $("input[name='Type_Chinese']").val(),
-                    //         String: false,
-                    //         closeBtn: 1,
-                    //         skin: 'layui-layer-rim',
-                    //         area: '750px',
-                    //         content: $('.linePop')
-                    //     });
-                    // }, layer.closeAll());
                     layer_alert("添加成功!",layer.closeAll());
                 } else {
                     layer_alert(response.message);
