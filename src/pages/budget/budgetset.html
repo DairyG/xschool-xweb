@@ -172,25 +172,27 @@
                 table.reload('lst', { data: datas });
             });
             table.on('tool(lst)', function (obj) {
-                var data = obj.data; //获得当前行数据
-                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-                if (layEvent === 'del') { //查看
-                    //do somehing
-                    Serv.Get('gc/BudgetDetails/Delete/' + data.id, {}, function (response) {
-                        if (response.code == "00") {
-                            layer_alert("删除成功！");
-                            var detail = datas.find(function (detail) {
-                                return detail.id === data.id;
-                            });
-                            objIndex = datas.findIndex((o => o.id == detail.id));
-                            datas.splice(objIndex, 1);
-                            table.reload('lst', { data: datas });
-                        }
-                        else {
-                            layer_alert(response.message);
-                        }
-                    })
-                }
+                layer_confirm("确认要删除吗？", function () {
+                    var data = obj.data; //获得当前行数据
+                    var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                    if (layEvent === 'del') { //查看
+                        //do somehing
+                        Serv.Get('gc/BudgetDetails/Delete/' + data.id, {}, function (response) {
+                            if (response.code == "00") {
+                                layer_alert("删除成功！");
+                                var detail = datas.find(function (detail) {
+                                    return detail.id === data.id;
+                                });
+                                objIndex = datas.findIndex((o => o.id == detail.id));
+                                datas.splice(objIndex, 1);
+                                table.reload('lst', { data: datas });
+                            }
+                            else {
+                                layer_alert(response.message);
+                            }
+                        })
+                    }
+                });
             });
             form.on('submit(formSet)', function (laydata) {
                 laydata.field.id = $("#id").val();
@@ -246,7 +248,7 @@
                     if (response) {
                         $("#total").val(response.total);
                         $("#date1").val(response.year);
-                        var html = response.dptName + '<input type="hidden" name="sels" value="{&quot;sel_type&quot;:&quot;org&quot;,&quot;user&quot;:[],&quot;department&quot;:[{&quot;id&quot;:'+response.dptId+',&quot;name&quot;:&quot;'+response.dptName+'&quot;,&quot;company_id&quot;:&quot;'+response.companyId+'&quot;,&quot;company_name&quot;:&quot;'+response.companyName+'&quot;}],&quot;company&quot;:[],&quot;position&quot;:[],&quot;dpt_position&quot;:[]}">';
+                        var html = response.dptName + '<input type="hidden" name="sels" value="{&quot;sel_type&quot;:&quot;org&quot;,&quot;user&quot;:[],&quot;department&quot;:[{&quot;id&quot;:' + response.dptId + ',&quot;name&quot;:&quot;' + response.dptName + '&quot;,&quot;company_id&quot;:&quot;' + response.companyId + '&quot;,&quot;company_name&quot;:&quot;' + response.companyName + '&quot;}],&quot;company&quot;:[],&quot;position&quot;:[],&quot;dpt_position&quot;:[]}">';
                         $("#user_sel_box1").html(html);
                         GetDetails(response.id);
                     }

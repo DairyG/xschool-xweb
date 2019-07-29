@@ -68,6 +68,7 @@ layui.config({
                                 if (result.code == "00") {
                                     layer_alert(result.message, function () {
                                         window.location.reload();
+                                        Serv.Post('gc/budget/get', {'search':''}, window.globCache.setBudgets);
                                     });
                                 } else {
                                     layer_alert(result.message);
@@ -85,6 +86,7 @@ layui.config({
                                     if (result.code == "00") {
                                         layer_alert(result.message, function () {
                                             window.location.reload();
+                                            Serv.Post('gc/budget/get', {'search':''}, window.globCache.setBudgets);
                                         });
                                     } else {
                                         layer_alert(result.message);
@@ -135,6 +137,9 @@ layui.config({
             Serv.Post('gc/Budget/add', { budget: laydata.field }, function (response) {
                 if (response.code == "00") {
                     initTable(initTable);
+                    Serv.Post('gc/budget/get', {'search':''}, window.globCache.setBudgets);
+                    var bud = window.globCache.getBudgets();
+                    console.log(bud);
                     // layer_confirm('添加成功，是否继续添加？', function () {
                     //     layer_linePop = layer.open({
                     //         type: 1,
@@ -159,8 +164,8 @@ layui.config({
             else {
                 Serv.Post('gc/Budget/update', laydata.field, function (response) {
                     if (response.code == "00") {
+                        Serv.Post('gc/budget/get', {'search':''}, window.globCache.setBudgets);
                         layer_alert(response.message,function(){ window.location.reload()});
-                        
                         closePop();
                     } else {
                         layer_alert(response.message);
