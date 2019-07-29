@@ -73,8 +73,7 @@
 			</div>
 		</div>
 		<script type="text/html" id="process_tpl">
-			{{# var disabled_list = [];}}
-			{{#  layui.each(d, function(index, item){ }}
+			{{#  layui.each(d.list, function(index, item){ }}
 			<div class="process_item ">
 				<div class="process_title bgf2f2f2 padding-10">
 					<span class="fontsize-16">{{item.subjectTypeName}}</span>
@@ -83,40 +82,36 @@
 					<a href="javascript:void(0);"  onclick="edit_group('{{item.subjectTypeName}}',{{item.id}})"  class="fr text-edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
 				</div>
 				{{#  layui.each(item.subjectList, function(j, item2){ }}
-					{{# if(item2.edStatus == 2){ }}
-						<div class="process_content layui-row">
-							<div class="layui-col-md4 process_img">
-								<img src="../../img/car.png">
-								<div class="process_img_info">
-									<p>{{item2.subjectName}}</p>
-									<p class="fontsize-12 text-85">{{item2.remark==null?"":item2.remark}}</p>
-									<p class="fontsize-12 text-85">{{item2.updateTime!=""?item2.updateTime+"更新":""}}</p>
-								</div>
-							</div>
-							<div class="layui-col-md5 border-l-1 padding-l-15">
-								<p>可见范围</p>
-								<p class="fontsize-12 text-85"><span class="rec_box">全部可见</span> <a href="javascript:;" onclick="changeRang($(this).siblings('span'),{{item2.subjectId}})">修改</a></p>
-							</div>
-							<div class="layui-col-md3">
-								<div class="opt_box text-right">
-									<a href="createWorkFlow.html?Id={{item2.subjectId}}">编辑</a>
-									<a href="javascript:void(0);" onclick="SubjectSetStatus({{item2.subjectId}},1)">停用</a>
-									<a href="javascript:;" onclick="process_move({{item2.subjectId}})">移动到</a>
-								</div>
+					<div class="process_content layui-row">
+						<div class="layui-col-md4 process_img">
+							<img src="../../img/car.png">
+							<div class="process_img_info">
+								<p>{{item2.subjectName}}</p>
+								<p class="fontsize-12 text-85">{{item2.remark==null?"":item2.remark}}</p>
+								<p class="fontsize-12 text-85">{{item2.updateTime!=""?item2.updateTime+"更新":""}}</p>
 							</div>
 						</div>
-					{{# } else { }}
-						{{# disabled_list.push(item2);}}
-					{{# } }}
+						<div class="layui-col-md5 border-l-1 padding-l-15">
+							<p>可见范围</p>
+							<p class="fontsize-12 text-85"><span class="rec_box">全部可见</span> <a href="javascript:;" onclick="changeRang($(this).siblings('span'),{{item2.subjectId}})">修改</a></p>
+						</div>
+						<div class="layui-col-md3">
+							<div class="opt_box text-right">
+								<a href="createWorkFlow.html?Id={{item2.subjectId}}">编辑</a>
+								<a href="javascript:void(0);" onclick="SubjectSetStatus({{item2.subjectId}},1)">停用</a>
+								<a href="javascript:;" onclick="process_move({{item2.subjectId}})">移动到</a>
+							</div>
+						</div>
+					</div>
 				{{# }); }}
 			</div>
 			{{# }); }}
 			<div class="process_item ">
 				<div class="process_title bgf2f2f2 padding-10">
 					<span class="fontsize-16">停用</span>
-					<span>({{disabled_list.length}})</span>
+					<span>({{d.disabled_list.length}})</span>
 				</div>
-				{{#  layui.each(disabled_list, function(j, item2){ }}
+				{{#  layui.each(d.disabled_list, function(j, item2){ }}
 				<div class="process_content layui-row">
 					<div class="layui-col-md4 process_img">
 						<img src="../../img/car.png">
@@ -263,6 +258,7 @@
 					{
 						layer.msg('成功。。', {icon:1});
 						closePop();
+						window.location.reload();
 					}else{
 						layer.msg('失败:'+resultData.message, {icon:2});
 					}
@@ -272,11 +268,21 @@
 			function loadData()
 			{
 				Serv.Get('lc/Subject/GetSubject',null,function(resultData){
-					if(resultData.succeed)
-					{
-						console.log(resultData.data);
+					if(resultData.succeed){
+						var data = {};
+						data.list = resultData.data
+						data.disabled_list = [];
+						for(var i = 0;i < data.list.length;i++){
+							var subjectList =  data.list[i].subjectList;
+							for(var j = 0;j < subjectList.length;j++){
+								var item = subjectList[j];
+								if(item.edStatus == 1){
+									data.disabled_list.push(item);
+								}
+							}
+						}
 						var getTpl = $('#process_tpl').html();
-						laytpl(getTpl).render(resultData.data, function(html){
+						laytpl(getTpl).render(data, function(html){
 							$('#process_box').html(html);
 							layer_load_lose();
 						});
