@@ -274,12 +274,16 @@
 						data.disabled_list = [];
 						for(var i = 0;i < data.list.length;i++){
 							var subjectList =  data.list[i].subjectList;
+							var list = [];
 							for(var j = 0;j < subjectList.length;j++){
 								var item = subjectList[j];
 								if(item.edStatus == 1){
 									data.disabled_list.push(item);
+								} else {
+									list.push(item);
 								}
 							}
+							data.list[i].subjectList = list;
 						}
 						var getTpl = $('#process_tpl').html();
 						laytpl(getTpl).render(data, function(html){
