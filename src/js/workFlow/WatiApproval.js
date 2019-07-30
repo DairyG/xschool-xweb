@@ -96,11 +96,52 @@ layui.use(['table', 'element', 'form','laydate'], function() {
         
         return parameter;
     }
-var onTools = function(layEvent, data) {
+    var onTools = function(layEvent, data) {
+        alert(data.id);
+        layer_load();
         if (layEvent === 'view') {
            window.location.href = 'ApprovalDetails.html?id=' + data.id
         } 
-		 
+		 if (layEvent === 'zj') {
+             if(data.passStatus!=4)
+             {
+                layer.msg('失败:此数据不允更换审批人！', {icon:2});
+                layer_load_lose();
+                return;
+             }
+           //window.location.href = 'ApprovalDetails.html?id=' + data.id
+           user_popup(null,'user',1,false,function(res){
+                var subData = {
+                    Id:data.id,
+                    AuditidUserId:res.user[0].id,
+                    AuditidUserName:res.user[0].name
+                }
+
+                    Serv.Post('lc/WorkflowMain/ApprovalPerson',subData,function(resultData){
+                        if(resultData.succeed)
+                        {
+                            layer.msg("成功...", {icon:1});
+                            setTimeout(function(){
+                                window.location.reload();
+                            },1000);
+                        }else{
+                            layer.msg('失败:'+resultData.message, {icon:2});
+                        }
+                     })
+           });
+        }
+		 if (layEvent === 'cx') {
+			 var dataValue={Id:data.id};
+           Serv.Post('lc/WorkflowMain/Revoke',dataValue,function(resultData){
+						if(resultData.succeed)
+						{
+                            layer.msg("成功...", {icon:1});
+                            window.location.reload();
+						}else{
+							layer.msg('失败:'+resultData.message, {icon:2});
+						}
+					})
+        }
 		layer_load_lose();
     };
     //分页初始化
