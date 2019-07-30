@@ -79,8 +79,8 @@ var Serv = {
         Token = value.token_type + ' ' + value.access_token;
 
         //5分钟后过期
-        // value.expires_in = (new Date().getTime() + 5);
-        value.expires_in = (new Date().getTime() + parseInt(value.expires_in));
+        // value.expires_in = (new Date().getTime() + 5 * 60000);
+        value.expires_in = (new Date().getTime() + parseInt(value.expires_in * 60000));
         localStorage.setItem("Service_Token", JSON.stringify(value));
         return true;
     },
