@@ -45,7 +45,7 @@ layui.use(['form', 'element'], function() {
     // }
 
     //定时器
-    var timer = setInterval(checkToken, 3000);
+    var timer = setInterval(checkToken, 60000);
     // var timer = setInterval(checkToken, 60000);
 
     function checkToken() {
