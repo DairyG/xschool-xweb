@@ -9,11 +9,6 @@ var verifyModel = {
         client_secret: '367CA1C1E7F64A2883B978DD7CEC043B',
         grant_type: 'phone_number_token',
     },
-    refresh: {
-        client_id: '725A78E65DD14658A8947F68C27BD322',
-        client_secret: '367CA1C1E7F64A2883B978DD7CEC043B',
-        grant_type: 'refresh_token',
-    },
     salt: {
         letter1: '$$$',
         letter2: '7CD955AE-6A04-41BC-952F-0366D2532C95'
@@ -79,8 +74,8 @@ var Serv = {
         Token = value.token_type + ' ' + value.access_token;
 
         //5分钟后过期
-        value.expires_in = (new Date().getTime() + 5 * 60000);
-        // value.expires_in = (new Date().getTime() + parseInt(value.expires_in * 60000));
+        // value.expires_in = (new Date().getTime() + 1 * 60000);
+        value.expires_in = (new Date().getTime() + parseInt(value.expires_in * 60000));
         localStorage.setItem("Service_Token", JSON.stringify(value));
         return true;
     },

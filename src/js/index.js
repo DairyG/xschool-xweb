@@ -28,25 +28,25 @@ layui.use(['form', 'element'], function() {
         element.render(); //初始化页面元素
     }
 
-    getAuthStrategy();
-    //获取可访问的资源
-    function getAuthStrategy() {
-        Serv.Get('gc/usersession/getauthstrategy/' + window.globCache.getEmployee().id, {}, function(result) {
-            if (result) {
-                window.globCache.setModules(result.modules);
-                window.globCache.setElements(result.elements);
+    // getAuthStrategy();
+    // //获取可访问的资源
+    // function getAuthStrategy() {
+    //     Serv.Get('gc/usersession/getauthstrategy/' + window.globCache.getEmployee().id, {}, function(result) {
+    //         if (result) {
+    //             window.globCache.setModules(result.modules);
+    //             window.globCache.setElements(result.elements);
 
-                $('#LAY-system-side-menu').html(navBar(result.modules));
-                element.render(); //初始化页面元素
-            } else {
-                layer_alert('获取数据失败');
-            }
-        }, false);
-    }
+    //             $('#LAY-system-side-menu').html(navBar(result.modules));
+    //             element.render(); //初始化页面元素
+    //         } else {
+    //             layer_alert('获取数据失败');
+    //         }
+    //     }, false);
+    // }
 
     //定时器
     // var timer = setInterval(checkToken, 5000);
-    // var timer = setInterval(checkToken, 60000);
+    var timer = setInterval(checkToken, 60000);
 
     function checkToken() {
         var tokenJson = Serv.GetTokenJson();
@@ -65,13 +65,23 @@ layui.use(['form', 'element'], function() {
     }
 
     function refreshToken(value) {
-        Serv.Post('uc/connect/token', {
-            grant_type: verifyModel.refresh.grant_type,
-            client_id: verifyModel.refresh.client_id,
-            client_secret: verifyModel.refresh.client_secret,
+        var loginVal = window.globCache.get(cacheModel.LOGINTYPE);
+        if (loginVal == '' || loginVal == null) {
+            top.location.href = 'login.html';
+            return false;
+        }
+
+        var loginJson = JSON.parse(loginVal);
+        Serv.Post('uc/account/token_refresh', {
+            grant_type: 'refresh_token',
+            client_id: loginJson.client_id,
+            client_secret: loginJson.client_secret,
             refresh_token: value
         }, function(result) {
-
+            if (result) {
+                timer = setInterval(checkToken, 60000);
+                Serv.SetToken(result);
+            }
         });
     }
 

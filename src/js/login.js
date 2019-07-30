@@ -61,6 +61,12 @@ layui.use(['element', 'form', 'layer', 'jquery', 'sliderVerify'], function() {
         data.field.password = $.md5(data.field.password + verifyModel.salt.letter1 + verifyModel.salt.letter2).toUpperCase();
         Serv.Post('uc/account/signin', data.field, function(result) {
             layer_load_lose();
+
+            window.globCache.set(cacheModel.LOGINTYPE, JSON.stringify({
+                client_id: verifyModel.pwd.client_id,
+                client_secret: verifyModel.pwd.client_secret
+            }));
+
             setData(result);
         });
         return false;
@@ -86,16 +92,15 @@ layui.use(['element', 'form', 'layer', 'jquery', 'sliderVerify'], function() {
         data.field.client_id = verifyModel.phone.client_id;
         data.field.client_secret = verifyModel.phone.client_secret;
         data.field.grant_type = verifyModel.phone.grant_type;
+
+        window.globCache.set(cacheModel.LOGINTYPE, JSON.stringify({
+            client_id: verifyModel.phone.client_id,
+            client_secret: verifyModel.phone.client_secret
+        }));
+
         Serv.Post('uc/account/signin', data.field, function(result) {
             layer_load_lose();
             setData(result);
-            // Serv.Get('user/init', null, function (response) {
-            // 	response.UserInfo = token;
-            // 	var stringJson = JSON.stringify(response);
-            // 	localStorage.setItem("LOCAL_USER_DATA", stringJson);
-            // 	layer.closeAll();
-            // 	window.location.href = 'pages/index.html';
-            // });
         });
         return false;
     });
@@ -108,7 +113,6 @@ function parseJwt(token) {
 }
 
 function setData(result) {
-    console.log(result);
     layer_load('登录成功，数据拉取中...');
     // Serv.SetToken(result.token_type + ' ' + result.access_token);
 
