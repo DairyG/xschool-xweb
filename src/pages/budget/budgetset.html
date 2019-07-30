@@ -64,7 +64,7 @@
                     <table id="lst" lay-filter="lst"></table>
                 </div>
                 <div class="layui-row text-right">
-                    <button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="formSet">确认</button>
+                    <button class="layui-btn layui-btn-danger" id="btnEdit" lay-submit="" lay-filter="formSet">确认</button>
                     <span class="layui-btn " onclick="javascript:window.location.href='budgetlist.html'">返回</span>
                 </div>
             </form>
@@ -72,8 +72,15 @@
         <script type="text/html" id="toolbar"></script>
         <script type="text/html" id="rightBar"></script>
         <script>
-            var elemData = window.globCache.getElementData('090001', 'allHtml');
-            $('#rightBar').html(elemData.rightHtml);
+            var elemhHtml = window.globCache.getElementData('090001', 'allHtml');
+            $('#rightBar').html(elemhHtml.rightHtml);
+
+            var elemData = window.globCache.getElementData('090001', 'allData');
+            var viewElement = window.globCache.checkElement(elemData, 'edit');
+            if(!viewElement){
+                $("#btnEdit").hide();
+            }
+
             var datas = [];
             var table;
             var id = GetPara('id');
