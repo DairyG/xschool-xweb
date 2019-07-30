@@ -13,6 +13,8 @@ layui.use(['element', 'form', 'layer', 'jquery', 'sliderVerify'], function() {
         }
     });
 
+    window.globCache.clear();
+
     changeAstate();
 
     //表单输入效果
