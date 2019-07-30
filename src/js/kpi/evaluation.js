@@ -1,32 +1,78 @@
+var elemUpHtml = window.globCache.getElementData('100001', 'upHtml');
+$('#upBar').html(elemUpHtml);
+var elemRightData = window.globCache.getElementData('100001', 'rightData');
+//获取button
+function getBtnHtml(status) {
+    var btnDel = status == 1 ? '<a class="layui-btn layui-btn-xs" lay-event="del">启用</a>' : '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">停用</a>';
+    var result = '';
+    $.each(elemRightData, function(i, item) {
+        if (item.domId == 'del') {
+            result += btnDel;
+        } else {
+            result += '<a class="layui-btn layui-btn-xs ' + (item.class || '') + '" lay-event="' + item.domId + '">' + item.name + '</a>';
+        }
+    });
+    return result;
+}
+
 var layer_linePop;
 var lstPager;
-var data_col = [[
-    // { field: 'id', title: '序号' },
-    { type: 'numbers', title: '序号' },
-    { field: 'name', title: '考核项目' },
-    { field: 'typename', title: '所属类型' },
-    { field: 'index', title: '显示顺序' },
-    { field: 'evaStatus', title: '状态' },
-    { field: 'description', title: '备注' },
-    { title: '操作', toolbar: '#bar', width: 180 }
-]];
+var data_col = [
+    [{
+            type: 'numbers',
+            title: '序号'
+        },
+        {
+            field: 'name',
+            title: '考核项目'
+        },
+        {
+            field: 'typename',
+            title: '所属类型'
+        },
+        {
+            field: 'index',
+            title: '显示顺序'
+        },
+        {
+            field: 'evaStatus',
+            title: '状态'
+        },
+        {
+            field: 'description',
+            title: '备注'
+        },
+        {
+            title: '操作',
+            toolbar: '#bar',
+            width: 180
+        },
+        {
+            title: '操作',
+            templet: function(d) {
+                return getBtnHtml(d.status);
+            },
+            width: 120
+        }
+    ]
+];
 var datas;
-layui.use(['table', 'element', 'laydate', 'form'], function () {
+layui.use(['table', 'element', 'laydate', 'form'], function() {
     var table = layui.table,
         element = layui.element;
-        laydate = layui.laydate,
+    laydate = layui.laydate,
         layform = layui.form;
-        
-    Serv.Get('gc/EvaluationType/Get', {}, function (result) {
+
+    Serv.Get('gc/EvaluationType/Get', {}, function(result) {
         datas = result;
         //console.log(datas);
     });
 
-    var search = function () {
+    var search = function() {
 
     };
     //操作栏的回调函数
-    var onTools = function (layEvent, data) {
+    var onTools = function(layEvent, data) {
         var value = data.id;
         if (layEvent === 'edit') {
             loadSelect();
@@ -45,11 +91,11 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         } else if (layEvent === "del") {
             if (data.status == 1) {
                 data.status = 2;
-                layer_confirm('确定启用信息吗？', function () {
+                layer_confirm('确定启用信息吗？', function() {
                     layer_load();
-                    Serv.Post('gc/Evaluation/Delete', data, function (result) {
+                    Serv.Post('gc/Evaluation/Delete', data, function(result) {
                         if (result.code == "00") {
-                            layer_alert(result.message, function () {
+                            layer_alert(result.message, function() {
                                 lstPager.refresh();
                             });
                         } else {
@@ -57,14 +103,13 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
                         }
                     });
                 });
-            }
-            else {
+            } else {
                 data.status = 1;
-                layer_confirm('确定停用信息吗？', function () {
+                layer_confirm('确定停用信息吗？', function() {
                     layer_load();
-                    Serv.Post('gc/Evaluation/Delete', data, function (result) {
+                    Serv.Post('gc/Evaluation/Delete', data, function(result) {
                         if (result.code == "00") {
-                            layer_alert(result.message, function () {
+                            layer_alert(result.message, function() {
                                 lstPager.refresh();
                             });
                         } else {
@@ -77,10 +122,10 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         }
     };
     //数据整理回调函数
-    var parseData = function (items) {
-        $.each(items, function (i, item) {
-            var typenames = datas.filter(function(itype){
-                return itype.id == item.evaluationTypeId; 
+    var parseData = function(items) {
+        $.each(items, function(i, item) {
+            var typenames = datas.filter(function(itype) {
+                return itype.id == item.evaluationTypeId;
             });
             item.evaStatus = ["", "<font color=\'red\'>停用</font>", "<font color=\'green\'>启用</font>"][item.status];
             item.typename = typenames ? typenames[0].name : "";
@@ -88,20 +133,20 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         return items;
     };
     //分页初始化
-    lstPager = Pager2(table,//lay-ui的table控件
-        "奖惩类别",//列表名称
-        "lst",//绑定的列表Id
-        'toolbar',//绑定的工具条Id
-        data_col,//表头的显示行
-        "gc/Evaluation/Get",//action url 只能post提交
+    lstPager = Pager2(table, //lay-ui的table控件
+        "奖惩类别", //列表名称
+        "lst", //绑定的列表Id
+        'upBar', //绑定的工具条Id
+        data_col, //表头的显示行
+        "gc/Evaluation/Get", //action url 只能post提交
         search,
-        parseData,//如果在显示之前需要对数据进行整理需要实现，否则传null
-        null,//有选择行才能有的操作，实现该方法,否则传null
+        parseData, //如果在显示之前需要对数据进行整理需要实现，否则传null
+        null, //有选择行才能有的操作，实现该方法,否则传null
         onTools, //如果有每行的操作栏的操作回调，实现该方法，否则传null
         null,
         'full-100'
     );
-    table.on('toolbar(lst)', function (data) {
+    table.on('toolbar(lst)', function(data) {
         if (data.event == 'add') {
             loadSelect();
             model.id = 0;
@@ -110,9 +155,11 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
             model.description = '';
             model.status = 1;
             model.evaluationTypeId = 0;
-            vm.$set({ data: model });
+            vm.$set({
+                data: model
+            });
             layui.form.render("select");
-            
+
             layer_linePop = layer.open({
                 type: 1,
                 title: '添加考核项目',
@@ -135,7 +182,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
             });
         }
     });
-    layform.on('submit(formDemo)', function (laydata) {
+    layform.on('submit(formDemo)', function(laydata) {
         layer_load();
         laydata.field.evaluationTypeId = $("select[name='EvaluationTypeId']").val();
         if (laydata.field.evaluationTypeId == 0) {
@@ -144,9 +191,11 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
         }
         if (laydata.field.Id == "") {
             laydata.field.Id = 0;
-            Serv.Post('gc/Evaluation/add', { model: laydata.field }, function (response) {
+            Serv.Post('gc/Evaluation/add', {
+                model: laydata.field
+            }, function(response) {
                 if (response.code == "00") {
-                    layer_confirm('添加成功，是否继续添加？', function () {
+                    layer_confirm('添加成功，是否继续添加？', function() {
                         //EmptyModel();
                         layer_linePop = layer.open({
                             type: 1,
@@ -165,7 +214,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 
             })
         } else {
-            Serv.Post('gc/Evaluation/update', laydata.field, function (response) {
+            Serv.Post('gc/Evaluation/update', laydata.field, function(response) {
                 if (response.code == "00") {
                     layer_alert(response.message);
                     lstPager.refresh();
@@ -180,16 +229,18 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
 
 
     //添加考核类型
-    layform.on('submit(formTypes)', function (laydata) {
+    layform.on('submit(formTypes)', function(laydata) {
         layer_load();
         laydata.field.id = 0;
         Typemodel = laydata.field;
-        Serv.Post('gc/EvaluationType/add', { model: laydata.field }, function (response) {
+        Serv.Post('gc/EvaluationType/add', {
+            model: laydata.field
+        }, function(response) {
             if (response.code == "00") {
                 Typemodel.id = response.data;
                 Typemodel.name = Typemodel.Name;
                 datas.push(Typemodel);
-                layer_confirm('添加成功，是否继续添加？', function () {
+                layer_confirm('添加成功，是否继续添加？', function() {
                     layer_linePop = layer.open({
                         type: 1,
                         title: '添加考核分类',
@@ -209,9 +260,10 @@ layui.use(['table', 'element', 'laydate', 'form'], function () {
     });
 });
 //关闭弹窗
-$(".closePop").click(function () {
+$(".closePop").click(function() {
     layer.closeAll()
 });
+
 function closePop() {
     layer.close(layer_linePop);
 }
@@ -229,16 +281,24 @@ var model = {
     status: 1,
     evaluationTypeId: ''
 };
-var vm = new Vue({ el: '#evaluationForm', data: model });
+var vm = new Vue({
+    el: '#evaluationForm',
+    data: model
+});
+
 function GetSingle(wId) {
-    Serv.Post('gc/Evaluation/GetSingle', { Id: wId }, function (response) {
+    Serv.Post('gc/Evaluation/GetSingle', {
+        Id: wId
+    }, function(response) {
         model.id = response.id;
         model.name = response.name;
         model.index = response.index;
         model.description = response.description;
         model.status = response.status;
         model.evaluationTypeId = response.evaluationTypeId;
-        vm.$set({ data: model });
+        vm.$set({
+            data: model
+        });
         layui.form.render("select");
     })
 }
@@ -258,8 +318,7 @@ function loadSelect() {
             htmlsel
         );
         layui.form.render('select');
-    }
-    else {
+    } else {
         htmlsel += '<div class="layui-block margin-b-10">';
         htmlsel += '<select name="EvaluationTypeId" lay-filter="selParent">';
         htmlsel += '<option value="0">==请先添加考核分类==</option>';

@@ -1,15 +1,18 @@
+var elemData = window.globCache.getElementData('020001', 'allHtml');
+$('#rightBar').html(elemData.rightHtml);
+
 var dataCol = [
     [{
             field: 'id',
-            title: '序号'
+            title: '序号',
+            width: 80
         },
         {
             field: 'dptJob',
             title: '所属部门|职位',
             templet: function(d) {
                 return d.dptName + '|' + d.jobName;
-            },
-            minWidth: 80
+            }
         },
         {
             field: 'dptName',
@@ -18,30 +21,26 @@ var dataCol = [
                 return $.map(d.bindings, function(item) {
                     return item.dptName + '|' + item.jobName
                 }).join('，');
-            },
-            minWidth: 80
+            }
         },
         {
             field: 'employeeName',
             title: '姓名',
-            minWidth: 80
+            width: 120
         },
         {
             field: 'status',
             title: '状态',
             templet: function(d) {
                 return ['未入职', '试用', '转正', '离职'][d.status];
-            },
-            minWidth: 100
+            }
         },
         {
             field: 'isOpenAccount',
             title: '开通账户',
             templet: function(d) {
-                return d.isOpenAccount ? '<span class="text-span">已开通</span>' :
-                    '<span class="text-del">未开通</span>';
-            },
-            minWidth: 120
+                return d.isOpenAccount ? '<span class="text-span">已开通</span>' : '<span class="text-del">未开通</span>';
+            }
         },
         {
             field: 'employeeNo',
@@ -50,25 +49,23 @@ var dataCol = [
         {
             field: 'gender',
             title: '性别',
-            minWidth: 60,
+            width: 60,
             templet: function(d) {
                 return ["", "男", "女"][d.gender]
             }
         },
         {
             field: 'linkPhone',
-            title: '电话',
-            minWidth: 120
+            title: '电话'
         },
         {
             field: 'officePhone',
-            title: '办公电话',
-            minWidth: 120
+            title: '办公电话'
         },
         {
             title: '操作',
-            toolbar: '#toolbar',
-            minWidth: 240
+            toolbar: '#rightBar',
+            width: 320
         }
     ]
 ];

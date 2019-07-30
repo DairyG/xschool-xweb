@@ -1,3 +1,7 @@
+var elemData = window.globCache.getElementData('050002', 'allHtml');
+$('#upBar').html(elemData.upHtml);
+$('#rightBar').html(elemData.rightHtml);
+
 var roleCol = [
     [{
         field: 'id',
@@ -15,7 +19,8 @@ var roleCol = [
         width: 100
     }, {
         toolbar: '#rightBar',
-        title: '操作'
+        title: '操作',
+        width: 120
     }]
 ];
 
@@ -33,7 +38,6 @@ layui.use(['table', 'form'], function() {
     var table = layui.table,
         form = layui.form;
 
-    var rolePop = $('#rolePop');
     var parameter = {
         name: ''
     };
@@ -45,7 +49,7 @@ layui.use(['table', 'form'], function() {
         table, //lay-ui的table控件
         '角色管理', //列表名称
         'roleLst', //绑定的列表Id
-        'toolbar', //绑定的工具条Id
+        'upBar', //绑定的工具条Id
         roleCol, //表头的显示行
         'gc/power/queryrole', //action url 只能post提交
         search, //获取查询条件的函数
@@ -71,7 +75,7 @@ layui.use(['table', 'form'], function() {
     //右边
     table.on('tool(roleLst)', function(obj) {
         datas = obj.data;
-        if (obj.event == "edit") {
+        if (obj.event == 'edit') {
             window.location.href = '/pages/power/roleEdit.html?roleId=' + datas.id;
             return false;
         } else if (obj.event == 'del') {

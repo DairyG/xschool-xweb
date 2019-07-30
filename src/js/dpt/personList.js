@@ -1,3 +1,6 @@
+var elemData = window.globCache.getElementData('010002', 'allData');
+var viewElement = window.globCache.checkElement(elemData, 'btnView');
+
 var dataCol = [
     [{
             field: 'id',
@@ -22,10 +25,14 @@ var dataCol = [
             minWidth: 80
         },
         {
-            field: 'userName',
+            field: 'employeeName',
             title: '姓名',
             templet: function(d) {
-                return '<a class="text-add" href="/pages/person/personDetails.html?id=' + d.id + '">' + d.userName + '</a>';
+                if (viewElement) {
+                    return '<a class="text-add" href="/pages/person/personDetails.html?id=' + d.id + '">' + d.employeeName + '</a>';
+                } else {
+                    return d.employeeName;
+                }
             },
             width: 80,
         },
@@ -100,7 +107,6 @@ layui.use(['table'], function() {
     }
 
     function search() {
-        console.log(parameter);
         return parameter;
     }
     //分页初始化

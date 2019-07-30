@@ -1,133 +1,125 @@
 ﻿<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>部门管理</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../../js/layer.com.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/verify.js"></script>
+    <script type="text/javascript" src="../../lib/vue.js"></script>
+    <style type="text/css">
+      .linePop .layui-form-item .layui-form-checkbox[lay-skin='primary'] {
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
 
-<head>
-	<meta charset="utf-8" />
-	<title></title>
-	<link rel="stylesheet" href="../../layui/css/layui.css" />
-	<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
-	<link rel="stylesheet" href="../../layui/css/common.css" />
-	<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript" src="../../lib/ztree/jquery.ztree.all.min.js"></script>
-	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
-	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
-	<script type="text/javascript" src="../../js/layer.com.js"></script>
-	<script type="text/javascript" src="../../js/service.js"></script>
-	<script type="text/javascript" src="../../js/common.js"></script>	
-	<script type="text/javascript" src="../../js/cache.js"></script>
-	<script type="text/javascript" src="../../js/verify.js"></script>
-	<script type="text/javascript" src="../../lib/vue.js"></script>
-	<style type="text/css">
-		.linePop .layui-form-item .layui-form-checkbox[lay-skin=primary] {
-			margin-bottom: 8px;
-		}
-	</style>
-</head>
+  <body class="bgf2f2f2">
+    <div class="childrenBody layui-row layui-col-space20" style="background:none;">
+      <div class="layui-col-md3 layui-col-sm3">
+        <div class="bgwhite">
+          <ul id="ztree" class="ztree"></ul>
+        </div>
+      </div>
+      <div class="layui-col-md9 layui-col-sm9">
+        <div class="bgwhite">
+          <form class="layui-form" id="dptForm">
+            <div class="layui-card-header">
+              <span class="margin-r-10 fontsize-16">销售部</span>
+              <span id="toolbar"></span>
+            </div>
+            <div class="layui-card-body">
+              <input type="hidden" name="Id" v-model="id" />
+              <input type="hidden" name="NodeId" value="0" />
+              <input type="hidden" name="PId" v-model="pId" value="0" />
+              <input type="hidden" name="CompanyId" v-model="companyId" />
+              <input type="hidden" name="DptStatus" v-model="dptStatus" value="1" />
+              <input type="hidden" name="LevelMap" v-model="levelMap" />
+              <div class="layui-form-item layui-col-md12 layui-col-sm12">
+                <label class="layui-form-label">
+                  <span class="text-red">*</span>
+                  部门名称
+                </label>
+                <div class="layui-input-block">
+                  <input type="name" required lay-verify="name" placeholder="部门名称" name="DptName" v-model="dptName" class="layui-input" />
+                </div>
+              </div>
+              <div class="layui-form-item layui-col-md12 layui-col-sm12">
+                <label class="layui-form-label">
+                  <span class="text-red">*</span>
+                  部门编号
+                </label>
+                <div class="layui-input-block">
+                  <input type="name" required lay-verify="name" placeholder="部门编号" name="DptCode" v-model="dptCode" class="layui-input" />
+                </div>
+              </div>
+              <div class="layui-form-item layui-col-md12 layui-col-sm12">
+                <label class="layui-form-label">职责描述</label>
+                <div class="layui-input-block">
+                  <textarea placeholder="职责描述" class="layui-textarea" v-model="description" name="description"></textarea>
+                </div>
+              </div>
 
-<body class="bgf2f2f2">
-	<div class="childrenBody layui-row layui-col-space20" style="background:none;">
-		<div class="layui-col-md3 layui-col-sm3">
-			<div class="bgwhite">
-				<ul id="ztree" class="ztree"></ul>
-			</div>
-		</div>
-		<div class="layui-col-md9 layui-col-sm9">
-			<div class="bgwhite">
-				<form class="layui-form" id="dptForm">
-					<div class="layui-card-header">
-						<span class="margin-r-10 fontsize-16">销售部</span>
-						<a href="javascript:;" class="margin-r-10 text-edit" lay-filter="btnEdit"><i
-								class="layui-icon">&#xe642;</i> 修改</a>
-						<a href="javascript:;" class="margin-r-10 text-add" lay-filter="btnAdd"><i
-								class="layui-icon">&#xe654;</i> 添加</a>
-						<a href="javascript:;" class="text-del" lay-submit lay-filter="btnDel">
-							<i class="layui-icon">&#xe640;</i> 删除
-						</a>
-					</div>
-					<div class="layui-card-body">
-						<input type="hidden" name="Id" v-model="id" />
-						<input type="hidden" name="NodeId" value="0" />
-						<input type="hidden" name="PId" v-model="pId" value="0" />
-						<input type="hidden" name="CompanyId" v-model="companyId"/>
-						<input type="hidden" name="DptStatus" v-model="dptStatus" value="1" />
-						<input type="hidden" name="LevelMap" v-model="levelMap" />
-						<div class="layui-form-item layui-col-md12 layui-col-sm12">
-							<label class="layui-form-label"><span class="text-red">*</span>部门名称</label>
-							<div class="layui-input-block">
-								<input type="name" required lay-verify="name" placeholder="部门名称" name="DptName"
-									v-model="dptName" class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-col-md12 layui-col-sm12">
-							<label class="layui-form-label"><span class="text-red">*</span>部门编号 </label>
-							<div class="layui-input-block">
-								<input type="name" required lay-verify="name" placeholder="部门编号" name="DptCode"
-									v-model="dptCode" class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-col-md12 layui-col-sm12">
-							<label class="layui-form-label">职责描述</label>
-							<div class="layui-input-block">
-								<textarea placeholder="职责描述" class="layui-textarea" v-model="description"
-									name="description"></textarea>
-							</div>
-						</div>
+              <div class="layui-form-item layui-col-md12 layui-col-sm12" id="firstJobDiv" style="display:none;">
+                <label class="layui-form-label">职位</label>
+                <div class="layui-input-block">
+                  <ul class="dpt_pos_ul">
+                    <div id="showJobs"></div>
+                    <li class="add_li">
+                      <span class="set_btn" title="添加职位" name="set_btn"><i class="layui-icon layui-icon-add-1 add"></i></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
 
-						<div class="layui-form-item layui-col-md12 layui-col-sm12" id="firstJobDiv" style="display:none;">
-							<label class="layui-form-label">职位</label>
-							<div class="layui-input-block">
-								<ul class="dpt_pos_ul">
-									<div id="showJobs">
+              <div class="layui-form-item layui-col-md12 layui-col-sm12" id="firstAddJob">
+                <label class="layui-form-label">职位</label>
+                <div class="layui-input-block">
+                  <ul class="dpt_pos_ul">
+                    <li class="add_li no_bg">
+                      <span class="set_btn" title="添加职位" name="set_btn"><i class="layui-icon layui-icon-add-1 add"></i></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
 
-									</div>
-									<li class="add_li">
-										<span class="set_btn" title="添加职位" name="set_btn"><i
-												class="layui-icon layui-icon-add-1 add"></i></span>
-									</li>
-								</ul>
-							</div>
-						</div>
-
-						<div class="layui-form-item layui-col-md12 layui-col-sm12" id="firstAddJob">
-							<label class="layui-form-label">职位</label>
-							<div class="layui-input-block">
-								<ul class="dpt_pos_ul">
-									<li class="add_li no_bg">
-										<span class="set_btn" title="添加职位" name="set_btn"><i
-												class="layui-icon layui-icon-add-1 add"></i></span>
-									</li>
-								</ul>
-							</div>
-						</div>
-
-						<div class="layui-row text-right">
-							<button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptInfo">确认</button>
-							<button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptAdd">确认并继续添加</button>
-							<!-- <span class="layui-btn" onclick="history.back(-1)">返回</span> -->
-						</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	</div>
-	<div class="linePop" id="linePopPostion">
-		<div class="layui-card-body">
-			<form class="layui-form ">
-				<div class="layui-form-item">
-					<label class="layui-form-label"><span class="text-red">*</span>职位</label>
-					<div class="layui-input-block" id="divJobs">
-
-					</div>
-				</div>
-				<!-- <div class="layui-row text-right padding-r-50">
+              <div class="layui-row text-right">
+                <button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptInfo">确认</button>
+                <button class="layui-btn layui-btn-danger" lay-submit lay-filter="dptAdd">确认并继续添加</button>
+                <!-- <span class="layui-btn" onclick="history.back(-1)">返回</span> -->
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="linePop" id="linePopPostion">
+      <div class="layui-card-body">
+        <form class="layui-form ">
+          <div class="layui-form-item">
+            <label class="layui-form-label">
+              <span class="text-red">*</span>
+              职位
+            </label>
+            <div class="layui-input-block" id="divJobs"></div>
+          </div>
+          <!-- <div class="layui-row text-right padding-r-50">
 						<button class="layui-btn" lay-submit="" lay-filter="formDemo">确认</button>
 						<span class="layui-btn layui-btn-primary" onclick="closePop()">返回</span>
 					</div> -->
-			</form>
-		</div>
-	</div>
-	<script type="text/javascript" src="../../js/dpt/department.js"></script>
-</body>
-
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript" src="../../js/dpt/department.js"></script>
+  </body>
 </html>

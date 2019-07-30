@@ -28,7 +28,7 @@ layui.use(['table', 'form', 'laytpl'], function() {
     }
 
     //全选
-    $('#treeBody').on('ifClicked', 'input[name="checkAll"]', function(event) {
+    $('#treeBody').on('ifClicked', '.checkAll', function(event) {
         if (event.target.checked) {
             monduleBody.find('input[type="checkbox"]').iCheck('uncheck');
         } else {

@@ -108,24 +108,35 @@ function parseJwt(token) {
 }
 
 function setData(result) {
-    layer_load('登录成功，数据拉取中...');
     console.log(result);
-    Serv.SetToken(result.token_type + ' ' + result.access_token);
+    layer_load('登录成功，数据拉取中...');
+    // Serv.SetToken(result.token_type + ' ' + result.access_token);
+
+    Serv.SetToken(result);
     var token = parseJwt(result.access_token);
     window.globCache.setUserToken(token);
     window.globCache.set(cacheModel.EMPLOYEE, null);
-    Serv.Get(
-        'uc/Employee/GetEmployeeByUserId/' + token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'], {},
-        function(response) {
-            if (response) {
-                window.globCache.setEmployee(response);
-                window.location.href = 'index.html';
-            } else {
-                layer_alert('获取数据失败');
-            }
-        },
-        false
-    );
+    Serv.Get('uc/Employee/GetEmployeeByUserId/' + token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'], {}, function(response) {
+        if (response) {
+            getAuthStrategy(response);
+        } else {
+            layer_alert('获取数据失败');
+        }
+    }, false);
+}
+//获取可访问的资源
+function getAuthStrategy(emData) {
+    Serv.Get('gc/usersession/getauthstrategy/' + emData.id, {}, function(result) {
+        if (result) {
+            window.globCache.setEmployee(emData);
+            window.globCache.setModules(result.modules);
+            window.globCache.setElements(result.elements);
+            layer_load('页面跳转中...');
+            window.location.href = 'index.html';
+        } else {
+            layer_alert('获取数据失败');
+        }
+    }, false);
 }
 
 var sendAgainNo = 60;

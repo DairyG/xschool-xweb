@@ -9,6 +9,11 @@ var verifyModel = {
         client_secret: '367CA1C1E7F64A2883B978DD7CEC043B',
         grant_type: 'phone_number_token',
     },
+    refresh: {
+        client_id: '725A78E65DD14658A8947F68C27BD322',
+        client_secret: '367CA1C1E7F64A2883B978DD7CEC043B',
+        grant_type: 'refresh_token',
+    },
     salt: {
         letter1: '$$$',
         letter2: '7CD955AE-6A04-41BC-952F-0366D2532C95'
@@ -50,18 +55,33 @@ var Serv = {
     UCenterUrl: "",
     // Code: "JDWL",//站点名称
     Token: "", //用户的Token
+    GetTokenJson: function() {
+        var tokenVal = localStorage.getItem("Service_Token");
+        if (this.ValidateJson(tokenVal)) {
+            return JSON.parse(tokenVal);
+        }
+        return null
+    },
     GetToken: function() {
         if (this.Token == "" || this.Token == null) {
-            this.Token = localStorage.getItem("Service_Token");
+            var tokenVal = localStorage.getItem("Service_Token");
+            if (this.ValidateJson(tokenVal)) {
+                var tokenJson = JSON.parse(tokenVal);
+                this.Token = tokenJson.token_type + ' ' + tokenJson.access_token;
+            }
         }
         return this.Token;
     },
-    SetToken: function(val) {
-        if (val == "") {
+    SetToken: function(value) {
+        if (!value) {
             return false;
         }
-        Token = val;
-        localStorage.setItem("Service_Token", val);
+        Token = value.token_type + ' ' + value.access_token;
+
+        //5分钟后过期
+        // value.expires_in = (new Date().getTime() + 5);
+        value.expires_in = (new Date().getTime() + parseInt(value.expires_in));
+        localStorage.setItem("Service_Token", JSON.stringify(value));
         return true;
     },
     RemoveToken: function() {
@@ -166,5 +186,16 @@ var Serv = {
                 }
             }
         });
+    },
+    ValidateJson: function(value) {
+        if (typeof value == 'string') {
+            try {
+                JSON.parse(value);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 };

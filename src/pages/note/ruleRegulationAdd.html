@@ -1,108 +1,121 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>公司制度添加</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/layer.com.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../../lib/wangEditor/wangEditor.min.js"></script>
+  </head>
 
-<head>
-	<meta charset="utf-8" />
-	<title></title>
-	<link rel="stylesheet" href="../../layui/css/layui.css" />
-	<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
-	<link rel="stylesheet" href="../../layui/css/common.css" />
-	<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript" src="../../js/layer.com.js"></script>
-	<script type="text/javascript" src="../../js/service.js"></script>
-	<script type="text/javascript" src="../../js/common.js"></script>
-	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
-	<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>	
-	<script type="text/javascript" src="../../js/cache.js"></script>
-	<script type="text/javascript" src="../../lib/wangEditor/wangEditor.min.js"></script>
-</head>
-
-<body class="bgf2f2f2">
-	<div class="childrenBody" style="background:none;">
-		<div class="layui-col-md12 layui-col-sm12" style="background: #fff;">
-			<div class="layui-card-body">
-				<div class="layui-tab layui-tab-brief" lay-filter="brief">
-					<div class="layui-tab-content">
-						<div class="layui-tab-item layui-show">
-							<form class="layui-form layui-form2" lay-filter="frm">
-								<div class="layui-row">
-									<div class="layui-form-item layui-col-md12 margin-b-20">
-										<input type="hidden" name="id" v-model="id" value="0">
-										<input type="hidden" name="PublisherId" v-model="PublisherId" value="0">
-										<label class="layui-form-label">制度类别<span class="text-red"> *</span></label>
-										<div class="layui-input-block">
-											<input type="text" id="treeIpt" class="layui-input" onclick="showMenu();"
-												readonly>
-										</div>
-									</div>
-									<div class="layui-form-item layui-col-md12 margin-b-20">
-										<label class="layui-form-label">制度标题<span class="text-red"> *</span></label>
-										<div class="layui-input-block">
-											<input type="text" name="title" required lay-verify="required"
-												placeholder="请输入制度标题" autocomplete="off" class="layui-input">
-										</div>
-									</div>
-									<div class="layui-form-item layui-col-md12 margin-b-20">
-										<label class="layui-form-label">查看人类型<span class="text-red"> *</span></label>
-										<div class="layui-input-block">
-											<span class="layui-btn layui-btn-normal"
-												onclick="user_popup($('#rec_box'),'user,department,company,position')"><i
-													class="layui-icon layui-icon-add-1"></i>选择人员</span>
-										</div>
-									</div>
-									<div class="layui-form-item layui-col-md12 margin-b-20">
-										<label class="layui-form-label">查看人<span class="text-red"> *</span></label>
-										<div class="layui-input-block">
-											<div class="margin-t-10" id="rec_box">
-
-											</div>
-										</div>
-									</div>
-									<div class="layui-form-item layui-col-md12 margin-b-20">
-										<label class="layui-form-label">制度内容<span class="text-red"> *</span></label>
-										<!-- <div class="layui-input-block">
+  <body class="bgf2f2f2">
+    <div class="childrenBody" style="background:none;">
+      <div class="layui-col-md12 layui-col-sm12" style="background: #fff;">
+        <div class="layui-card-body">
+          <div class="layui-tab layui-tab-brief" lay-filter="brief">
+            <div class="layui-tab-content">
+              <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form2" lay-filter="frm">
+                  <div class="layui-row">
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                      <input type="hidden" name="id" v-model="id" value="0" />
+                      <input type="hidden" name="PublisherId" v-model="PublisherId" value="0" />
+                      <label class="layui-form-label">
+                        制度类别
+                        <span class="text-red">*</span>
+                      </label>
+                      <div class="layui-input-block">
+                        <input type="text" id="treeIpt" class="layui-input" onclick="showMenu();" readonly />
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                      <label class="layui-form-label">
+                        制度标题
+                        <span class="text-red">*</span>
+                      </label>
+                      <div class="layui-input-block">
+                        <input type="text" name="title" required lay-verify="required" placeholder="请输入制度标题" autocomplete="off" class="layui-input" />
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                      <label class="layui-form-label">
+                        查看人类型
+                        <span class="text-red">*</span>
+                      </label>
+                      <div class="layui-input-block">
+                        <span class="layui-btn layui-btn-normal" onclick="user_popup($('#rec_box'),'user,department,company,position')">
+                          <i class="layui-icon layui-icon-add-1"></i>
+                          选择人员
+                        </span>
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                      <label class="layui-form-label">
+                        查看人
+                        <span class="text-red">*</span>
+                      </label>
+                      <div class="layui-input-block">
+                        <div class="margin-t-10" id="rec_box"></div>
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                      <label class="layui-form-label">
+                        制度内容
+                        <span class="text-red">*</span>
+                      </label>
+                      <!-- <div class="layui-input-block">
 											<textarea class="layui-textarea" placeholder="请输入制度内容"
 												id="editor1"></textarea>
 										</div> -->
-										<div class="layui-input-block">
-												<input type="hidden" name="content">
-												<div id="E_Content"></div>
-											</div>
-									</div>
-									<div class="layui-form-item layui-col-md12 margin-b-20">
-										<label class="layui-form-label">制度附件<span class="text-red"> *</span></label>
-										<div class="layui-input-block">
-											<button type="button" id="certificateBtn" class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
-											  <i class="layui-icon">&#xe67c;</i>上传附件
-											</button>
-											<div class="attach-list">
-											  <ul id="certificatePanel"></ul>
-											</div>
-										  </div>
-									</div>
-									<div class="layui-row">
-										<div class="layui-form-item">
-											<div class="layui-input-block text-right">
-												<button class="layui-btn layui-btn-danger" lay-submit
-													lay-filter="noteAdd">确认</button>
-												<button class="layui-btn layui-btn-danger" lay-submit
-													lay-filter="noteAddAgain">确认并继续添加</button>
-												<span class="layui-btn" onclick="history.back(-1)">返回</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
-		<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
-	</div>
-</body>
-<script type="text/javascript" src="../../js/note/ruleRegulationAdd.js"></script>
+                      <div class="layui-input-block">
+                        <input type="hidden" name="content" />
+                        <div id="E_Content"></div>
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md12 margin-b-20">
+                      <label class="layui-form-label">
+                        制度附件
+                        <span class="text-red">*</span>
+                      </label>
+                      <div class="layui-input-block">
+                        <button type="button" id="certificateBtn" class="layui-btn layui-btn-sm layui-btn-normal margin-t-3">
+                          <i class="layui-icon">&#xe67c;</i>
+                          上传附件
+                        </button>
+                        <div class="attach-list">
+                          <ul id="certificatePanel"></ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-row">
+                      <div class="layui-form-item">
+                        <div class="layui-input-block text-right">
+                          <button class="layui-btn layui-btn-danger" lay-submit lay-filter="noteAdd">确认</button>
+                          <button class="layui-btn layui-btn-danger" lay-submit lay-filter="noteAddAgain">确认并继续添加</button>
+                          <span class="layui-btn" onclick="history.back(-1)">返回</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+      <ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../js/note/ruleRegulationAdd.js"></script>
 </html>

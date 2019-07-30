@@ -1,69 +1,65 @@
 <!DOCTYPE html>
 <html>
-
-	<head>
-		<meta charset="utf-8" />
-		<title></title>
-		<link rel="stylesheet" href="../../layui/css/layui.css" />
-		<link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
-		<link rel="stylesheet" href="../../layui/css/common.css" />
-		<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
-		<script type="text/javascript" src="../../layui/layui.js"></script>
-		<script type="text/javascript" src="../../js/layer.com.js"></script>
-		<script type="text/javascript" src="../../js/service.js"></script>
-		<script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
-        <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
-        <script type="text/javascript" src="../../js/note/ruleRegulation.js"></script>        
-        <script type="text/javascript" src="../../js/common.js"></script>
-        <script type="text/javascript" src="../../js/verify.js"></script>
-		<script type="text/javascript" src="../../js/pager.js"></script>
-		<script type="text/javascript" src="../../js/cache.js"></script>
-	</head>
-	<body class="">
-		<div class="childrenBody bgf2f2f2 layui-row layui-col-space20">
-			<div class="layui-col-md3">
-				<!-- 公司账号登录时 显示集团制度树 并且不能对集团的制度进行操作 -->
-				<div class="bgwhite">
-					<ul id="ztree" class="ztree"></ul>
-				</div>
-			</div>
-			<div class="layui-col-md9">
-				<div class="layui-card">
-					<div class="layui-card-body layui-row">
-						<div class=" layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
-							<div class="layui-tab-content">
-								<div class="layui-tab-item layui-show">
-									<form class="layui-form layui-form2 layui-search-form">
-										<div class="layui-row">
-											<div class="layui-form-item layui-col-md4 margin-b-20">
-												<label class="layui-form-label">标题<span class="text-red"> *</span></label>
-												<div class="layui-input-block">
-													<input type="text" name="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
-												</div>
-											</div>
-											<div class="layui-form-item layui-col-md2 margin-b-20">
-												<input type="button"  lay-submit class="layui-btn layui-btn-normal" lay-filter="search" value="搜索"/>
-											</div>
-										</div>
-									</form>
-									<table id="lst" lay-filter="lst"></table>
-									<script type="text/html" id="toolbar">
-										<button class="layui-btn  layui-btn-xs" lay-event="info">查看</button>
-										<button class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</button>
-										<button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
-									</script>
-									<script type="text/html" id="bar">
-										<button class="layui-btn  layui-btn-sm" lay-event="add">发布公司制度</button>
-									</script>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
-			<ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
-		</div>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>公司制度</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/layer.com.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/verify.js"></script>
+    <script type="text/javascript" src="../../js/pager.js"></script>
+  </head>
+  <body class="">
+    <div class="childrenBody bgf2f2f2 layui-row layui-col-space20">
+      <div class="layui-col-md3">
+        <!-- 公司账号登录时 显示集团制度树 并且不能对集团的制度进行操作 -->
+        <div class="bgwhite">
+          <ul id="ztree" class="ztree"></ul>
+        </div>
+      </div>
+      <div class="layui-col-md9">
+        <div class="layui-card">
+          <div class="layui-card-body layui-row">
+            <div class=" layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+              <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                  <form class="layui-form layui-form2 layui-search-form">
+                    <div class="layui-row">
+                      <div class="layui-form-item layui-col-md4 margin-b-20">
+                        <label class="layui-form-label">
+                          标题
+                          <span class="text-red">*</span>
+                        </label>
+                        <div class="layui-input-block">
+                          <input type="text" name="title" placeholder="请输入标题" autocomplete="off" class="layui-input" />
+                        </div>
+                      </div>
+                      <div class="layui-form-item layui-col-md2 margin-b-20">
+                        <input type="button" lay-submit class="layui-btn layui-btn-normal" lay-filter="search" value="搜索" />
+                      </div>
+                    </div>
+                  </form>
+                  <table id="lst" lay-filter="lst"></table>
+                  <script type="text/html" id="rightBar"></script>
+                  <script type="text/html" id="upBar"></script>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="menuContent" class="menuContent" style="display:none; position: absolute;background: #fff;">
+      <ul id="treeDemo" class="ztree" style="width: 100%;"></ul>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../js/note/ruleRegulation.js"></script>
 </html>

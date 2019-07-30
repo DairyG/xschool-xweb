@@ -1,3 +1,7 @@
+var elemData = window.globCache.getElementData('010001', 'customHtml');
+$('#toolbar').html(elemData);
+
+
 var zTreeObj;
 var DptJobs;
 var currentid = 0;

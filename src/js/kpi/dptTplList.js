@@ -1,3 +1,19 @@
+var elemUpHtml = window.globCache.getElementData('100003', 'upHtml');
+$('#upBar').html(elemUpHtml);
+
+var elemRightData = window.globCache.getElementData('100003', 'rightData');
+//获取button
+function getBtnHtml(hasClass, para) {
+    var btnText = (hasClass == 'add' ? '修改' : '设置');
+    var result = '';
+    $.each(elemRightData, function(i, item) {
+        if (item.domId == 'edit') {
+            result += '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(para)) + '" class="text-' + hasClass + '">' + btnText + '</a>';
+        }
+    });
+    return result;
+}
+
 var dataCol = [
     [{
             field: 'id',
@@ -14,10 +30,10 @@ var dataCol = [
             templet: function(d) {
                 if (d.monthly > 0) {
                     var urlParam = setUrlParam(0, 1, 1, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.monthly);
-                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
+                    return getBtnHtml('add', urlParam);
                 } else {
                     var urlParam = setUrlParam(0, 1, 1, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
+                    return getBtnHtml('edit', urlParam);
                 }
             }
         },
@@ -27,10 +43,10 @@ var dataCol = [
             templet: function(d) {
                 if (d.quarter > 0) {
                     var urlParam = setUrlParam(0, 1, 2, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.quarter);
-                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
+                    return getBtnHtml('add', urlParam);
                 } else {
                     var urlParam = setUrlParam(0, 1, 2, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
+                    return getBtnHtml('edit', urlParam);
                 }
             }
         },
@@ -40,10 +56,10 @@ var dataCol = [
             templet: function(d) {
                 if (d.halfYear > 0) {
                     var urlParam = setUrlParam(0, 1, 3, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.halfYear);
-                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
+                    return getBtnHtml('add', urlParam);
                 } else {
                     var urlParam = setUrlParam(0, 1, 3, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
+                    return getBtnHtml('edit', urlParam);
                 }
             }
         },
@@ -53,10 +69,10 @@ var dataCol = [
             templet: function(d) {
                 if (d.annual > 0) {
                     var urlParam = setUrlParam(0, 2, 4, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName, d.halfYear);
-                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-add">修改</a>';
+                    return getBtnHtml('add', urlParam);
                 } else {
                     var urlParam = setUrlParam(0, 2, 4, d.companyId, d.companyName, d.dptId, d.dptName, d.employeeId, d.userName);
-                    return '<a href="/pages/kpi/dptTplSet.html?para=' + encodeURIComponent(encodeURIComponent(urlParam)) + '" class="text-edit">设置</a>';
+                    return getBtnHtml('edit', urlParam);
                 }
             }
         }
@@ -119,7 +135,7 @@ layui.use(['table', 'element'], function() {
         table, //lay-ui的table控件
         '部门考核模板', //列表名称
         'lst', //绑定的列表Id
-        'toolbar', //绑定的工具条Id
+        'upBar', //绑定的工具条Id
         dataCol, //表头的显示行
         'gc/kpievaluation/querytemplat', //action url 只能post提交
         search, //获取查询条件的函数

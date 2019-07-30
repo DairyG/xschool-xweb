@@ -1,9 +1,20 @@
+var elemUpHtml = window.globCache.getElementData('060301', 'upHtml');
+$('#upBar').html(elemUpHtml);
+var elemRightData = window.globCache.getElementData('060301', 'rightData');
+//获取button
+function getBtnHtml(isSystem) {
+  var disabledClass = isSystem == 1 ? 'layui-btn-disabled' : '';
+  var result = '';
+  $.each(elemRightData, function(i, item) {
+    result += '<a class="layui-btn layui-btn-xs ' + (item.class || '') + ' ' + disabledClass + '" lay-event="' + item.domId + '"><i class="layui-icon ' + (item.iconName || '') + '"></i>' + item.name + '</a>';
+  });
+  return result;
+}
+
 var layer_linePop;
 var lstPager;
 var data_col = [
-    [
-        // { field: 'id', title: '序号' },
-        {
+    [{
             type: 'numbers',
             title: '序号'
         },
@@ -25,8 +36,10 @@ var data_col = [
         },
         {
             title: '操作',
-            toolbar: '#bar',
-            width: 180
+            templet: function(d) {
+                return getBtnHtml(d.isSystem);
+            },
+            width: 140
         }
     ]
 ];
@@ -94,7 +107,7 @@ layui.use(['table', 'element', 'laydate', 'form'], function() {
     lstPager = Pager(table, //lay-ui的table控件
         $("input[name='Type_Chinese']").val(), //列表名称
         "lst", //绑定的列表Id
-        'toolbar', //绑定的工具条Id
+        'upBar', //绑定的工具条Id
         data_col, //表头的显示行
         "uc/job/Get", //action url 只能post提交
         search,
