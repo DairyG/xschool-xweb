@@ -38,8 +38,14 @@ layui.use(['form', 'element', 'layer'], function() {
                 Serv.Post('gc/note/RuleRegulationTypeAdd', {
                     ParentId: laydata.field.ParentId,
                     RuleName: $("input[name='RuleName']").val()
-                }, function(result) {
-                    window.location.reload()
+                }, function(response) {
+                    if (response.succeed) {
+                        layer_alert(response.message, function() {
+                            window.location.reload()
+                        });
+                    } else {
+                        layer_alert(response.message);
+                    }
                 })
             } else if (zTree != null) {
                 var nodes = zTree.getSelectedNodes();
@@ -47,8 +53,14 @@ layui.use(['form', 'element', 'layer'], function() {
                     Serv.Post('gc/note/RuleRegulationTypeAdd', {
                         ParentId: nodes[0].id,
                         RuleName: $("input[name='RuleName']").val()
-                    }, function(result) {
-                        window.location.reload()
+                    }, function(response) {
+                        if (response.succeed) {
+                            layer_alert(response.message, function() {
+                                window.location.reload()
+                            });
+                        } else {
+                            layer_alert(response.message);
+                        }
                     })
                 } else {
                     layer_alert("请选择要添加或者修改的左侧树节点,再点添加！");
@@ -57,8 +69,14 @@ layui.use(['form', 'element', 'layer'], function() {
                 Serv.Post('gc/note/RuleRegulationTypeAdd', {
                     ParentId: laydata.field.ParentId,
                     RuleName: $("input[name='RuleName']").val()
-                }, function(result) {
-                    window.location.reload()
+                }, function(response) {
+                    if (response.succeed) {
+                        layer_alert(response.message, function() {
+                            window.location.reload()
+                        });
+                    } else {
+                        layer_alert(response.message);
+                    }
                 })
             }
         }
