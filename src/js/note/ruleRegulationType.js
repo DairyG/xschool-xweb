@@ -64,12 +64,19 @@ layui.use(['form', 'element', 'layer'], function() {
         }
         //修改时id不为0
         else if (laydata.field.id > 0) {
-            Serv.Post('gc/note/RuleRegulationTypeEdit', {
+            var param={
                 Id: laydata.field.id,
                 ParentId: laydata.field.ParentId,
                 RuleName: $("input[name='RuleName']").val()
-            }, function(result) {
-                window.location.reload()
+            };
+            Serv.Post('gc/note/RuleRegulationTypeEdit', param, function(response) {
+                if (response.succeed) {
+                    layer_alert(response.message, function() {
+                        window.location.reload()
+                    });
+                } else {
+                    layer_alert(response.message);
+                }
             })
         } else {
             layer_alert("请刷新页面，重试！");

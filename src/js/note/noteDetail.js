@@ -9,7 +9,7 @@ var data_col1 = [[
 ]];
 var data_col2 = [[
     {field: 'id', title: '序号',width:60},
-    { field: 'userName', title: '员工姓名' },
+    { field: 'employeeName', title: '员工姓名' },
     { field: 'companyName', title: '公司' },
     { field: 'dptName', title: '部门' }
 ]];

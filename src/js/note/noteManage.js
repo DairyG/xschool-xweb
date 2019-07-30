@@ -78,6 +78,7 @@ layui.use(['table', 'element', 'laydate'], function() {
     function search() {
         parameter.Title = $("input[name='title']").val();
         parameter.IsRead = -1;
+        parameter.SelectRange=0;//不按权限查询数据，查询全部数据
         return parameter;
     }
 

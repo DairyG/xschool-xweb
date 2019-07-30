@@ -61,8 +61,13 @@ layui.use(['table', 'element', 'laydate'], function() {
     });
 
     function search() {
+        parameter.CompanyId=window.globCache.getEmployee().companyId;
+        parameter.DptId=window.globCache.getEmployee().dptId;
+        parameter.JobId=window.globCache.getEmployee().jobId;
+        parameter.UserId=window.globCache.getEmployee().userId;
         parameter.Title = $("input[name='title']").val();
         parameter.IsRead = $('.IsRead').val();
+        parameter.SelectRange=1;//按权限查询数据
         return parameter;
     }
 
