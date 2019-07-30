@@ -28,21 +28,21 @@ layui.use(['form', 'element'], function() {
         element.render(); //初始化页面元素
     }
 
-    // getAuthStrategy();
-    // //获取可访问的资源
-    // function getAuthStrategy() {
-    //     Serv.Get('gc/usersession/getauthstrategy/' + window.globCache.getEmployee().id, {}, function(result) {
-    //         if (result) {
-    //             window.globCache.setModules(result.modules);
-    //             window.globCache.setElements(result.elements);
+    getAuthStrategy();
+    //获取可访问的资源
+    function getAuthStrategy() {
+        Serv.Get('gc/usersession/getauthstrategy/' + window.globCache.getEmployee().id, {}, function(result) {
+            if (result) {
+                window.globCache.setModules(result.modules);
+                window.globCache.setElements(result.elements);
 
-    //             $('#LAY-system-side-menu').html(navBar(result.modules));
-    //             element.render(); //初始化页面元素
-    //         } else {
-    //             layer_alert('获取数据失败');
-    //         }
-    //     }, false);
-    // }
+                $('#LAY-system-side-menu').html(navBar(result.modules));
+                element.render(); //初始化页面元素
+            } else {
+                layer_alert('获取数据失败');
+            }
+        }, false);
+    }
 
     //定时器
     // var timer = setInterval(checkToken, 5000);
