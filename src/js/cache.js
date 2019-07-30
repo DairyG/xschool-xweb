@@ -12,6 +12,7 @@ var cacheModel = {
     B_RECRUITMENT: "B_RECRUITMENT_CACHE",
     MODULES: "AS_MODULES_CACHE",
     ELEMENTS: "AS_ELEMENTS_CACHE",
+    LOGINTYPE: "LOGINTYPE_CACHE",
 };
 
 window.globCache = {
