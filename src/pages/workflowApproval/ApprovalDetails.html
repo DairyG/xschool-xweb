@@ -308,9 +308,7 @@
 				laydate.render({elem:'#date1'});
 
 				if(Id>0){
-					//获取发起人信息
-					GetCreateLCInfo(Id);
-					//获取审核进度
+					//获取发起人信息和审核进度
 					GetApprovalInfo(Id);
 				}
 			});
@@ -333,28 +331,17 @@
 					content: $('.linePop2')
 				});
 			});
-			//获取发起人信息
-			function GetCreateLCInfo(Id)
-			{
-				Serv.Get('lc/WorkflowMain/GetCreateLCInfo',{Id:Id},function(data){
-					if(data.succeed)
-					{
-						console.log(data);
-					}
-				},false);
-			}
-
-			//获取审核进度
+			//获取发起人信息和审核进度
 			function GetApprovalInfo(Id)
 			{
 				Serv.Get('lc/WorkflowMain/GetApprovalInfo',{Id:Id},function(data){
-					if(data.succeed)
-					{
-						console.log(data);
-					}
-					
+				
+				   console.log("这是审批进度："+data.ApprovalInfo);
+				   console.log("这是发起人信息："+data.CreateLCInfo);
 				},false);
 			}
+
+			
 		</script>
 	</body>
 </html>
