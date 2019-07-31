@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../layui/css/common.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css">
+    <script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/cache.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/layer.com.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../lib/ztree/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../../js/service.js"></script>
+    <style type="text/css">
+        .layui-form table .table_label {
+            background: #f2f2f2;
+        }
+		.layui-input {border: none;}
+    </style>
+</head>
+
+<body class="bgf2f2f2 ">
+    <div class="childrenBody ">
+        <div class="layui-card-header">预算设置</div>
+        <div class="layui-card-body bgwhite">
+            <form class="layui-form layui-form2">
+                <input type="hidden" id="id" value="0" />
+                <div class="layui-row">
+                    <!-- 部门和年度选择后才出现表格 部门和年度确认后不能更改 -->
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">部门：</label>
+                        <div class="layui-input-block">
+                            <div class="layui-input" readonly>
+                                <span class="layui-form-mid" id="user_sel_box1">请选择部门</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">年度：</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" readonly id='date1' autocomplete="off" placeholder="请选择年度" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-col-md6 margin-b-20">
+                        <label class="layui-form-label">总预算：</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" readonly id="total" autocomplete="off" placeholder="请选择总预算" />
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <table id="lst" lay-filter="lst"></table>
+                </div>
+                <div class="layui-row text-right">
+                    <button class="layui-btn layui-btn-danger" id="btnEdit" lay-submit="" lay-filter="formSet">确认</button>
+                    <span class="layui-btn " onclick="javascript:window.location.href='budgetlist.html'">返回</span>
+                </div>
+            </form>
+        </div>
+        <script type="text/html" id="toolbar"></script>
+        <script type="text/html" id="rightBar"></script>
+        <script>
+            var elemhHtml = window.globCache.getElementData('090001', 'allHtml');
+
+            var elemData = window.globCache.getElementData('090001', 'allData');
+            var viewElement = window.globCache.checkElement(elemData, 'edit');
+            if(!viewElement){
+                $("#btnEdit").hide();
+            }
+
+            var datas = [];
+            var table;
+            var id = GetPara('id');
+            layui.use(['table', 'laydate', 'layedit', 'form'], function () {
+                table = layui.table;
+                var laydate = layui.laydate,
+                    form = layui.form,
+                    layedit = layui.layedit;
+              
+                table.render({
+                    elem: '#lst',
+                    totalRow: true,
+                    toolbar: '#toolbar',
+                    cols: [[
+                        { 'field': 'km', 'title': '2019', totalRowText: '合计' },
+                        { 'field': 'm1', 'title': '一月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m1 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm2', 'title': '二月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m2 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm3', 'title': '三月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m3 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm4', 'title': '四月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m4 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm5', 'title': '五月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m5 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm6', 'title': '六月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m6 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm7', 'title': '七月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m7 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm8', 'title': '八月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m8 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm9', 'title': '九月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m9 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm10', 'title': '十月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m10 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm11', 'title': '十一月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m11 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm12', 'title': '十二月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m12 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'subtotal', 'title': '合计', totalRow: true },
+                    ]],
+                    data: datas
+                });
+            });
+            $(document).on("focus", "table .table-ipt", function () {
+                $(this).click();
+            });
+            var init = function () {
+                if (id > 0) {
+                    $("#id").val(id);
+                    Serv.Get('gc/Budgetset/GetSingle/' + id, {}, function (response) {
+                        datas = [];
+                        if (response) {
+                            $("#total").val(response.total);
+                            $("#date1").val(response.year);
+                            var html = response.dptName + '<input type="hidden" name="sels" value="{&quot;sel_type&quot;:&quot;org&quot;,&quot;user&quot;:[],&quot;department&quot;:[{&quot;id&quot;:' + response.dptId + ',&quot;name&quot;:&quot;' + response.dptName + '&quot;,&quot;company_id&quot;:&quot;' + response.companyId + '&quot;,&quot;company_name&quot;:&quot;' + response.companyName + '&quot;}],&quot;company&quot;:[],&quot;position&quot;:[],&quot;dpt_position&quot;:[]}">';
+                            $("#user_sel_box1").html(html);
+                            GetDetails(response.id);
+                        }
+                        else {
+                            $("#id").val(0);
+                            $("#total").val('');
+                        }
+                    });
+                }
+            };
+            init();
+            function getSingle() {
+                var y = $("#date1").val();
+                if (y && $("#user_sel_box1 input").length > 0) {
+                    var department = $.parseJSON($("#user_sel_box1").find("input[name='sels']").val()).department;
+                    if (department.length > 0) {
+                        var dId = department[0].id;
+                        Serv.Post('gc/Budgetset/Get', { dptId: dId, year: y }, function (response) {
+                            datas = [];
+                            if (response.length > 0) {
+                                $("#id").val(response[0].id);
+                                $("#total").val(response[0].total);
+                                GetDetails(response[0].id);
+                            }
+                            else {
+                                $("#id").val(0);
+                                $("#total").val('');
+                                table.reload('lst', { data: datas });
+                            }
+                        })
+                    }
+                }
+            }
+        </script>
+</body>
+
+</html>
