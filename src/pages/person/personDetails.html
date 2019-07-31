@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <title>员工详情</title>
+    <link href='../../lib/fullcalendar/packages/core/main.css' rel='stylesheet' />
+    <link href='../../lib/fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
+    <link href='../../lib/fullcalendar/packages/timegrid/main.css' rel='stylesheet' />
     <link rel="stylesheet" href="../../layui/css/layui.css" />
     <link rel="stylesheet" href="../../layui/css/template.css" />
     <link rel="stylesheet" href="../../lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
@@ -15,6 +18,11 @@
     <script type="text/javascript" src="../../lib/vue.js"></script>
     <link rel="stylesheet" href="../../lib/viewer/viewer.min.css" />
     <script type="text/javascript" src="../../lib/viewer/viewer.min.js"></script>
+    <script src='../../lib/fullcalendar/packages/core/main.js'></script>
+    <script src='../../lib/fullcalendar/packages/interaction/main.js'></script>
+    <script src='../../lib/fullcalendar/packages/daygrid/main.js'></script>
+    <script src='../../lib/fullcalendar/packages/timegrid/main.js'></script>
+    <script src='../../lib/fullcalendar/packages/core/locales/zh-cn.js'></script>
   </head>
 
   <body>
@@ -545,8 +553,15 @@
                     </div>
                   </div>
                   <div class="layui-tab-item" tab-name="资产信息"></div>
-                  <div class="layui-tab-item" tab-name="日程安排"></div>
-                  <div class="layui-tab-item" tab-name="代办事宜"></div>
+                  <div class="layui-tab-item" tab-name="日程安排">
+                    <div id='calendar' class="bgwhite"></div>
+                  </div>
+                  <div class="layui-tab-item" tab-name="代办事宜">
+                    <table class="layui-table" id="db_lst" lay-filter="db_lst"></table>
+										<script type="text/html" id="db_bar">
+											<a class="layui-btn layui-btn-xs" href="javascript:;" lay-event="info">查看</a>
+										</script>
+                  </div>
                   <div class="layui-tab-item" tab-name="考勤记录"></div>
                   <div class="layui-tab-item" tab-name="奖惩情况"></div>
                   <div class="layui-tab-item" tab-name="考核情况"></div>
