@@ -162,3 +162,37 @@ function form_build(formData,paramData){
 	html += '</div>';
 	return html;
 }
+
+/**
+ * 创建表单dom
+ * @param Object formData 表单配置
+ * @param Object paramData 表单项配置
+ */
+function form_info_build(formData,paramData){
+	var html = '<div class="layui-form layui-form2  layui-form-140 layui-form-info layui-row">';
+	var not_form_items = 'section,recruit,money_pay,money_apply';
+	if(typeof paramData == 'string'){
+		paramData = JSON.parse(paramData);
+	}
+	for(var i = 0;i < paramData.length;i++){
+		if(paramData[i] != null){
+			if(not_form_items.indexOf(paramData[i].TYP) > -1){//非表单项的HTML
+				//html += not_form_info_html(paramData[i],i);
+			} else {
+				html += build_form_info_html(paramData[i],i);
+			}
+		}
+	}
+	html += '</div>';
+	return html;
+}
+
+function build_form_info_html(param,i){
+	var html = '';
+	html += '<div class="layui-form-item layui-col-md6 ">';
+	html += '<label class="layui-form-label">'+param.LBL+'：</label>';
+	html += '<div class="layui-input-block">';
+	html += '<div class="layui-form-mid">'+(param.VAL == undefined ? '' : param.VAL)+'</div>';
+	html += '</div></div>';
+	return html;
+}
