@@ -36,22 +36,22 @@
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label"><span class="text-red">*</span>是否同意</label>
 										<div class="layui-input-block">
-											<input type="radio" name="opinion" title="同意申请" />
-											<input type="radio" name="opinion" title="不同意申请" />
-											<input type="radio" name="opinion" title="驳回申请" />
+											<input type="radio" name="opinion" value="2" title="同意申请" />
+											<input type="radio" name="opinion" value="-1" title="不同意申请" />
+											<input type="radio" name="opinion" value="-2" title="驳回申请" />
 										</div>
 									</div>
 									<div class="layui-form-item layui-col-md12 margin-b-20">
 										<label class="layui-form-label">审批意见</label>
 										<div class="layui-input-block">
-											<textarea class="layui-textarea"></textarea>
+											<textarea class="layui-textarea" id="Memo"></textarea>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="layui-row">
 								<div class="layui-input-block text-right">
-									<button class="layui-btn layui-btn-danger" lay-submit lay-filter="submit">确定</button>
+									<a class="layui-btn layui-btn-danger" onclick="save()">确定</a>
 									<span class="layui-btn" onclick="history.back(-1)">返回</span>
 								</div>
 							</div>
@@ -312,6 +312,30 @@
 				laytpl($('#detailTpl').html()).render(data.createLCInfo,function(html){
 					$('#detail').html(html);
 				});
+			}
+
+			function save()
+			{
+				if (Id > 0) 
+				{
+					var AudioStatus=$('input[name="opinion"]:checked').val();
+					var subData={Id:Id,AudioStatus:AudioStatus,Memo:$("#Memo").val()};
+				
+					Serv.Post('lc/WorkflowMain/ApprovaIsAgree',subData,function(resultData){
+                        if(resultData.succeed)
+                        {
+                            layer.msg("成功...", {icon:1});
+                            setTimeout(function(){
+                                history.back(-1);
+                            },1000);
+                        }else{
+                            layer.msg('失败:'+resultData.message, {icon:2});
+                        }
+                     })
+				}else{
+					layer.msg('未请求到参数，请刷新页面重新提交！');
+				}
+
 			}
 		</script>
 	</body>

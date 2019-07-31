@@ -97,7 +97,6 @@ layui.use(['table', 'element', 'form','laydate'], function() {
         return parameter;
     }
     var onTools = function(layEvent, data) {
-        alert(data.id);
         layer_load();
         if (layEvent === 'view') {
            window.location.href = 'ApprovalDetails.html?id=' + data.id
