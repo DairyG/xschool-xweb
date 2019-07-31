@@ -28,56 +28,24 @@ layui.use(['form', 'element', 'layer'], function() {
 
     layform.on('submit(ruleSave)', function(laydata) {
         layer_load();
-        if ($("input[name='RuleName']").val().lenth == 0) {
+        if ($("input[name='RuleName']").val().lenth == 0||$("input[name='RuleName']").val()==""||typeof($("input[name='RuleName']").val()) == "undefined") {
+            layer_load_lose();
             layer_alert("类别名称不能为空！");
         }
         //添加时父级id不为0
         else if (laydata.field.id == 0) {
             var zTree = $.fn.zTree.getZTreeObj('ztree');
             if (laydata.field.ParentId > 0) {
-                Serv.Post('gc/note/RuleRegulationTypeAdd', {
-                    ParentId: laydata.field.ParentId,
-                    RuleName: $("input[name='RuleName']").val()
-                }, function(response) {
-                    if (response.succeed) {
-                        layer_alert(response.message, function() {
-                            window.location.reload()
-                        });
-                    } else {
-                        layer_alert(response.message);
-                    }
-                })
+                add(laydata.field.ParentId);
             } else if (zTree != null) {
                 var nodes = zTree.getSelectedNodes();
                 if (nodes.length > 0) {
-                    Serv.Post('gc/note/RuleRegulationTypeAdd', {
-                        ParentId: nodes[0].id,
-                        RuleName: $("input[name='RuleName']").val()
-                    }, function(response) {
-                        if (response.succeed) {
-                            layer_alert(response.message, function() {
-                                window.location.reload()
-                            });
-                        } else {
-                            layer_alert(response.message);
-                        }
-                    })
+                    add(nodes[0].id)
                 } else {
                     layer_alert("请选择要添加或者修改的左侧树节点,再点添加！");
                 }
             } else {
-                Serv.Post('gc/note/RuleRegulationTypeAdd', {
-                    ParentId: laydata.field.ParentId,
-                    RuleName: $("input[name='RuleName']").val()
-                }, function(response) {
-                    if (response.succeed) {
-                        layer_alert(response.message, function() {
-                            window.location.reload()
-                        });
-                    } else {
-                        layer_alert(response.message);
-                    }
-                })
+                add(laydata.field.ParentId);
             }
         }
         //修改时id不为0
@@ -87,19 +55,11 @@ layui.use(['form', 'element', 'layer'], function() {
                 ParentId: laydata.field.ParentId,
                 RuleName: $("input[name='RuleName']").val()
             };
-            Serv.Post('gc/note/RuleRegulationTypeEdit', param, function(response) {
-                if (response.succeed) {
-                    layer_alert(response.message, function() {
-                        window.location.reload()
-                    });
-                } else {
-                    layer_alert(response.message);
-                }
-            })
+            edit(param);
         } else {
             layer_alert("请刷新页面，重试！");
         }
-        layer_load_lose();
+        return false;
     })
 })
 
@@ -161,3 +121,32 @@ $(function() {
         }
     })
 })
+
+function add(nodeId) {
+    Serv.Post('gc/note/RuleRegulationTypeAdd', {
+        ParentId: nodeId,
+        RuleName: $("input[name='RuleName']").val()
+    }, function (result) {
+        layer_load_lose();
+        if (result.succeed) {
+            layer_alert(result.message, function () {
+                window.location.reload()
+            });
+        } else {
+            layer_alert(result.message);
+        }
+    },false)
+}
+
+function edit(param){
+    Serv.Post('gc/note/RuleRegulationTypeEdit', param, function(result) {
+        layer_load_lose();
+        if (result.succeed) {
+            layer_alert(result.message, function() {
+                window.location.reload()
+            });
+        } else {
+            layer_alert(result.message);
+        }
+    },false)
+}

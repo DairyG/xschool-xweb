@@ -119,9 +119,19 @@ layui.use(['form', 'element', 'layer', 'table'], function() {
                 "&UserName=" + window.globCache.getEmployee().employeeName + "&CompanyName=" + window.globCache.getEmployee().companyName + "&DptName=" + window.globCache.getEmployee().dptName;
         }
         if (layEvent == "edit") {
+            if(window.globCache.getEmployee().id!=obj.data.publisherId)
+            {
+                layer_alert("仅允许发布人员修改！");
+                return
+            }
             window.location.href = "/pages/note/ruleRegulationAdd.html?id=" + obj.data.id;
         }
         if (layEvent == "del") {
+            if(window.globCache.getEmployee().id!=obj.data.publisherId)
+            {
+                layer_alert("仅允许发布人员删除！");
+                return
+            }
             layer_confirm('确定删除吗？', function() {
                 layer_load();
                 Serv.Get("gc/note/RuleRegulationDel?id=" + obj.data.id, {}, function(result) {

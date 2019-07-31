@@ -1,4 +1,4 @@
-var elemData = window.globCache.getElementData('040001', 'allHtml');
+var elemData = window.globCache.getElementData('040002', 'allHtml');
 $('#rightBar').html(elemData.rightHtml);
 
 var data_col = [
@@ -39,7 +39,7 @@ var data_col = [
         {
             title: '操作',
             toolbar: '#rightBar',
-            width: 70,
+            width: 160,
             fixed: 'right'
         },
     ],
@@ -91,6 +91,33 @@ layui.use(['table', 'element', 'laydate'], function() {
         var layEvent = obj.event;
         if (layEvent == 'info') {
             window.location.href = '/pages/note/noteDetail.html?NoteId=' + obj.data.id + '&UserId=' + window.globCache.getEmployee().id + '&UserName=' + window.globCache.getEmployee().employeeName + '&CompanyName=' + window.globCache.getEmployee().companyName + '&DptName=' + window.globCache.getEmployee().dptName;
+        }
+        if (layEvent == "edit") {
+            if(window.globCache.getEmployee().id!=obj.data.publisherId)
+            {
+                layer_alert("仅允许发布人员修改！");
+                return
+            }
+            window.location.href = "/pages/note/noteAdd.html?id=" + obj.data.id;
+        }
+        if (layEvent == "del") {
+            if(window.globCache.getEmployee().id!=obj.data.publisherId)
+            {
+                layer_alert("仅允许发布人员删除！");
+                return
+            }
+            layer_confirm('确定删除吗？', function() {
+                layer_load();
+                Serv.Get("gc/note/DeleteNote?id=" + obj.data.id, {}, function(result) {
+                    if (result.succeed) {
+                        layer_alert(result.message, function() {
+                            lstPager.search();
+                        });
+                    } else {
+                        layer_alert(result.message);
+                    }
+                });
+            });
         }
     });
 });
