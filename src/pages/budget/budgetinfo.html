@@ -56,7 +56,6 @@
                     <table id="lst" lay-filter="lst"></table>
                 </div>
                 <div class="layui-row text-right">
-                    <button class="layui-btn layui-btn-danger" id="btnEdit" lay-submit="" lay-filter="formSet">确认</button>
                     <span class="layui-btn " onclick="javascript:window.location.href='budgetlist.html'">返回</span>
                 </div>
             </form>
@@ -87,18 +86,18 @@
                     toolbar: '#toolbar',
                     cols: [[
                         { 'field': 'km', 'title': '2019', totalRowText: '合计' },
-                        { 'field': 'm1', 'title': '一月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m1 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm2', 'title': '二月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m2 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm3', 'title': '三月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m3 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm4', 'title': '四月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m4 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm5', 'title': '五月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m5 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm6', 'title': '六月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m6 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm7', 'title': '七月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m7 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm8', 'title': '八月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m8 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm9', 'title': '九月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m9 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm10', 'title': '十月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m10 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm11', 'title': '十一月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m11 + '" type="text" class="layui-input table-ipt"></div>' } },
-                        { 'field': 'm12', 'title': '十二月', totalRow: true, templet: function (d) { return '<div><input value="' + d.m12 + '" type="text" class="layui-input table-ipt"></div>' } },
+                        { 'field': 'm1', 'title': '一月', totalRow: true},
+                        { 'field': 'm2', 'title': '二月', totalRow: true},
+                        { 'field': 'm3', 'title': '三月', totalRow: true},
+                        { 'field': 'm4', 'title': '四月', totalRow: true},
+                        { 'field': 'm5', 'title': '五月', totalRow: true},
+                        { 'field': 'm6', 'title': '六月', totalRow: true},
+                        { 'field': 'm7', 'title': '七月', totalRow: true},
+                        { 'field': 'm8', 'title': '八月', totalRow: true },
+                        { 'field': 'm9', 'title': '九月', totalRow: true},
+                        { 'field': 'm10', 'title': '十月', totalRow: true},
+                        { 'field': 'm11', 'title': '十一月', totalRow: true},
+                        { 'field': 'm12', 'title': '十二月', totalRow: true},
                         { 'field': 'subtotal', 'title': '合计', totalRow: true },
                     ]],
                     data: datas
@@ -148,6 +147,35 @@
                         })
                     }
                 }
+            }
+            function GetDetails(setId) {
+                //查询各科目预算
+                Serv.Get('gc/BudgetDetails/Get/' + setId, {}, function (result) {
+                    if (result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            var model = {
+                                id: result[i].id,
+                                budgetId: result[i].budgetId,
+                                km: result[i].budgetName,
+                                m1: result[i].jan,
+                                m2: result[i].feb,
+                                m3: result[i].mar,
+                                m4: result[i].apr,
+                                m5: result[i].may,
+                                m6: result[i].jun,
+                                m7: result[i].jul,
+                                m8: result[i].aug,
+                                m9: result[i].sept,
+                                m10: result[i].oct,
+                                m11: result[i].nov,
+                                m12: result[i].dec,
+                                subtotal: result[i].total
+                            };
+                            datas.push(model);
+                        }
+                        table.reload('lst', { data: datas });
+                    }
+                });
             }
         </script>
 </body>

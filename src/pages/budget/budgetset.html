@@ -344,7 +344,7 @@
                         }
                         Serv.Post('gc/BudgetDetails/Add', { list: details }, function (response) {
                             if (response.code == "00") {
-                                layer_alert("操作成功！");
+                                layer_alert("操作成功！",function(){window.location.href="budgetlist.html";});
                             }
                             else {
                                 layer_alert(response.message);

@@ -16,16 +16,12 @@
     <div class="childrenBody">
         <div class="layui-card-body">
             <table class="layui-table" id="lst" lay-filter="lst"></table>
-            <script type="text/html" id="bar">
-					<a class="layui-btn layui-btn-xs " href="javascript:;" lay-event="info">查看</a>
-				</script>
-            <script type="text/html" id="toolbar">
-				</script>
+            <script type="text/html" id="rightBar"></script>
         </div>
     </div>
     <script>
         var elemhHtml = window.globCache.getElementData('090002', 'allHtml');
-        $('#bar').html(elemhHtml.rightHtml);
+        $('#rightBar').html(elemhHtml.rightHtml);
         var layer_linePop;
         var cols = [[
             { type: 'numbers', title: '序号' },
@@ -33,7 +29,7 @@
             { field: 'year', title: '年度' },
             { field: 'dptName', title: '部门' },
             { field: 'total', title: '总额' },
-            { toolbar: '#bar', title: '操作' }
+            { toolbar: '#rightBar', title: '操作' }
         ]];
         var datas = [];
         layui.use(['table'], function () {
@@ -63,6 +59,9 @@
             init();
             table.on('tool(lst)', function (data) {
                 if (data.event == 'info') {
+                    window.location.href = "budgetinfo.html?id="+data.data.id; 
+                }
+                else if(data.event == 'edit'){
                     window.location.href = "budgetset.html?id="+data.data.id; 
                 }
             });
